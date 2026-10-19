@@ -1,0 +1,109 @@
+{
+ "generado": "2026-10-19T20:45+02:00",
+ "resultados": [
+  {
+   "spot": "Ejemplo - cámbiame por tu spot",
+   "lat": 40.79,
+   "lon": -3.98,
+   "tipo": "mirador",
+   "origen": "propio",
+   "fecha": "2026-10-19",
+   "momento": "atardecer",
+   "hora": "19:29",
+   "ventana": "dorada desde 18:52 · azul hasta 19:57",
+   "nota": 0.6,
+   "detalle": "altas 1% · medias 61% · bajas 92% · horizonte con bajas 100% · visibilidad 4 km"
+  },
+  {
+   "spot": "Ejemplo - cámbiame por tu spot",
+   "lat": 40.79,
+   "lon": -3.98,
+   "tipo": "mirador",
+   "origen": "propio",
+   "fecha": "2026-10-19",
+   "momento": "astro",
+   "hora": "21:01–07:00",
+   "ventana": "noche astronómica",
+   "nota": 0.1,
+   "detalle": "nubes 95% · luna 54% iluminada, arriba el 35% de la noche"
+  },
+  {
+   "spot": "Ejemplo - cámbiame por tu spot",
+   "lat": 40.79,
+   "lon": -3.98,
+   "tipo": "mirador",
+   "origen": "propio",
+   "fecha": "2026-10-20",
+   "momento": "atardecer",
+   "hora": "19:28",
+   "ventana": "dorada desde 18:51 · azul hasta 19:56",
+   "nota": 2.0,
+   "detalle": "altas 100% · medias 72% · bajas 0% · horizonte despejado"
+  },
+  {
+   "spot": "Ejemplo - cámbiame por tu spot",
+   "lat": 40.79,
+   "lon": -3.98,
+   "tipo": "mirador",
+   "origen": "propio",
+   "fecha": "2026-10-20",
+   "momento": "astro",
+   "hora": "20:59–07:01",
+   "ventana": "noche astronómica",
+   "nota": 1.2,
+   "detalle": "nubes 71% · luna 63% iluminada, arriba el 43% de la noche"
+  },
+  {
+   "spot": "Ejemplo - cámbiame por tu spot",
+   "lat": 40.79,
+   "lon": -3.98,
+   "tipo": "mirador",
+   "origen": "propio",
+   "fecha": "2026-10-21",
+   "momento": "astro",
+   "hora": "20:58–07:03",
+   "ventana": "noche astronómica",
+   "nota": 5.2,
+   "detalle": "nubes 17% · luna 71% iluminada, arriba el 52% de la noche"
+  },
+  {
+   "spot": "Ejemplo - cámbiame por tu spot",
+   "lat": 40.79,
+   "lon": -3.98,
+   "tipo": "mirador",
+   "origen": "propio",
+   "fecha": "2026-10-21",
+   "momento": "atardecer",
+   "hora": "19:26",
+   "ventana": "dorada desde 18:49 · azul hasta 19:54",
+   "nota": 3.0,
+   "detalle": "altas 0% · medias 0% · bajas 0% · horizonte despejado"
+  },
+  {
+   "spot": "Ejemplo - cámbiame por tu spot",
+   "lat": 40.79,
+   "lon": -3.98,
+   "tipo": "mirador",
+   "origen": "propio",
+   "fecha": "2026-10-22",
+   "momento": "atardecer",
+   "hora": "19:25",
+   "ventana": "dorada desde 18:48 · azul hasta 19:53",
+   "nota": 4.1,
+   "detalle": "altas 8% · medias 0% · bajas 0% · horizonte despejado"
+  },
+  {
+   "spot": "Ejemplo - cámbiame por tu spot",
+   "lat": 40.79,
+   "lon": -3.98,
+   "tipo": "mirador",
+   "origen": "propio",
+   "fecha": "2026-10-22",
+   "momento": "astro",
+   "hora": "20:56–07:04",
+   "ventana": "noche astronómica",
+   "nota": 0.2,
+   "detalle": "nubes 90% · luna 80% iluminada, arriba el 62% de la noche"
+  }
+ ]
+}
