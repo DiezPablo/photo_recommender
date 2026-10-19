@@ -71,6 +71,15 @@ problemas encontrados y cómo se resolvieron.
   debe contener `NaN` ni valores no válidos.
 - **Web**: build de producción sin errores, tests end-to-end con Playwright en viewport móvil y
   de escritorio, y **revisa tú las capturas** (claro, oscuro, modo noche). Sin errores en consola.
+- **Producción**: tras cada push, espera a que Vercel despliegue y prueba la web real en
+  https://photo-recommender.vercel.app (si el entorno bloquea el dominio, añádelo a la lista
+  permitida; si aun así no llegas, avisa y usa Playwright en local). Comprueba: carga sin error 500,
+  sin errores de consola, `datos/informe.json` y `datos/spots.geojson` con 200, marcadores en el
+  mapa, ficha de un spot, filtros y ranking. Mira las capturas.
+- **Estado al empezar** (comprobado en producción el 19-oct-2026): la web estática carga y el
+  workflow `datos.yml` ya publica previsión real de Open-Meteo (solo para el spot de ejemplo).
+  Faltan `docs/datos/spots.geojson` (404: `descubrir_spots.py` real aún no se ha ejecutado) y un
+  favicon (404).
 - **Workflows**: valida el YAML y simula localmente cada paso.
 
 ## Definición de hecho
