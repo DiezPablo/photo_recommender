@@ -1,6 +1,6 @@
 # Spots de paisaje — contexto para Claude Code
 
-> **Dirección actual: lee `ENCARGO.md`.** Se abandona el bot de Telegram con Mini App en favor de una web en Vercel; lo que aquí se dice del bot (`app/`, Mini App, webhook) queda obsoleto y debe eliminarse. Anota decisiones y problemas en `registro.md`.
+> **Dirección actual: lee `ENCARGO.md`.** Se abandona el bot de Telegram con Mini App en favor de una web en Vercel; `app/`, `Dockerfile` y `requirements-bot.txt` ya se han eliminado (Vercel los desplegaba como función Python y daba 500); lo que el resto de este fichero dice del bot queda obsoleto y debe actualizarse. Anota decisiones y problemas en `registro.md`.
 
 App personal (uso no comercial) para un fotógrafo aficionado en Madrid: bot de Telegram con Mini
 App de mapa que descubre spots de fotografía de paisaje, puntúa a diario las condiciones de luz y
