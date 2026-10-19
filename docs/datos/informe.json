@@ -1,5 +1,5 @@
 {
- "generado": "2026-10-19T20:45+02:00",
+ "generado": "2026-10-19T23:34+02:00",
  "resultados": [
   {
    "spot": "Ejemplo - cámbiame por tu spot",
@@ -24,8 +24,8 @@
    "momento": "astro",
    "hora": "21:01–07:00",
    "ventana": "noche astronómica",
-   "nota": 0.1,
-   "detalle": "nubes 95% · luna 54% iluminada, arriba el 35% de la noche"
+   "nota": 0.2,
+   "detalle": "nubes 90% · luna 54% iluminada, arriba el 35% de la noche"
   },
   {
    "spot": "Ejemplo - cámbiame por tu spot",
@@ -38,7 +38,7 @@
    "hora": "19:28",
    "ventana": "dorada desde 18:51 · azul hasta 19:56",
    "nota": 2.0,
-   "detalle": "altas 100% · medias 72% · bajas 0% · horizonte despejado"
+   "detalle": "altas 100% · medias 49% · bajas 0% · horizonte despejado"
   },
   {
    "spot": "Ejemplo - cámbiame por tu spot",
@@ -50,21 +50,8 @@
    "momento": "astro",
    "hora": "20:59–07:01",
    "ventana": "noche astronómica",
-   "nota": 1.2,
-   "detalle": "nubes 71% · luna 63% iluminada, arriba el 43% de la noche"
-  },
-  {
-   "spot": "Ejemplo - cámbiame por tu spot",
-   "lat": 40.79,
-   "lon": -3.98,
-   "tipo": "mirador",
-   "origen": "propio",
-   "fecha": "2026-10-21",
-   "momento": "astro",
-   "hora": "20:58–07:03",
-   "ventana": "noche astronómica",
-   "nota": 5.2,
-   "detalle": "nubes 17% · luna 71% iluminada, arriba el 52% de la noche"
+   "nota": 1.1,
+   "detalle": "nubes 72% · luna 63% iluminada, arriba el 43% de la noche"
   },
   {
    "spot": "Ejemplo - cámbiame por tu spot",
@@ -85,12 +72,25 @@
    "lon": -3.98,
    "tipo": "mirador",
    "origen": "propio",
+   "fecha": "2026-10-21",
+   "momento": "astro",
+   "hora": "20:58–07:03",
+   "ventana": "noche astronómica",
+   "nota": 2.3,
+   "detalle": "nubes 51% · luna 71% iluminada, arriba el 52% de la noche"
+  },
+  {
+   "spot": "Ejemplo - cámbiame por tu spot",
+   "lat": 40.79,
+   "lon": -3.98,
+   "tipo": "mirador",
+   "origen": "propio",
    "fecha": "2026-10-22",
    "momento": "atardecer",
    "hora": "19:25",
    "ventana": "dorada desde 18:48 · azul hasta 19:53",
-   "nota": 4.1,
-   "detalle": "altas 8% · medias 0% · bajas 0% · horizonte despejado"
+   "nota": 3.0,
+   "detalle": "altas 0% · medias 0% · bajas 0% · horizonte despejado"
   },
   {
    "spot": "Ejemplo - cámbiame por tu spot",
@@ -102,8 +102,8 @@
    "momento": "astro",
    "hora": "20:56–07:04",
    "ventana": "noche astronómica",
-   "nota": 0.2,
-   "detalle": "nubes 90% · luna 80% iluminada, arriba el 62% de la noche"
+   "nota": 0.6,
+   "detalle": "nubes 78% · luna 80% iluminada, arriba el 62% de la noche"
   }
  ]
 }
