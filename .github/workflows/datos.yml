@@ -35,6 +35,8 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: main   # siempre los últimos spots, aunque el run lo lanzara un commit anterior
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
@@ -47,18 +49,12 @@ jobs:
           key: atlas-lp-2025
 
       - name: Calcular condiciones
-        run: python condiciones.py --salida public/datos/informe.json
+        run: |
+          mkdir -p salida
+          python condiciones.py --salida salida/informe.json
 
       - name: Publicar datos
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@users.noreply.github.com"
-          if [ ! -f public/datos/informe.json ]; then echo "Aún no hay informe (sin spots): nada que publicar"; exit 0; fi
-          git add public/datos/informe.json
-          git diff --cached --quiet && exit 0
-          git commit -m "Datos $(date -u +%Y-%m-%dT%H:%MZ)"
-          for i in 1 2 3 4; do git pull --rebase && git push && exit 0; sleep $((i * 5)); done
-          exit 1
+        run: .github/scripts/publicar.sh "Datos $(date -u +%Y-%m-%dT%H:%MZ)" salida/informe.json
 
       - name: Aviso por Telegram (opcional)
         if: github.event.schedule == '17 17 * * *' || inputs.enviar

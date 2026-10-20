@@ -127,3 +127,8 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
   puntas el 21-oct con lienzo de nubes y horizonte oeste despejado sobre el mar).
 - Nota: un `workflow_dispatch` en el grupo de concurrencia reemplaza al run pendiente del mismo grupo
   (GitHub solo guarda uno en espera); por eso un descubrimiento de Madrid salió "cancelled" y se relanzó.
+- *Problema* (workflows): un run de descubrimiento encolado hizo checkout de su commit (anterior) y, al
+  publicar, `git pull --rebase` chocó con el `spots.geojson` que otro run acababa de publicar →
+  conflicto y fallo. *Solución*: checkout de `main` al empezar y `.github/scripts/publicar.sh`, que
+  parte siempre del último `origin/main`, copia encima los ficheros generados (mandan ellos, no hay
+  nada que fusionar) y reintenta el push. Probado en local con un remoto simulado y dos publicadores.

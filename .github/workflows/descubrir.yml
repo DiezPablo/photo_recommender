@@ -37,6 +37,8 @@ jobs:
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: main
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
@@ -69,11 +71,5 @@ jobs:
       - name: Publicar
         if: github.event_name != 'workflow_dispatch' || inputs.publicar
         run: |
-          cp salida/spots.geojson salida/spots.csv salida/informe.json public/datos/
-          git config user.name "github-actions"
-          git config user.email "github-actions@users.noreply.github.com"
-          git add public/datos
-          git diff --cached --quiet && exit 0
-          git commit -m "Actualizar spots ($(date -u +%Y-%m-%d))"
-          for i in 1 2 3 4; do git pull --rebase && git push && exit 0; sleep $((i * 5)); done
-          exit 1
+          .github/scripts/publicar.sh "Actualizar spots ($(date -u +%Y-%m-%d))" \
+            salida/spots.geojson salida/spots.csv salida/informe.json
