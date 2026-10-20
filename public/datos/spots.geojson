@@ -7,64 +7,48 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -4.12801,
-     40.9503
+     -4.13183,
+     40.95231
     ]
    },
    "properties": {
-    "spot_id": 7,
+    "spot_id": 10,
     "origen": "commons",
-    "fotos": 198,
-    "fotografos": 38,
-    "fotos_calidad": 22,
-    "puntuacion": 17.32,
+    "fotos": 118,
+    "fotografos": 31,
+    "fotos_calidad": 2,
+    "puntuacion": 13.36,
     "mejor_momento": "día",
     "pct_amanecer": 6,
-    "pct_atardecer": 16,
+    "pct_atardecer": 21,
     "pct_noche": 3,
     "meses": [
      2,
-     11,
-     31,
-     2,
-     20,
-     5,
      8,
+     21,
+     1,
+     16,
      4,
      2,
-     4,
+     3,
      1,
-     21
+     5,
+     1,
+     6
     ],
     "meses_top": [
      3,
-     12,
-     5
+     5,
+     2
     ],
     "galeria": [
      {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Catedral_de_Santa_Mar%C3%ADa_de_Segovia_-_36.jpg/960px-Catedral_de_Santa_Mar%C3%ADa_de_Segovia_-_36.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Catedral_de_Santa_Mar%C3%ADa_de_Segovia_-_36.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/Alc%C3%A1zar_de_Segovia_-_16.jpg/960px-Alc%C3%A1zar_de_Segovia_-_16.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Alc%C3%A1zar_de_Segovia_-_16.jpg",
       "autor": "Carlos Delgado",
       "licencia": "CC BY-SA 3.0",
-      "titulo": "Catedral de Santa María de Segovia - 36",
-      "fecha": "2013-03-03"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Romanesque_walkway_San_Martin_Segovia.jpg/960px-Romanesque_walkway_San_Martin_Segovia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Romanesque_walkway_San_Martin_Segovia.jpg",
-      "autor": "Jebulon",
-      "licencia": "CC0",
-      "titulo": "Romanesque walkway San Martin Segovia",
-      "fecha": "2012-07-22"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/83/Iglesia_de_Vera_Cruz%2C_Segovia.jpg/960px-Iglesia_de_Vera_Cruz%2C_Segovia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Iglesia_de_Vera_Cruz,_Segovia.jpg",
-      "autor": "Bernard Gagnon",
-      "licencia": "CC BY-SA 3.0",
-      "titulo": "Iglesia de Vera Cruz, Segovia",
-      "fecha": null
+      "titulo": "Alcázar de Segovia - 16",
+      "fecha": "2012-12-10"
      },
      {
       "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/Alc%C3%A1zar%2C_Segovia%2C_Espa%C3%B1a%2C_2024-06-14%2C_DD_04-06_HDR.jpg/960px-Alc%C3%A1zar%2C_Segovia%2C_Espa%C3%B1a%2C_2024-06-14%2C_DD_04-06_HDR.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
@@ -83,24 +67,40 @@
       "fecha": "2022-06-29"
      },
      {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/Catedral_de_Segovia_en_marzo_de_2022_08.jpg/960px-Catedral_de_Segovia_en_marzo_de_2022_08.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Catedral_de_Segovia_en_marzo_de_2022_08.jpg",
-      "autor": "Emilio J. Rodríguez Posada",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7e/Alcazar_de_S%C3%A9govie_%2851427456326%29.jpg/960px-Alcazar_de_S%C3%A9govie_%2851427456326%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Alcazar_de_S%C3%A9govie_(51427456326).jpg",
+      "autor": "Marmontel",
+      "licencia": "CC BY 2.0",
+      "titulo": "Alcazar de Ségovie (51427456326)",
+      "fecha": "2021-08-23"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/FotoExcursionSept2018.jpg/960px-FotoExcursionSept2018.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:FotoExcursionSept2018.jpg",
+      "autor": "57Javier57",
       "licencia": "CC BY-SA 4.0",
-      "titulo": "Catedral de Segovia en marzo de 2022 08",
-      "fecha": "2022-03-27"
+      "titulo": "FotoExcursionSept2018",
+      "fecha": "2018-09-01"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Segovia_con_nieve_%2839548992145%29.jpg/960px-Segovia_con_nieve_%2839548992145%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Segovia_con_nieve_(39548992145).jpg",
+      "autor": "Pablo Cabezos from Mostoles, España",
+      "licencia": "CC BY 2.0",
+      "titulo": "Segovia con nieve (39548992145)",
+      "fecha": "2018-02-10"
      }
     ],
-    "nombre": "Mirador del Museo",
+    "nombre": "Mirador del Último Pino",
     "tipo_osm": "mirador",
-    "dist_osm_m": 35.0,
+    "dist_osm_m": 198.0,
     "direccion_vista": null,
-    "id": "mirador-del-museo-f712",
+    "id": "mirador-del-ultimo-pino-8706",
     "contaminacion": {
-     "zona": "6a",
-     "sqm": 19.22,
+     "zona": "5b",
+     "sqm": 19.76,
      "bortle": 7,
-     "descripcion": "urbano"
+     "descripcion": "periurbano"
     }
    }
   },
@@ -110,19 +110,19 @@
     "type": "Point",
     "coordinates": [
      -3.6353,
-     40.99608
+     40.99626
     ]
    },
    "properties": {
-    "spot_id": 40,
+    "spot_id": 56,
     "origen": "commons",
-    "fotos": 59,
-    "fotografos": 8,
-    "fotos_calidad": 17,
-    "puntuacion": 12.82,
+    "fotos": 49,
+    "fotografos": 7,
+    "fotos_calidad": 14,
+    "puntuacion": 12.13,
     "mejor_momento": "día",
     "pct_amanecer": 2,
-    "pct_atardecer": 8,
+    "pct_atardecer": 10,
     "pct_noche": 0,
     "meses": [
      1,
@@ -130,9 +130,9 @@
      0,
      0,
      5,
-     35,
+     32,
      2,
-     7,
+     0,
      1,
      0,
      1,
@@ -140,8 +140,8 @@
     ],
     "meses_top": [
      6,
-     8,
-     5
+     5,
+     7
     ],
     "galeria": [
      {
@@ -169,14 +169,6 @@
       "fecha": "2018-11-02"
      },
      {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6e/Im%C3%A1genes_de_Torrelaguna_41.jpg/960px-Im%C3%A1genes_de_Torrelaguna_41.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Im%C3%A1genes_de_Torrelaguna_41.jpg",
-      "autor": "19Tarrestnom65",
-      "licencia": "CC BY-SA 4.0",
-      "titulo": "Imágenes de Torrelaguna 41",
-      "fecha": "2018-08-18"
-     },
-     {
       "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Castillo_de_Buitrago_%2837719340041%29.jpg/960px-Castillo_de_Buitrago_%2837719340041%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
       "enlace": "https://commons.wikimedia.org/wiki/File:Castillo_de_Buitrago_(37719340041).jpg",
       "autor": "Deensel",
@@ -191,13 +183,21 @@
       "licencia": "CC0",
       "titulo": "Río Lozoya - WLE Spain 2015",
       "fecha": "2014-05-01"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/MADRID_060726_MXALX_089.jpg/960px-MADRID_060726_MXALX_089.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:MADRID_060726_MXALX_089.jpg",
+      "autor": "Max Alexander / PromoMadrid",
+      "licencia": "CC BY-SA 2.0",
+      "titulo": "MADRID 060726 MXALX 089",
+      "fecha": "2006-07-26"
      }
     ],
     "nombre": "Mirador de Buitrago",
     "tipo_osm": "mirador",
-    "dist_osm_m": 310.0,
+    "dist_osm_m": 296.0,
     "direccion_vista": null,
-    "id": "mirador-de-buitrago-0bc7",
+    "id": "mirador-de-buitrago-709b",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -211,20 +211,20 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -4.15258,
-     40.64148
+     -4.1526,
+     40.64152
     ]
    },
    "properties": {
-    "spot_id": 3,
+    "spot_id": 5,
     "origen": "commons",
-    "fotos": 30,
+    "fotos": 32,
     "fotografos": 6,
     "fotos_calidad": 1,
-    "puntuacion": 8.37,
+    "puntuacion": 8.43,
     "mejor_momento": "día",
     "pct_amanecer": 0,
-    "pct_atardecer": 13,
+    "pct_atardecer": 12,
     "pct_noche": 0,
     "meses": [
      0,
@@ -234,7 +234,7 @@
      0,
      0,
      0,
-     20,
+     22,
      1,
      0,
      0,
@@ -271,11 +271,11 @@
       "fecha": "2014-09-29"
      },
      {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/57/Valle_de_los_Ca%C3%ADdos._San_Juan_Evangelista.jpg/960px-Valle_de_los_Ca%C3%ADdos._San_Juan_Evangelista.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Valle_de_los_Ca%C3%ADdos._San_Juan_Evangelista.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Valle_de_los_Ca%C3%ADdos._Explanada_de_la_Abad%C3%ADa-Hospeder%C3%ADa.jpg/960px-Valle_de_los_Ca%C3%ADdos._Explanada_de_la_Abad%C3%ADa-Hospeder%C3%ADa.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Valle_de_los_Ca%C3%ADdos._Explanada_de_la_Abad%C3%ADa-Hospeder%C3%ADa.jpg",
       "autor": "-Merce- from Madrid, España",
       "licencia": "CC BY-SA 2.0",
-      "titulo": "Valle de los Caídos. San Juan Evangelista",
+      "titulo": "Valle de los Caídos. Explanada de la Abadía-Hospedería",
       "fecha": "2014-08-24"
      },
      {
@@ -297,7 +297,7 @@
     ],
     "nombre": "Risco de la Nava",
     "tipo_osm": "cumbre",
-    "dist_osm_m": 242.0,
+    "dist_osm_m": 239.0,
     "direccion_vista": null,
     "id": "risco-de-la-nava-a16a",
     "contaminacion": {
@@ -313,23 +313,23 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -3.88668,
-     40.88742
+     -3.88651,
+     40.88717
     ]
    },
    "properties": {
-    "spot_id": 35,
+    "spot_id": 47,
     "origen": "commons",
-    "fotos": 10,
+    "fotos": 12,
     "fotografos": 7,
-    "fotos_calidad": 1,
-    "puntuacion": 7.6,
+    "fotos_calidad": 0,
+    "puntuacion": 6.72,
     "mejor_momento": "día",
     "pct_amanecer": 0,
     "pct_atardecer": 0,
     "pct_noche": 0,
     "meses": [
-     0,
+     3,
      1,
      0,
      0,
@@ -343,19 +343,11 @@
      0
     ],
     "meses_top": [
+     1,
      8,
-     2,
-     10
+     2
     ],
     "galeria": [
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/af/Monasterio_de_Santa_Mar%C3%ADa_de_El_Paular_-_01.jpg/960px-Monasterio_de_Santa_Mar%C3%ADa_de_El_Paular_-_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Monasterio_de_Santa_Mar%C3%ADa_de_El_Paular_-_01.jpg",
-      "autor": "Carlos Delgado",
-      "licencia": "CC BY-SA 4.0",
-      "titulo": "Monasterio de Santa María de El Paular - 01",
-      "fecha": null
-     },
      {
       "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/Exterior_del_Monasterio_del_Paular_09.jpg/960px-Exterior_del_Monasterio_del_Paular_09.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
       "enlace": "https://commons.wikimedia.org/wiki/File:Exterior_del_Monasterio_del_Paular_09.jpg",
@@ -363,6 +355,14 @@
       "licencia": "CC BY-SA 4.0",
       "titulo": "Exterior del Monasterio del Paular 09",
       "fecha": "2018-08-18"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/Pe%C3%B1alara_-_01.jpg/960px-Pe%C3%B1alara_-_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Pe%C3%B1alara_-_01.jpg",
+      "autor": "Carlos Delgado",
+      "licencia": "CC BY-SA 3.0 es",
+      "titulo": "Peñalara - 01",
+      "fecha": "2015-01-25"
      },
      {
       "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Rascafria_06_monasterio_by-dpc.jpg/960px-Rascafria_06_monasterio_by-dpc.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
@@ -397,11 +397,11 @@
       "fecha": null
      }
     ],
-    "nombre": "Monasterio de Santa María de El Paular - 01",
+    "nombre": "Monasterio de El Paular",
     "tipo_osm": "mirador",
-    "dist_osm_m": 322.0,
+    "dist_osm_m": 340.0,
     "direccion_vista": null,
-    "id": "monasterio-de-santa-maria-de-el-paular-01-f462",
+    "id": "monasterio-de-el-paular-bca7",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -415,216 +415,12 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -3.86224,
-     40.72706
-    ]
-   },
-   "properties": {
-    "spot_id": 31,
-    "origen": "commons",
-    "fotos": 13,
-    "fotografos": 8,
-    "fotos_calidad": 0,
-    "puntuacion": 7.03,
-    "mejor_momento": "día",
-    "pct_amanecer": 0,
-    "pct_atardecer": 12,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     2,
-     0,
-     1,
-     0,
-     1,
-     0,
-     0,
-     0,
-     1,
-     2,
-     1
-    ],
-    "meses_top": [
-     11,
-     2,
-     12
-    ],
-    "galeria": [
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/EMBALSE_DE_SANTILLANA_%286495112213%29.jpg/960px-EMBALSE_DE_SANTILLANA_%286495112213%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:EMBALSE_DE_SANTILLANA_(6495112213).jpg",
-      "autor": "Héctor Esteban Menéndez",
-      "licencia": "CC BY 2.0",
-      "titulo": "EMBALSE DE SANTILLANA (6495112213)",
-      "fecha": "2011-12-11"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d4/MADRID_100402_UDCI_017.jpg/960px-MADRID_100402_UDCI_017.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:MADRID_100402_UDCI_017.jpg",
-      "autor": "Alfredo Urdaci / PromoMadrid",
-      "licencia": "CC BY-SA 2.0",
-      "titulo": "MADRID 100402 UDCI 017",
-      "fecha": "2010-04-02"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/Storks_nesting_%282755858439%29.jpg/960px-Storks_nesting_%282755858439%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Storks_nesting_(2755858439).jpg",
-      "autor": "Marco Chiesa from Madrid, Spain",
-      "licencia": "CC BY 2.0",
-      "titulo": "Storks nesting (2755858439)",
-      "fecha": "2008-06-07"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Embalse-santillana-22-04-11.jpg/960px-Embalse-santillana-22-04-11.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Embalse-santillana-22-04-11.jpg",
-      "autor": "FDV",
-      "licencia": "CC BY-SA 3.0",
-      "titulo": "Embalse-santillana-22-04-11",
-      "fecha": null
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f8/Manzanares_el_Real_castillo_y_Pedriza.JPG/960px-Manzanares_el_Real_castillo_y_Pedriza.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Manzanares_el_Real_castillo_y_Pedriza.JPG",
-      "autor": "Cruccone",
-      "licencia": "CC BY-SA 3.0 es",
-      "titulo": "Manzanares el Real castillo y Pedriza",
-      "fecha": null
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ac/CASTILLO_EN_MADRID_-_panoramio_%282%29.jpg/960px-CASTILLO_EN_MADRID_-_panoramio_%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:CASTILLO_EN_MADRID_-_panoramio_(2).jpg",
-      "autor": "Carlos Ramón Bonilla…",
-      "licencia": "CC BY-SA 3.0",
-      "titulo": "CASTILLO EN MADRID - panoramio (2)",
-      "fecha": null
-     }
-    ],
-    "nombre": "EMBALSE DE SANTILLANA (6495112213)",
-    "tipo_osm": null,
-    "dist_osm_m": null,
-    "direccion_vista": null,
-    "id": "embalse-de-santillana-6495112213-59b5",
-    "contaminacion": {
-     "zona": "5b",
-     "sqm": 19.76,
-     "bortle": 7,
-     "descripcion": "periurbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -3.86905,
-     40.71734
-    ]
-   },
-   "properties": {
-    "spot_id": 30,
-    "origen": "commons",
-    "fotos": 36,
-    "fotografos": 4,
-    "fotos_calidad": 0,
-    "puntuacion": 6.83,
-    "mejor_momento": "atardecer",
-    "pct_amanecer": 0,
-    "pct_atardecer": 48,
-    "pct_noche": 16,
-    "meses": [
-     9,
-     4,
-     2,
-     0,
-     3,
-     0,
-     1,
-     0,
-     0,
-     0,
-     8,
-     4
-    ],
-    "meses_top": [
-     1,
-     11,
-     12
-    ],
-    "galeria": [
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8d/Cuenca_Alta_del_manzanzares_%2828440225352%29.jpg/960px-Cuenca_Alta_del_manzanzares_%2828440225352%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Cuenca_Alta_del_manzanzares_(28440225352).jpg",
-      "autor": "Rodrigo Gómez Sanz from Madrid, España",
-      "licencia": "CC BY 2.0",
-      "titulo": "Cuenca Alta del manzanzares (28440225352)",
-      "fecha": "2016-07-23"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/Cuenca_Alta_del_Manzanares_%285300093376%29.jpg/960px-Cuenca_Alta_del_Manzanares_%285300093376%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Cuenca_Alta_del_Manzanares_(5300093376).jpg",
-      "autor": "Rodrigo Gómez Sanz from Madrid, España",
-      "licencia": "CC BY 2.0",
-      "titulo": "Cuenca Alta del Manzanares (5300093376)",
-      "fecha": "2010-12-26"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/58/MANZANARES_%284306829040%29.jpg/960px-MANZANARES_%284306829040%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:MANZANARES_(4306829040).jpg",
-      "autor": "Héctor Esteban Menéndez",
-      "licencia": "CC BY-SA 2.0",
-      "titulo": "MANZANARES (4306829040)",
-      "fecha": "2010-01-26"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4e/Vista_-_Rio_Samburiel_-_Manzanares_el_Real_06.jpg/960px-Vista_-_Rio_Samburiel_-_Manzanares_el_Real_06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Vista_-_Rio_Samburiel_-_Manzanares_el_Real_06.jpg",
-      "autor": "Javier Perez Montes",
-      "licencia": "CC BY-SA 4.0",
-      "titulo": "Vista - Rio Samburiel - Manzanares el Real 06",
-      "fecha": null
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/EMBALSE_DE_SANTILLANA_%286988360459%29.jpg/960px-EMBALSE_DE_SANTILLANA_%286988360459%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:EMBALSE_DE_SANTILLANA_(6988360459).jpg",
-      "autor": "Héctor Esteban Menéndez",
-      "licencia": "CC BY 2.0",
-      "titulo": "EMBALSE DE SANTILLANA (6988360459)",
-      "fecha": "2012-03-16"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/LAS_TRES_MAR%C3%8DAS_%286800159372%29.jpg/960px-LAS_TRES_MAR%C3%8DAS_%286800159372%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:LAS_TRES_MAR%C3%8DAS_(6800159372).jpg",
-      "autor": "Héctor Esteban Menéndez",
-      "licencia": "CC BY 2.0",
-      "titulo": "LAS TRES MARÍAS (6800159372)",
-      "fecha": "2012-02-28"
-     }
-    ],
-    "nombre": "Cuenca Alta del manzanzares (28440225352)",
-    "tipo_osm": null,
-    "dist_osm_m": null,
-    "direccion_vista": null,
-    "id": "cuenca-alta-del-manzanzares-28440225352-3c77",
-    "contaminacion": {
-     "zona": "5b",
-     "sqm": 19.76,
-     "bortle": 7,
-     "descripcion": "periurbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
      -3.56285,
      40.94571
     ]
    },
    "properties": {
-    "spot_id": 44,
+    "spot_id": 60,
     "origen": "commons",
     "fotos": 24,
     "fotografos": 4,
@@ -702,11 +498,11 @@
       "fecha": "2018-06-03"
      }
     ],
-    "nombre": "Embalse de El Villar",
-    "tipo_osm": null,
+    "nombre": "Embalse de El Atazar",
+    "tipo_osm": "embalse",
     "dist_osm_m": null,
     "direccion_vista": null,
-    "id": "embalse-de-el-villar-2695",
+    "id": "embalse-de-el-atazar-2695",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -720,12 +516,216 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
+     -3.8689,
+     40.71726
+    ]
+   },
+   "properties": {
+    "spot_id": 39,
+    "origen": "commons",
+    "fotos": 24,
+    "fotografos": 4,
+    "fotos_calidad": 0,
+    "puntuacion": 6.44,
+    "mejor_momento": "día",
+    "pct_amanecer": 0,
+    "pct_atardecer": 37,
+    "pct_noche": 21,
+    "meses": [
+     8,
+     0,
+     2,
+     0,
+     3,
+     0,
+     1,
+     0,
+     0,
+     0,
+     4,
+     1
+    ],
+    "meses_top": [
+     1,
+     11,
+     5
+    ],
+    "galeria": [
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8d/Cuenca_Alta_del_manzanzares_%2828440225352%29.jpg/960px-Cuenca_Alta_del_manzanzares_%2828440225352%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Cuenca_Alta_del_manzanzares_(28440225352).jpg",
+      "autor": "Rodrigo Gómez Sanz from Madrid, España",
+      "licencia": "CC BY 2.0",
+      "titulo": "Cuenca Alta del manzanzares (28440225352)",
+      "fecha": "2016-07-23"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/Cuenca_Alta_del_Manzanares_%285300093376%29.jpg/960px-Cuenca_Alta_del_Manzanares_%285300093376%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Cuenca_Alta_del_Manzanares_(5300093376).jpg",
+      "autor": "Rodrigo Gómez Sanz from Madrid, España",
+      "licencia": "CC BY 2.0",
+      "titulo": "Cuenca Alta del Manzanares (5300093376)",
+      "fecha": "2010-12-26"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/58/MANZANARES_%284306829040%29.jpg/960px-MANZANARES_%284306829040%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:MANZANARES_(4306829040).jpg",
+      "autor": "Héctor Esteban Menéndez",
+      "licencia": "CC BY-SA 2.0",
+      "titulo": "MANZANARES (4306829040)",
+      "fecha": "2010-01-26"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4e/Vista_-_Rio_Samburiel_-_Manzanares_el_Real_06.jpg/960px-Vista_-_Rio_Samburiel_-_Manzanares_el_Real_06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Vista_-_Rio_Samburiel_-_Manzanares_el_Real_06.jpg",
+      "autor": "Javier Perez Montes",
+      "licencia": "CC BY-SA 4.0",
+      "titulo": "Vista - Rio Samburiel - Manzanares el Real 06",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/EMBALSE_DE_SANTILLANA_%286988360459%29.jpg/960px-EMBALSE_DE_SANTILLANA_%286988360459%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:EMBALSE_DE_SANTILLANA_(6988360459).jpg",
+      "autor": "Héctor Esteban Menéndez",
+      "licencia": "CC BY 2.0",
+      "titulo": "EMBALSE DE SANTILLANA (6988360459)",
+      "fecha": "2012-03-16"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/PANOR%C3%81MICA_ATARDECER_EN_EL_EMBALSE_%286691434159%29.jpg/960px-PANOR%C3%81MICA_ATARDECER_EN_EL_EMBALSE_%286691434159%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:PANOR%C3%81MICA_ATARDECER_EN_EL_EMBALSE_(6691434159).jpg",
+      "autor": "Héctor Esteban Menéndez",
+      "licencia": "CC BY 2.0",
+      "titulo": "PANORÁMICA ATARDECER EN EL EMBALSE (6691434159)",
+      "fecha": "2012-01-13"
+     }
+    ],
+    "nombre": "Embalse de Santillana",
+    "tipo_osm": "embalse",
+    "dist_osm_m": null,
+    "direccion_vista": null,
+    "id": "embalse-de-santillana-216c",
+    "contaminacion": {
+     "zona": "5b",
+     "sqm": 19.76,
+     "bortle": 7,
+     "descripcion": "periurbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -3.86221,
+     40.72707
+    ]
+   },
+   "properties": {
+    "spot_id": 41,
+    "origen": "commons",
+    "fotos": 8,
+    "fotografos": 7,
+    "fotos_calidad": 0,
+    "puntuacion": 6.36,
+    "mejor_momento": "día",
+    "pct_amanecer": 0,
+    "pct_atardecer": 25,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     1,
+     0,
+     1,
+     0,
+     0,
+     0,
+     0,
+     0,
+     1,
+     0,
+     1
+    ],
+    "meses_top": [
+     12,
+     10,
+     4
+    ],
+    "galeria": [
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/EMBALSE_DE_SANTILLANA_%286495112213%29.jpg/960px-EMBALSE_DE_SANTILLANA_%286495112213%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:EMBALSE_DE_SANTILLANA_(6495112213).jpg",
+      "autor": "Héctor Esteban Menéndez",
+      "licencia": "CC BY 2.0",
+      "titulo": "EMBALSE DE SANTILLANA (6495112213)",
+      "fecha": "2011-12-11"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d4/MADRID_100402_UDCI_017.jpg/960px-MADRID_100402_UDCI_017.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:MADRID_100402_UDCI_017.jpg",
+      "autor": "Alfredo Urdaci / PromoMadrid",
+      "licencia": "CC BY-SA 2.0",
+      "titulo": "MADRID 100402 UDCI 017",
+      "fecha": "2010-04-02"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/05/Murallas_almenadas_%28532234023%29.jpg/960px-Murallas_almenadas_%28532234023%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Murallas_almenadas_(532234023).jpg",
+      "autor": "Pablo Sanchez from Sunnyvale, CA, USA",
+      "licencia": "CC BY 2.0",
+      "titulo": "Murallas almenadas (532234023)",
+      "fecha": "2006-02-26"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Embalse-santillana-22-04-11.jpg/960px-Embalse-santillana-22-04-11.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Embalse-santillana-22-04-11.jpg",
+      "autor": "FDV",
+      "licencia": "CC BY-SA 3.0",
+      "titulo": "Embalse-santillana-22-04-11",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f8/Manzanares_el_Real_castillo_y_Pedriza.JPG/960px-Manzanares_el_Real_castillo_y_Pedriza.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Manzanares_el_Real_castillo_y_Pedriza.JPG",
+      "autor": "Cruccone",
+      "licencia": "CC BY-SA 3.0 es",
+      "titulo": "Manzanares el Real castillo y Pedriza",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ac/CASTILLO_EN_MADRID_-_panoramio_%282%29.jpg/960px-CASTILLO_EN_MADRID_-_panoramio_%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:CASTILLO_EN_MADRID_-_panoramio_(2).jpg",
+      "autor": "Carlos Ramón Bonilla…",
+      "licencia": "CC BY-SA 3.0",
+      "titulo": "CASTILLO EN MADRID - panoramio (2)",
+      "fecha": null
+     }
+    ],
+    "nombre": "Embalse de Santillana (2)",
+    "tipo_osm": "embalse",
+    "dist_osm_m": null,
+    "direccion_vista": null,
+    "id": "embalse-de-santillana-2-59b5",
+    "contaminacion": {
+     "zona": "5b",
+     "sqm": 19.76,
+     "bortle": 7,
+     "descripcion": "periurbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
      -3.85962,
      40.84929
     ]
    },
    "properties": {
-    "spot_id": 32,
+    "spot_id": 42,
     "origen": "commons",
     "fotos": 5,
     "fotografos": 3,
@@ -796,7 +796,7 @@
      }
     ],
     "nombre": "Cascada del Purgatorio",
-    "tipo_osm": "attraction",
+    "tipo_osm": "paraje",
     "dist_osm_m": 56.0,
     "direccion_vista": null,
     "id": "cascada-del-purgatorio-6026",
@@ -813,29 +813,29 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -4.00192,
-     40.78804
+     -4.05636,
+     40.78304
     ]
    },
    "properties": {
-    "spot_id": 20,
+    "spot_id": 12,
     "origen": "commons",
-    "fotos": 5,
-    "fotografos": 4,
+    "fotos": 9,
+    "fotografos": 3,
     "fotos_calidad": 0,
-    "puntuacion": 5.01,
+    "puntuacion": 5.08,
     "mejor_momento": "día",
     "pct_amanecer": 0,
     "pct_atardecer": 0,
     "pct_noche": 0,
     "meses": [
-     2,
      0,
      0,
      0,
      0,
      0,
      0,
+     1,
      0,
      0,
      0,
@@ -843,60 +843,68 @@
      0
     ],
     "meses_top": [
-     1
+     7
     ],
     "galeria": [
      {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/007124_-_Puerto_de_Navacerrada_%288395979780%29.jpg/960px-007124_-_Puerto_de_Navacerrada_%288395979780%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:007124_-_Puerto_de_Navacerrada_(8395979780).jpg",
-      "autor": "M.Peinado from Alcalá de Henares, España",
-      "licencia": "CC BY 2.0",
-      "titulo": "007124 - Puerto de Navacerrada (8395979780)",
-      "fecha": "2013-01-05"
-     },
-     {
-      "url": "https://upload.wikimedia.org/wikipedia/commons/d/de/Parque_Nacional_Sierra_de_Guadarrama.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Parque_Nacional_Sierra_de_Guadarrama.jpg",
-      "autor": "Howar López",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/ES3110005_Madrid%2C_Cuenca_del_Guadarrama%2C_valle_de_la_Fuenfr%C3%ADa_desde_el_mirador_de_la_Reina.jpg/960px-ES3110005_Madrid%2C_Cuenca_del_Guadarrama%2C_valle_de_la_Fuenfr%C3%ADa_desde_el_mirador_de_la_Reina.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:ES3110005_Madrid,_Cuenca_del_Guadarrama,_valle_de_la_Fuenfr%C3%ADa_desde_el_mirador_de_la_Reina.jpg",
+      "autor": "Papm1949",
       "licencia": "CC BY-SA 4.0",
-      "titulo": "Parque Nacional Sierra de Guadarrama",
-      "fecha": null
+      "titulo": "ES3110005 Madrid, Cuenca del Guadarrama, valle de la Fuenfría desde el mirador de la Reina",
+      "fecha": "2015-07-01"
      },
      {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/Unnamed2_-_panoramio_%283454%29.jpg/960px-Unnamed2_-_panoramio_%283454%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Unnamed2_-_panoramio_(3454).jpg",
-      "autor": "Carlos Ramón Bonilla…",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1a/2010-04-24_vistas_al_valle_-_panoramio.jpg/960px-2010-04-24_vistas_al_valle_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:2010-04-24_vistas_al_valle_-_panoramio.jpg",
+      "autor": "Axel Schlaefer",
       "licencia": "CC BY-SA 3.0",
-      "titulo": "Unnamed2 - panoramio (3454)",
+      "titulo": "2010-04-24 vistas al valle - panoramio",
       "fecha": null
      },
      {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/Los_Cogorros_De_Navacerrada_%28177808309%29.jpeg/960px-Los_Cogorros_De_Navacerrada_%28177808309%29.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Los_Cogorros_De_Navacerrada_(177808309).jpeg",
-      "autor": "Tomás García",
-      "licencia": "CC BY-SA 3.0",
-      "titulo": "Los Cogorros De Navacerrada",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/69/Ducha_de_Los_Alemanes.jpg/960px-Ducha_de_Los_Alemanes.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Ducha_de_Los_Alemanes.jpg",
+      "autor": "Arturo Francisco Barbero",
+      "licencia": "CC BY-SA 4.0",
+      "titulo": "Ducha de Los Alemanes",
       "fecha": null
      },
      {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8b/007122_-_Puerto_de_Navacerrada_%288393936993%29.jpg/960px-007122_-_Puerto_de_Navacerrada_%288393936993%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:007122_-_Puerto_de_Navacerrada_(8393936993).jpg",
-      "autor": "M.Peinado from Alcalá de Henares, España",
-      "licencia": "CC BY 2.0",
-      "titulo": "007122 - Puerto de Navacerrada (8393936993)",
-      "fecha": "2013-01-05"
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f5/HACIA_LA_DUCHA_DE_LOS_ALEMANES_-_panoramio.jpg/960px-HACIA_LA_DUCHA_DE_LOS_ALEMANES_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:HACIA_LA_DUCHA_DE_LOS_ALEMANES_-_panoramio.jpg",
+      "autor": "Manuel Velazquez",
+      "licencia": "CC BY 3.0",
+      "titulo": "HACIA LA DUCHA DE LOS ALEMANES - panoramio",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/DUCHA_FRIA_DE_LOS_ALEMANES_-_panoramio.jpg/960px-DUCHA_FRIA_DE_LOS_ALEMANES_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:DUCHA_FRIA_DE_LOS_ALEMANES_-_panoramio.jpg",
+      "autor": "Manuel Velazquez",
+      "licencia": "CC BY 3.0",
+      "titulo": "DUCHA FRIA DE LOS ALEMANES - panoramio",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/SIETE_PICOS_DESDE_LA_CARRETERA_DE_LA_REPUBLICA_-_panoramio.jpg/960px-SIETE_PICOS_DESDE_LA_CARRETERA_DE_LA_REPUBLICA_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:SIETE_PICOS_DESDE_LA_CARRETERA_DE_LA_REPUBLICA_-_panoramio.jpg",
+      "autor": "Manuel Velazquez",
+      "licencia": "CC BY 3.0",
+      "titulo": "SIETE PICOS DESDE LA CARRETERA DE LA REPUBLICA - panoramio",
+      "fecha": null
      }
     ],
-    "nombre": "Mirador del Puerto",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 181.0,
-    "direccion_vista": "-5",
-    "id": "mirador-del-puerto-2b41",
+    "nombre": "Ducha de los alemanes",
+    "tipo_osm": "paraje",
+    "dist_osm_m": 42.0,
+    "direccion_vista": null,
+    "id": "ducha-de-los-alemanes-7b8d",
     "contaminacion": {
-     "zona": "5a",
-     "sqm": 20.25,
-     "bortle": 6,
-     "descripcion": "periurbano"
+     "zona": "4b",
+     "sqm": 20.7,
+     "bortle": 5,
+     "descripcion": "transición rural-periurbano"
     }
    }
   },
@@ -910,7 +918,7 @@
     ]
    },
    "properties": {
-    "spot_id": 43,
+    "spot_id": 59,
     "origen": "commons",
     "fotos": 4,
     "fotografos": 2,
@@ -972,11 +980,11 @@
       "fecha": "2014-07-12"
      }
     ],
-    "nombre": "Pico de la Miel - 01",
-    "tipo_osm": null,
+    "nombre": "Pico de la Miel",
+    "tipo_osm": "cumbre",
     "dist_osm_m": null,
     "direccion_vista": null,
-    "id": "pico-de-la-miel-01-9594",
+    "id": "pico-de-la-miel-9594",
     "contaminacion": {
      "zona": "5a",
      "sqm": 20.25,
@@ -990,12 +998,110 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
+     -3.94555,
+     40.85151
+    ]
+   },
+   "properties": {
+    "spot_id": 33,
+    "origen": "commons",
+    "fotos": 13,
+    "fotografos": 2,
+    "fotos_calidad": 0,
+    "puntuacion": 4.84,
+    "mejor_momento": "desconocido",
+    "pct_amanecer": 0,
+    "pct_atardecer": 0,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "meses_top": [],
+    "galeria": [
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d4/Laguna_de_los_Claveles%2C_Pe%C3%B1alara.JPG/960px-Laguna_de_los_Claveles%2C_Pe%C3%B1alara.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Laguna_de_los_Claveles,_Pe%C3%B1alara.JPG",
+      "autor": "Cruccone",
+      "licencia": "CC BY 3.0",
+      "titulo": "Laguna de los Claveles, Peñalara",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Pe%C3%B1alara_%28Madrid%29_-_panoramio_%283%29.jpg/960px-Pe%C3%B1alara_%28Madrid%29_-_panoramio_%283%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Pe%C3%B1alara_(Madrid)_-_panoramio_(3).jpg",
+      "autor": "Carlos Ramón Bonilla…",
+      "licencia": "CC BY-SA 3.0",
+      "titulo": "Peñalara (Madrid) - panoramio (3)",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Pe%C3%B1alara_%28Madrid%29_-_panoramio_%285%29.jpg/960px-Pe%C3%B1alara_%28Madrid%29_-_panoramio_%285%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Pe%C3%B1alara_(Madrid)_-_panoramio_(5).jpg",
+      "autor": "Carlos Ramón Bonilla…",
+      "licencia": "CC BY-SA 3.0",
+      "titulo": "Peñalara (Madrid) - panoramio (5)",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/Pe%C3%B1alara_%28Madrid%29_-_panoramio_%288%29.jpg/960px-Pe%C3%B1alara_%28Madrid%29_-_panoramio_%288%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Pe%C3%B1alara_(Madrid)_-_panoramio_(8).jpg",
+      "autor": "Carlos Ramón Bonilla…",
+      "licencia": "CC BY-SA 3.0",
+      "titulo": "Peñalara (Madrid) - panoramio (8)",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/Pe%C3%B1alara_%28Madrid%29_-_panoramio_%289%29.jpg/960px-Pe%C3%B1alara_%28Madrid%29_-_panoramio_%289%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Pe%C3%B1alara_(Madrid)_-_panoramio_(9).jpg",
+      "autor": "Carlos Ramón Bonilla…",
+      "licencia": "CC BY-SA 3.0",
+      "titulo": "Peñalara (Madrid) - panoramio (9)",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/Pe%C3%B1alara_%28Madrid%29_-_panoramio_%2810%29.jpg/960px-Pe%C3%B1alara_%28Madrid%29_-_panoramio_%2810%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Pe%C3%B1alara_(Madrid)_-_panoramio_(10).jpg",
+      "autor": "Carlos Ramón Bonilla…",
+      "licencia": "CC BY-SA 3.0",
+      "titulo": "Peñalara (Madrid) - panoramio (10)",
+      "fecha": null
+     }
+    ],
+    "nombre": "Laguna de los Claveles",
+    "tipo_osm": "lago",
+    "dist_osm_m": 70.0,
+    "direccion_vista": null,
+    "id": "laguna-de-los-claveles-7d5f",
+    "contaminacion": {
+     "zona": "4b",
+     "sqm": 20.7,
+     "bortle": 5,
+     "descripcion": "transición rural-periurbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
      -3.97931,
      40.78496
     ]
    },
    "properties": {
-    "spot_id": 16,
+    "spot_id": 22,
     "origen": "commons",
     "fotos": 5,
     "fotografos": 3,
@@ -1085,7 +1191,7 @@
     ]
    },
    "properties": {
-    "spot_id": 12,
+    "spot_id": 14,
     "origen": "commons",
     "fotos": 9,
     "fotografos": 2,
@@ -1162,111 +1268,11 @@
       "fecha": "2015-05-02"
      }
     ],
-    "nombre": "Puente de Navalacarreta (2 de mayo de 2015, Boca del Asno, Segovia) 09",
-    "tipo_osm": null,
+    "nombre": "Puentes sobre el río Eresma",
+    "tipo_osm": "río",
     "dist_osm_m": null,
     "direccion_vista": null,
-    "id": "puente-de-navalacarreta-2-de-mayo-de-2015-boca-d-e1bb",
-    "contaminacion": {
-     "zona": "4b",
-     "sqm": 20.7,
-     "bortle": 5,
-     "descripcion": "transición rural-periurbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -3.93167,
-     40.80056
-    ]
-   },
-   "properties": {
-    "spot_id": 25,
-    "origen": "commons",
-    "fotos": 8,
-    "fotografos": 2,
-    "fotos_calidad": 0,
-    "puntuacion": 4.39,
-    "mejor_momento": "día",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     8,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [
-     7
-    ],
-    "galeria": [
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/Culebra_lisa_Pedriza_2.JPG/960px-Culebra_lisa_Pedriza_2.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Culebra_lisa_Pedriza_2.JPG",
-      "autor": "Nachosan",
-      "licencia": "CC BY-SA 3.0",
-      "titulo": "Culebra lisa Pedriza 2",
-      "fecha": "2012-07-08"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/Culebra_lisa_Pedriza_%28cropped%29.JPG/960px-Culebra_lisa_Pedriza_%28cropped%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Culebra_lisa_Pedriza_(cropped).JPG",
-      "autor": "Nachosan",
-      "licencia": "CC BY-SA 3.0",
-      "titulo": "Culebra lisa Pedriza (cropped)",
-      "fecha": "2012-07-08"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Culebra_lisa_Pedriza.JPG/960px-Culebra_lisa_Pedriza.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Culebra_lisa_Pedriza.JPG",
-      "autor": "Nachosan",
-      "licencia": "CC BY-SA 3.0",
-      "titulo": "Culebra lisa Pedriza",
-      "fecha": "2012-07-08"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1a/Cabeza_de_Hierro_Mayor_y_cabra.JPG/960px-Cabeza_de_Hierro_Mayor_y_cabra.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Cabeza_de_Hierro_Mayor_y_cabra.JPG",
-      "autor": "Nachosan",
-      "licencia": "CC BY-SA 3.0",
-      "titulo": "Cabeza de Hierro Mayor y cabra",
-      "fecha": "2012-07-08"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/52/Cabras_en_la_Cuerda_Larga.JPG/960px-Cabras_en_la_Cuerda_Larga.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Cabras_en_la_Cuerda_Larga.JPG",
-      "autor": "Nachosan",
-      "licencia": "CC BY-SA 3.0",
-      "titulo": "Cabras en la Cuerda Larga",
-      "fecha": "2012-07-08"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/Cabras_en_Cabeza_de_Hierro_Menor3.JPG/960px-Cabras_en_Cabeza_de_Hierro_Menor3.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Cabras_en_Cabeza_de_Hierro_Menor3.JPG",
-      "autor": "Nachosan",
-      "licencia": "CC BY-SA 3.0",
-      "titulo": "Cabras en Cabeza de Hierro Menor3",
-      "fecha": "2012-07-08"
-     }
-    ],
-    "nombre": "Cabeza de Hierro Mayor",
-    "tipo_osm": "cumbre",
-    "dist_osm_m": 156.0,
-    "direccion_vista": null,
-    "id": "cabeza-de-hierro-mayor-5d4d",
+    "id": "puentes-sobre-el-rio-eresma-e1bb",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -1285,7 +1291,7 @@
     ]
    },
    "properties": {
-    "spot_id": 24,
+    "spot_id": 31,
     "origen": "commons",
     "fotos": 4,
     "fotografos": 3,
@@ -1347,11 +1353,11 @@
       "fecha": "2014-03-07"
      }
     ],
-    "nombre": "La Pedriza y el Manzanares 01",
+    "nombre": "Río Manzanares en La Pedriza",
     "tipo_osm": "mirador",
     "dist_osm_m": 562.0,
     "direccion_vista": null,
-    "id": "la-pedriza-y-el-manzanares-01-f999",
+    "id": "rio-manzanares-en-la-pedriza-f999",
     "contaminacion": {
      "zona": "5a",
      "sqm": 20.25,
@@ -1365,12 +1371,112 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
+     -4.22319,
+     40.66401
+    ]
+   },
+   "properties": {
+    "spot_id": 3,
+    "origen": "commons",
+    "fotos": 7,
+    "fotografos": 2,
+    "fotos_calidad": 0,
+    "puntuacion": 4.28,
+    "mejor_momento": "día",
+    "pct_amanecer": 0,
+    "pct_atardecer": 0,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     5,
+     0,
+     0,
+     0,
+     0
+    ],
+    "meses_top": [
+     8
+    ],
+    "galeria": [
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Peguerinos_%2815056682383%29.jpg/960px-Peguerinos_%2815056682383%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Peguerinos_(15056682383).jpg",
+      "autor": "juandiazhidalgo from MADRID, España",
+      "licencia": "CC BY-SA 2.0",
+      "titulo": "Peguerinos (15056682383)",
+      "fecha": "2014-08-03"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/2011-06-23_Panorama_Embalse_Ca%C3%B1ada_Mojada_-_panoramio.jpg/960px-2011-06-23_Panorama_Embalse_Ca%C3%B1ada_Mojada_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:2011-06-23_Panorama_Embalse_Ca%C3%B1ada_Mojada_-_panoramio.jpg",
+      "autor": "Axel Schlaefer",
+      "licencia": "CC BY-SA 3.0",
+      "titulo": "2011-06-23 Panorama Embalse Cañada Mojada - panoramio",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/82/Embalse_peguerin_20140803_150650_%2815490840047%29.jpg/960px-Embalse_peguerin_20140803_150650_%2815490840047%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Embalse_peguerin_20140803_150650_(15490840047).jpg",
+      "autor": "juandiazhidalgo from MADRID, España",
+      "licencia": "CC BY-SA 2.0",
+      "titulo": "Embalse peguerin 20140803 150650 (15490840047)",
+      "fecha": "2014-08-03"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Embalse_Peguerinos_%2815490840237%29.jpg/960px-Embalse_Peguerinos_%2815490840237%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Embalse_Peguerinos_(15490840237).jpg",
+      "autor": "juandiazhidalgo from MADRID, España",
+      "licencia": "CC BY-SA 2.0",
+      "titulo": "Embalse Peguerinos (15490840237)",
+      "fecha": "2014-08-03"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b2/Peguerinos_%2815674119851%29.jpg/960px-Peguerinos_%2815674119851%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Peguerinos_(15674119851).jpg",
+      "autor": "juandiazhidalgo from MADRID, España",
+      "licencia": "CC BY-SA 2.0",
+      "titulo": "Peguerinos (15674119851)",
+      "fecha": "2014-08-03"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/Peguerinos_%2815056682473%29.jpg/960px-Peguerinos_%2815056682473%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Peguerinos_(15056682473).jpg",
+      "autor": "juandiazhidalgo from MADRID, España",
+      "licencia": "CC BY-SA 2.0",
+      "titulo": "Peguerinos (15056682473)",
+      "fecha": "2014-08-03"
+     }
+    ],
+    "nombre": "Embalse de Cañada Mojada",
+    "tipo_osm": "embalse",
+    "dist_osm_m": null,
+    "direccion_vista": null,
+    "id": "embalse-de-canada-mojada-654a",
+    "contaminacion": {
+     "zona": "4b",
+     "sqm": 20.7,
+     "bortle": 5,
+     "descripcion": "transición rural-periurbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
      -3.88487,
      40.8513
     ]
    },
    "properties": {
-    "spot_id": 34,
+    "spot_id": 45,
     "origen": "commons",
     "fotos": 7,
     "fotografos": 2,
@@ -1448,11 +1554,11 @@
       "fecha": "2010-11-26"
      }
     ],
-    "nombre": "Presa Del Pradillo (37671219736)",
-    "tipo_osm": null,
+    "nombre": "Embalse de Pradillo",
+    "tipo_osm": "embalse",
     "dist_osm_m": null,
     "direccion_vista": null,
-    "id": "presa-del-pradillo-37671219736-1e80",
+    "id": "embalse-de-pradillo-1e80",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -1466,18 +1572,18 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -4.22319,
-     40.66401
+     -4.02451,
+     40.893
     ]
    },
    "properties": {
-    "spot_id": 2,
+    "spot_id": 30,
     "origen": "commons",
     "fotos": 7,
     "fotografos": 2,
     "fotos_calidad": 0,
     "puntuacion": 4.28,
-    "mejor_momento": "día",
+    "mejor_momento": "desconocido",
     "pct_amanecer": 0,
     "pct_atardecer": 0,
     "pct_noche": 0,
@@ -1489,75 +1595,147 @@
      0,
      0,
      0,
-     5,
+     0,
      0,
      0,
      0,
      0
     ],
-    "meses_top": [
-     8
-    ],
+    "meses_top": [],
     "galeria": [
      {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Peguerinos_%2815056682383%29.jpg/960px-Peguerinos_%2815056682383%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Peguerinos_(15056682383).jpg",
-      "autor": "juandiazhidalgo from MADRID, España",
-      "licencia": "CC BY-SA 2.0",
-      "titulo": "Peguerinos (15056682383)",
-      "fecha": "2014-08-03"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/2011-06-23_Panorama_Embalse_Ca%C3%B1ada_Mojada_-_panoramio.jpg/960px-2011-06-23_Panorama_Embalse_Ca%C3%B1ada_Mojada_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:2011-06-23_Panorama_Embalse_Ca%C3%B1ada_Mojada_-_panoramio.jpg",
-      "autor": "Axel Schlaefer",
-      "licencia": "CC BY-SA 3.0",
-      "titulo": "2011-06-23 Panorama Embalse Cañada Mojada - panoramio",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/Camino_de_Pesquer%C3%ADas_de_Carlos_III_Segovia_-_panoramio_%284%29.jpg/960px-Camino_de_Pesquer%C3%ADas_de_Carlos_III_Segovia_-_panoramio_%284%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Camino_de_Pesquer%C3%ADas_de_Carlos_III_Segovia_-_panoramio_(4).jpg",
+      "autor": "Allpe",
+      "licencia": "CC BY 3.0",
+      "titulo": "Camino de Pesquerías de Carlos III Segovia - panoramio (4)",
       "fecha": null
      },
      {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/82/Embalse_peguerin_20140803_150650_%2815490840047%29.jpg/960px-Embalse_peguerin_20140803_150650_%2815490840047%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Embalse_peguerin_20140803_150650_(15490840047).jpg",
-      "autor": "juandiazhidalgo from MADRID, España",
-      "licencia": "CC BY-SA 2.0",
-      "titulo": "Embalse peguerin 20140803 150650 (15490840047)",
-      "fecha": "2014-08-03"
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/Puente_de_las_Pasaderas.jpg/960px-Puente_de_las_Pasaderas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Puente_de_las_Pasaderas.jpg",
+      "autor": "Arturo Francisco Barbero",
+      "licencia": "CC BY-SA 4.0",
+      "titulo": "Puente de las Pasaderas",
+      "fecha": null
      },
      {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Embalse_Peguerinos_%2815490840237%29.jpg/960px-Embalse_Peguerinos_%2815490840237%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Embalse_Peguerinos_(15490840237).jpg",
-      "autor": "juandiazhidalgo from MADRID, España",
-      "licencia": "CC BY-SA 2.0",
-      "titulo": "Embalse Peguerinos (15490840237)",
-      "fecha": "2014-08-03"
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/2011-09-25_Instalaciones_hidr%C3%A1ulicas_-_panoramio.jpg/960px-2011-09-25_Instalaciones_hidr%C3%A1ulicas_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:2011-09-25_Instalaciones_hidr%C3%A1ulicas_-_panoramio.jpg",
+      "autor": "Axel Schlaefer",
+      "licencia": "CC BY-SA 3.0",
+      "titulo": "2011-09-25 Instalaciones hidráulicas - panoramio",
+      "fecha": null
      },
      {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b2/Peguerinos_%2815674119851%29.jpg/960px-Peguerinos_%2815674119851%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Peguerinos_(15674119851).jpg",
-      "autor": "juandiazhidalgo from MADRID, España",
-      "licencia": "CC BY-SA 2.0",
-      "titulo": "Peguerinos (15674119851)",
-      "fecha": "2014-08-03"
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Camino_de_Pesquer%C3%ADas_de_Carlos_III_Segovia_-_panoramio_%285%29.jpg/960px-Camino_de_Pesquer%C3%ADas_de_Carlos_III_Segovia_-_panoramio_%285%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Camino_de_Pesquer%C3%ADas_de_Carlos_III_Segovia_-_panoramio_(5).jpg",
+      "autor": "Allpe",
+      "licencia": "CC BY 3.0",
+      "titulo": "Camino de Pesquerías de Carlos III Segovia - panoramio (5)",
+      "fecha": null
      },
      {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/Peguerinos_%2815056682473%29.jpg/960px-Peguerinos_%2815056682473%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Peguerinos_(15056682473).jpg",
-      "autor": "juandiazhidalgo from MADRID, España",
-      "licencia": "CC BY-SA 2.0",
-      "titulo": "Peguerinos (15056682473)",
-      "fecha": "2014-08-03"
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/Camino_de_Pesquer%C3%ADas_de_Carlos_III_Segovia_-_panoramio.jpg/960px-Camino_de_Pesquer%C3%ADas_de_Carlos_III_Segovia_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Camino_de_Pesquer%C3%ADas_de_Carlos_III_Segovia_-_panoramio.jpg",
+      "autor": "Allpe",
+      "licencia": "CC BY 3.0",
+      "titulo": "Camino de Pesquerías de Carlos III Segovia - panoramio",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/01/Camino_de_Pesquer%C3%ADas_de_Carlos_III_Segovia_-_panoramio_%282%29.jpg/960px-Camino_de_Pesquer%C3%ADas_de_Carlos_III_Segovia_-_panoramio_%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Camino_de_Pesquer%C3%ADas_de_Carlos_III_Segovia_-_panoramio_(2).jpg",
+      "autor": "Allpe",
+      "licencia": "CC BY 3.0",
+      "titulo": "Camino de Pesquerías de Carlos III Segovia - panoramio (2)",
+      "fecha": null
      }
     ],
-    "nombre": "Peguerinos (15056682383)",
+    "nombre": "Valsaín",
     "tipo_osm": null,
     "dist_osm_m": null,
     "direccion_vista": null,
-    "id": "peguerinos-15056682383-654a",
+    "id": "valsain-b521",
     "contaminacion": {
-     "zona": "4b",
-     "sqm": 20.7,
-     "bortle": 5,
-     "descripcion": "transición rural-periurbano"
+     "zona": "5a",
+     "sqm": 20.25,
+     "bortle": 6,
+     "descripcion": "periurbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -4.00192,
+     40.78804
+    ]
+   },
+   "properties": {
+    "spot_id": 25,
+    "origen": "commons",
+    "fotos": 3,
+    "fotografos": 3,
+    "fotos_calidad": 0,
+    "puntuacion": 4.16,
+    "mejor_momento": "desconocido",
+    "pct_amanecer": 0,
+    "pct_atardecer": 0,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "meses_top": [],
+    "galeria": [
+     {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/d/de/Parque_Nacional_Sierra_de_Guadarrama.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Parque_Nacional_Sierra_de_Guadarrama.jpg",
+      "autor": "Howar López",
+      "licencia": "CC BY-SA 4.0",
+      "titulo": "Parque Nacional Sierra de Guadarrama",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/Unnamed2_-_panoramio_%283454%29.jpg/960px-Unnamed2_-_panoramio_%283454%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Unnamed2_-_panoramio_(3454).jpg",
+      "autor": "Carlos Ramón Bonilla…",
+      "licencia": "CC BY-SA 3.0",
+      "titulo": "Unnamed2 - panoramio (3454)",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/Los_Cogorros_De_Navacerrada_%28177808309%29.jpeg/960px-Los_Cogorros_De_Navacerrada_%28177808309%29.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Los_Cogorros_De_Navacerrada_(177808309).jpeg",
+      "autor": "Tomás García",
+      "licencia": "CC BY-SA 3.0",
+      "titulo": "Los Cogorros De Navacerrada",
+      "fecha": null
+     }
+    ],
+    "nombre": "Mirador del Puerto",
+    "tipo_osm": "mirador",
+    "dist_osm_m": 181.0,
+    "direccion_vista": "-5",
+    "id": "mirador-del-puerto-2b41",
+    "contaminacion": {
+     "zona": "5a",
+     "sqm": 20.25,
+     "bortle": 6,
+     "descripcion": "periurbano"
     }
    }
   },
@@ -1571,7 +1749,7 @@
     ]
    },
    "properties": {
-    "spot_id": 39,
+    "spot_id": 52,
     "origen": "commons",
     "fotos": 6,
     "fotografos": 2,
@@ -1648,206 +1826,16 @@
       "fecha": null
      }
     ],
-    "nombre": "LaSierra9",
+    "nombre": "La Sierra",
     "tipo_osm": null,
     "dist_osm_m": null,
     "direccion_vista": null,
-    "id": "lasierra9-35f7",
+    "id": "la-sierra-35f7",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
      "bortle": 5,
      "descripcion": "transición rural-periurbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -4.05639,
-     40.78293
-    ]
-   },
-   "properties": {
-    "spot_id": 11,
-    "origen": "commons",
-    "fotos": 6,
-    "fotografos": 2,
-    "fotos_calidad": 0,
-    "puntuacion": 4.14,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f5/HACIA_LA_DUCHA_DE_LOS_ALEMANES_-_panoramio.jpg/960px-HACIA_LA_DUCHA_DE_LOS_ALEMANES_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:HACIA_LA_DUCHA_DE_LOS_ALEMANES_-_panoramio.jpg",
-      "autor": "Manuel Velazquez",
-      "licencia": "CC BY 3.0",
-      "titulo": "HACIA LA DUCHA DE LOS ALEMANES - panoramio",
-      "fecha": null
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/69/Ducha_de_Los_Alemanes.jpg/960px-Ducha_de_Los_Alemanes.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Ducha_de_Los_Alemanes.jpg",
-      "autor": "Arturo Francisco Barbero",
-      "licencia": "CC BY-SA 4.0",
-      "titulo": "Ducha de Los Alemanes",
-      "fecha": null
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/DUCHA_FRIA_DE_LOS_ALEMANES_-_panoramio.jpg/960px-DUCHA_FRIA_DE_LOS_ALEMANES_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:DUCHA_FRIA_DE_LOS_ALEMANES_-_panoramio.jpg",
-      "autor": "Manuel Velazquez",
-      "licencia": "CC BY 3.0",
-      "titulo": "DUCHA FRIA DE LOS ALEMANES - panoramio",
-      "fecha": null
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Cascada_de_la_Ducha_de_los_Alemanes.jpg/960px-Cascada_de_la_Ducha_de_los_Alemanes.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Cascada_de_la_Ducha_de_los_Alemanes.jpg",
-      "autor": "Arturo Francisco Barbero",
-      "licencia": "CC BY-SA 4.0",
-      "titulo": "Cascada de la Ducha de los Alemanes",
-      "fecha": null
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/Cascada_Ducha_de_los_Alemanes.jpg/960px-Cascada_Ducha_de_los_Alemanes.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Cascada_Ducha_de_los_Alemanes.jpg",
-      "autor": "Arturo Francisco Barbero",
-      "licencia": "CC BY-SA 4.0",
-      "titulo": "Cascada Ducha de los Alemanes",
-      "fecha": null
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Chorro_del_%C3%81rbol_Viejo.jpg/960px-Chorro_del_%C3%81rbol_Viejo.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Chorro_del_%C3%81rbol_Viejo.jpg",
-      "autor": "Arturo Francisco Barbero",
-      "licencia": "CC BY-SA 4.0",
-      "titulo": "Chorro del Árbol Viejo",
-      "fecha": null
-     }
-    ],
-    "nombre": "Ducha de los alemanes",
-    "tipo_osm": "attraction",
-    "dist_osm_m": 30.0,
-    "direccion_vista": null,
-    "id": "ducha-de-los-alemanes-7a4a",
-    "contaminacion": {
-     "zona": "4b",
-     "sqm": 20.7,
-     "bortle": 5,
-     "descripcion": "transición rural-periurbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -4.13472,
-     40.86824
-    ]
-   },
-   "properties": {
-    "spot_id": 8,
-    "origen": "commons",
-    "fotos": 5,
-    "fotografos": 2,
-    "fotos_calidad": 0,
-    "puntuacion": 3.99,
-    "mejor_momento": "atardecer",
-    "pct_amanecer": 0,
-    "pct_atardecer": 100,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     1,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [
-     9
-    ],
-    "galeria": [
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Celebraci%C3%B3n_en_Navas_de_Riofr%C3%ADo.jpg/960px-Celebraci%C3%B3n_en_Navas_de_Riofr%C3%ADo.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Celebraci%C3%B3n_en_Navas_de_Riofr%C3%ADo.jpg",
-      "autor": "Arturo Francisco Barbero",
-      "licencia": "CC BY-SA 4.0",
-      "titulo": "Celebración en Navas de Riofrío",
-      "fecha": "2022-09-02"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/Casa_consistorial_de_Navas_de_Riofr%C3%ADo.jpg/960px-Casa_consistorial_de_Navas_de_Riofr%C3%ADo.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Casa_consistorial_de_Navas_de_Riofr%C3%ADo.jpg",
-      "autor": "Arturo Francisco Barbero",
-      "licencia": "CC BY-SA 4.0",
-      "titulo": "Casa consistorial de Navas de Riofrío",
-      "fecha": null
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Iglesia_de_la_Inmaculada_Concepci%C3%B3n%2C_Navas_de_Riofr%C3%ADo%2C_Segovia.jpg/960px-Iglesia_de_la_Inmaculada_Concepci%C3%B3n%2C_Navas_de_Riofr%C3%ADo%2C_Segovia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Iglesia_de_la_Inmaculada_Concepci%C3%B3n,_Navas_de_Riofr%C3%ADo,_Segovia.jpg",
-      "autor": "Arturo Francisco Barbero",
-      "licencia": "CC BY-SA 4.0",
-      "titulo": "Iglesia de la Inmaculada Concepción, Navas de Riofrío, Segovia",
-      "fecha": null
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/Poza_de_La_Tomasa.jpg/960px-Poza_de_La_Tomasa.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Poza_de_La_Tomasa.jpg",
-      "autor": "Arturo Francisco Barbero",
-      "licencia": "CC BY-SA 4.0",
-      "titulo": "Poza de La Tomasa",
-      "fecha": null
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b2/Lavadero_de_Las_Navillas.jpg/960px-Lavadero_de_Las_Navillas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Lavadero_de_Las_Navillas.jpg",
-      "autor": "Arturo Francisco Barbero",
-      "licencia": "CC BY-SA 4.0",
-      "titulo": "Lavadero de Las Navillas",
-      "fecha": null
-     }
-    ],
-    "nombre": "Celebración en Navas de Riofrío",
-    "tipo_osm": null,
-    "dist_osm_m": null,
-    "direccion_vista": null,
-    "id": "celebracion-en-navas-de-riofrio-fe61",
-    "contaminacion": {
-     "zona": "5a",
-     "sqm": 20.25,
-     "bortle": 6,
-     "descripcion": "periurbano"
     }
    }
   },
@@ -1861,7 +1849,7 @@
     ]
    },
    "properties": {
-    "spot_id": 29,
+    "spot_id": 38,
     "origen": "commons",
     "fotos": 4,
     "fotografos": 2,
@@ -1922,11 +1910,11 @@
       "fecha": "2022-08-07"
      }
     ],
-    "nombre": "Embalse del río Pirón2",
+    "nombre": "Embalse del Pirón",
     "tipo_osm": "mirador",
     "dist_osm_m": 210.0,
     "direccion_vista": null,
-    "id": "embalse-del-rio-piron2-4740",
+    "id": "embalse-del-piron-4740",
     "contaminacion": {
      "zona": "4a",
      "sqm": 21.08,
@@ -1940,12 +1928,619 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
+     -4.00252,
+     40.71518
+    ]
+   },
+   "properties": {
+    "spot_id": 20,
+    "origen": "commons",
+    "fotos": 3,
+    "fotografos": 2,
+    "fotos_calidad": 0,
+    "puntuacion": 3.58,
+    "mejor_momento": "atardecer",
+    "pct_amanecer": 0,
+    "pct_atardecer": 100,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     2,
+     0,
+     0,
+     0,
+     0
+    ],
+    "meses_top": [
+     8
+    ],
+    "galeria": [
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/92/Navacerrada_dam_%2832738795461%29.jpg/960px-Navacerrada_dam_%2832738795461%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Navacerrada_dam_(32738795461).jpg",
+      "autor": "Jorge Donaire",
+      "licencia": "CC BY 2.0",
+      "titulo": "Navacerrada dam (32738795461)",
+      "fecha": "2016-08-19"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/Navacerrada_Viento_Frio_los_arboles_se_doblegan_-_panoramio.jpg/960px-Navacerrada_Viento_Frio_los_arboles_se_doblegan_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Navacerrada_Viento_Frio_los_arboles_se_doblegan_-_panoramio.jpg",
+      "autor": "victor aguilar moren…",
+      "licencia": "CC BY-SA 3.0",
+      "titulo": "Navacerrada Viento Frio los arboles se doblegan - panoramio",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/Navacerrada_Dam_2_%2832019436144%29.jpg/960px-Navacerrada_Dam_2_%2832019436144%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Navacerrada_Dam_2_(32019436144).jpg",
+      "autor": "Jorge Donaire",
+      "licencia": "CC BY 2.0",
+      "titulo": "Navacerrada Dam 2 (32019436144)",
+      "fecha": "2016-08-19"
+     }
+    ],
+    "nombre": "Embalse de Navacerrada",
+    "tipo_osm": "cumbre",
+    "dist_osm_m": 550.0,
+    "direccion_vista": null,
+    "id": "embalse-de-navacerrada-d0fa",
+    "contaminacion": {
+     "zona": "5b",
+     "sqm": 19.76,
+     "bortle": 7,
+     "descripcion": "periurbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -4.02733,
+     40.903
+    ]
+   },
+   "properties": {
+    "spot_id": 15,
+    "origen": "commons",
+    "fotos": 3,
+    "fotografos": 2,
+    "fotos_calidad": 0,
+    "puntuacion": 3.58,
+    "mejor_momento": "amanecer",
+    "pct_amanecer": 100,
+    "pct_atardecer": 0,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     1,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "meses_top": [
+     6
+    ],
+    "galeria": [
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b6/Embalse_del_Pont%C3%B3n_%289167948206%29.jpg/960px-Embalse_del_Pont%C3%B3n_%289167948206%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Embalse_del_Pont%C3%B3n_(9167948206).jpg",
+      "autor": "Martin Alvarez Espinar from Xixón, Asturias, Spain",
+      "licencia": "CC BY 2.0",
+      "titulo": "Embalse del Pontón (9167948206)",
+      "fecha": "2013-06-18"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Camino_de_Pesquer%C3%ADas_de_Carlos_III_Segovia_-_panoramio_%281%29.jpg/960px-Camino_de_Pesquer%C3%ADas_de_Carlos_III_Segovia_-_panoramio_%281%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Camino_de_Pesquer%C3%ADas_de_Carlos_III_Segovia_-_panoramio_(1).jpg",
+      "autor": "Allpe",
+      "licencia": "CC BY 3.0",
+      "titulo": "Camino de Pesquerías de Carlos III Segovia - panoramio (1)",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bc/Charca_del_embalse_del_r%C3%ADo_Eresma_-_panoramio.jpg/960px-Charca_del_embalse_del_r%C3%ADo_Eresma_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Charca_del_embalse_del_r%C3%ADo_Eresma_-_panoramio.jpg",
+      "autor": "fjest",
+      "licencia": "CC BY-SA 3.0",
+      "titulo": "Charca del embalse del río Eresma - panoramio",
+      "fecha": null
+     }
+    ],
+    "nombre": "Embalse de Pontón Alto",
+    "tipo_osm": "embalse",
+    "dist_osm_m": null,
+    "direccion_vista": null,
+    "id": "embalse-de-ponton-alto-3534",
+    "contaminacion": {
+     "zona": "5a",
+     "sqm": 20.25,
+     "bortle": 6,
+     "descripcion": "periurbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -4.10523,
+     40.95033
+    ]
+   },
+   "properties": {
+    "spot_id": 11,
+    "origen": "commons",
+    "fotos": 3,
+    "fotografos": 2,
+    "fotos_calidad": 0,
+    "puntuacion": 3.58,
+    "mejor_momento": "desconocido",
+    "pct_amanecer": 0,
+    "pct_atardecer": 0,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "meses_top": [],
+    "galeria": [
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/Presa_-_panoramio_%286%29.jpg/960px-Presa_-_panoramio_%286%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Presa_-_panoramio_(6).jpg",
+      "autor": "Javier Casado Tirado",
+      "licencia": "CC BY-SA 3.0",
+      "titulo": "Presa - panoramio (6)",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/41/Sociedad_Cooperativa_Electra_Segoviana.jpg/960px-Sociedad_Cooperativa_Electra_Segoviana.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Sociedad_Cooperativa_Electra_Segoviana.jpg",
+      "autor": "Arturo Francisco Barbero",
+      "licencia": "CC BY-SA 4.0",
+      "titulo": "Sociedad Cooperativa Electra Segoviana",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/F%C3%A1brica_de_luz_en_el_rio_Eresma_-_panoramio.jpg/960px-F%C3%A1brica_de_luz_en_el_rio_Eresma_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:F%C3%A1brica_de_luz_en_el_rio_Eresma_-_panoramio.jpg",
+      "autor": "Javier Casado Tirado",
+      "licencia": "CC BY-SA 3.0",
+      "titulo": "Fábrica de luz en el rio Eresma - panoramio",
+      "fecha": null
+     }
+    ],
+    "nombre": "Río Eresma",
+    "tipo_osm": "mirador",
+    "dist_osm_m": 513.0,
+    "direccion_vista": "-90",
+    "id": "rio-eresma-b361",
+    "contaminacion": {
+     "zona": "6a",
+     "sqm": 19.22,
+     "bortle": 7,
+     "descripcion": "urbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -4.14021,
+     40.71015
+    ]
+   },
+   "properties": {
+    "spot_id": 7,
+    "origen": "commons",
+    "fotos": 3,
+    "fotografos": 2,
+    "fotos_calidad": 0,
+    "puntuacion": 3.58,
+    "mejor_momento": "día",
+    "pct_amanecer": 0,
+    "pct_atardecer": 0,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     0,
+     2,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "meses_top": [
+     3
+    ],
+    "galeria": [
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/Monumento_del_Alto_del_Le%C3%B3n_%288636897561%29.jpg/960px-Monumento_del_Alto_del_Le%C3%B3n_%288636897561%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Monumento_del_Alto_del_Le%C3%B3n_(8636897561).jpg",
+      "autor": "Contando Estrelas from Vigo, España / Spain",
+      "licencia": "CC BY-SA 2.0",
+      "titulo": "Monumento del Alto del León (8636897561)",
+      "fecha": "2013-03-24"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/-_%C2%BFLe%C3%B3n%5E_%5E_Mentira_-_Pues_ya_me_dir%C3%A1s_qu%C3%A9_es..._%5E_Falta_de_barniz_-_panoramio.jpg/960px--_%C2%BFLe%C3%B3n%5E_%5E_Mentira_-_Pues_ya_me_dir%C3%A1s_qu%C3%A9_es..._%5E_Falta_de_barniz_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:-_%C2%BFLe%C3%B3n%5E_%5E_Mentira_-_Pues_ya_me_dir%C3%A1s_qu%C3%A9_es..._%5E_Falta_de_barniz_-_panoramio.jpg",
+      "autor": "DnTrotaMundos ☮",
+      "licencia": "CC BY 3.0",
+      "titulo": "- ¿León^ ^ Mentira - Pues ya me dirás qué es... ^ Falta de barniz - panoramio",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Monumento_del_Alto_del_Le%C3%B3n_%288638000302%29.jpg/960px-Monumento_del_Alto_del_Le%C3%B3n_%288638000302%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Monumento_del_Alto_del_Le%C3%B3n_(8638000302).jpg",
+      "autor": "Contando Estrelas from Vigo, España / Spain",
+      "licencia": "CC BY-SA 2.0",
+      "titulo": "Monumento del Alto del León (8638000302)",
+      "fecha": "2013-03-24"
+     }
+    ],
+    "nombre": "Stone lion in Guadarrama mountain pass",
+    "tipo_osm": "cumbre",
+    "dist_osm_m": 500.0,
+    "direccion_vista": null,
+    "id": "stone-lion-in-guadarrama-mountain-pass-852b",
+    "contaminacion": {
+     "zona": "5a",
+     "sqm": 20.25,
+     "bortle": 6,
+     "descripcion": "periurbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -3.82415,
+     40.68717
+    ]
+   },
+   "properties": {
+    "spot_id": 40,
+    "origen": "commons",
+    "fotos": 3,
+    "fotografos": 2,
+    "fotos_calidad": 0,
+    "puntuacion": 3.58,
+    "mejor_momento": "atardecer",
+    "pct_amanecer": 0,
+    "pct_atardecer": 100,
+    "pct_noche": 0,
+    "meses": [
+     1,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "meses_top": [
+     1
+    ],
+    "galeria": [
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/Grist_Mill_on_the_Manzanares_River_%286674759303%29.jpg/960px-Grist_Mill_on_the_Manzanares_River_%286674759303%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Grist_Mill_on_the_Manzanares_River_(6674759303).jpg",
+      "autor": "BY-YOUR-⌘",
+      "licencia": "CC BY 2.0",
+      "titulo": "Grist Mill on the Manzanares River (6674759303)",
+      "fecha": "2012-01-07"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cb/Parada_para_comer_en_el_Manzanares_%28ruta_Daganzo-Narros%29_-_panoramio.jpg/960px-Parada_para_comer_en_el_Manzanares_%28ruta_Daganzo-Narros%29_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Parada_para_comer_en_el_Manzanares_(ruta_Daganzo-Narros)_-_panoramio.jpg",
+      "autor": "r_santos",
+      "licencia": "CC BY-SA 3.0",
+      "titulo": "Parada para comer en el Manzanares (ruta Daganzo-Narros) - panoramio",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7e/Rio_Manzanares_-_panoramio.jpg/960px-Rio_Manzanares_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Rio_Manzanares_-_panoramio.jpg",
+      "autor": "Ignacio Pérez Anguio",
+      "licencia": "CC BY-SA 3.0",
+      "titulo": "Rio Manzanares - panoramio",
+      "fecha": null
+     }
+    ],
+    "nombre": "Río Manzanares en Colmenar Viejo",
+    "tipo_osm": "río",
+    "dist_osm_m": null,
+    "direccion_vista": null,
+    "id": "rio-manzanares-en-colmenar-viejo-143e",
+    "contaminacion": {
+     "zona": "5b",
+     "sqm": 19.76,
+     "bortle": 7,
+     "descripcion": "periurbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -3.95619,
+     40.84974
+    ]
+   },
+   "properties": {
+    "spot_id": 34,
+    "origen": "commons",
+    "fotos": 3,
+    "fotografos": 2,
+    "fotos_calidad": 0,
+    "puntuacion": 3.58,
+    "mejor_momento": "día",
+    "pct_amanecer": 0,
+    "pct_atardecer": 0,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     0,
+     1,
+     1,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "meses_top": [
+     3,
+     4
+    ],
+    "galeria": [
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e1/Nube_lenticular_sobre_la_cumbre_de_Pe%C3%B1alara._Espa%C3%B1a._Foto_Carlos_Teixidor_Cadenas.jpg/960px-Nube_lenticular_sobre_la_cumbre_de_Pe%C3%B1alara._Espa%C3%B1a._Foto_Carlos_Teixidor_Cadenas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Nube_lenticular_sobre_la_cumbre_de_Pe%C3%B1alara._Espa%C3%B1a._Foto_Carlos_Teixidor_Cadenas.jpg",
+      "autor": "CARLOS TEIXIDOR CADENAS",
+      "licencia": "CC BY 4.0",
+      "titulo": "Nube lenticular sobre la cumbre de Peñalara. España. Foto Carlos Teixidor Cadenas",
+      "fecha": "2026-04-03"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/77/Laguna_Pe%C3%B1alara_-_panoramio.jpg/960px-Laguna_Pe%C3%B1alara_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Laguna_Pe%C3%B1alara_-_panoramio.jpg",
+      "autor": "Carlos Ramón Bonilla…",
+      "licencia": "CC BY-SA 3.0",
+      "titulo": "Laguna Peñalara - panoramio",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/En_invierno._V%C3%A9rtice_geod%C3%A9sico_de_la_cima_de_Pe%C3%B1alara._Espa%C3%B1a._Foto_Carlos_Teixidor_Cadenas.jpg/960px-En_invierno._V%C3%A9rtice_geod%C3%A9sico_de_la_cima_de_Pe%C3%B1alara._Espa%C3%B1a._Foto_Carlos_Teixidor_Cadenas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:En_invierno._V%C3%A9rtice_geod%C3%A9sico_de_la_cima_de_Pe%C3%B1alara._Espa%C3%B1a._Foto_Carlos_Teixidor_Cadenas.jpg",
+      "autor": "CARLOS TEIXIDOR CADENAS",
+      "licencia": "CC BY 4.0",
+      "titulo": "En invierno. Vértice geodésico de la cima de Peñalara. España. Foto Carlos Teixidor Cadenas",
+      "fecha": "2025-03-15"
+     }
+    ],
+    "nombre": "Peñalara",
+    "tipo_osm": "cumbre",
+    "dist_osm_m": 34.0,
+    "direccion_vista": null,
+    "id": "penalara-c593",
+    "contaminacion": {
+     "zona": "4b",
+     "sqm": 20.7,
+     "bortle": 5,
+     "descripcion": "transición rural-periurbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -3.88354,
+     40.88992
+    ]
+   },
+   "properties": {
+    "spot_id": 48,
+    "origen": "commons",
+    "fotos": 3,
+    "fotografos": 2,
+    "fotos_calidad": 0,
+    "puntuacion": 3.58,
+    "mejor_momento": "atardecer",
+    "pct_amanecer": 0,
+    "pct_atardecer": 100,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     2,
+     0,
+     0,
+     0,
+     0
+    ],
+    "meses_top": [
+     8
+    ],
+    "galeria": [
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/Arbol_curvado_%2A_Crooked_tree_%2815227606482%29.jpg/960px-Arbol_curvado_%2A_Crooked_tree_%2815227606482%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Arbol_curvado_*_Crooked_tree_(15227606482).jpg",
+      "autor": "jacinta lluch valero from madrid * barcelona...., (España-Spain)",
+      "licencia": "CC BY-SA 2.0",
+      "titulo": "Arbol curvado * Crooked tree (15227606482)",
+      "fecha": "2014-08-30"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/14/Monasterio_del_Paular%2C_Valle_del_Lozoya.jpg/960px-Monasterio_del_Paular%2C_Valle_del_Lozoya.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Monasterio_del_Paular,_Valle_del_Lozoya.jpg",
+      "autor": "Jorge Muñoz Sánchez",
+      "licencia": "CC BY-SA 4.0",
+      "titulo": "Monasterio del Paular, Valle del Lozoya",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/Reflejos_del_%22Bosque_de_Finlandia%22_en_Rascafria_%2815232620669%29.jpg/960px-Reflejos_del_%22Bosque_de_Finlandia%22_en_Rascafria_%2815232620669%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Reflejos_del_%22Bosque_de_Finlandia%22_en_Rascafria_(15232620669).jpg",
+      "autor": "jacinta lluch valero from madrid * barcelona...., (España-Spain)",
+      "licencia": "CC BY-SA 2.0",
+      "titulo": "Reflejos del \"Bosque de Finlandia\" en Rascafria (15232620669)",
+      "fecha": "2014-08-30"
+     }
+    ],
+    "nombre": "Bosque de Finlandia, Rascafría",
+    "tipo_osm": "mirador",
+    "dist_osm_m": 101.0,
+    "direccion_vista": null,
+    "id": "bosque-de-finlandia-rascafria-64e4",
+    "contaminacion": {
+     "zona": "4b",
+     "sqm": 20.7,
+     "bortle": 5,
+     "descripcion": "transición rural-periurbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -3.60906,
+     40.70041
+    ]
+   },
+   "properties": {
+    "spot_id": 58,
+    "origen": "commons",
+    "fotos": 3,
+    "fotografos": 2,
+    "fotos_calidad": 0,
+    "puntuacion": 3.58,
+    "mejor_momento": "día",
+    "pct_amanecer": 0,
+    "pct_atardecer": 0,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     3,
+     0,
+     0,
+     0
+    ],
+    "meses_top": [
+     9
+    ],
+    "galeria": [
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cf/R%C3%ADo_Guadalix_5.jpg/960px-R%C3%ADo_Guadalix_5.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:R%C3%ADo_Guadalix_5.jpg",
+      "autor": "Riozujar",
+      "licencia": "CC BY-SA 4.0",
+      "titulo": "Río Guadalix 5",
+      "fecha": "2018-09-17"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/04/Paisaje_buc%C3%B3lico_del_r%C3%ADo_Guadalix.jpg/960px-Paisaje_buc%C3%B3lico_del_r%C3%ADo_Guadalix.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Paisaje_buc%C3%B3lico_del_r%C3%ADo_Guadalix.jpg",
+      "autor": "CapitanHadock",
+      "licencia": "CC BY-SA 4.0",
+      "titulo": "Paisaje bucólico del río Guadalix",
+      "fecha": "2017-09-26"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/36/R%C3%ADo_Guadalix_1.jpg/960px-R%C3%ADo_Guadalix_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:R%C3%ADo_Guadalix_1.jpg",
+      "autor": "Riozujar",
+      "licencia": "CC BY-SA 4.0",
+      "titulo": "Río Guadalix 1",
+      "fecha": "2018-09-17"
+     }
+    ],
+    "nombre": "Río Guadalix",
+    "tipo_osm": "cascada",
+    "dist_osm_m": 37.0,
+    "direccion_vista": null,
+    "id": "rio-guadalix-237c",
+    "contaminacion": {
+     "zona": "5b",
+     "sqm": 19.76,
+     "bortle": 7,
+     "descripcion": "periurbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
      -3.8298,
      40.82819
     ]
    },
    "properties": {
-    "spot_id": 45,
+    "spot_id": 61,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -1994,7 +2589,7 @@
     ]
    },
    "properties": {
-    "spot_id": 46,
+    "spot_id": 62,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2043,7 +2638,7 @@
     ]
    },
    "properties": {
-    "spot_id": 47,
+    "spot_id": 63,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2087,61 +2682,12 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -3.70583,
-     40.60957
-    ]
-   },
-   "properties": {
-    "spot_id": 48,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": null,
-    "id": "mirador-5a7d",
-    "contaminacion": {
-     "zona": "6b",
-     "sqm": 18.66,
-     "bortle": 8,
-     "descripcion": "urbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
      -4.11833,
      40.9485
     ]
    },
    "properties": {
-    "spot_id": 49,
+    "spot_id": 64,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2190,7 +2736,7 @@
     ]
    },
    "properties": {
-    "spot_id": 50,
+    "spot_id": 65,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2216,11 +2762,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Quebrantaherraduras Inferior",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-75ff",
+    "id": "mirador-junto-a-quebrantaherraduras-inferior-75ff",
     "contaminacion": {
      "zona": "5a",
      "sqm": 20.25,
@@ -2239,7 +2785,7 @@
     ]
    },
    "properties": {
-    "spot_id": 51,
+    "spot_id": 66,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2288,7 +2834,7 @@
     ]
    },
    "properties": {
-    "spot_id": 52,
+    "spot_id": 67,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2314,11 +2860,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Hermana Menor",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-dd5a",
+    "id": "mirador-junto-a-hermana-menor-dd5a",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -2337,7 +2883,7 @@
     ]
    },
    "properties": {
-    "spot_id": 53,
+    "spot_id": 68,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2363,11 +2909,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cascada del Tejo o de los Tejos",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-5f4a",
+    "id": "mirador-junto-a-cascada-del-tejo-o-de-los-tejos-5f4a",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -2386,7 +2932,7 @@
     ]
    },
    "properties": {
-    "spot_id": 54,
+    "spot_id": 69,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2412,11 +2958,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Laguna Grande de Peñalara",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-a071",
+    "id": "mirador-junto-a-laguna-grande-de-penalara-a071",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -2435,7 +2981,7 @@
     ]
    },
    "properties": {
-    "spot_id": 55,
+    "spot_id": 70,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2484,7 +3030,7 @@
     ]
    },
    "properties": {
-    "spot_id": 56,
+    "spot_id": 71,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2533,7 +3079,7 @@
     ]
    },
    "properties": {
-    "spot_id": 57,
+    "spot_id": 72,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2559,11 +3105,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cascada del Chivato",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-a7ca",
+    "id": "mirador-junto-a-cascada-del-chivato-a7ca",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -2582,7 +3128,7 @@
     ]
    },
    "properties": {
-    "spot_id": 58,
+    "spot_id": 73,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2631,7 +3177,7 @@
     ]
    },
    "properties": {
-    "spot_id": 59,
+    "spot_id": 74,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2680,7 +3226,7 @@
     ]
    },
    "properties": {
-    "spot_id": 60,
+    "spot_id": 75,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2729,7 +3275,7 @@
     ]
    },
    "properties": {
-    "spot_id": 61,
+    "spot_id": 76,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2778,7 +3324,7 @@
     ]
    },
    "properties": {
-    "spot_id": 62,
+    "spot_id": 77,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2827,7 +3373,7 @@
     ]
    },
    "properties": {
-    "spot_id": 63,
+    "spot_id": 78,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2876,7 +3422,7 @@
     ]
    },
    "properties": {
-    "spot_id": 64,
+    "spot_id": 79,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2925,7 +3471,7 @@
     ]
    },
    "properties": {
-    "spot_id": 65,
+    "spot_id": 80,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2974,7 +3520,7 @@
     ]
    },
    "properties": {
-    "spot_id": 66,
+    "spot_id": 81,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3023,7 +3569,7 @@
     ]
    },
    "properties": {
-    "spot_id": 67,
+    "spot_id": 82,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3049,11 +3595,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Alto de Peñalvento",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-113b",
+    "id": "mirador-junto-a-alto-de-penalvento-113b",
     "contaminacion": {
      "zona": "6a",
      "sqm": 19.22,
@@ -3072,7 +3618,7 @@
     ]
    },
    "properties": {
-    "spot_id": 68,
+    "spot_id": 83,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3098,11 +3644,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Chorrera de Mojonavalle",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-73db",
+    "id": "mirador-junto-a-chorrera-de-mojonavalle-73db",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -3121,7 +3667,7 @@
     ]
    },
    "properties": {
-    "spot_id": 69,
+    "spot_id": 84,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3165,61 +3711,12 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -3.55732,
-     40.88954
-    ]
-   },
-   "properties": {
-    "spot_id": 70,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": null,
-    "id": "mirador-6f1d",
-    "contaminacion": {
-     "zona": "4b",
-     "sqm": 20.7,
-     "bortle": 5,
-     "descripcion": "transición rural-periurbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
      -3.9529,
      40.84
     ]
    },
    "properties": {
-    "spot_id": 71,
+    "spot_id": 85,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3268,7 +3765,7 @@
     ]
    },
    "properties": {
-    "spot_id": 72,
+    "spot_id": 86,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3312,12 +3809,12 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -3.8347,
-     40.79501
+     -4.12041,
+     40.94778
     ]
    },
    "properties": {
-    "spot_id": 73,
+    "spot_id": 87,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3343,11 +3840,60 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador de la Canaleja",
+    "tipo_osm": "mirador",
+    "dist_osm_m": 0.0,
+    "direccion_vista": "220;160",
+    "id": "mirador-de-la-canaleja-5ece",
+    "contaminacion": {
+     "zona": "6a",
+     "sqm": 19.22,
+     "bortle": 7,
+     "descripcion": "urbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -3.8347,
+     40.79501
+    ]
+   },
+   "properties": {
+    "spot_id": 88,
+    "origen": "osm",
+    "fotos": 0,
+    "fotografos": 0,
+    "fotos_calidad": 0,
+    "puntuacion": 0.5,
+    "mejor_momento": "desconocido",
+    "pct_amanecer": 0,
+    "pct_atardecer": 0,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "meses_top": [],
+    "galeria": [],
+    "nombre": "Mirador junto a Peña del Rayo",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-625a",
+    "id": "mirador-junto-a-pena-del-rayo-625a",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -3366,7 +3912,7 @@
     ]
    },
    "properties": {
-    "spot_id": 74,
+    "spot_id": 89,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3392,11 +3938,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Bailanderos",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-40ba",
+    "id": "mirador-junto-a-bailanderos-40ba",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -3415,7 +3961,7 @@
     ]
    },
    "properties": {
-    "spot_id": 75,
+    "spot_id": 90,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3464,7 +4010,7 @@
     ]
    },
    "properties": {
-    "spot_id": 76,
+    "spot_id": 91,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3513,7 +4059,7 @@
     ]
    },
    "properties": {
-    "spot_id": 77,
+    "spot_id": 92,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3562,7 +4108,7 @@
     ]
    },
    "properties": {
-    "spot_id": 78,
+    "spot_id": 93,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3588,11 +4134,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Risco del Polanco",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-8e96",
+    "id": "mirador-junto-a-risco-del-polanco-8e96",
     "contaminacion": {
      "zona": "5a",
      "sqm": 20.25,
@@ -3611,7 +4157,7 @@
     ]
    },
    "properties": {
-    "spot_id": 79,
+    "spot_id": 94,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3637,11 +4183,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cerro Piñonero o de la Gamonosa",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-a769",
+    "id": "mirador-junto-a-cerro-pinonero-o-de-la-gamonosa-a769",
     "contaminacion": {
      "zona": "5a",
      "sqm": 20.25,
@@ -3660,7 +4206,7 @@
     ]
    },
    "properties": {
-    "spot_id": 80,
+    "spot_id": 95,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3686,11 +4232,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cerro del Águila",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-e09a",
+    "id": "mirador-junto-a-cerro-del-aguila-e09a",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -3709,7 +4255,7 @@
     ]
    },
    "properties": {
-    "spot_id": 81,
+    "spot_id": 96,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3735,11 +4281,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a El Picazo",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-cad5",
+    "id": "mirador-junto-a-el-picazo-cad5",
     "contaminacion": {
      "zona": "6a",
      "sqm": 19.22,
@@ -3758,7 +4304,7 @@
     ]
    },
    "properties": {
-    "spot_id": 82,
+    "spot_id": 97,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3784,11 +4330,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Peña de las Grajas",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-9f89",
+    "id": "mirador-junto-a-pena-de-las-grajas-9f89",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -3807,7 +4353,7 @@
     ]
    },
    "properties": {
-    "spot_id": 83,
+    "spot_id": 98,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3856,7 +4402,7 @@
     ]
    },
    "properties": {
-    "spot_id": 84,
+    "spot_id": 99,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3905,7 +4451,7 @@
     ]
    },
    "properties": {
-    "spot_id": 85,
+    "spot_id": 100,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3954,7 +4500,7 @@
     ]
    },
    "properties": {
-    "spot_id": 86,
+    "spot_id": 101,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4003,7 +4549,7 @@
     ]
    },
    "properties": {
-    "spot_id": 87,
+    "spot_id": 102,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4029,11 +4575,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cascada del Chorro de Navafría",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-fb72",
+    "id": "mirador-junto-a-cascada-del-chorro-de-navafria-fb72",
     "contaminacion": {
      "zona": "4a",
      "sqm": 21.08,
@@ -4047,61 +4593,12 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -4.13846,
-     40.95638
-    ]
-   },
-   "properties": {
-    "spot_id": 88,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador con gran vista a Segovia",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": null,
-    "id": "mirador-con-gran-vista-a-segovia-e114",
-    "contaminacion": {
-     "zona": "5b",
-     "sqm": 19.76,
-     "bortle": 7,
-     "descripcion": "periurbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
      -4.04995,
      40.72461
     ]
    },
    "properties": {
-    "spot_id": 89,
+    "spot_id": 103,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4150,7 +4647,7 @@
     ]
    },
    "properties": {
-    "spot_id": 90,
+    "spot_id": 104,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4199,7 +4696,7 @@
     ]
    },
    "properties": {
-    "spot_id": 91,
+    "spot_id": 105,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4225,11 +4722,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Chorrera de Mojonavalle",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-2ce0",
+    "id": "mirador-junto-a-chorrera-de-mojonavalle-2ce0",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -4248,7 +4745,7 @@
     ]
    },
    "properties": {
-    "spot_id": 92,
+    "spot_id": 106,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4297,7 +4794,7 @@
     ]
    },
    "properties": {
-    "spot_id": 93,
+    "spot_id": 107,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4346,7 +4843,7 @@
     ]
    },
    "properties": {
-    "spot_id": 94,
+    "spot_id": 108,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4395,7 +4892,7 @@
     ]
    },
    "properties": {
-    "spot_id": 95,
+    "spot_id": 109,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4444,7 +4941,7 @@
     ]
    },
    "properties": {
-    "spot_id": 96,
+    "spot_id": 110,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4493,7 +4990,7 @@
     ]
    },
    "properties": {
-    "spot_id": 97,
+    "spot_id": 111,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4519,11 +5016,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cerro de las Ruedas",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-4439",
+    "id": "mirador-junto-a-cerro-de-las-ruedas-4439",
     "contaminacion": {
      "zona": "5b",
      "sqm": 19.76,
@@ -4537,12 +5034,61 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
+     -4.12495,
+     40.94479
+    ]
+   },
+   "properties": {
+    "spot_id": 112,
+    "origen": "osm",
+    "fotos": 0,
+    "fotografos": 0,
+    "fotos_calidad": 0,
+    "puntuacion": 0.5,
+    "mejor_momento": "desconocido",
+    "pct_amanecer": 0,
+    "pct_atardecer": 0,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "meses_top": [],
+    "galeria": [],
+    "nombre": "La Piedad",
+    "tipo_osm": "mirador",
+    "dist_osm_m": 0.0,
+    "direccion_vista": null,
+    "id": "la-piedad-acf2",
+    "contaminacion": {
+     "zona": "6a",
+     "sqm": 19.22,
+     "bortle": 7,
+     "descripcion": "urbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
      -4.11227,
      40.95994
     ]
    },
    "properties": {
-    "spot_id": 98,
+    "spot_id": 113,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4591,7 +5137,7 @@
     ]
    },
    "properties": {
-    "spot_id": 99,
+    "spot_id": 114,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4640,7 +5186,7 @@
     ]
    },
    "properties": {
-    "spot_id": 100,
+    "spot_id": 115,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4689,7 +5235,7 @@
     ]
    },
    "properties": {
-    "spot_id": 101,
+    "spot_id": 116,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4715,11 +5261,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Laguna Real",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": "90",
-    "id": "mirador-0d65",
+    "id": "mirador-junto-a-laguna-real-0d65",
     "contaminacion": {
      "zona": "6b",
      "sqm": 18.66,
@@ -4738,7 +5284,7 @@
     ]
    },
    "properties": {
-    "spot_id": 102,
+    "spot_id": 117,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4787,7 +5333,7 @@
     ]
    },
    "properties": {
-    "spot_id": 103,
+    "spot_id": 118,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4836,7 +5382,7 @@
     ]
    },
    "properties": {
-    "spot_id": 104,
+    "spot_id": 119,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4862,11 +5408,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cerro Colgado",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": "SW",
-    "id": "mirador-76fe",
+    "id": "mirador-junto-a-cerro-colgado-76fe",
     "contaminacion": {
      "zona": "5a",
      "sqm": 20.25,
@@ -4885,7 +5431,7 @@
     ]
    },
    "properties": {
-    "spot_id": 105,
+    "spot_id": 120,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4934,7 +5480,7 @@
     ]
    },
    "properties": {
-    "spot_id": 106,
+    "spot_id": 121,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4983,7 +5529,7 @@
     ]
    },
    "properties": {
-    "spot_id": 107,
+    "spot_id": 122,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5032,7 +5578,7 @@
     ]
    },
    "properties": {
-    "spot_id": 108,
+    "spot_id": 123,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5081,7 +5627,7 @@
     ]
    },
    "properties": {
-    "spot_id": 109,
+    "spot_id": 124,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5130,7 +5676,7 @@
     ]
    },
    "properties": {
-    "spot_id": 110,
+    "spot_id": 125,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5179,7 +5725,7 @@
     ]
    },
    "properties": {
-    "spot_id": 111,
+    "spot_id": 126,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5228,7 +5774,7 @@
     ]
    },
    "properties": {
-    "spot_id": 112,
+    "spot_id": 127,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5254,11 +5800,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cascada del Chorro de Navafría",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-bb21",
+    "id": "mirador-junto-a-cascada-del-chorro-de-navafria-bb21",
     "contaminacion": {
      "zona": "4a",
      "sqm": 21.08,
@@ -5277,7 +5823,7 @@
     ]
    },
    "properties": {
-    "spot_id": 113,
+    "spot_id": 128,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5303,11 +5849,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Loma de la Camorza",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-e27c",
+    "id": "mirador-junto-a-loma-de-la-camorza-e27c",
     "contaminacion": {
      "zona": "5b",
      "sqm": 19.76,
@@ -5326,7 +5872,7 @@
     ]
    },
    "properties": {
-    "spot_id": 114,
+    "spot_id": 129,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5352,11 +5898,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Chorrera de Mojonavalle",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-773f",
+    "id": "mirador-junto-a-chorrera-de-mojonavalle-773f",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -5375,7 +5921,7 @@
     ]
    },
    "properties": {
-    "spot_id": 115,
+    "spot_id": 130,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5419,61 +5965,12 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -4.05295,
-     40.65467
-    ]
-   },
-   "properties": {
-    "spot_id": 116,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": null,
-    "id": "mirador-c8c4",
-    "contaminacion": {
-     "zona": "6a",
-     "sqm": 19.22,
-     "bortle": 7,
-     "descripcion": "urbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
      -3.73593,
      41.01591
     ]
    },
    "properties": {
-    "spot_id": 117,
+    "spot_id": 131,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5499,11 +5996,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Chorrera de San Mamés",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": "260",
-    "id": "mirador-ec62",
+    "id": "mirador-junto-a-chorrera-de-san-mames-ec62",
     "contaminacion": {
      "zona": "4a",
      "sqm": 21.08,
@@ -5522,7 +6019,7 @@
     ]
    },
    "properties": {
-    "spot_id": 118,
+    "spot_id": 132,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5548,11 +6045,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cerro del Reajo Alto",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-195f",
+    "id": "mirador-junto-a-cerro-del-reajo-alto-195f",
     "contaminacion": {
      "zona": "5a",
      "sqm": 20.25,
@@ -5571,7 +6068,7 @@
     ]
    },
    "properties": {
-    "spot_id": 119,
+    "spot_id": 133,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5597,11 +6094,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Peña de las Grajas",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-c3b6",
+    "id": "mirador-junto-a-pena-de-las-grajas-c3b6",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -5620,7 +6117,7 @@
     ]
    },
    "properties": {
-    "spot_id": 120,
+    "spot_id": 134,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5646,11 +6143,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Ojeo de los Areneros",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-6b46",
+    "id": "mirador-junto-a-ojeo-de-los-areneros-6b46",
     "contaminacion": {
      "zona": "5a",
      "sqm": 20.25,
@@ -5669,7 +6166,7 @@
     ]
    },
    "properties": {
-    "spot_id": 121,
+    "spot_id": 135,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5718,7 +6215,7 @@
     ]
    },
    "properties": {
-    "spot_id": 122,
+    "spot_id": 136,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5767,7 +6264,7 @@
     ]
    },
    "properties": {
-    "spot_id": 123,
+    "spot_id": 137,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5793,11 +6290,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cabezuelas",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": "90;-90;180;360;45;-45;135;225",
-    "id": "mirador-ab47",
+    "id": "mirador-junto-a-cabezuelas-ab47",
     "contaminacion": {
      "zona": "5a",
      "sqm": 20.25,
@@ -5816,7 +6313,7 @@
     ]
    },
    "properties": {
-    "spot_id": 124,
+    "spot_id": 138,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5842,11 +6339,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cabeza Molera",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": "105;-70;195;20;150;-35;230;65",
-    "id": "mirador-21a5",
+    "id": "mirador-junto-a-cabeza-molera-21a5",
     "contaminacion": {
      "zona": "5a",
      "sqm": 20.25,
@@ -5860,208 +6357,12 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -4.10689,
-     40.95234
-    ]
-   },
-   "properties": {
-    "spot_id": 125,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": "-110",
-    "id": "mirador-885d",
-    "contaminacion": {
-     "zona": "6a",
-     "sqm": 19.22,
-     "bortle": 7,
-     "descripcion": "urbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -4.09932,
-     40.94916
-    ]
-   },
-   "properties": {
-    "spot_id": 126,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "El Cielo de Segovia",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": "-90",
-    "id": "el-cielo-de-segovia-72df",
-    "contaminacion": {
-     "zona": "6a",
-     "sqm": 19.22,
-     "bortle": 7,
-     "descripcion": "urbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -3.77003,
-     40.70285
-    ]
-   },
-   "properties": {
-    "spot_id": 127,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": "NW",
-    "id": "mirador-f913",
-    "contaminacion": {
-     "zona": "6a",
-     "sqm": 19.22,
-     "bortle": 7,
-     "descripcion": "urbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -4.10242,
-     40.94737
-    ]
-   },
-   "properties": {
-    "spot_id": 128,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": "0;70;",
-    "id": "mirador-9fa3",
-    "contaminacion": {
-     "zona": "6a",
-     "sqm": 19.22,
-     "bortle": 7,
-     "descripcion": "urbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
      -4.13818,
      40.60938
     ]
    },
    "properties": {
-    "spot_id": 129,
+    "spot_id": 139,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6105,159 +6406,12 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -4.03731,
-     40.91522
-    ]
-   },
-   "properties": {
-    "spot_id": 130,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": "35",
-    "id": "mirador-6a72",
-    "contaminacion": {
-     "zona": "5a",
-     "sqm": 20.25,
-     "bortle": 6,
-     "descripcion": "periurbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -4.03759,
-     40.91477
-    ]
-   },
-   "properties": {
-    "spot_id": 131,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": "65",
-    "id": "mirador-8429",
-    "contaminacion": {
-     "zona": "5b",
-     "sqm": 19.76,
-     "bortle": 7,
-     "descripcion": "periurbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -4.03809,
-     40.91449
-    ]
-   },
-   "properties": {
-    "spot_id": 132,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": "5",
-    "id": "mirador-94eb",
-    "contaminacion": {
-     "zona": "5b",
-     "sqm": 19.76,
-     "bortle": 7,
-     "descripcion": "periurbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
      -4.00057,
      40.93754
     ]
    },
    "properties": {
-    "spot_id": 133,
+    "spot_id": 140,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6283,11 +6437,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a La Atalaya",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-97f3",
+    "id": "mirador-junto-a-la-atalaya-97f3",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -6306,7 +6460,7 @@
     ]
    },
    "properties": {
-    "spot_id": 134,
+    "spot_id": 141,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6350,61 +6504,12 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -4.0987,
-     40.94775
-    ]
-   },
-   "properties": {
-    "spot_id": 135,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": "285",
-    "id": "mirador-90e8",
-    "contaminacion": {
-     "zona": "6a",
-     "sqm": 19.22,
-     "bortle": 7,
-     "descripcion": "urbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
      -3.66281,
      40.86874
     ]
    },
    "properties": {
-    "spot_id": 136,
+    "spot_id": 142,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6453,7 +6558,7 @@
     ]
    },
    "properties": {
-    "spot_id": 137,
+    "spot_id": 143,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6479,11 +6584,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Playa del lago Alonso",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": "-65",
-    "id": "mirador-47dd",
+    "id": "mirador-junto-a-playa-del-lago-alonso-47dd",
     "contaminacion": {
      "zona": "6a",
      "sqm": 19.22,
@@ -6502,7 +6607,7 @@
     ]
    },
    "properties": {
-    "spot_id": 138,
+    "spot_id": 144,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6551,7 +6656,7 @@
     ]
    },
    "properties": {
-    "spot_id": 139,
+    "spot_id": 145,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6577,11 +6682,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Alto de la Pinarilla",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-6e51",
+    "id": "mirador-junto-a-alto-de-la-pinarilla-6e51",
     "contaminacion": {
      "zona": "4a",
      "sqm": 21.08,
@@ -6600,7 +6705,7 @@
     ]
    },
    "properties": {
-    "spot_id": 140,
+    "spot_id": 146,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6626,11 +6731,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Lagunilla del Nevero",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-99a3",
+    "id": "mirador-junto-a-lagunilla-del-nevero-99a3",
     "contaminacion": {
      "zona": "4a",
      "sqm": 21.08,
@@ -6649,7 +6754,7 @@
     ]
    },
    "properties": {
-    "spot_id": 141,
+    "spot_id": 147,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6675,11 +6780,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cerrogordo",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": "-175",
-    "id": "mirador-e0b2",
+    "id": "mirador-junto-a-cerrogordo-e0b2",
     "contaminacion": {
      "zona": "5b",
      "sqm": 19.76,
@@ -6698,7 +6803,7 @@
     ]
    },
    "properties": {
-    "spot_id": 142,
+    "spot_id": 148,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6742,12 +6847,61 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
+     -4.12302,
+     40.94731
+    ]
+   },
+   "properties": {
+    "spot_id": 149,
+    "origen": "osm",
+    "fotos": 0,
+    "fotografos": 0,
+    "fotos_calidad": 0,
+    "puntuacion": 0.5,
+    "mejor_momento": "desconocido",
+    "pct_amanecer": 0,
+    "pct_atardecer": 0,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "meses_top": [],
+    "galeria": [],
+    "nombre": "Mirador junto a Cerrogordo",
+    "tipo_osm": "mirador",
+    "dist_osm_m": 0.0,
+    "direccion_vista": null,
+    "id": "mirador-junto-a-cerrogordo-c1f1",
+    "contaminacion": {
+     "zona": "6a",
+     "sqm": 19.22,
+     "bortle": 7,
+     "descripcion": "urbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
      -4.15162,
      40.87562
     ]
    },
    "properties": {
-    "spot_id": 143,
+    "spot_id": 150,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6796,7 +6950,7 @@
     ]
    },
    "properties": {
-    "spot_id": 144,
+    "spot_id": 151,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6845,7 +6999,7 @@
     ]
    },
    "properties": {
-    "spot_id": 145,
+    "spot_id": 152,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6894,7 +7048,7 @@
     ]
    },
    "properties": {
-    "spot_id": 146,
+    "spot_id": 153,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6943,7 +7097,7 @@
     ]
    },
    "properties": {
-    "spot_id": 147,
+    "spot_id": 154,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6969,11 +7123,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Risco de la Brulera",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-0924",
+    "id": "mirador-junto-a-risco-de-la-brulera-0924",
     "contaminacion": {
      "zona": "5b",
      "sqm": 19.76,
@@ -6992,7 +7146,7 @@
     ]
    },
    "properties": {
-    "spot_id": 148,
+    "spot_id": 155,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7036,61 +7190,12 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -4.03742,
-     40.91493
-    ]
-   },
-   "properties": {
-    "spot_id": 149,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": "65",
-    "id": "mirador-3aec",
-    "contaminacion": {
-     "zona": "5a",
-     "sqm": 20.25,
-     "bortle": 6,
-     "descripcion": "periurbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
      -4.15797,
      40.60239
     ]
    },
    "properties": {
-    "spot_id": 150,
+    "spot_id": 156,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7139,7 +7244,7 @@
     ]
    },
    "properties": {
-    "spot_id": 151,
+    "spot_id": 157,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7188,7 +7293,7 @@
     ]
    },
    "properties": {
-    "spot_id": 152,
+    "spot_id": 158,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7237,7 +7342,7 @@
     ]
    },
    "properties": {
-    "spot_id": 153,
+    "spot_id": 159,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7263,11 +7368,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cerro Colgado",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-c382",
+    "id": "mirador-junto-a-cerro-colgado-c382",
     "contaminacion": {
      "zona": "5a",
      "sqm": 20.25,
@@ -7286,7 +7391,7 @@
     ]
    },
    "properties": {
-    "spot_id": 154,
+    "spot_id": 160,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7335,7 +7440,7 @@
     ]
    },
    "properties": {
-    "spot_id": 155,
+    "spot_id": 161,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7384,7 +7489,7 @@
     ]
    },
    "properties": {
-    "spot_id": 156,
+    "spot_id": 162,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7410,11 +7515,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cancho de los Muertos",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-2bc5",
+    "id": "mirador-junto-a-cancho-de-los-muertos-2bc5",
     "contaminacion": {
      "zona": "5a",
      "sqm": 20.25,
@@ -7433,7 +7538,7 @@
     ]
    },
    "properties": {
-    "spot_id": 157,
+    "spot_id": 163,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7459,11 +7564,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Alto de Peñalvento",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-ac00",
+    "id": "mirador-junto-a-alto-de-penalvento-ac00",
     "contaminacion": {
      "zona": "6a",
      "sqm": 19.22,
@@ -7482,7 +7587,7 @@
     ]
    },
    "properties": {
-    "spot_id": 158,
+    "spot_id": 164,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7531,7 +7636,7 @@
     ]
    },
    "properties": {
-    "spot_id": 159,
+    "spot_id": 165,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7557,11 +7662,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cerro Cardoso",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-2a01",
+    "id": "mirador-junto-a-cerro-cardoso-2a01",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -7580,7 +7685,7 @@
     ]
    },
    "properties": {
-    "spot_id": 160,
+    "spot_id": 166,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7606,11 +7711,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cascada pequeña",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-4817",
+    "id": "mirador-junto-a-cascada-pequena-4817",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -7629,7 +7734,7 @@
     ]
    },
    "properties": {
-    "spot_id": 161,
+    "spot_id": 167,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7655,11 +7760,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cerro de Matabueyes",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-0585",
+    "id": "mirador-junto-a-cerro-de-matabueyes-0585",
     "contaminacion": {
      "zona": "5a",
      "sqm": 20.25,
@@ -7678,7 +7783,7 @@
     ]
    },
    "properties": {
-    "spot_id": 162,
+    "spot_id": 168,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7704,11 +7809,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Peñas del Ladrón",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-808e",
+    "id": "mirador-junto-a-penas-del-ladron-808e",
     "contaminacion": {
      "zona": "5a",
      "sqm": 20.25,
@@ -7727,7 +7832,7 @@
     ]
    },
    "properties": {
-    "spot_id": 163,
+    "spot_id": 169,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7776,7 +7881,7 @@
     ]
    },
    "properties": {
-    "spot_id": 164,
+    "spot_id": 170,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7802,11 +7907,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cerro del Corral de Simón",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-b18c",
+    "id": "mirador-junto-a-cerro-del-corral-de-simon-b18c",
     "contaminacion": {
      "zona": "5a",
      "sqm": 20.25,
@@ -7825,7 +7930,7 @@
     ]
    },
    "properties": {
-    "spot_id": 165,
+    "spot_id": 171,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7869,61 +7974,12 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -4.11189,
-     40.94839
-    ]
-   },
-   "properties": {
-    "spot_id": 166,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": null,
-    "id": "mirador-5d0c",
-    "contaminacion": {
-     "zona": "6a",
-     "sqm": 19.22,
-     "bortle": 7,
-     "descripcion": "urbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
      -4.03839,
      40.95805
     ]
    },
    "properties": {
-    "spot_id": 167,
+    "spot_id": 172,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7949,11 +8005,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cabezuelas",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": "85",
-    "id": "mirador-cff8",
+    "id": "mirador-junto-a-cabezuelas-cff8",
     "contaminacion": {
      "zona": "5a",
      "sqm": 20.25,
@@ -7967,110 +8023,12 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -3.67444,
-     40.9088
-    ]
-   },
-   "properties": {
-    "spot_id": 168,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": null,
-    "id": "mirador-62e3",
-    "contaminacion": {
-     "zona": "4b",
-     "sqm": 20.7,
-     "bortle": 5,
-     "descripcion": "transición rural-periurbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -4.25078,
-     40.78564
-    ]
-   },
-   "properties": {
-    "spot_id": 169,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": "65",
-    "id": "mirador-9bfa",
-    "contaminacion": {
-     "zona": "4b",
-     "sqm": 20.7,
-     "bortle": 5,
-     "descripcion": "transición rural-periurbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
      -4.24909,
      40.78395
     ]
    },
    "properties": {
-    "spot_id": 170,
+    "spot_id": 173,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8119,7 +8077,7 @@
     ]
    },
    "properties": {
-    "spot_id": 171,
+    "spot_id": 174,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8168,7 +8126,7 @@
     ]
    },
    "properties": {
-    "spot_id": 172,
+    "spot_id": 175,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8217,7 +8175,7 @@
     ]
    },
    "properties": {
-    "spot_id": 173,
+    "spot_id": 176,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8266,7 +8224,7 @@
     ]
    },
    "properties": {
-    "spot_id": 174,
+    "spot_id": 177,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8315,153 +8273,6 @@
     ]
    },
    "properties": {
-    "spot_id": 175,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": null,
-    "id": "mirador-ef0d",
-    "contaminacion": {
-     "zona": "4b",
-     "sqm": 20.7,
-     "bortle": 5,
-     "descripcion": "transición rural-periurbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -3.69549,
-     40.62013
-    ]
-   },
-   "properties": {
-    "spot_id": 176,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": null,
-    "id": "mirador-9561",
-    "contaminacion": {
-     "zona": "6b",
-     "sqm": 18.66,
-     "bortle": 8,
-     "descripcion": "urbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -4.14471,
-     40.9567
-    ]
-   },
-   "properties": {
-    "spot_id": 177,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": null,
-    "id": "mirador-cca2",
-    "contaminacion": {
-     "zona": "5b",
-     "sqm": 19.76,
-     "bortle": 7,
-     "descripcion": "periurbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -4.18308,
-     40.7006
-    ]
-   },
-   "properties": {
     "spot_id": 178,
     "origen": "osm",
     "fotos": 0,
@@ -8488,16 +8299,16 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cerro de la Camorca",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
-    "direccion_vista": "0",
-    "id": "mirador-dabd",
+    "direccion_vista": null,
+    "id": "mirador-junto-a-cerro-de-la-camorca-ef0d",
     "contaminacion": {
-     "zona": "5a",
-     "sqm": 20.25,
-     "bortle": 6,
-     "descripcion": "periurbano"
+     "zona": "4b",
+     "sqm": 20.7,
+     "bortle": 5,
+     "descripcion": "transición rural-periurbano"
     }
    }
   },
@@ -8506,8 +8317,8 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -4.19255,
-     40.68987
+     -3.69549,
+     40.62013
     ]
    },
    "properties": {
@@ -8537,16 +8348,16 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Alto de la Cabezuela",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-72de",
+    "id": "mirador-junto-a-alto-de-la-cabezuela-9561",
     "contaminacion": {
-     "zona": "5a",
-     "sqm": 20.25,
-     "bortle": 6,
-     "descripcion": "periurbano"
+     "zona": "6b",
+     "sqm": 18.66,
+     "bortle": 8,
+     "descripcion": "urbano"
     }
    }
   },
@@ -8555,8 +8366,8 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -3.78834,
-     40.98216
+     -4.14471,
+     40.9567
     ]
    },
    "properties": {
@@ -8586,11 +8397,158 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cerrogordo",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-f459",
+    "id": "mirador-junto-a-cerrogordo-cca2",
+    "contaminacion": {
+     "zona": "5b",
+     "sqm": 19.76,
+     "bortle": 7,
+     "descripcion": "periurbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -4.18308,
+     40.7006
+    ]
+   },
+   "properties": {
+    "spot_id": 181,
+    "origen": "osm",
+    "fotos": 0,
+    "fotografos": 0,
+    "fotos_calidad": 0,
+    "puntuacion": 0.5,
+    "mejor_momento": "desconocido",
+    "pct_amanecer": 0,
+    "pct_atardecer": 0,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "meses_top": [],
+    "galeria": [],
+    "nombre": "Mirador junto a Cueva Valiente",
+    "tipo_osm": "mirador",
+    "dist_osm_m": 0.0,
+    "direccion_vista": "0",
+    "id": "mirador-junto-a-cueva-valiente-dabd",
+    "contaminacion": {
+     "zona": "5a",
+     "sqm": 20.25,
+     "bortle": 6,
+     "descripcion": "periurbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -4.19255,
+     40.68987
+    ]
+   },
+   "properties": {
+    "spot_id": 182,
+    "origen": "osm",
+    "fotos": 0,
+    "fotografos": 0,
+    "fotos_calidad": 0,
+    "puntuacion": 0.5,
+    "mejor_momento": "desconocido",
+    "pct_amanecer": 0,
+    "pct_atardecer": 0,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "meses_top": [],
+    "galeria": [],
+    "nombre": "Mirador junto a Cueva Valiente",
+    "tipo_osm": "mirador",
+    "dist_osm_m": 0.0,
+    "direccion_vista": null,
+    "id": "mirador-junto-a-cueva-valiente-72de",
+    "contaminacion": {
+     "zona": "5a",
+     "sqm": 20.25,
+     "bortle": 6,
+     "descripcion": "periurbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -3.78834,
+     40.98216
+    ]
+   },
+   "properties": {
+    "spot_id": 183,
+    "origen": "osm",
+    "fotos": 0,
+    "fotografos": 0,
+    "fotos_calidad": 0,
+    "puntuacion": 0.5,
+    "mejor_momento": "desconocido",
+    "pct_amanecer": 0,
+    "pct_atardecer": 0,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "meses_top": [],
+    "galeria": [],
+    "nombre": "Mirador junto a Pico del Reventón",
+    "tipo_osm": "mirador",
+    "dist_osm_m": 0.0,
+    "direccion_vista": null,
+    "id": "mirador-junto-a-pico-del-reventon-f459",
     "contaminacion": {
      "zona": "4a",
      "sqm": 21.08,
@@ -8609,7 +8567,7 @@
     ]
    },
    "properties": {
-    "spot_id": 181,
+    "spot_id": 184,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8658,7 +8616,7 @@
     ]
    },
    "properties": {
-    "spot_id": 182,
+    "spot_id": 185,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8684,11 +8642,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Abantos",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-261a",
+    "id": "mirador-junto-a-abantos-261a",
     "contaminacion": {
      "zona": "5b",
      "sqm": 19.76,
@@ -8707,7 +8665,7 @@
     ]
    },
    "properties": {
-    "spot_id": 183,
+    "spot_id": 186,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8756,153 +8714,6 @@
     ]
    },
    "properties": {
-    "spot_id": 184,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": null,
-    "id": "mirador-0071",
-    "contaminacion": {
-     "zona": "4b",
-     "sqm": 20.7,
-     "bortle": 5,
-     "descripcion": "transición rural-periurbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -4.20733,
-     40.77395
-    ]
-   },
-   "properties": {
-    "spot_id": 185,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": null,
-    "id": "mirador-5334",
-    "contaminacion": {
-     "zona": "5a",
-     "sqm": 20.25,
-     "bortle": 6,
-     "descripcion": "periurbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -4.03699,
-     40.91513
-    ]
-   },
-   "properties": {
-    "spot_id": 186,
-    "origen": "osm",
-    "fotos": 0,
-    "fotografos": 0,
-    "fotos_calidad": 0,
-    "puntuacion": 0.5,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [],
-    "nombre": "Mirador",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 0.0,
-    "direccion_vista": "65",
-    "id": "mirador-d83b",
-    "contaminacion": {
-     "zona": "5a",
-     "sqm": 20.25,
-     "bortle": 6,
-     "descripcion": "periurbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -4.24783,
-     40.78966
-    ]
-   },
-   "properties": {
     "spot_id": 187,
     "origen": "osm",
     "fotos": 0,
@@ -8929,11 +8740,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cerro de la Muela",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-b005",
+    "id": "mirador-junto-a-cerro-de-la-muela-0071",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -9125,11 +8936,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cerro de Matabueyes",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-fb2c",
+    "id": "mirador-junto-a-cerro-de-matabueyes-fb2c",
     "contaminacion": {
      "zona": "5a",
      "sqm": 20.25,
@@ -9174,11 +8985,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Guijo",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-d60e",
+    "id": "mirador-junto-a-guijo-d60e",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
@@ -9223,11 +9034,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Peña Horcón",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-bc78",
+    "id": "mirador-junto-a-pena-horcon-bc78",
     "contaminacion": {
      "zona": "5a",
      "sqm": 20.25,
@@ -9321,11 +9132,11 @@
     ],
     "meses_top": [],
     "galeria": [],
-    "nombre": "Mirador",
+    "nombre": "Mirador junto a Cabeza Velayos",
     "tipo_osm": "mirador",
     "dist_osm_m": 0.0,
     "direccion_vista": null,
-    "id": "mirador-b9da",
+    "id": "mirador-junto-a-cabeza-velayos-b9da",
     "contaminacion": {
      "zona": "4b",
      "sqm": 20.7,
