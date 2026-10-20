@@ -49,7 +49,7 @@ python condiciones.py                                 # → public/datos/informe
 
 npm ci
 npm run build && npm start                            # web en http://localhost:3000
-npx playwright test                                   # e2e en móvil y escritorio (capturas en test-results/)
+npx playwright test                                   # e2e en móvil y escritorio (capturas en capturas/)
 BASE_URL=https://photo-recommender.vercel.app npx playwright test   # contra producción
 ```
 Otra zona: `python descubrir_spots.py --zona "Costa da Morte" --bbox=-9.35,42.85,-8.9,43.35` (con

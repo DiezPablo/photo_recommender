@@ -110,13 +110,19 @@ export default function Mapa({
           }).bindTooltip(l.etiqueta, { sticky: true }).addTo(g);
           limites.push(fin);
         }
+        // En el mapa general los spots flojos son puntos pequeños: destacan los que merecen la pena
+        const pequeno = enlazar && p.nota !== undefined && p.nota < 6.5;
+        const lado = pequeno ? 14 : enlazar ? 26 : 30;
         const icono = L.divIcon({
           className: "",
-          html: `<div class="marcador ${p.clase ?? "n-floja"}">${p.nota !== undefined ? p.nota.toFixed(0) : ""}</div>`,
-          iconSize: [30, 30],
-          iconAnchor: [15, 15],
+          html: `<div class="marcador ${pequeno ? "pequeno " : ""}${p.clase ?? "n-floja"}" style="width:${lado}px;height:${lado}px">${
+            !pequeno && p.nota !== undefined ? p.nota.toFixed(0) : ""}</div>`,
+          iconSize: [lado, lado],
+          iconAnchor: [lado / 2, lado / 2],
         });
-        const mk = L.marker([p.lat, p.lon], { icon: icono, title: p.nombre, alt: p.nombre }).addTo(g);
+        const mk = L.marker([p.lat, p.lon], {
+          icon: icono, title: p.nombre, alt: p.nombre, zIndexOffset: Math.round((p.nota ?? 0) * 100),
+        }).addTo(g);
         if (enlazar) {
           mk.bindPopup(
             `<strong>${esc(p.nombre)}</strong>${p.nota !== undefined ? ` · ${p.nota.toFixed(1)}/10` : ""}` +

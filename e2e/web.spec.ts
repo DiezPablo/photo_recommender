@@ -1,6 +1,6 @@
 import { expect, type Page, test } from "@playwright/test";
 
-const CAPTURAS = process.env.CAPTURAS ?? "test-results/capturas";
+const CAPTURAS = process.env.CAPTURAS ?? "capturas";
 
 /** Falla si hay errores de consola o peticiones que fallen (salvo teselas del mapa, que son externas). */
 function vigilar(page: Page) {

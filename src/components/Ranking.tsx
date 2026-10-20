@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { NOMBRE_CORTO } from "@/lib/modelo";
 import { distanciaKm, guardarUbicacion, leerUbicacion, type Ubicacion } from "@/lib/ubicacion";
-import { IconoFlecha, IconoMomento, IconoUbicacion } from "./Iconos";
+import { IconoCamara, IconoFlecha, IconoMomento, IconoUbicacion } from "./Iconos";
 import type { FilaRanking } from "./tipos";
 
 const RADIOS = [0, 25, 50, 100, 200];
@@ -110,6 +110,7 @@ export default function Ranking({ filas, mostrarMomento }: { filas: FilaRanking[
                     )}
                     <span>{f.hora}</span>
                     {f.tipo && <span>{f.tipo}</span>}
+                    {f.autores > 0 && <span title="Fotógrafos distintos con fotos aquí en Wikimedia Commons" style={{ display: "inline-flex", gap: 3, alignItems: "center" }}><IconoCamara size={13} /> {f.autores}</span>}
                     {f.km !== null && <span className="dist">{f.km < 10 ? f.km.toFixed(1) : Math.round(f.km)} km</span>}
                   </div>
                   {f.motivos.length > 0 && <p className="por-que">{f.motivos.join(" · ")}</p>}

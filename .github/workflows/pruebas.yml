@@ -37,5 +37,7 @@ jobs:
         if: always()
         with:
           name: capturas
-          path: test-results/
+          path: |
+            capturas/
+            test-results/
           retention-days: 7

@@ -12,4 +12,6 @@ export interface FilaRanking {
   momento: Momento;
   hora: string;
   motivos: string[];
+  /** fotógrafos distintos en Commons: desempata y da contexto */
+  autores: number;
 }

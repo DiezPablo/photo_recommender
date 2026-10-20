@@ -21,7 +21,7 @@ explicable. Todo gratuito y **sin IA/LLM por decisión del usuario**. El encargo
 ## Probar
 - `python -m pytest -q` (sin red: respuestas reales guardadas en `tests/fixtures`; astronomía
   contrastada con USNO y astropy).
-- `npm run build && npx playwright test` (móvil y escritorio, capturas en `test-results/capturas`).
+- `npm run build && npx playwright test` (móvil y escritorio, capturas en `capturas/`).
   Con `BASE_URL=https://photo-recommender.vercel.app` prueba producción.
 - En el contenedor de Claude Code la salida va por proxy: Playwright sirve la web en la IP de la
   máquina (no en localhost) para que Chromium cargue teselas y fotos; ver `playwright.config.ts`.

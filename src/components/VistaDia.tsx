@@ -38,10 +38,11 @@ export default function VistaDia({ d, filtro }: { d: number; filtro: Filtro }) {
         nota: n.nota.nota, clase: calificacion(n.nota.nota).clase, momento: n.momento,
         hora: horaDe(dia, n.momento),
         motivos: motivos(n.nota).map((m) => m.texto),
+        autores: s.descubierto?.fotografos ?? 0,
       };
     })
     .filter((f): f is FilaRanking => f !== null)
-    .sort((a, b) => b.nota - a.nota || a.nombre.localeCompare(b.nombre));
+    .sort((a, b) => b.nota - a.nota || b.autores - a.autores || a.nombre.localeCompare(b.nombre));
   const fiab = spots[0].dias[d]?.fiabilidad ?? "alta";
   const et = etiquetaDia(fecha, d);
   const buenos = filas.filter((f) => f.nota >= 6.5).length;
