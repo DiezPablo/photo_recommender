@@ -12,7 +12,7 @@
     ]
    },
    "properties": {
-    "spot_id": 10,
+    "spot_id": 11,
     "origen": "commons",
     "fotos": 118,
     "fotografos": 31,
@@ -114,7 +114,7 @@
     ]
    },
    "properties": {
-    "spot_id": 56,
+    "spot_id": 58,
     "origen": "commons",
     "fotos": 49,
     "fotografos": 7,
@@ -216,7 +216,7 @@
     ]
    },
    "properties": {
-    "spot_id": 5,
+    "spot_id": 6,
     "origen": "commons",
     "fotos": 32,
     "fotografos": 6,
@@ -318,7 +318,7 @@
     ]
    },
    "properties": {
-    "spot_id": 47,
+    "spot_id": 49,
     "origen": "commons",
     "fotos": 12,
     "fotografos": 7,
@@ -420,7 +420,7 @@
     ]
    },
    "properties": {
-    "spot_id": 60,
+    "spot_id": 62,
     "origen": "commons",
     "fotos": 24,
     "fotografos": 4,
@@ -521,7 +521,7 @@
     ]
    },
    "properties": {
-    "spot_id": 39,
+    "spot_id": 41,
     "origen": "commons",
     "fotos": 24,
     "fotografos": 4,
@@ -623,7 +623,7 @@
     ]
    },
    "properties": {
-    "spot_id": 41,
+    "spot_id": 43,
     "origen": "commons",
     "fotos": 8,
     "fotografos": 7,
@@ -725,7 +725,7 @@
     ]
    },
    "properties": {
-    "spot_id": 42,
+    "spot_id": 44,
     "origen": "commons",
     "fotos": 5,
     "fotografos": 3,
@@ -818,7 +818,7 @@
     ]
    },
    "properties": {
-    "spot_id": 12,
+    "spot_id": 13,
     "origen": "commons",
     "fotos": 9,
     "fotografos": 3,
@@ -918,7 +918,7 @@
     ]
    },
    "properties": {
-    "spot_id": 59,
+    "spot_id": 61,
     "origen": "commons",
     "fotos": 4,
     "fotografos": 2,
@@ -1003,7 +1003,7 @@
     ]
    },
    "properties": {
-    "spot_id": 33,
+    "spot_id": 35,
     "origen": "commons",
     "fotos": 13,
     "fotografos": 2,
@@ -1101,7 +1101,7 @@
     ]
    },
    "properties": {
-    "spot_id": 22,
+    "spot_id": 24,
     "origen": "commons",
     "fotos": 5,
     "fotografos": 3,
@@ -1191,7 +1191,7 @@
     ]
    },
    "properties": {
-    "spot_id": 14,
+    "spot_id": 15,
     "origen": "commons",
     "fotos": 9,
     "fotografos": 2,
@@ -1286,12 +1286,114 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
+     -4.03119,
+     40.97659
+    ]
+   },
+   "properties": {
+    "spot_id": 18,
+    "origen": "commons",
+    "fotos": 9,
+    "fotografos": 2,
+    "fotos_calidad": 0,
+    "puntuacion": 4.5,
+    "mejor_momento": "atardecer",
+    "pct_amanecer": 0,
+    "pct_atardecer": 100,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     0,
+     1,
+     1,
+     0,
+     0,
+     0,
+     0,
+     1,
+     0,
+     0,
+     0
+    ],
+    "meses_top": [
+     9,
+     4,
+     3
+    ],
+    "galeria": [
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Icono_casa_de_esquileo.jpg/960px-Icono_casa_de_esquileo.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Icono_casa_de_esquileo.jpg",
+      "autor": "Arturo Francisco Barbero",
+      "licencia": "CC BY-SA 4.0",
+      "titulo": "Icono casa de esquileo",
+      "fecha": "2021-04-26"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Cabanillas_del_Monte_08_by-dpc.jpg/960px-Cabanillas_del_Monte_08_by-dpc.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Cabanillas_del_Monte_08_by-dpc.jpg",
+      "autor": "David Perez",
+      "licencia": "CC BY 3.0",
+      "titulo": "Cabanillas del Monte 08 by-dpc",
+      "fecha": "2012-09-22"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a2/A_mil_kil%C3%B3metros_de_la_Navidad.jpg/960px-A_mil_kil%C3%B3metros_de_la_Navidad.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:A_mil_kil%C3%B3metros_de_la_Navidad.jpg",
+      "autor": "Arturo Francisco Barbero",
+      "licencia": "CC BY-SA 4.0",
+      "titulo": "A mil kilómetros de la Navidad",
+      "fecha": "2021-03-03"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/26/Cabanillas_del_Monte_01_by-dpc.jpg/960px-Cabanillas_del_Monte_01_by-dpc.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Cabanillas_del_Monte_01_by-dpc.jpg",
+      "autor": "David Perez",
+      "licencia": "CC BY 3.0",
+      "titulo": "Cabanillas del Monte 01 by-dpc",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c6/Cabanillas_del_Monte_02_by-dpc.jpg/960px-Cabanillas_del_Monte_02_by-dpc.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Cabanillas_del_Monte_02_by-dpc.jpg",
+      "autor": "David Perez",
+      "licencia": "CC BY 3.0",
+      "titulo": "Cabanillas del Monte 02 by-dpc",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/Cabanillas_del_Monte_03_by-dpc.jpg/960px-Cabanillas_del_Monte_03_by-dpc.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Cabanillas_del_Monte_03_by-dpc.jpg",
+      "autor": "David Perez",
+      "licencia": "CC BY 3.0",
+      "titulo": "Cabanillas del Monte 03 by-dpc",
+      "fecha": null
+     }
+    ],
+    "nombre": "Cabanillas del Monte shearing shed",
+    "tipo_osm": null,
+    "dist_osm_m": null,
+    "direccion_vista": null,
+    "id": "cabanillas-del-monte-shearing-shed-ef9c",
+    "contaminacion": {
+     "zona": "5a",
+     "sqm": 20.25,
+     "bortle": 6,
+     "descripcion": "periurbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
      -3.90441,
      40.7639
     ]
    },
    "properties": {
-    "spot_id": 31,
+    "spot_id": 33,
     "origen": "commons",
     "fotos": 4,
     "fotografos": 3,
@@ -1363,6 +1465,107 @@
      "sqm": 20.25,
      "bortle": 6,
      "descripcion": "periurbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -3.88487,
+     40.8513
+    ]
+   },
+   "properties": {
+    "spot_id": 47,
+    "origen": "commons",
+    "fotos": 7,
+    "fotografos": 2,
+    "fotos_calidad": 0,
+    "puntuacion": 4.28,
+    "mejor_momento": "día",
+    "pct_amanecer": 0,
+    "pct_atardecer": 0,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     4,
+     0,
+     3,
+     0
+    ],
+    "meses_top": [
+     9,
+     11
+    ],
+    "galeria": [
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/Presa_Del_Pradillo_%2837671219736%29.jpg/960px-Presa_Del_Pradillo_%2837671219736%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Presa_Del_Pradillo_(37671219736).jpg",
+      "autor": "Deensel",
+      "licencia": "CC BY 2.0",
+      "titulo": "Presa Del Pradillo (37671219736)",
+      "fecha": "2017-09-22"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/95/Car%C3%A1mbanos_en_el_Lozoya.JPG/960px-Car%C3%A1mbanos_en_el_Lozoya.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Car%C3%A1mbanos_en_el_Lozoya.JPG",
+      "autor": "Ángel Antonio Caminero Gómez",
+      "licencia": "CC BY-SA 3.0 es",
+      "titulo": "Carámbanos en el Lozoya",
+      "fecha": "2010-11-26"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ec/Presa_Del_Pradillo_%2837671222976%29.jpg/960px-Presa_Del_Pradillo_%2837671222976%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Presa_Del_Pradillo_(37671222976).jpg",
+      "autor": "Deensel",
+      "licencia": "CC BY 2.0",
+      "titulo": "Presa Del Pradillo (37671222976)",
+      "fecha": "2017-09-22"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/Presa_Del_Pradillo_%2837671227216%29.jpg/960px-Presa_Del_Pradillo_%2837671227216%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Presa_Del_Pradillo_(37671227216).jpg",
+      "autor": "Deensel",
+      "licencia": "CC BY 2.0",
+      "titulo": "Presa Del Pradillo (37671227216)",
+      "fecha": "2017-09-22"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/Rio_Lozoya_%2837671198636%29.jpg/960px-Rio_Lozoya_%2837671198636%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Rio_Lozoya_(37671198636).jpg",
+      "autor": "Deensel",
+      "licencia": "CC BY 2.0",
+      "titulo": "Rio Lozoya (37671198636)",
+      "fecha": "2017-09-22"
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f5/Hoja_de_oto%C3%B1o_de_roble_en_la_ribera_del_Lozoya.JPG/960px-Hoja_de_oto%C3%B1o_de_roble_en_la_ribera_del_Lozoya.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Hoja_de_oto%C3%B1o_de_roble_en_la_ribera_del_Lozoya.JPG",
+      "autor": "Ángel Antonio Caminero Gómez",
+      "licencia": "CC BY-SA 3.0 es",
+      "titulo": "Hoja de otoño de roble en la ribera del Lozoya",
+      "fecha": "2010-11-26"
+     }
+    ],
+    "nombre": "Embalse de Pradillo",
+    "tipo_osm": "embalse",
+    "dist_osm_m": null,
+    "direccion_vista": null,
+    "id": "embalse-de-pradillo-1e80",
+    "contaminacion": {
+     "zona": "4b",
+     "sqm": 20.7,
+     "bortle": 5,
+     "descripcion": "transición rural-periurbano"
     }
    }
   },
@@ -1471,113 +1674,12 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -3.88487,
-     40.8513
-    ]
-   },
-   "properties": {
-    "spot_id": 45,
-    "origen": "commons",
-    "fotos": 7,
-    "fotografos": 2,
-    "fotos_calidad": 0,
-    "puntuacion": 4.28,
-    "mejor_momento": "día",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     4,
-     0,
-     3,
-     0
-    ],
-    "meses_top": [
-     9,
-     11
-    ],
-    "galeria": [
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/Presa_Del_Pradillo_%2837671219736%29.jpg/960px-Presa_Del_Pradillo_%2837671219736%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Presa_Del_Pradillo_(37671219736).jpg",
-      "autor": "Deensel",
-      "licencia": "CC BY 2.0",
-      "titulo": "Presa Del Pradillo (37671219736)",
-      "fecha": "2017-09-22"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/95/Car%C3%A1mbanos_en_el_Lozoya.JPG/960px-Car%C3%A1mbanos_en_el_Lozoya.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Car%C3%A1mbanos_en_el_Lozoya.JPG",
-      "autor": "Ángel Antonio Caminero Gómez",
-      "licencia": "CC BY-SA 3.0 es",
-      "titulo": "Carámbanos en el Lozoya",
-      "fecha": "2010-11-26"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ec/Presa_Del_Pradillo_%2837671222976%29.jpg/960px-Presa_Del_Pradillo_%2837671222976%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Presa_Del_Pradillo_(37671222976).jpg",
-      "autor": "Deensel",
-      "licencia": "CC BY 2.0",
-      "titulo": "Presa Del Pradillo (37671222976)",
-      "fecha": "2017-09-22"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/Presa_Del_Pradillo_%2837671227216%29.jpg/960px-Presa_Del_Pradillo_%2837671227216%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Presa_Del_Pradillo_(37671227216).jpg",
-      "autor": "Deensel",
-      "licencia": "CC BY 2.0",
-      "titulo": "Presa Del Pradillo (37671227216)",
-      "fecha": "2017-09-22"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/Rio_Lozoya_%2837671198636%29.jpg/960px-Rio_Lozoya_%2837671198636%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Rio_Lozoya_(37671198636).jpg",
-      "autor": "Deensel",
-      "licencia": "CC BY 2.0",
-      "titulo": "Rio Lozoya (37671198636)",
-      "fecha": "2017-09-22"
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f5/Hoja_de_oto%C3%B1o_de_roble_en_la_ribera_del_Lozoya.JPG/960px-Hoja_de_oto%C3%B1o_de_roble_en_la_ribera_del_Lozoya.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Hoja_de_oto%C3%B1o_de_roble_en_la_ribera_del_Lozoya.JPG",
-      "autor": "Ángel Antonio Caminero Gómez",
-      "licencia": "CC BY-SA 3.0 es",
-      "titulo": "Hoja de otoño de roble en la ribera del Lozoya",
-      "fecha": "2010-11-26"
-     }
-    ],
-    "nombre": "Embalse de Pradillo",
-    "tipo_osm": "embalse",
-    "dist_osm_m": null,
-    "direccion_vista": null,
-    "id": "embalse-de-pradillo-1e80",
-    "contaminacion": {
-     "zona": "4b",
-     "sqm": 20.7,
-     "bortle": 5,
-     "descripcion": "transición rural-periurbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
      -4.02451,
      40.893
     ]
    },
    "properties": {
-    "spot_id": 30,
+    "spot_id": 32,
     "origen": "commons",
     "fotos": 7,
     "fotografos": 2,
@@ -1675,7 +1777,7 @@
     ]
    },
    "properties": {
-    "spot_id": 25,
+    "spot_id": 27,
     "origen": "commons",
     "fotos": 3,
     "fotografos": 3,
@@ -1749,7 +1851,7 @@
     ]
    },
    "properties": {
-    "spot_id": 52,
+    "spot_id": 54,
     "origen": "commons",
     "fotos": 6,
     "fotografos": 2,
@@ -1849,7 +1951,7 @@
     ]
    },
    "properties": {
-    "spot_id": 38,
+    "spot_id": 40,
     "origen": "commons",
     "fotos": 4,
     "fotografos": 2,
@@ -1928,12 +2030,86 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
+     -4.16798,
+     40.83278
+    ]
+   },
+   "properties": {
+    "spot_id": 5,
+    "origen": "commons",
+    "fotos": 3,
+    "fotografos": 2,
+    "fotos_calidad": 0,
+    "puntuacion": 3.58,
+    "mejor_momento": "desconocido",
+    "pct_amanecer": 0,
+    "pct_atardecer": 0,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "meses_top": [],
+    "galeria": [
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/55/Estaci%C3%B3n_de_Ortigosa_del_Monte.jpg/960px-Estaci%C3%B3n_de_Ortigosa_del_Monte.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Estaci%C3%B3n_de_Ortigosa_del_Monte.jpg",
+      "autor": "Arturo Francisco Barbero",
+      "licencia": "CC BY-SA 4.0",
+      "titulo": "Estación de Ortigosa del Monte",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/Subiendo_al_tren_en_Ortigosa_del_Monte.jpg/960px-Subiendo_al_tren_en_Ortigosa_del_Monte.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Subiendo_al_tren_en_Ortigosa_del_Monte.jpg",
+      "autor": "Arturo Francisco Barbero",
+      "licencia": "CC BY-SA 4.0",
+      "titulo": "Subiendo al tren en Ortigosa del Monte",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5f/R%C3%ADo_Milanillos.jpg/960px-R%C3%ADo_Milanillos.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:R%C3%ADo_Milanillos.jpg",
+      "autor": "Arturo Francisco Barbero",
+      "licencia": "CC BY-SA 4.0",
+      "titulo": "Río Milanillos",
+      "fecha": null
+     }
+    ],
+    "nombre": "Ortigosa del Monte train station",
+    "tipo_osm": null,
+    "dist_osm_m": null,
+    "direccion_vista": null,
+    "id": "ortigosa-del-monte-train-station-02ef",
+    "contaminacion": {
+     "zona": "4b",
+     "sqm": 20.7,
+     "bortle": 5,
+     "descripcion": "transición rural-periurbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
      -4.00252,
      40.71518
     ]
    },
    "properties": {
-    "spot_id": 20,
+    "spot_id": 22,
     "origen": "commons",
     "fotos": 3,
     "fotografos": 2,
@@ -2009,7 +2185,7 @@
     ]
    },
    "properties": {
-    "spot_id": 15,
+    "spot_id": 16,
     "origen": "commons",
     "fotos": 3,
     "fotografos": 2,
@@ -2080,86 +2256,12 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -4.10523,
-     40.95033
-    ]
-   },
-   "properties": {
-    "spot_id": 11,
-    "origen": "commons",
-    "fotos": 3,
-    "fotografos": 2,
-    "fotos_calidad": 0,
-    "puntuacion": 3.58,
-    "mejor_momento": "desconocido",
-    "pct_amanecer": 0,
-    "pct_atardecer": 0,
-    "pct_noche": 0,
-    "meses": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "meses_top": [],
-    "galeria": [
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/Presa_-_panoramio_%286%29.jpg/960px-Presa_-_panoramio_%286%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Presa_-_panoramio_(6).jpg",
-      "autor": "Javier Casado Tirado",
-      "licencia": "CC BY-SA 3.0",
-      "titulo": "Presa - panoramio (6)",
-      "fecha": null
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/41/Sociedad_Cooperativa_Electra_Segoviana.jpg/960px-Sociedad_Cooperativa_Electra_Segoviana.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:Sociedad_Cooperativa_Electra_Segoviana.jpg",
-      "autor": "Arturo Francisco Barbero",
-      "licencia": "CC BY-SA 4.0",
-      "titulo": "Sociedad Cooperativa Electra Segoviana",
-      "fecha": null
-     },
-     {
-      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/F%C3%A1brica_de_luz_en_el_rio_Eresma_-_panoramio.jpg/960px-F%C3%A1brica_de_luz_en_el_rio_Eresma_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-      "enlace": "https://commons.wikimedia.org/wiki/File:F%C3%A1brica_de_luz_en_el_rio_Eresma_-_panoramio.jpg",
-      "autor": "Javier Casado Tirado",
-      "licencia": "CC BY-SA 3.0",
-      "titulo": "Fábrica de luz en el rio Eresma - panoramio",
-      "fecha": null
-     }
-    ],
-    "nombre": "Río Eresma",
-    "tipo_osm": "mirador",
-    "dist_osm_m": 513.0,
-    "direccion_vista": "-90",
-    "id": "rio-eresma-b361",
-    "contaminacion": {
-     "zona": "6a",
-     "sqm": 19.22,
-     "bortle": 7,
-     "descripcion": "urbano"
-    }
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
      -4.14021,
      40.71015
     ]
    },
    "properties": {
-    "spot_id": 7,
+    "spot_id": 8,
     "origen": "commons",
     "fotos": 3,
     "fotografos": 2,
@@ -2230,12 +2332,86 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
+     -4.10523,
+     40.95033
+    ]
+   },
+   "properties": {
+    "spot_id": 12,
+    "origen": "commons",
+    "fotos": 3,
+    "fotografos": 2,
+    "fotos_calidad": 0,
+    "puntuacion": 3.58,
+    "mejor_momento": "desconocido",
+    "pct_amanecer": 0,
+    "pct_atardecer": 0,
+    "pct_noche": 0,
+    "meses": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "meses_top": [],
+    "galeria": [
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/Presa_-_panoramio_%286%29.jpg/960px-Presa_-_panoramio_%286%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Presa_-_panoramio_(6).jpg",
+      "autor": "Javier Casado Tirado",
+      "licencia": "CC BY-SA 3.0",
+      "titulo": "Presa - panoramio (6)",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/41/Sociedad_Cooperativa_Electra_Segoviana.jpg/960px-Sociedad_Cooperativa_Electra_Segoviana.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:Sociedad_Cooperativa_Electra_Segoviana.jpg",
+      "autor": "Arturo Francisco Barbero",
+      "licencia": "CC BY-SA 4.0",
+      "titulo": "Sociedad Cooperativa Electra Segoviana",
+      "fecha": null
+     },
+     {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/F%C3%A1brica_de_luz_en_el_rio_Eresma_-_panoramio.jpg/960px-F%C3%A1brica_de_luz_en_el_rio_Eresma_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "enlace": "https://commons.wikimedia.org/wiki/File:F%C3%A1brica_de_luz_en_el_rio_Eresma_-_panoramio.jpg",
+      "autor": "Javier Casado Tirado",
+      "licencia": "CC BY-SA 3.0",
+      "titulo": "Fábrica de luz en el rio Eresma - panoramio",
+      "fecha": null
+     }
+    ],
+    "nombre": "Río Eresma",
+    "tipo_osm": "mirador",
+    "dist_osm_m": 513.0,
+    "direccion_vista": "-90",
+    "id": "rio-eresma-b361",
+    "contaminacion": {
+     "zona": "6a",
+     "sqm": 19.22,
+     "bortle": 7,
+     "descripcion": "urbano"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
      -3.82415,
      40.68717
     ]
    },
    "properties": {
-    "spot_id": 40,
+    "spot_id": 42,
     "origen": "commons",
     "fotos": 3,
     "fotografos": 2,
@@ -2311,7 +2487,7 @@
     ]
    },
    "properties": {
-    "spot_id": 34,
+    "spot_id": 36,
     "origen": "commons",
     "fotos": 3,
     "fotografos": 2,
@@ -2388,7 +2564,7 @@
     ]
    },
    "properties": {
-    "spot_id": 48,
+    "spot_id": 50,
     "origen": "commons",
     "fotos": 3,
     "fotografos": 2,
@@ -2464,7 +2640,7 @@
     ]
    },
    "properties": {
-    "spot_id": 58,
+    "spot_id": 60,
     "origen": "commons",
     "fotos": 3,
     "fotografos": 2,
@@ -2540,7 +2716,7 @@
     ]
    },
    "properties": {
-    "spot_id": 61,
+    "spot_id": 63,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2589,7 +2765,7 @@
     ]
    },
    "properties": {
-    "spot_id": 62,
+    "spot_id": 64,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2638,7 +2814,7 @@
     ]
    },
    "properties": {
-    "spot_id": 63,
+    "spot_id": 65,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2687,7 +2863,7 @@
     ]
    },
    "properties": {
-    "spot_id": 64,
+    "spot_id": 66,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2736,7 +2912,7 @@
     ]
    },
    "properties": {
-    "spot_id": 65,
+    "spot_id": 67,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2785,7 +2961,7 @@
     ]
    },
    "properties": {
-    "spot_id": 66,
+    "spot_id": 68,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2834,7 +3010,7 @@
     ]
    },
    "properties": {
-    "spot_id": 67,
+    "spot_id": 69,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2883,7 +3059,7 @@
     ]
    },
    "properties": {
-    "spot_id": 68,
+    "spot_id": 70,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2932,7 +3108,7 @@
     ]
    },
    "properties": {
-    "spot_id": 69,
+    "spot_id": 71,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -2981,7 +3157,7 @@
     ]
    },
    "properties": {
-    "spot_id": 70,
+    "spot_id": 72,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3030,7 +3206,7 @@
     ]
    },
    "properties": {
-    "spot_id": 71,
+    "spot_id": 73,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3079,7 +3255,7 @@
     ]
    },
    "properties": {
-    "spot_id": 72,
+    "spot_id": 74,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3128,7 +3304,7 @@
     ]
    },
    "properties": {
-    "spot_id": 73,
+    "spot_id": 75,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3177,7 +3353,7 @@
     ]
    },
    "properties": {
-    "spot_id": 74,
+    "spot_id": 76,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3226,7 +3402,7 @@
     ]
    },
    "properties": {
-    "spot_id": 75,
+    "spot_id": 77,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3275,7 +3451,7 @@
     ]
    },
    "properties": {
-    "spot_id": 76,
+    "spot_id": 78,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3324,7 +3500,7 @@
     ]
    },
    "properties": {
-    "spot_id": 77,
+    "spot_id": 79,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3373,7 +3549,7 @@
     ]
    },
    "properties": {
-    "spot_id": 78,
+    "spot_id": 80,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3422,7 +3598,7 @@
     ]
    },
    "properties": {
-    "spot_id": 79,
+    "spot_id": 81,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3471,7 +3647,7 @@
     ]
    },
    "properties": {
-    "spot_id": 80,
+    "spot_id": 82,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3520,7 +3696,7 @@
     ]
    },
    "properties": {
-    "spot_id": 81,
+    "spot_id": 83,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3569,7 +3745,7 @@
     ]
    },
    "properties": {
-    "spot_id": 82,
+    "spot_id": 84,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3618,7 +3794,7 @@
     ]
    },
    "properties": {
-    "spot_id": 83,
+    "spot_id": 85,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3667,7 +3843,7 @@
     ]
    },
    "properties": {
-    "spot_id": 84,
+    "spot_id": 86,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3716,7 +3892,7 @@
     ]
    },
    "properties": {
-    "spot_id": 85,
+    "spot_id": 87,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3765,7 +3941,7 @@
     ]
    },
    "properties": {
-    "spot_id": 86,
+    "spot_id": 88,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3814,7 +3990,7 @@
     ]
    },
    "properties": {
-    "spot_id": 87,
+    "spot_id": 89,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3863,7 +4039,7 @@
     ]
    },
    "properties": {
-    "spot_id": 88,
+    "spot_id": 90,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3912,7 +4088,7 @@
     ]
    },
    "properties": {
-    "spot_id": 89,
+    "spot_id": 91,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -3961,7 +4137,7 @@
     ]
    },
    "properties": {
-    "spot_id": 90,
+    "spot_id": 92,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4010,7 +4186,7 @@
     ]
    },
    "properties": {
-    "spot_id": 91,
+    "spot_id": 93,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4059,7 +4235,7 @@
     ]
    },
    "properties": {
-    "spot_id": 92,
+    "spot_id": 94,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4108,7 +4284,7 @@
     ]
    },
    "properties": {
-    "spot_id": 93,
+    "spot_id": 95,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4157,7 +4333,7 @@
     ]
    },
    "properties": {
-    "spot_id": 94,
+    "spot_id": 96,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4206,7 +4382,7 @@
     ]
    },
    "properties": {
-    "spot_id": 95,
+    "spot_id": 97,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4255,7 +4431,7 @@
     ]
    },
    "properties": {
-    "spot_id": 96,
+    "spot_id": 98,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4304,7 +4480,7 @@
     ]
    },
    "properties": {
-    "spot_id": 97,
+    "spot_id": 99,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4353,7 +4529,7 @@
     ]
    },
    "properties": {
-    "spot_id": 98,
+    "spot_id": 100,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4402,7 +4578,7 @@
     ]
    },
    "properties": {
-    "spot_id": 99,
+    "spot_id": 101,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4451,7 +4627,7 @@
     ]
    },
    "properties": {
-    "spot_id": 100,
+    "spot_id": 102,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4500,7 +4676,7 @@
     ]
    },
    "properties": {
-    "spot_id": 101,
+    "spot_id": 103,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4549,7 +4725,7 @@
     ]
    },
    "properties": {
-    "spot_id": 102,
+    "spot_id": 104,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4598,7 +4774,7 @@
     ]
    },
    "properties": {
-    "spot_id": 103,
+    "spot_id": 105,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4647,7 +4823,7 @@
     ]
    },
    "properties": {
-    "spot_id": 104,
+    "spot_id": 106,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4696,7 +4872,7 @@
     ]
    },
    "properties": {
-    "spot_id": 105,
+    "spot_id": 107,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4745,7 +4921,7 @@
     ]
    },
    "properties": {
-    "spot_id": 106,
+    "spot_id": 108,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4794,7 +4970,7 @@
     ]
    },
    "properties": {
-    "spot_id": 107,
+    "spot_id": 109,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4843,7 +5019,7 @@
     ]
    },
    "properties": {
-    "spot_id": 108,
+    "spot_id": 110,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4892,7 +5068,7 @@
     ]
    },
    "properties": {
-    "spot_id": 109,
+    "spot_id": 111,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4941,7 +5117,7 @@
     ]
    },
    "properties": {
-    "spot_id": 110,
+    "spot_id": 112,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -4990,7 +5166,7 @@
     ]
    },
    "properties": {
-    "spot_id": 111,
+    "spot_id": 113,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5039,7 +5215,7 @@
     ]
    },
    "properties": {
-    "spot_id": 112,
+    "spot_id": 114,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5088,7 +5264,7 @@
     ]
    },
    "properties": {
-    "spot_id": 113,
+    "spot_id": 115,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5137,7 +5313,7 @@
     ]
    },
    "properties": {
-    "spot_id": 114,
+    "spot_id": 116,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5186,7 +5362,7 @@
     ]
    },
    "properties": {
-    "spot_id": 115,
+    "spot_id": 117,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5235,7 +5411,7 @@
     ]
    },
    "properties": {
-    "spot_id": 116,
+    "spot_id": 118,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5284,7 +5460,7 @@
     ]
    },
    "properties": {
-    "spot_id": 117,
+    "spot_id": 119,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5333,7 +5509,7 @@
     ]
    },
    "properties": {
-    "spot_id": 118,
+    "spot_id": 120,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5382,7 +5558,7 @@
     ]
    },
    "properties": {
-    "spot_id": 119,
+    "spot_id": 121,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5431,7 +5607,7 @@
     ]
    },
    "properties": {
-    "spot_id": 120,
+    "spot_id": 122,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5480,7 +5656,7 @@
     ]
    },
    "properties": {
-    "spot_id": 121,
+    "spot_id": 123,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5529,7 +5705,7 @@
     ]
    },
    "properties": {
-    "spot_id": 122,
+    "spot_id": 124,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5578,7 +5754,7 @@
     ]
    },
    "properties": {
-    "spot_id": 123,
+    "spot_id": 125,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5627,7 +5803,7 @@
     ]
    },
    "properties": {
-    "spot_id": 124,
+    "spot_id": 126,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5676,7 +5852,7 @@
     ]
    },
    "properties": {
-    "spot_id": 125,
+    "spot_id": 127,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5725,7 +5901,7 @@
     ]
    },
    "properties": {
-    "spot_id": 126,
+    "spot_id": 128,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5774,7 +5950,7 @@
     ]
    },
    "properties": {
-    "spot_id": 127,
+    "spot_id": 129,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5823,7 +5999,7 @@
     ]
    },
    "properties": {
-    "spot_id": 128,
+    "spot_id": 130,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5872,7 +6048,7 @@
     ]
    },
    "properties": {
-    "spot_id": 129,
+    "spot_id": 131,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5921,7 +6097,7 @@
     ]
    },
    "properties": {
-    "spot_id": 130,
+    "spot_id": 132,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -5970,7 +6146,7 @@
     ]
    },
    "properties": {
-    "spot_id": 131,
+    "spot_id": 133,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6019,7 +6195,7 @@
     ]
    },
    "properties": {
-    "spot_id": 132,
+    "spot_id": 134,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6068,7 +6244,7 @@
     ]
    },
    "properties": {
-    "spot_id": 133,
+    "spot_id": 135,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6117,7 +6293,7 @@
     ]
    },
    "properties": {
-    "spot_id": 134,
+    "spot_id": 136,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6166,7 +6342,7 @@
     ]
    },
    "properties": {
-    "spot_id": 135,
+    "spot_id": 137,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6215,7 +6391,7 @@
     ]
    },
    "properties": {
-    "spot_id": 136,
+    "spot_id": 138,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6264,7 +6440,7 @@
     ]
    },
    "properties": {
-    "spot_id": 137,
+    "spot_id": 139,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6313,7 +6489,7 @@
     ]
    },
    "properties": {
-    "spot_id": 138,
+    "spot_id": 140,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6362,7 +6538,7 @@
     ]
    },
    "properties": {
-    "spot_id": 139,
+    "spot_id": 141,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6411,7 +6587,7 @@
     ]
    },
    "properties": {
-    "spot_id": 140,
+    "spot_id": 142,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6460,7 +6636,7 @@
     ]
    },
    "properties": {
-    "spot_id": 141,
+    "spot_id": 143,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6509,7 +6685,7 @@
     ]
    },
    "properties": {
-    "spot_id": 142,
+    "spot_id": 144,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6558,7 +6734,7 @@
     ]
    },
    "properties": {
-    "spot_id": 143,
+    "spot_id": 145,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6607,7 +6783,7 @@
     ]
    },
    "properties": {
-    "spot_id": 144,
+    "spot_id": 146,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6656,7 +6832,7 @@
     ]
    },
    "properties": {
-    "spot_id": 145,
+    "spot_id": 147,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6705,7 +6881,7 @@
     ]
    },
    "properties": {
-    "spot_id": 146,
+    "spot_id": 148,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6754,7 +6930,7 @@
     ]
    },
    "properties": {
-    "spot_id": 147,
+    "spot_id": 149,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6803,7 +6979,7 @@
     ]
    },
    "properties": {
-    "spot_id": 148,
+    "spot_id": 150,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6852,7 +7028,7 @@
     ]
    },
    "properties": {
-    "spot_id": 149,
+    "spot_id": 151,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6901,7 +7077,7 @@
     ]
    },
    "properties": {
-    "spot_id": 150,
+    "spot_id": 152,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6950,7 +7126,7 @@
     ]
    },
    "properties": {
-    "spot_id": 151,
+    "spot_id": 153,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -6999,7 +7175,7 @@
     ]
    },
    "properties": {
-    "spot_id": 152,
+    "spot_id": 154,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7048,7 +7224,7 @@
     ]
    },
    "properties": {
-    "spot_id": 153,
+    "spot_id": 155,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7097,7 +7273,7 @@
     ]
    },
    "properties": {
-    "spot_id": 154,
+    "spot_id": 156,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7146,7 +7322,7 @@
     ]
    },
    "properties": {
-    "spot_id": 155,
+    "spot_id": 157,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7195,7 +7371,7 @@
     ]
    },
    "properties": {
-    "spot_id": 156,
+    "spot_id": 158,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7244,7 +7420,7 @@
     ]
    },
    "properties": {
-    "spot_id": 157,
+    "spot_id": 159,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7293,7 +7469,7 @@
     ]
    },
    "properties": {
-    "spot_id": 158,
+    "spot_id": 160,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7342,7 +7518,7 @@
     ]
    },
    "properties": {
-    "spot_id": 159,
+    "spot_id": 161,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7391,7 +7567,7 @@
     ]
    },
    "properties": {
-    "spot_id": 160,
+    "spot_id": 162,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7440,7 +7616,7 @@
     ]
    },
    "properties": {
-    "spot_id": 161,
+    "spot_id": 163,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7489,7 +7665,7 @@
     ]
    },
    "properties": {
-    "spot_id": 162,
+    "spot_id": 164,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7538,7 +7714,7 @@
     ]
    },
    "properties": {
-    "spot_id": 163,
+    "spot_id": 165,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7587,7 +7763,7 @@
     ]
    },
    "properties": {
-    "spot_id": 164,
+    "spot_id": 166,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7636,7 +7812,7 @@
     ]
    },
    "properties": {
-    "spot_id": 165,
+    "spot_id": 167,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7685,7 +7861,7 @@
     ]
    },
    "properties": {
-    "spot_id": 166,
+    "spot_id": 168,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7734,7 +7910,7 @@
     ]
    },
    "properties": {
-    "spot_id": 167,
+    "spot_id": 169,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7783,7 +7959,7 @@
     ]
    },
    "properties": {
-    "spot_id": 168,
+    "spot_id": 170,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7832,7 +8008,7 @@
     ]
    },
    "properties": {
-    "spot_id": 169,
+    "spot_id": 171,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7881,7 +8057,7 @@
     ]
    },
    "properties": {
-    "spot_id": 170,
+    "spot_id": 172,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7930,7 +8106,7 @@
     ]
    },
    "properties": {
-    "spot_id": 171,
+    "spot_id": 173,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -7979,7 +8155,7 @@
     ]
    },
    "properties": {
-    "spot_id": 172,
+    "spot_id": 174,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8028,7 +8204,7 @@
     ]
    },
    "properties": {
-    "spot_id": 173,
+    "spot_id": 175,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8077,7 +8253,7 @@
     ]
    },
    "properties": {
-    "spot_id": 174,
+    "spot_id": 176,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8126,7 +8302,7 @@
     ]
    },
    "properties": {
-    "spot_id": 175,
+    "spot_id": 177,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8175,7 +8351,7 @@
     ]
    },
    "properties": {
-    "spot_id": 176,
+    "spot_id": 178,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8224,7 +8400,7 @@
     ]
    },
    "properties": {
-    "spot_id": 177,
+    "spot_id": 179,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8273,7 +8449,7 @@
     ]
    },
    "properties": {
-    "spot_id": 178,
+    "spot_id": 180,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8322,7 +8498,7 @@
     ]
    },
    "properties": {
-    "spot_id": 179,
+    "spot_id": 181,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8371,7 +8547,7 @@
     ]
    },
    "properties": {
-    "spot_id": 180,
+    "spot_id": 182,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8420,7 +8596,7 @@
     ]
    },
    "properties": {
-    "spot_id": 181,
+    "spot_id": 183,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8469,7 +8645,7 @@
     ]
    },
    "properties": {
-    "spot_id": 182,
+    "spot_id": 184,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8518,7 +8694,7 @@
     ]
    },
    "properties": {
-    "spot_id": 183,
+    "spot_id": 185,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8567,7 +8743,7 @@
     ]
    },
    "properties": {
-    "spot_id": 184,
+    "spot_id": 186,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8616,7 +8792,7 @@
     ]
    },
    "properties": {
-    "spot_id": 185,
+    "spot_id": 187,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8665,7 +8841,7 @@
     ]
    },
    "properties": {
-    "spot_id": 186,
+    "spot_id": 188,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8714,7 +8890,7 @@
     ]
    },
    "properties": {
-    "spot_id": 187,
+    "spot_id": 189,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8763,7 +8939,7 @@
     ]
    },
    "properties": {
-    "spot_id": 188,
+    "spot_id": 190,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8812,7 +8988,7 @@
     ]
    },
    "properties": {
-    "spot_id": 189,
+    "spot_id": 191,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8861,7 +9037,7 @@
     ]
    },
    "properties": {
-    "spot_id": 190,
+    "spot_id": 192,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8910,7 +9086,7 @@
     ]
    },
    "properties": {
-    "spot_id": 191,
+    "spot_id": 193,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -8959,7 +9135,7 @@
     ]
    },
    "properties": {
-    "spot_id": 192,
+    "spot_id": 194,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -9008,7 +9184,7 @@
     ]
    },
    "properties": {
-    "spot_id": 193,
+    "spot_id": 195,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -9057,7 +9233,7 @@
     ]
    },
    "properties": {
-    "spot_id": 194,
+    "spot_id": 196,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -9106,7 +9282,7 @@
     ]
    },
    "properties": {
-    "spot_id": 195,
+    "spot_id": 197,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -9155,7 +9331,7 @@
     ]
    },
    "properties": {
-    "spot_id": 196,
+    "spot_id": 198,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -9204,7 +9380,7 @@
     ]
    },
    "properties": {
-    "spot_id": 197,
+    "spot_id": 199,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -9253,7 +9429,7 @@
     ]
    },
    "properties": {
-    "spot_id": 198,
+    "spot_id": 200,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
@@ -9302,7 +9478,7 @@
     ]
    },
    "properties": {
-    "spot_id": 199,
+    "spot_id": 201,
     "origen": "osm",
     "fotos": 0,
     "fotografos": 0,
