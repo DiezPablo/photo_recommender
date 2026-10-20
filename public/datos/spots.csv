@@ -1,7 +1,7 @@
 spot_id,lat,lon,origen,fotos,fotografos,fotos_calidad,puntuacion,mejor_momento,pct_amanecer,pct_atardecer,pct_noche,meses_top,nombre,tipo_osm,dist_osm_m,direccion_vista
-9,40.95231,-4.13183,commons,118,31,2,13.36,día,6,21,3,"[3, 5, 2]",Mirador del Último Pino,mirador,198.0,
-53,40.99626,-3.6353,commons,49,7,14,12.13,día,2,10,0,"[6, 5, 7]",Mirador de Buitrago,mirador,296.0,
-5,40.64148,-4.15262,commons,31,6,1,8.4,día,0,12,0,"[8, 12, 9]",Risco de la Nava,cumbre,239.0,
+9,40.95231,-4.13183,commons,116,31,0,11.69,día,6,20,3,"[3, 5, 2]",Mirador del Último Pino,mirador,198.0,
+53,40.99628,-3.6353,commons,42,7,7,11.04,día,3,11,0,"[6, 5, 7]",Mirador de Buitrago,mirador,294.0,
+5,40.64148,-4.15262,commons,30,6,0,7.33,día,0,12,0,"[8, 12, 9]",Risco de la Nava,cumbre,239.0,
 44,40.88717,-3.88651,commons,12,7,0,6.72,día,0,0,0,"[1, 8, 2]",Monasterio de El Paular,mirador,340.0,
 36,40.71726,-3.8689,commons,24,4,0,6.44,día,0,37,21,"[1, 11, 5]",Embalse de Santillana,embalse,,
 57,40.94571,-3.56285,commons,24,4,0,6.44,día,0,0,0,"[6, 9]",Embalse de El Atazar,embalse,,
