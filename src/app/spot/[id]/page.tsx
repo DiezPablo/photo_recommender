@@ -128,6 +128,10 @@ function BloqueNoche({ dia, spot }: { dia: Dia; spot: Spot }) {
       <div className="tarjeta">
         <h2><IconoNoche /> Vía Láctea y meteo nocturna</h2>
         <dl className="datos">
+          {(() => {
+            const v = dia.notas.astro?.modelo?.ventana as [string, string] | undefined;
+            return v ? (<><dt>Mejor ventana de 3 h</dt><dd>{v[0]}–{v[1]}</dd></>) : null;
+          })()}
           <dt>Núcleo sobre 10°</dt>
           <dd>{vl.tramos.length ? vl.tramos.map((t) => tramoTexto(t)).join(", ") : "no sale de noche"}</dd>
           {vl.altura_max !== null && (
@@ -148,6 +152,9 @@ function BloqueNoche({ dia, spot }: { dia: Dia; spot: Spot }) {
               <dd>{mn.temp_min ?? "—"} °C · {mn.punto_rocio ?? "—"} °C</dd>
               <dt>Viento · rachas</dt>
               <dd>{mn.viento} km/h · {mn.rachas ?? "—"} km/h</dd>
+              {mn.vapor_mm != null && (<><dt>Vapor de agua (columna)</dt><dd>{mn.vapor_mm} mm</dd></>)}
+              {mn.aod != null && (<><dt>Aerosoles (AOD)</dt><dd>{mn.aod}</dd></>)}
+              {mn.cupula && (<><dt>Cúpula de luz</dt><dd>zona {mn.cupula.zona} a {mn.cupula.km} km hacia {mn.cupula.hacia ?? "el sur"}</dd></>)}
             </>
           )}
         </dl>
@@ -190,8 +197,8 @@ function BloqueDia({ dia, indice, spot }: { dia: Dia; indice: number; spot: Spot
           <BloqueNoche dia={dia} spot={spot} />
         </div>
         <p style={{ margin: 0, fontSize: "0.78rem", color: "var(--texto-3)" }}>
-          * Horizonte: nubes bajas a 40 km en la dirección del sol. Si hay un banco de nubes allí, el sol no llega a
-          iluminar el cielo desde abajo.
+          * Horizonte: máximo de nubes bajas en el camino del sol (a 15, 40, 80 y 150 km en su dirección). Si hay un
+          banco de nubes allí, el sol no llega a iluminar el cielo desde abajo.
         </p>
       </div>
     </details>

@@ -28,7 +28,16 @@ export interface NotaMomento {
   nota: number;
   desglose: Factor[];
   avisos: string[];
+  /** acuerdo entre dos modelos meteorológicos (ECMWF y el de alta resolución) */
+  confianza?: "alta" | "media" | "baja" | null;
+  modelo?: Record<string, unknown>;
 }
+
+export const TEXTO_CONFIANZA: Record<string, string> = {
+  alta: "Los modelos coinciden",
+  media: "Los modelos difieren algo",
+  baja: "Previsión dudosa: los modelos no coinciden",
+};
 export type Tramo = [string | null, string | null];
 
 export interface MeteoMomento {
@@ -50,6 +59,9 @@ export interface MeteoNoche {
   temp_min: number | null;
   punto_rocio: number | null;
   margen_rocio: number | null;
+  vapor_mm?: number | null;
+  aod?: number | null;
+  cupula?: { zona: string; km: number; hacia?: string } | null;
 }
 
 export interface Dia {
@@ -230,4 +242,5 @@ export const TEXTO_AVISO: Record<string, string> = {
   reflejos: "Reflejos: viento casi nulo sobre el agua",
   rocio: "Riesgo de rocío en la lente: lleva calentador o capucha",
   mar_de_nubes: "Posible mar de nubes",
+  techo_nubes_cerca: "El techo de las nubes bajas está a la altura del spot: puede quedar dentro o justo encima",
 };

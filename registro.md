@@ -213,3 +213,26 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
   ejecución, dentro del límite gratuito de Open-Meteo.
 - **Validación histórica** (`validar.py`, workflow `validar.yml`): días con foto de puesta/salida en
   Commons (Madrid y Segovia) frente al resto del mismo mes, con ERA5 2016-2025; AUC de v1 frente a v2.
+
+### Validación empírica y ajustes (validar.py, 20-oct)
+- **Amanecer/atardecer**: 91 días positivos (fotos de Commons en la ventana de color: búsquedas
+  "sunset/atardecer Madrid/Segovia…" + fotos de paisaje de la Sierra) frente a 7306 eventos de
+  2016-2025 con ERA5. AUC mismo mes: v1 0,557 → v2 0,599 (amanecer 0,59 → 0,66). Sin el camino de
+  la luz, v2 cae a 0,573: es lo que más aporta. Diagnóstico: los días fotografiados tienen menos
+  nubes bajas (6 % frente a 11-20 %), menos nubes bajas en el camino y más nubes altas (40 % frente
+  a 29-32 %), pero **menos medias** → peso de las medias en el lienzo 0,85 → 0,5 (las variantes 0,3-0,7
+  difieren ~0,01 de AUC, dentro del ruido; no se ajusta más).
+  *Problemas*: las categorías de Commons que supuse no existían (0 ficheros) → búsqueda de texto;
+  "sunset Toledo" devolvía Toledo (Ohio); metadatos vacíos llegan como lista.
+- **Calima**: el 15-mar-2022 (150+ µg/m³) ERA5 lo veía como 100 % de nubes altas y v2 daba 5,3 →
+  el polvo resta más (×0,35 a 150 µg/m³) y vela también la luz directa: ahora 2,5-3.
+- **Niebla**: 11 792 madrugadas de METAR (Barajas, Getafe, Cuatro Vientos, Torrejón) vía Iowa
+  Environmental Mesonet. Primera v2 (margen al rocío + noche despejada + lluvia previa) era **peor**
+  que la fórmula antigua (AUC 0,864 frente a 0,912). Ajuste con años 2016-2021 y prueba en 2022-2025:
+  humedad máxima 85→100 % × viento mínimo 6→20 km/h = 0,913 en prueba (techo de una regresión
+  logística: 0,923). La nubosidad nocturna y la lluvia previa no aportaban → fuera. Probabilidad
+  **calibrada** con la frecuencia observada (índice máximo ≈ 46 % de madrugadas con niebla).
+  Resultado final: AUC 0,920; cuando dice 30-50 %, hubo niebla el 42 % de las veces.
+- **No validado empíricamente** (sin verdad disponible gratis): la nota nocturna (las nubes y la luna
+  son deterministas una vez prevista la nubosidad; la contaminación lumínica viene del atlas) y el mar
+  de nubes (no hay observaciones del techo de la niebla). Quedan razonados físicamente y con tests.

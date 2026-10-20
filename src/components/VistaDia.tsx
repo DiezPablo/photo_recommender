@@ -39,6 +39,7 @@ export default function VistaDia({ d, filtro }: { d: number; filtro: Filtro }) {
         hora: horaDe(dia, n.momento),
         motivos: motivos(n.nota).map((m) => m.texto),
         autores: s.descubierto?.fotografos ?? 0,
+        dudosa: n.nota.confianza === "baja",
       };
     })
     .filter((f): f is FilaRanking => f !== null)

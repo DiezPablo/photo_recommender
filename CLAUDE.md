@@ -8,7 +8,9 @@ explicable. Todo gratuito y **sin IA/LLM por decisión del usuario**. El encargo
 ## Piezas
 - Pipeline Python (raíz): `descubrir_spots.py` (Commons + OSM → `public/datos/spots.geojson`),
   `condiciones.py` (Open-Meteo + `astro.py` + `contaminacion.py` + `puntuacion.py` → `public/datos/informe.json`),
-  `comun.py` (ids de spot, JSON sin NaN), `notificar.py` (Telegram, opcional y desacoplado).
+  `comun.py` (ids de spot, JSON sin NaN), `notificar.py` (Telegram, opcional y desacoplado),
+  `validar.py` (validación histórica: ERA5 + fotos de Commons + METAR; workflow `validar.yml`, artefacto `validacion`).
+  Antes de cambiar pesos de `puntuacion.py`, mira el informe de validación y no ajustes más allá del ruido.
 - Web Next.js 16 (App Router) en `src/`: páginas estáticas generadas en el build leyendo `public/datos`.
   `src/lib/datos.ts` solo servidor (usa `fs`); los componentes de cliente importan de `src/lib/modelo.ts`.
   Rutas: `/` (= `/dia/0/todos`), `/dia/[d]/[tipo]`, `/spot/[id]`, `/acerca`. Filtros de día y tipo son

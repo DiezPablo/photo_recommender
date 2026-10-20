@@ -20,24 +20,25 @@ GitHub Actions ─ cada 3 h ─ condiciones.py ──► public/datos/informe.js
 | `condiciones.py` | Open-Meteo + astronomía → `informe.json`: por spot y día, sol, luna, Vía Láctea, meteo y las 4 notas con desglose |
 | `astro.py` | Sol (astral), luna (astral + iluminación de Meeus) y núcleo de la Vía Láctea (cálculo propio) |
 | `contaminacion.py` | Atlas mundial del brillo artificial del cielo 2025 (D. Lorenz) → zona, mag/arcsec² y Bortle aproximado |
-| `puntuacion.py` | Las fórmulas de las notas (aditivas y explicables) |
+| `puntuacion.py` | Los modelos de las notas, explicables (desglose que suma la nota) |
+| `validar.py` | Validación histórica: ERA5, fotos de Commons y METAR de aeropuertos |
 | `notificar.py` | Extra opcional: aviso diario por Telegram, desacoplado de la web |
 | `src/` | Web Next.js: ranking + mapa + ficha de spot, filtros por día, tipo y distancia, temas claro/oscuro/noche (rojo) |
 | `.github/workflows/` | `datos.yml` (cada 3 h), `descubrir.yml` (mensual), `pruebas.yml` (pytest + build + Playwright) |
 
-## Cómo se puntúa
-Resumen (detalle en la propia web, página *Cómo se puntúa*, y en `puntuacion.py`):
-- **Amanecer / atardecer**: base 4; un lienzo de nubes altas o medias del 35-70 % suma +4; restan las
-  nubes bajas en el spot y, sobre todo, un banco de nubes bajas a 40 km **en la dirección del sol**
-  (impide que el sol ilumine el cielo desde abajo); restan lluvia y mala visibilidad; reflejos en agua
-  con viento casi nulo.
-- **Noche / Vía Láctea**: base 10; restan nubes, luna (solo si no deja ≥ 3 h de noche sin luna),
-  contaminación lumínica del spot, humedad y viento; suma si el núcleo de la Vía Láctea está alto sin luna.
-  Avisa de riesgo de rocío en la lente.
-- **Niebla**: humedad, margen al punto de rocío y viento flojo de madrugada. En miradores y cumbres,
-  estar dentro de la niebla resta (no se ve nada); lo bueno allí es el **mar de nubes**: spot alto y
-  despejado con nubes bajas por debajo.
-- 5 días de previsión, con aviso de fiabilidad decreciente (las nubes a más de 3 días son poco fiables).
+## Cómo se puntúa (modelo v2, validado)
+Detalle en la web (*Cómo se puntúa*) y en `puntuacion.py`:
+- **Amanecer / atardecer — camino de la luz**: lienzo de nubes altas/medias sobre el spot y hacia el
+  sol; nubes bajas a 15/40/80/150 km en la dirección del sol (un banco a 30-50 km apaga el cielo);
+  aire (aerosoles y calima de CAMS, humedad, aire lavado tras la lluvia); evaluado en el pico de color
+  (±15 min). Confianza con un segundo modelo (ECMWF).
+- **Noche**: mejor ventana de 3 h (nubes y luna hora a hora), transparencia (vapor de agua, AOD),
+  contaminación lumínica del spot y cúpula de luz hacia el núcleo de la Vía Láctea o el sur.
+- **Niebla**: probabilidad calibrada con 10 años de METAR de los aeropuertos de Madrid (humedad
+  máxima y viento mínimo de madrugada); **mar de nubes** con el perfil vertical (techo de la capa
+  baja, inversión) frente a la altura del spot.
+- **Validación** (`validar.py`, workflow *Validar notas*): niebla AUC 0,92 sobre 11 792 madrugadas;
+  amanecer/atardecer AUC 0,60 frente a 0,56 del modelo anterior con días fotografiados en Commons.
 
 ## En local
 ```bash

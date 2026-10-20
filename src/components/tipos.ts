@@ -14,4 +14,5 @@ export interface FilaRanking {
   motivos: string[];
   /** fotógrafos distintos en Commons: desempata y da contexto */
   autores: number;
+  dudosa: boolean;
 }

@@ -1,4 +1,4 @@
-import { calificacion, type Momento, NOMBRE_MOMENTO, type NotaMomento } from "@/lib/modelo";
+import { calificacion, type Momento, NOMBRE_MOMENTO, type NotaMomento, TEXTO_CONFIANZA } from "@/lib/modelo";
 import { IconoMomento } from "./Iconos";
 
 /** Tarjeta de una nota con su desglose: qué suma y qué resta. */
@@ -18,6 +18,11 @@ export default function Desglose({ momento, n, subtitulo }: { momento: Momento; 
             <IconoMomento momento={momento} /> {NOMBRE_MOMENTO[momento]}
           </h3>
           <p>{subtitulo}</p>
+          {n.confianza && (
+            <p className={`confianza c-${n.confianza}`} title="Misma nota calculada con las nubes de un segundo modelo (ECMWF)">
+              {TEXTO_CONFIANZA[n.confianza]}
+            </p>
+          )}
         </div>
       </header>
       <ul className="desglose" aria-label={`Desglose de la nota de ${NOMBRE_MOMENTO[momento]}`}>
