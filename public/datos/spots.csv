@@ -1,0 +1,176 @@
+spot_id,lat,lon,origen,fotos,fotografos,fotos_calidad,puntuacion,mejor_momento,pct_amanecer,pct_atardecer,pct_noche,meses_top,nombre,tipo_osm,dist_osm_m,direccion_vista
+7,40.9503,-4.12801,commons,198,38,22,17.32,día,6,16,3,"[3, 12, 5]",Mirador del Museo,mirador,35.0,
+40,40.99608,-3.6353,commons,59,8,17,12.82,día,2,8,0,"[6, 8, 5]",Mirador de Buitrago,mirador,310.0,
+3,40.64148,-4.15258,commons,30,6,1,8.37,día,0,13,0,"[8, 12, 9]",Risco de la Nava,cumbre,242.0,
+35,40.88742,-3.88668,commons,10,7,1,7.6,día,0,0,0,"[8, 2, 10]",Monasterio de Santa María de El Paular - 01,mirador,322.0,
+31,40.72706,-3.86224,commons,13,8,0,7.03,día,0,12,0,"[11, 2, 12]",EMBALSE DE SANTILLANA (6495112213),,,
+30,40.71734,-3.86905,commons,36,4,0,6.83,atardecer,0,48,16,"[1, 11, 12]",Cuenca Alta del manzanzares (28440225352),,,
+44,40.94571,-3.56285,commons,24,4,0,6.44,día,0,0,0,"[6, 9]",Embalse de El Villar,,,
+32,40.84929,-3.85962,commons,5,3,1,5.6,día,0,0,0,"[6, 3]",Cascada del Purgatorio,attraction,56.0,
+20,40.78804,-4.00192,commons,5,4,0,5.01,día,0,0,0,[1],Mirador del Puerto,mirador,181.0,-5
+43,40.87299,-3.6025,commons,4,2,1,4.85,día,0,0,0,"[7, 8]",Pico de la Miel - 01,,,
+16,40.78496,-3.97931,commons,5,3,0,4.56,desconocido,0,0,0,[],Alto de las Guarramillas (Bola del Mundo),cumbre,46.0,
+12,40.85116,-4.02909,commons,9,2,0,4.5,día,0,0,0,[5],"Puente de Navalacarreta (2 de mayo de 2015, Boca del Asno, Segovia) 09",,,
+25,40.80056,-3.93167,commons,8,2,0,4.39,día,0,0,0,[7],Cabeza de Hierro Mayor,cumbre,156.0,
+24,40.7639,-3.90441,commons,4,3,0,4.38,día,0,0,0,"[3, 6]",La Pedriza y el Manzanares 01,mirador,562.0,
+34,40.8513,-3.88487,commons,7,2,0,4.28,día,0,0,0,"[9, 11]",Presa Del Pradillo (37671219736),,,
+2,40.66401,-4.22319,commons,7,2,0,4.28,día,0,0,0,[8],Peguerinos (15056682383),,,
+39,40.9414,-3.7036,commons,6,2,0,4.14,día,0,0,0,[11],LaSierra9,,,
+11,40.78293,-4.05639,commons,6,2,0,4.14,desconocido,0,0,0,[],Ducha de los alemanes,attraction,30.0,
+8,40.86824,-4.13472,commons,5,2,0,3.99,atardecer,0,100,0,[9],Celebración en Navas de Riofrío,,,
+29,40.98,-3.9333,commons,4,2,0,3.81,día,0,0,0,[8],Embalse del río Pirón2,mirador,210.0,
+45,40.82819,-3.8298,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de Cossío,mirador,0.0,
+46,40.60081,-4.15641,osm,0,0,0,0.5,desconocido,0,0,0,[],Segúndo mirador de Abantos,mirador,0.0,
+47,40.86623,-3.78539,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador Chorrera de Mojonavalle,mirador,0.0,
+48,40.60957,-3.70583,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+49,40.9485,-4.11833,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador del Acueducto,mirador,0.0,SE
+50,40.73669,-3.89855,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+51,40.82602,-3.95682,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de la Gitana,mirador,0.0,210
+52,40.83451,-3.96611,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+53,40.80862,-3.95669,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+54,40.84381,-3.94935,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+55,40.76823,-3.94083,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador - Collado de los Pastores,mirador,0.0,
+56,40.7646,-4.0566,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de Vicente Aleixandre,mirador,0.0,
+57,40.78094,-3.90778,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+58,40.83774,-3.99234,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador del Cancho,mirador,0.0,
+59,40.63131,-3.94624,osm,0,0,0,0.5,desconocido,0,0,0,[],Cascada del Covacho,mirador,0.0,
+60,40.64063,-3.93453,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de Peñaliendre,mirador,0.0,
+61,40.85846,-3.89542,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de los Robledos,mirador,0.0,360
+62,40.7567,-4.00322,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de la Barranca,mirador,0.0,
+63,40.89418,-3.97984,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de Poyo Judio,mirador,0.0,
+64,40.9035,-3.94496,osm,0,0,0,0.5,desconocido,0,0,0,[],Puerto del Reventón,mirador,0.0,
+65,40.6083,-4.1671,osm,0,0,0,0.5,desconocido,0,0,0,[],Cruz del Despeñadero,mirador,0.0,
+66,40.6019,-3.77859,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de Valdeleganar,mirador,0.0,
+67,40.61041,-3.80652,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+68,40.86933,-3.79491,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+69,40.75231,-4.01038,osm,0,0,0,0.5,desconocido,0,0,0,[],"Mirador II, Cuerda de las Cabrillas",mirador,0.0,
+70,40.88954,-3.55732,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+71,40.84,-3.9529,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de Javier,mirador,0.0,
+72,40.75318,-4.00977,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador I,mirador,0.0,
+73,40.79501,-3.8347,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+74,40.80737,-3.85583,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+75,40.73742,-3.91491,osm,0,0,0,0.5,desconocido,0,0,0,[],Torreta de Los Porrones,mirador,0.0,
+76,40.81138,-3.77525,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de la Virgen,mirador,0.0,
+77,40.76329,-4.05691,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de Luis Rosales,mirador,0.0,
+78,40.66481,-4.16207,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+79,40.69525,-4.14336,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+80,40.89571,-3.80152,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+81,40.61642,-3.92161,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+82,40.86614,-3.73108,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+83,40.72337,-4.12927,osm,0,0,0,0.5,desconocido,0,0,0,[],Monumento al Arcipreste de Hita,mirador,0.0,
+84,41.00222,-3.81783,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de Navalcollado,mirador,0.0,
+85,40.61068,-3.92802,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de la Berzosa,mirador,0.0,
+86,41.01778,-3.83008,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador Las Cebedillas,mirador,0.0,
+87,41.01746,-3.83096,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+88,40.95638,-4.13846,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador con gran vista a Segovia,mirador,0.0,
+89,40.72461,-4.04995,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de la Pelona I,mirador,0.0,
+90,40.72471,-4.04986,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de la Pelona II,mirador,0.0,
+91,40.86572,-3.76192,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+92,40.87892,-3.98548,osm,0,0,0,0.5,desconocido,0,0,0,[],Cerro del Moño de la Tía Andrea,mirador,0.0,
+93,40.60172,-3.98549,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador del Guadarrama,mirador,0.0,E
+94,40.91458,-3.90475,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador Calderuelas,mirador,0.0,
+95,40.94902,-3.78986,osm,0,0,0,0.5,desconocido,0,0,0,[],Potro de herrar,mirador,0.0,
+96,40.97783,-3.83323,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador del Cuervo,mirador,0.0,
+97,40.72236,-4.04272,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+98,40.95994,-4.11227,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador del Terminillo,mirador,0.0,230
+99,40.94696,-4.23322,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador El Majano,mirador,0.0,
+100,40.74171,-4.09091,osm,0,0,0,0.5,desconocido,0,0,0,[],Collado del Rey,mirador,0.0,
+101,40.62601,-4.00361,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,90
+102,40.75586,-3.92263,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de la Pedriza,mirador,0.0,
+103,40.81329,-4.26918,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de La Risca,mirador,0.0,195
+104,40.73754,-4.06201,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,SW
+105,40.89302,-3.99651,osm,0,0,0,0.5,desconocido,0,0,0,[],El Mirador del Mar,mirador,0.0,S
+106,40.60405,-4.26597,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador a la Sierra de Gredos,mirador,0.0,WNW
+107,40.67589,-3.93878,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de la Dehesa de Arriba,mirador,0.0,NNW
+108,40.87972,-4.01997,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador del Embalse del Salto del Olvido,mirador,0.0,265
+109,40.61227,-3.88588,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de la Solana,mirador,0.0,
+110,40.94859,-4.11822,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador del Acueducto,mirador,0.0,SE
+111,40.94855,-4.11822,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador del Acueducto,mirador,0.0,SE
+112,41.01809,-3.8329,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+113,40.7372,-3.88887,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+114,40.86733,-3.77607,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+115,40.79497,-4.00909,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador Gallarza,mirador,0.0,
+116,40.65467,-4.05295,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+117,41.01591,-3.73593,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,260
+118,40.7413,-4.07401,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+119,40.86761,-3.73029,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+120,40.89121,-4.1593,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+121,40.80168,-4.01099,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de las Maravillas,mirador,0.0,
+122,40.60707,-4.14993,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de la Barranquilla,mirador,0.0,
+123,40.97123,-4.05697,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,90;-90;180;360;45;-45;135;225
+124,40.96194,-4.02916,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,105;-70;195;20;150;-35;230;65
+125,40.95234,-4.10689,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,-110
+126,40.94916,-4.09932,osm,0,0,0,0.5,desconocido,0,0,0,[],El Cielo de Segovia,mirador,0.0,-90
+127,40.70285,-3.77003,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,NW
+128,40.94737,-4.10242,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,0;70;
+129,40.60938,-4.13818,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de la Penosilla,mirador,0.0,
+130,40.91522,-4.03731,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,35
+131,40.91477,-4.03759,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,65
+132,40.91449,-4.03809,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,5
+133,40.93754,-4.00057,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+134,40.89242,-3.98839,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de El Esquinazo,mirador,0.0,
+135,40.94775,-4.0987,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,285
+136,40.86874,-3.66281,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de Valdemanco,mirador,0.0,
+137,40.93873,-4.10515,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,-65
+138,40.92847,-4.06549,osm,0,0,0,0.5,desconocido,0,0,0,[],El Balcón de Pilatos,mirador,0.0,-215;-65
+139,40.96887,-3.79994,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+140,40.97404,-3.82488,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+141,40.96207,-4.13417,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,-175
+142,40.62736,-3.88631,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador Monte Egido,mirador,0.0,
+143,40.87562,-4.15162,osm,0,0,0,0.5,desconocido,0,0,0,[],El Mirador,mirador,0.0,335
+144,40.87507,-4.10358,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de Cosme Cañas,mirador,0.0,
+145,40.92432,-4.06574,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de DYC y Palazuelos,mirador,0.0,45
+146,40.60758,-4.16764,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador Despeñadero de Riscal de Cabras o de Enmedio,mirador,0.0,
+147,40.6433,-4.12587,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+148,40.73918,-3.89759,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de Quebrantaherraduras,mirador,0.0,
+149,40.91493,-4.03742,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,65
+150,40.60239,-4.15797,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de la Arista de Abantos,mirador,0.0,
+151,40.92964,-3.98298,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador La Ruta,mirador,0.0,0;90;180;270
+152,40.82016,-3.78189,osm,0,0,0,0.5,desconocido,0,0,0,[],Piedra de Buda,mirador,0.0,
+153,40.75919,-4.0669,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+154,40.80563,-4.02874,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de Navalazor,mirador,0.0,
+155,40.8382,-3.95805,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de Vicus Albus,mirador,0.0,
+156,40.76086,-3.89246,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+157,40.64847,-3.80351,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+158,40.87301,-3.77303,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador del Norte,mirador,0.0,
+159,40.85623,-3.846,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+160,40.83133,-3.82424,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+161,40.89847,-4.04001,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+162,40.8201,-3.69855,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+163,40.94875,-3.77742,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador del Valle,mirador,0.0,0-180
+164,40.762,-4.04827,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+165,40.6455,-3.99591,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de la Dehesa de Collado Villalba,mirador,0.0,
+166,40.94839,-4.11189,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+167,40.95805,-4.03839,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,85
+168,40.9088,-3.67444,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+169,40.78564,-4.25078,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,65
+170,40.78395,-4.24909,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador del Puente el Deseo,mirador,0.0,325
+171,40.97895,-3.72943,osm,0,0,0,0.5,desconocido,0,0,0,[],El descanso de Manuel,mirador,0.0,
+172,40.98036,-3.72624,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador Valle Medio del Lozoya,mirador,0.0,
+173,40.98001,-3.72504,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador Dehesa Umbría,mirador,0.0,
+174,40.79474,-4.1268,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador del Milanillos,mirador,0.0,
+175,40.82525,-4.05159,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+176,40.62013,-3.69549,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+177,40.9567,-4.14471,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+178,40.7006,-4.18308,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,0
+179,40.68987,-4.19255,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+180,40.98216,-3.78834,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+181,40.83506,-4.04667,osm,0,0,0,0.5,desconocido,0,0,0,[],El Balcón de Toñi,mirador,0.0,
+182,40.60929,-4.15612,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+183,40.60246,-4.1503,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador del Bebo,mirador,0.0,
+184,40.8078,-4.08039,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+185,40.77395,-4.20733,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+186,40.91513,-4.03699,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,65
+187,40.78966,-4.24783,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+188,40.76086,-4.03291,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de Collado Albo,mirador,0.0,
+189,40.79387,-4.07008,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador del Cerro Minguete,mirador,0.0,
+190,40.87187,-3.95738,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de Fuerapinos,mirador,0.0,
+191,40.88397,-4.04672,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+192,41.00417,-4.01768,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+193,40.76293,-3.99941,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+194,40.774,-4.24058,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador del río Moros,mirador,0.0,
+195,41.01006,-3.61033,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador,mirador,0.0,
+196,40.87491,-4.04906,osm,0,0,0,0.5,desconocido,0,0,0,[],Cruz de la Gallega,mirador,0.0,
+197,41.09162,-3.90449,osm,0,0,0,0.5,desconocido,0,0,0,[],Puesto de vigilancia contraincendios de Santiuste de Pedraza,mirador,0.0,0-359
+198,40.83217,-4.21709,osm,0,0,0,0.5,desconocido,0,0,0,[],Puesto de vigilancia contraincendios de Otero de Herreros,mirador,0.0,
+199,40.87715,-4.13907,osm,0,0,0,0.5,desconocido,0,0,0,[],Mirador de la Tropa,mirador,0.0,
