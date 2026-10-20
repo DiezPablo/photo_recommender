@@ -1,0 +1,143 @@
+import { expect, type Page, test } from "@playwright/test";
+
+const CAPTURAS = process.env.CAPTURAS ?? "test-results/capturas";
+
+/** Falla si hay errores de consola o peticiones que fallen (salvo teselas del mapa, que son externas). */
+function vigilar(page: Page) {
+  const errores: string[] = [];
+  page.on("console", (m) => {
+    if (m.type() === "error") errores.push(`consola: ${m.text()}`);
+  });
+  page.on("pageerror", (e) => errores.push(`excepción: ${e.message}`));
+  page.on("response", (r) => {
+    const u = r.url();
+    if (r.status() >= 400 && !u.includes("tile.openstreetmap.org") && !u.includes("upload.wikimedia.org"))
+      errores.push(`HTTP ${r.status()} ${u}`);
+  });
+  return errores;
+}
+
+/** Espera (sin fallar) a que el mapa tenga teselas, para que las capturas lo muestren. */
+async function esperarTeselas(page: Page) {
+  await page.waitForFunction(() => document.querySelectorAll(".leaflet-tile-loaded").length > 3, null, { timeout: 8000 }).catch(() => {});
+}
+
+test("los datos publicados responden y son JSON válido sin NaN", async ({ request }) => {
+  for (const f of ["/datos/informe.json", "/datos/spots.geojson"]) {
+    const r = await request.get(f);
+    expect(r.status(), f).toBe(200);
+    const texto = await r.text();
+    expect(texto).not.toMatch(/\bNaN\b|Infinity/);
+    JSON.parse(texto);
+  }
+  const fav = await request.get("/favicon.ico");
+  expect(fav.status()).toBe(200);
+});
+
+test("portada: ranking, mapa con marcadores y filtros", async ({ page }, info) => {
+  const errores = vigilar(page);
+  const r = await page.goto("/");
+  expect(r?.status()).toBe(200);
+  const filas = page.locator(".ranking .fila");
+  await expect(filas.first()).toBeVisible();
+  const n = await filas.count();
+  expect(n).toBeGreaterThan(0);
+
+  // notas ordenadas de mayor a menor
+  const notas = (await page.locator(".ranking .nota").allInnerTexts()).map(Number);
+  expect([...notas].sort((a, b) => b - a)).toEqual(notas);
+
+  // mapa con un marcador por spot
+  await expect(page.locator(".mapa-caja[data-listo=si]")).toBeVisible();
+  await expect(page.locator(".leaflet-marker-icon").first()).toBeVisible();
+  expect(await page.locator(".leaflet-marker-icon").count()).toBe(n);
+  await esperarTeselas(page);
+  await page.screenshot({ path: `${CAPTURAS}/${info.project.name}-portada-claro.png`, fullPage: false });
+
+  // filtro de tipo: atardecer
+  await page.getByRole("link", { name: "Atardecer" }).first().click();
+  await expect(page).toHaveURL(/\/dia\/0\/atardecer$/);
+  await expect(page.locator("h1")).toContainText("Atardecer");
+  // filtro de día: mañana
+  await page.getByRole("link", { name: /Mañana/ }).click();
+  await expect(page).toHaveURL(/\/dia\/1\/atardecer$/);
+  await expect(page.locator(".ranking .fila").first()).toBeVisible();
+  expect(errores).toEqual([]);
+});
+
+test("ficha de un spot: notas con desglose, sol, luna, Vía Láctea, fotos y cómo llegar", async ({ page }, info) => {
+  const errores = vigilar(page);
+  await page.goto("/");
+  const primera = page.locator(".ranking .fila").first();
+  const nombre = (await primera.locator("h3").innerText()).trim();
+  await primera.click();
+  await expect(page).toHaveURL(/\/spot\//);
+  await expect(page.locator("h1")).toHaveText(nombre);
+  const hoy = page.locator("details.dia").first();
+  await expect(hoy).toHaveAttribute("open", "");
+  await expect(hoy.locator(".nota-tarjeta")).toHaveCount(4);
+  await expect(hoy.locator(".desglose li").first()).toBeVisible();
+  for (const t of ["Salida del sol", "Puesta del sol", "Hora dorada", "Azimut del sol", "Noche astronómica", "Fase", "Núcleo sobre 10°", "Contaminación lumínica"])
+    await expect(hoy.getByText(t, { exact: true }).first()).toBeVisible();
+  await expect(page.getByRole("link", { name: "Cómo llegar" })).toHaveAttribute("href", /google\.com\/maps\/dir/);
+  await expect(page.locator(".mapa-caja[data-listo=si]")).toBeVisible();
+  await expect(page.locator(".leaflet-overlay-pane path").first()).toBeVisible(); // líneas de azimut
+  const fotos = page.locator(".galeria figure");
+  if (await fotos.count()) await expect(fotos.first().locator("figcaption")).toContainText("©");
+  await esperarTeselas(page);
+  await page.screenshot({ path: `${CAPTURAS}/${info.project.name}-ficha-claro.png`, fullPage: true });
+  expect(errores).toEqual([]);
+});
+
+for (const tema of ["oscuro", "noche"] as const) {
+  test(`tema ${tema}: se aplica, persiste y no hay errores`, async ({ page }, info) => {
+    const errores = vigilar(page);
+    await page.goto("/");
+    const titulo = tema === "oscuro" ? "Tema oscuro" : "Modo noche (rojo, para el campo)";
+    await page.getByRole("button", { name: titulo }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-tema", tema);
+    await page.reload();
+    await expect(page.locator("html")).toHaveAttribute("data-tema", tema);
+    await expect(page.locator(".leaflet-marker-icon").first()).toBeVisible();
+    const fondo = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+    if (tema === "noche") expect(fondo).toBe("rgb(0, 0, 0)");
+    await esperarTeselas(page);
+    await page.screenshot({ path: `${CAPTURAS}/${info.project.name}-portada-${tema}.png` });
+    await page.locator(".ranking .fila").first().click();
+    await expect(page.locator("details.dia").first()).toBeVisible();
+    await esperarTeselas(page);
+    await page.screenshot({ path: `${CAPTURAS}/${info.project.name}-ficha-${tema}.png`, fullPage: true });
+    expect(errores).toEqual([]);
+  });
+}
+
+test("funciona sin JavaScript: ranking y filtros son enlaces", async ({ browser, baseURL }) => {
+  const ctx = await browser.newContext({ javaScriptEnabled: false, baseURL });
+  const page = await ctx.newPage();
+  await page.goto("/");
+  await expect(page.locator(".ranking .fila").first()).toBeVisible();
+  await page.getByRole("link", { name: "Noche" }).first().click();
+  await expect(page).toHaveURL(/\/dia\/0\/astro$/);
+  await page.locator(".ranking .fila").first().click();
+  await expect(page.locator("details.dia").first()).toBeVisible();
+  await ctx.close();
+});
+
+test("cerca de mí: distancia y filtro por radio", async ({ page, context }) => {
+  await context.grantPermissions(["geolocation"]);
+  await context.setGeolocation({ latitude: 40.4168, longitude: -3.7038 }); // Madrid, Sol
+  await page.goto("/");
+  if (await page.evaluate(() => window.isSecureContext)) {
+    await page.getByRole("button", { name: "Cerca de mí" }).click();
+  } else {
+    // http://IP no es contexto seguro y el navegador no da la ubicación: la dejamos guardada como haría el botón
+    await page.evaluate(() => localStorage.setItem("ubicacion", JSON.stringify({ lat: 40.4168, lon: -3.7038 })));
+    await page.reload();
+  }
+  await expect(page.locator(".fila .dist").first()).toBeVisible();
+  const total = await page.locator(".ranking .fila").count();
+  await page.getByLabel("Distancia máxima").selectOption("25");
+  const cerca = await page.locator(".ranking .fila").count().catch(() => 0);
+  expect(cerca).toBeLessThanOrEqual(total);
+  await page.getByLabel("Ordenar por").selectOption("distancia");
+});

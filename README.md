@@ -1,67 +1,72 @@
 # Spots de paisaje
 
-Bot de Telegram con Mini App de mapa para fotografía de paisaje: descubre spots a partir de lo que fotografían otros, puntúa cada día las condiciones de luz y te avisa cuando merece la pena salir. Todo con servicios gratuitos de uso personal.
+Web personal (uso no comercial) para decidir **si merece la pena salir a fotografiar** en la Sierra de
+Madrid: para cada spot y día da una nota de 0 a 10 para amanecer, atardecer, noche estrellada / Vía
+Láctea y niebla, con el desglose de qué suma y qué resta. Todo con datos gratuitos y sin claves.
+
+**Web:** https://photo-recommender.vercel.app
 
 ```
-GitHub Actions ──(cada 6 h)── condiciones.py ──► docs/datos/informe.json ─┐
-      │  (mensual) descubrir_spots.py ──► docs/datos/spots.geojson ───────┤
-      └─(tarde) notificar.py ──► aviso por Telegram                       │
+GitHub Actions ─ cada 3 h ─ condiciones.py ──► public/datos/informe.json ─┐  commit
+      │          mensual ── descubrir_spots.py ► public/datos/spots.geojson ┤  al repo
+      └─ (opcional) notificar.py ► aviso por Telegram                     │
                                                                           ▼
-GitHub Pages: docs/ = Mini App (mapa) + datos ◄── la lee ── Servidor del bot (FastAPI)
-                                                                ▲
-                                     Telegram ──(webhook)───────┘
+                                   Vercel: Next.js genera la web estática con esos JSON
 ```
 
 | Pieza | Qué hace |
 |---|---|
-| `descubrir_spots.py` | Wikimedia Commons + OpenStreetMap → spots agrupados, con nombre y momento típico (sin clave de API) |
-| `condiciones.py` | Open-Meteo + astral → nota 0–10 por spot: amanecer, atardecer, astro, niebla |
-| `notificar.py` | Aviso diario por Telegram con los mejores spots |
-| `docs/index.html` | Mini App: mapa con notas, filtros por día y momento, ranking, ficha, cómo llegar |
-| `app/` | Bot: `/hoy`, `/manana`, `/pasado`, `/spot nombre`, `/mapa`, ubicación → spots cercanos, guardar spot propio |
-| `.github/workflows/` | `datos.yml` (cada 6 h + aviso de la tarde) y `descubrir.yml` (mensual) |
-
-No hay base de datos: los datos viven en el propio repo, los publica GitHub Pages y el bot los lee de ahí. Los spots que guardas desde el bot se añaden a `mis_spots.csv` mediante la API de GitHub.
-
-## Puesta en marcha
-
-### 1. Datos en local
-```bash
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt -r requirements-bot.txt
-python descubrir_spots.py       # → salida/spots.geojson y salida/mapa.html
-mkdir -p docs/datos && cp salida/spots.geojson docs/datos/
-python condiciones.py --salida docs/datos/informe.json
-python -m http.server -d docs   # Mini App en http://localhost:8000
-```
-Otra zona: `python descubrir_spots.py --zona "Costa da Morte" --bbox=-9.35,42.85,-8.9,43.35` (con coordenadas negativas, `--bbox=` pegado).
-
-### 2. Bot de Telegram
-0. `cp .env.example .env`, rellénalo y cárgalo con `set -a; source .env; set +a`.
-1. **@BotFather** → `/newbot` → copia el token a `TELEGRAM_TOKEN`.
-2. `python -m app.polling` y escribe `/start` a tu bot: te dirá tu id. Ponlo en `ALLOWED_USER_IDS` (y en `TELEGRAM_CHAT_ID`) y reinicia.
-3. Prueba `/hoy`, `/spot …` o mándale una ubicación.
-
-### 3. Publicar
-1. **Repo en GitHub** con `salida/` y `docs/datos/` incluidos.
-2. **Mini App**: *Settings → Pages → Deploy from a branch → main /docs*. Su URL es `WEBAPP_URL`.
-   GitHub Pages en repos privados requiere plan de pago: haz el repo público (no contiene secretos) o usa Cloudflare Pages con carpeta de salida `docs`.
-3. **Secretos de Actions**: `TELEGRAM_TOKEN` y `TELEGRAM_CHAT_ID`. Lanza *Actions → Datos y alertas → Run workflow*.
-4. **Servidor del bot**: despliega el `Dockerfile` en el mismo hosting gratuito que Gota a Gota con las variables de `.env.example`. Al arrancar registra el webhook en `PUBLIC_URL/telegram/webhook`, los comandos y el botón **Mapa**.
-   Si el hosting duerme el servicio, la primera respuesta tardará unos segundos.
-5. **Opcional, guardar spots desde el bot**: token *fine-grained* de GitHub con permisos de lectura y escritura en *Contents* y *Actions* solo para este repo → `GITHUB_TOKEN` y `GITHUB_REPO`.
-
-## De dónde salen los spots
-- **Wikimedia Commons**: fotos geolocalizadas de la zona. Se quedan las de calidad reconocida por la comunidad (*Quality*, *Valued*, *Featured*) o con categorías de paisaje, y se descartan interiores, retratos, mapas, fauna y flora. Un spot necesita varias fotos de al menos dos autores distintos. Las fotos de ejemplo se muestran con autor y licencia.
-- **OpenStreetMap**: da nombre a los spots y añade los miradores sin fotos como spots de segunda fila (`--sin-miradores` para quitarlos).
-- **Tus spots**: `mis_spots.csv`, o mándale una ubicación al bot y pulsa *Guardar*.
-
-(Flickr sería mejor fuente por volumen, pero su API solo da claves a cuentas Pro.)
+| `descubrir_spots.py` | Wikimedia Commons (fotos geolocalizadas de paisaje) + OpenStreetMap (nombres y miradores) → spots, con fotos de ejemplo (autor y licencia), meses más fotografiados y contaminación lumínica |
+| `condiciones.py` | Open-Meteo + astronomía → `informe.json`: por spot y día, sol, luna, Vía Láctea, meteo y las 4 notas con desglose |
+| `astro.py` | Sol (astral), luna (astral + iluminación de Meeus) y núcleo de la Vía Láctea (cálculo propio) |
+| `contaminacion.py` | Atlas mundial del brillo artificial del cielo 2025 (D. Lorenz) → zona, mag/arcsec² y Bortle aproximado |
+| `puntuacion.py` | Las fórmulas de las notas (aditivas y explicables) |
+| `notificar.py` | Extra opcional: aviso diario por Telegram, desacoplado de la web |
+| `src/` | Web Next.js: ranking + mapa + ficha de spot, filtros por día, tipo y distancia, temas claro/oscuro/noche (rojo) |
+| `.github/workflows/` | `datos.yml` (cada 3 h), `descubrir.yml` (mensual), `pruebas.yml` (pytest + build + Playwright) |
 
 ## Cómo se puntúa
-- **Amanecer / atardecer**: ideal un 30–70 % de nubes altas o medias con pocas bajas. Se mira también la nubosidad baja a ~40 km en la dirección del sol: si hay un banco de nubes, el sol no las ilumina desde abajo y el cielo no se enciende. Lluvia y mala visibilidad restan.
-- **Astro**: nubosidad media en la noche astronómica, penalizada por la luna según su iluminación y el tiempo sobre el horizonte.
-- **Niebla**: humedad muy alta, temperatura casi igual al punto de rocío y viento flojo antes del amanecer.
-- **Reflejos**: en lagos, embalses y playas se avisa si el viento es casi nulo.
+Resumen (detalle en la propia web, página *Cómo se puntúa*, y en `puntuacion.py`):
+- **Amanecer / atardecer**: base 4; un lienzo de nubes altas o medias del 35-70 % suma +4; restan las
+  nubes bajas en el spot y, sobre todo, un banco de nubes bajas a 40 km **en la dirección del sol**
+  (impide que el sol ilumine el cielo desde abajo); restan lluvia y mala visibilidad; reflejos en agua
+  con viento casi nulo.
+- **Noche / Vía Láctea**: base 10; restan nubes, luna (solo si no deja ≥ 3 h de noche sin luna),
+  contaminación lumínica del spot, humedad y viento; suma si el núcleo de la Vía Láctea está alto sin luna.
+  Avisa de riesgo de rocío en la lente.
+- **Niebla**: humedad, margen al punto de rocío y viento flojo de madrugada; posible **mar de nubes** en
+  spots altos con nubes bajas alrededor.
+- 5 días de previsión, con aviso de fiabilidad decreciente (las nubes a más de 3 días son poco fiables).
 
-Son heurísticas de partida: ajusta los pesos de `nota_luz` y compañía según lo que veas en el campo.
+## En local
+```bash
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements-dev.txt
+python -m pytest -q                                   # tests del pipeline (sin red)
+
+python descubrir_spots.py --salida public/datos       # tarda: Commons limita las peticiones
+python condiciones.py                                 # → public/datos/informe.json
+
+npm ci
+npm run build && npm start                            # web en http://localhost:3000
+npx playwright test                                   # e2e en móvil y escritorio (capturas en test-results/)
+BASE_URL=https://photo-recommender.vercel.app npx playwright test   # contra producción
+```
+Otra zona: `python descubrir_spots.py --zona "Costa da Morte" --bbox=-9.35,42.85,-8.9,43.35` (con
+coordenadas negativas, `--bbox=` pegado). Spots propios: añádelos a `mis_spots.csv`.
+
+## Publicación
+- **Vercel** sirve la web (Next.js, configuración en `vercel.json`). Cada commit a `main`, incluidos los
+  de datos que hace GitHub Actions, redespliega la web.
+- **GitHub Actions** recalcula los datos (no hace falta ningún secreto). Para lanzar a mano:
+  *Actions → Datos → Run workflow* o *Descubrir spots → Run workflow* (con otra zona o bbox si quieres).
+- **Aviso por Telegram (opcional)**: crea el bot con @BotFather, saca tu chat con
+  `python notificar.py --chat-id` y añade los secretos `TELEGRAM_TOKEN` y `TELEGRAM_CHAT_ID` en
+  *Settings → Secrets and variables → Actions*. Sin ellos, el paso se salta.
+
+## Fuentes y licencias
+Previsión de [Open-Meteo](https://open-meteo.com/) (CC BY 4.0) · mapa y nombres © colaboradores de
+[OpenStreetMap](https://www.openstreetmap.org/copyright) (ODbL) · fotos de
+[Wikimedia Commons](https://commons.wikimedia.org/), siempre con autor y licencia · contaminación
+lumínica del [World Atlas of Artificial Night Sky Brightness 2025](https://djlorenz.github.io/astronomy/lp/)
+de D. Lorenz. Flickr se descartó porque su API solo da claves a cuentas Pro. Sin IA ni LLM.

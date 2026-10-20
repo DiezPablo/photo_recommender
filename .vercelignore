@@ -1,0 +1,8 @@
+cache
+tests
+e2e
+__pycache__
+*.py
+requirements*.txt
+registro.md
+ENCARGO.md

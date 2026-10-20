@@ -1,37 +1,37 @@
 # Spots de paisaje — contexto para Claude Code
 
-> **Dirección actual: lee `ENCARGO.md`.** Se abandona el bot de Telegram con Mini App en favor de una web en Vercel; `app/`, `Dockerfile` y `requirements-bot.txt` ya se han eliminado (Vercel los desplegaba como función Python y daba 500); lo que el resto de este fichero dice del bot queda obsoleto y debe actualizarse. Anota decisiones y problemas en `registro.md`.
-
-App personal (uso no comercial) para un fotógrafo aficionado en Madrid: bot de Telegram con Mini
-App de mapa que descubre spots de fotografía de paisaje, puntúa a diario las condiciones de luz y
-avisa. Todo con servicios gratuitos. **Sin IA/LLM por decisión del usuario.** Ver README para la arquitectura.
+Web personal (uso no comercial) para un fotógrafo aficionado en Madrid: para cada spot de paisaje y
+cielo nocturno, nota diaria 0-10 de amanecer, atardecer, noche/Vía Láctea y niebla, con desglose
+explicable. Todo gratuito y **sin IA/LLM por decisión del usuario**. El encargo original está en
+`ENCARGO.md`; las decisiones y problemas, en `registro.md` (añade ahí lo nuevo).
 
 ## Piezas
-- `descubrir_spots.py`: Wikimedia Commons (geosearch + categorías de calidad/paisaje, sin clave) → DBSCAN
-  haversine → nombres OSM (Overpass) → momento típico (astral); miradores OSM sin fotos como spots `origen=osm`.
-  Flickr descartado: su API solo da claves a cuentas Pro.
-- `condiciones.py`: Open-Meteo + astral → `docs/datos/informe.json` (nota 0-10 por spot y momento).
-- `notificar.py`: aviso HTML por Telegram; el bot reutiliza `construir_mensaje`.
-- `app/`: FastAPI con webhook (`app/main.py`), lógica en `app/bot.py`, modo local `python -m app.polling`.
-  Sin estado ni base de datos: lee los JSON publicados en `DATOS_URL` (por defecto `WEBAPP_URL/datos`)
-  y guarda spots propios en `mis_spots.csv` vía API de GitHub (`app/github.py`).
-- `docs/index.html`: Mini App estática (Leaflet + Telegram WebApp SDK), servida por GitHub Pages.
-- Workflows: `datos.yml` (cada 6 h, aviso a las 17:17 UTC) y `descubrir.yml` (mensual).
+- Pipeline Python (raíz): `descubrir_spots.py` (Commons + OSM → `public/datos/spots.geojson`),
+  `condiciones.py` (Open-Meteo + `astro.py` + `contaminacion.py` + `puntuacion.py` → `public/datos/informe.json`),
+  `comun.py` (ids de spot, JSON sin NaN), `notificar.py` (Telegram, opcional y desacoplado).
+- Web Next.js 16 (App Router) en `src/`: páginas estáticas generadas en el build leyendo `public/datos`.
+  `src/lib/datos.ts` solo servidor (usa `fs`); los componentes de cliente importan de `src/lib/modelo.ts`.
+  Rutas: `/` (= `/dia/0/todos`), `/dia/[d]/[tipo]`, `/spot/[id]`, `/acerca`. Filtros de día y tipo son
+  enlaces (funcionan sin JS); distancia y mapa (Leaflet, import dinámico) necesitan JS.
+- Workflows: `datos.yml` (cada 3 h y al cambiar el código de notas), `descubrir.yml` (mensual y al cambiar
+  el código de descubrimiento), `pruebas.yml` (pytest + typecheck + build + Playwright).
+  `datos` y `descubrir` comparten grupo de concurrencia y hacen commit de `public/datos` a `main`;
+  Vercel redespliega con cada commit.
 
-## Estado
-- Todo probado solo con datos simulados (Telegram y GitHub simulados, Mini App en Chromium headless).
-  **Nunca se ha ejecutado contra Commons, Overpass, Open-Meteo ni Telegram reales.**
-  Lo primero a validar con datos reales: las listas PALABRAS_PAISAJE / PALABRAS_EXCLUIR y el tamaño de tesela.
-
-## Próximos pasos
-1. Ejecutar `descubrir_spots.py` real (Sierra de Madrid); revisar spots con el usuario y ajustar
-   `--radio`, `--min-fotos`, `--min-autores` y la puntuación.
-2. `condiciones.py` real y validar notas contra algún atardecer real.
-3. Bot real con `python -m app.polling`; luego desplegar el Dockerfile y GitHub Pages.
+## Probar
+- `python -m pytest -q` (sin red: respuestas reales guardadas en `tests/fixtures`; astronomía
+  contrastada con USNO y astropy).
+- `npm run build && npx playwright test` (móvil y escritorio, capturas en `test-results/capturas`).
+  Con `BASE_URL=https://photo-recommender.vercel.app` prueba producción.
+- En el contenedor de Claude Code la salida va por proxy: Playwright sirve la web en la IP de la
+  máquina (no en localhost) para que Chromium cargue teselas y fotos; ver `playwright.config.ts`.
 
 ## Convenciones
-- Python 3.12, código, comentarios y mensajes en español.
+- Python 3.12, código, comentarios y textos de la web en español.
 - Secretos solo por variables de entorno (`.env`, ver `.env.example`); nunca en código ni commits.
-- JSON publicados sin NaN (`allow_nan=False`): el navegador no los acepta.
+- JSON publicados sin NaN (`comun.escribir_json` con `allow_nan=False`).
 - Bbox con coordenadas negativas: `--bbox=-4.30,40.60,-3.55,41.10` (con `=`).
-- Respetar límites de las APIs: caché en `cache/`, pausas y `maxlag` en Commons, User-Agent descriptivo (política de Wikimedia).
+- Respetar límites de las APIs: caché en `cache/`, `Retry-After` y `maxlag` en Commons, User-Agent
+  descriptivo, espejos de Overpass. Desde el contenedor de desarrollo Commons limita mucho (429):
+  el descubrimiento real corre en GitHub Actions.
+- No hacer commit de `public/datos` a mano si Actions está publicando (conflictos): `git pull` primero.

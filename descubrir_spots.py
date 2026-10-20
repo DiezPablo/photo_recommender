@@ -253,24 +253,50 @@ def clasificar_paisaje(categorias: list[str]) -> tuple[bool, bool]:
     return (calidad or paisaje) and not excluir, calidad
 
 
-def buscar_commons(bbox) -> pd.DataFrame:
+def descargar_commons(bbox) -> pd.DataFrame:
+    """Todas las fotos geolocalizadas de la bbox con sus categorías (sin filtrar)."""
     geo = geobuscar_commons(bbox)
     # Solo fotos (fuera vídeos, audios, PDF y SVG)
     ids = [pid for pid, g in geo.items()
            if re.search(r"\.(jpe?g|png|tiff?|webp)$", g["titulo"], re.I)]
     if not ids:
         return pd.DataFrame()
-    filas = detalles_commons(ids)
-    df = pd.DataFrame(filas)
+    df = pd.DataFrame(detalles_commons(ids))
     df["lat"] = df["id"].map(lambda i: geo[i]["lat"])
     df["lon"] = df["id"].map(lambda i: geo[i]["lon"])
+    return df
+
+
+def filtrar_paisaje(df: pd.DataFrame) -> pd.DataFrame:
+    if df.empty:
+        return df
     clas = df["categorias"].map(clasificar_paisaje)
-    df["paisaje"] = clas.map(lambda c: c[0])
-    df["calidad"] = clas.map(lambda c: c[1])
-    df["owner"] = df["autor_cuenta"].fillna(df["autor"])
+    df = df.assign(paisaje=clas.map(lambda c: c[0]), calidad=clas.map(lambda c: c[1]),
+                   owner=df["autor_cuenta"].fillna(df["autor"]))
     df = df[df.paisaje].copy()
     return df[["id", "owner", "autor", "licencia", "titulo", "lat", "lon", "calidad",
                "datetaken", "url_m", "web"]]
+
+
+def buscar_commons(bbox) -> pd.DataFrame:
+    return filtrar_paisaje(descargar_commons(bbox))
+
+
+# --------------------------------------------------------------- volcado ----
+# Las respuestas crudas se vuelcan para poder ajustar filtros y agrupación sin volver a pedir nada
+# a Commons (desde el contenedor de desarrollo la API limita mucho): python descubrir_spots.py --desde-volcado DIR
+def volcar(dir_: Path, fotos: pd.DataFrame, osm: pd.DataFrame) -> None:
+    dir_.mkdir(parents=True, exist_ok=True)
+    fotos.assign(datetaken=fotos["datetaken"].astype(str)).to_json(
+        dir_ / "fotos_commons.jsonl.gz", orient="records", lines=True, force_ascii=False)
+    osm.to_json(dir_ / "osm.jsonl.gz", orient="records", lines=True, force_ascii=False)
+
+
+def leer_volcado(dir_: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
+    fotos = pd.read_json(dir_ / "fotos_commons.jsonl.gz", lines=True, dtype={"autor_cuenta": str})
+    fotos["datetaken"] = pd.to_datetime(fotos["datetaken"].replace("NaT", None), errors="coerce")
+    osm = pd.read_json(dir_ / "osm.jsonl.gz", lines=True, dtype={"direction": str, "ele": str})
+    return fotos, osm
 
 
 # ------------------------------------------------------------ clustering ----
@@ -470,14 +496,29 @@ def main():
                    help="no añadir miradores de OSM sin fotos como spots")
     p.add_argument("--tz", default="Europe/Madrid")
     p.add_argument("--salida", default="salida")
+    p.add_argument("--desde-volcado", metavar="DIR",
+                   help="no pedir nada a las APIs: usar el volcado de una ejecución anterior")
     a = p.parse_args()
 
     bbox = tuple(float(v) for v in a.bbox.split(","))
     tz = ZoneInfo(a.tz)
 
-    print(f"[1/4] Wikimedia Commons: buscando fotos en {a.zona}…")
-    fotos = buscar_commons(bbox)
-    print(f"      {len(fotos)} fotos de paisaje ({int(fotos.calidad.sum()) if not fotos.empty else 0} de calidad)")
+    salida = Path(a.salida)
+    if a.desde_volcado:
+        crudas, osm = leer_volcado(Path(a.desde_volcado))
+        print(f"[1/4] Volcado: {len(crudas)} fotos geolocalizadas y {len(osm)} elementos OSM")
+    else:
+        print(f"[1/4] Wikimedia Commons: buscando fotos en {a.zona}…")
+        crudas = descargar_commons(bbox)
+        print("      OpenStreetMap: miradores, cumbres, cascadas…")
+        try:
+            osm = buscar_osm(bbox)
+        except requests.RequestException as e:
+            print(f"      Overpass no responde ({e}); sigo sin OSM")
+            osm = pd.DataFrame()
+        volcar(salida / "volcado", crudas, osm)
+    fotos = filtrar_paisaje(crudas)
+    print(f"      {len(crudas)} fotos geolocalizadas → {len(fotos)} de paisaje ({int(fotos.calidad.sum()) if not fotos.empty else 0} de calidad)")
 
     print("[2/4] Agrupando en spots (DBSCAN)…")
     if not fotos.empty:
@@ -487,13 +528,7 @@ def main():
         n = 0
     print(f"      {n} clusters válidos")
 
-    print("[3/4] OpenStreetMap: miradores, cumbres, cascadas…")
-    try:
-        osm = buscar_osm(bbox)
-    except requests.RequestException as e:
-        print(f"      Overpass no responde ({e}); sigo sin OSM")
-        osm = pd.DataFrame()
-    print(f"      {len(osm)} elementos OSM")
+    print(f"[3/4] OpenStreetMap: {len(osm)} elementos")
 
     print("[4/4] Resumiendo spots y contaminación lumínica…")
     spots = resumir_spots(fotos, osm, tz) if n else pd.DataFrame()
@@ -503,7 +538,6 @@ def main():
         spots = pd.concat([spots, extra], ignore_index=True) if not spots.empty else extra
     if spots.empty:
         raise SystemExit("No salen spots: prueba una zona más grande o baja --min-fotos / --min-autores")
-    salida = Path(a.salida)
     guardar(spots, salida, a.zona)
 
     con_fotos = spots[spots.origen == "commons"]

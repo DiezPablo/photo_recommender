@@ -13,6 +13,10 @@ on:
       bbox:
         description: "min_lon,min_lat,max_lon,max_lat"
         default: "-4.30,40.60,-3.55,41.10"
+      publicar:
+        description: "Publicar en la web (si no, solo se guarda como artefacto para revisar)"
+        type: boolean
+        default: true
   push:
     branches: [main]
     paths:
@@ -51,13 +55,21 @@ jobs:
           python descubrir_spots.py \
             --zona "${{ inputs.zona || 'Sierra de Madrid' }}" \
             --bbox="${{ inputs.bbox || '-4.30,40.60,-3.55,41.10' }}" \
-            --salida public/datos
+            --salida salida
 
-      - name: Recalcular previsión con los spots nuevos
-        run: python condiciones.py --salida public/datos/informe.json
+      - name: Previsión con los spots nuevos
+        run: python condiciones.py --spots salida/spots.geojson --salida salida/informe.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: spots
+          path: salida/
+          retention-days: 14
 
       - name: Publicar
+        if: github.event_name != 'workflow_dispatch' || inputs.publicar
         run: |
+          cp salida/spots.geojson salida/spots.csv salida/informe.json public/datos/
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
           git add public/datos
