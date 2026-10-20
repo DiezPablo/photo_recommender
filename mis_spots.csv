@@ -1,2 +1,4 @@
-nombre,lat,lon,tipo,momentos
-Ejemplo - cámbiame por tu spot,40.7900,-3.9800,mirador,atardecer;astro
+nombre,lat,lon,tipo
+# Añade aquí tus spots (una línea por spot, sin el # inicial). tipo es opcional:
+# mirador, cumbre, embalse, lago, playa, cascada, faro... (agua → aviso de reflejos)
+# Mirador de ejemplo,40.7900,-3.9800,mirador

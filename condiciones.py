@@ -1,28 +1,24 @@
 #!/usr/bin/env python3
 """
-condiciones.py — Nota diaria (0-10) de cada spot para foto de paisaje.
+condiciones.py — Condiciones y nota diaria (0-10) de cada spot para foto de paisaje y nocturna.
 
-Lee los spots (salida/spots.geojson de descubrir_spots.py y, opcionalmente,
-mis_spots.csv con tus spots propios), pide la previsión horaria a Open-Meteo y
-calcula con astral la posición del sol y la luna. Para cada spot y día evalúa:
+Lee los spots (spots.geojson de descubrir_spots.py y mis_spots.csv con los tuyos), pide la
+previsión horaria a Open-Meteo y calcula sol, luna y Vía Láctea (astro.py). Para cada spot y día:
 
-  - amanecer / atardecer: nubes por capas en el spot (lienzo de nubes altas y
-    medias, nubes bajas que tapan) y nubes bajas en el HORIZONTE, a ~40 km en
-    la dirección del sol: si allí hay un banco de nubes bajas, el sol no llega
-    a iluminar desde abajo y el cielo no se enciende.
-  - astro: nubosidad media durante la noche astronómica y luna (iluminación y
-    tiempo sobre el horizonte).
-  - niebla: humedad, diferencia temperatura-punto de rocío y viento antes del
-    amanecer (nieblas en valles, mares de nubes vistos desde arriba).
-  - extras: reflejos (viento muy flojo) en lagos, embalses y playas.
+  - amanecer / atardecer: nubes por capas en el spot y nubes bajas en el HORIZONTE, a ~40 km en
+    la dirección del sol (si allí hay un banco de nubes bajas el sol no ilumina el cielo).
+  - astro (noche estrellada / Vía Láctea): nubes, luna (y ventana sin luna), contaminación
+    lumínica del atlas, humedad, viento, rocío y núcleo de la Vía Láctea.
+  - niebla: humedad, margen hasta el punto de rocío y viento de madrugada; mar de nubes si el
+    spot está alto y hay nubes bajas alrededor.
+
+Cada nota lleva su desglose (puntuacion.py) para que la web explique qué suma y qué resta.
 
 Uso:
-  python condiciones.py                       # 3 días, spots en salida/spots.geojson
-  python condiciones.py --dias 2 --spots salida/spots.geojson --mis-spots mis_spots.csv
+  python condiciones.py                                   # 5 días → public/datos/informe.json
+  python condiciones.py --dias 3 --spots public/datos/spots.geojson --mis-spots mis_spots.csv
 
-mis_spots.csv (opcional): nombre,lat,lon[,momentos]   momentos = "atardecer;astro"
-
-Salida: salida/informe.json (lo consume notificar.py) y un resumen por pantalla.
+mis_spots.csv (opcional): nombre,lat,lon[,tipo]   (las líneas que empiezan por # se ignoran)
 Open-Meteo es gratuito y sin clave para uso no comercial.
 """
 from __future__ import annotations
@@ -30,147 +26,81 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import math
 import time
-from dataclasses import dataclass, asdict
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import pandas as pd
 import requests
-from astral import Observer
-from astral import moon as amoon
-from astral import sun as asun
+
+import astro
+from comun import USER_AGENT, escribir_json, id_spot
+from contaminacion import contaminacion
+from puntuacion import _v, nota_astro, nota_luz, nota_niebla
 
 OPEN_METEO_URL = "https://api.open-meteo.com/v1/forecast"
 VARIABLES = [
     "cloud_cover", "cloud_cover_low", "cloud_cover_mid", "cloud_cover_high",
-    "visibility", "precipitation_probability", "wind_speed_10m",
+    "visibility", "precipitation_probability", "wind_speed_10m", "wind_gusts_10m",
     "relative_humidity_2m", "dew_point_2m", "temperature_2m",
 ]
 KM_HORIZONTE = 40          # distancia del punto de control del horizonte
-LOTE_COORDS = 50           # coordenadas por petición a Open-Meteo
-TIPOS_AGUA = {"lago", "embalse", "playa", "cascada"}
+LOTE_COORDS = 100          # coordenadas por petición a Open-Meteo
+DIAS_POR_DEFECTO = 5
+TIPOS_AGUA = {"lago", "embalse", "playa", "cascada", "río", "costa"}
 CACHE = Path("cache")
 
 
-# ----------------------------------------------------------- utilidades ----
-def _clamp(x, lo=0.0, hi=1.0):
-    return max(lo, min(hi, x))
+def fiabilidad(indice_dia: int) -> str:
+    """La nubosidad prevista pierde mucha precisión a partir del tercer día."""
+    return "alta" if indice_dia <= 1 else "media" if indice_dia == 2 else "baja"
 
 
-def punto_destino(lat, lon, azimut_deg, km):
-    """Punto a `km` de (lat, lon) siguiendo el rumbo `azimut_deg` (0 = norte)."""
-    R = 6371.0
-    d = km / R
-    b = math.radians(azimut_deg)
-    la1, lo1 = math.radians(lat), math.radians(lon)
-    la2 = math.asin(math.sin(la1) * math.cos(d) + math.cos(la1) * math.sin(d) * math.cos(b))
-    lo2 = lo1 + math.atan2(math.sin(b) * math.sin(d) * math.cos(la1),
-                           math.cos(d) - math.sin(la1) * math.sin(la2))
-    return round(math.degrees(la2), 4), round(math.degrees(lo2), 4)
+def _hhmm(t: datetime | None) -> str | None:
+    return t.strftime("%H:%M") if t else None
 
 
-def _hhmm(t: datetime | None) -> str:
-    return t.strftime("%H:%M") if t else "—"
+def _tramo(par) -> list[str] | None:
+    return [_hhmm(par[0]), _hhmm(par[1])] if par else None
+
+
+def _r(x, n=0):
+    return None if x is None else round(x, n) if n else int(round(x))
 
 
 # ---------------------------------------------------------------- spots ----
-def cargar_spots(geojson: Path | None, csv: Path | None) -> pd.DataFrame:
-    filas = []
+def cargar_spots(geojson: Path | None, csv: Path | None) -> list[dict]:
+    spots: list[dict] = []
     if geojson and geojson.exists():
         for f in json.loads(geojson.read_text())["features"]:
             p = f["properties"]
             lon, lat = f["geometry"]["coordinates"]
-            filas.append({
-                "nombre": p.get("nombre") or f"Spot {p.get('spot_id')}",
-                "lat": lat, "lon": lon,
-                "tipo": p.get("tipo_osm") if isinstance(p.get("tipo_osm"), str) else None,
-                "momentos": momentos_desde_estadisticas(p),
-                "origen": p.get("origen") or "commons",   # commons (con fotos) u osm (mirador)
-            })
+            nombre = p.get("nombre") or f"Spot {p.get('spot_id')}"
+            spots.append({"id": p.get("id") or id_spot(nombre, lat, lon), "nombre": nombre,
+                          "lat": lat, "lon": lon, "tipo": p.get("tipo_osm"),
+                          "origen": p.get("origen") or "commons",
+                          "contaminacion": p.get("contaminacion")})
     if csv and csv.exists():
-        for r in pd.read_csv(csv).itertuples():
-            m = getattr(r, "momentos", None)
-            filas.append({
-                "nombre": r.nombre, "lat": float(r.lat), "lon": float(r.lon),
-                "tipo": getattr(r, "tipo", None) if isinstance(getattr(r, "tipo", None), str) else None,
-                "momentos": (m.split(";") if isinstance(m, str) and m
-                             else ["amanecer", "atardecer", "astro", "niebla"]),
-                "origen": "propio",
-            })
-    if not filas:
-        raise SystemExit("No hay spots: ejecuta descubrir_spots.py o crea mis_spots.csv")
-    return pd.DataFrame(filas)
-
-
-def momentos_desde_estadisticas(p: dict) -> list[str]:
-    """Qué momentos evaluar según cuándo lo fotografía la gente (fechas de captura en Commons)."""
-    m = []
-    if (p.get("pct_amanecer") or 0) >= 15 or p.get("mejor_momento") == "amanecer":
-        m.append("amanecer")
-    if (p.get("pct_atardecer") or 0) >= 15 or p.get("mejor_momento") == "atardecer":
-        m.append("atardecer")
-    if (p.get("pct_noche") or 0) >= 10 or p.get("mejor_momento") == "noche":
-        m.append("astro")
-    if not m:
-        m = ["amanecer", "atardecer"]
-    m.append("niebla")  # barato de evaluar y a veces es la sorpresa del día
-    return m
-
-
-# ------------------------------------------------------------------ sol ----
-@dataclass
-class Sol:
-    amanecer: datetime
-    atardecer: datetime
-    az_amanecer: float
-    az_atardecer: float
-    dorada_manana: tuple[datetime, datetime]
-    dorada_tarde: tuple[datetime, datetime]
-    azul_manana: tuple[datetime, datetime]
-    azul_tarde: tuple[datetime, datetime]
-    noche_ini: datetime | None   # anochecer astronómico (sol a -18°)
-    noche_fin: datetime | None   # amanecer astronómico del día siguiente
-
-
-def calcular_sol(lat, lon, dia: date, tz: ZoneInfo) -> Sol:
-    o = Observer(latitude=lat, longitude=lon)
-    s = asun.sun(o, date=dia, tzinfo=tz)
-    try:
-        noche_ini = asun.dusk(o, date=dia, tzinfo=tz, depression=18)
-        noche_fin = asun.dawn(o, date=dia + timedelta(days=1), tzinfo=tz, depression=18)
-    except ValueError:  # en verano y latitudes altas puede no haber noche astronómica
-        noche_ini = noche_fin = None
-    return Sol(
-        amanecer=s["sunrise"], atardecer=s["sunset"],
-        az_amanecer=asun.azimuth(o, s["sunrise"]),
-        az_atardecer=asun.azimuth(o, s["sunset"]),
-        dorada_manana=asun.golden_hour(o, dia, asun.SunDirection.RISING, tz),
-        dorada_tarde=asun.golden_hour(o, dia, asun.SunDirection.SETTING, tz),
-        azul_manana=asun.blue_hour(o, dia, asun.SunDirection.RISING, tz),
-        azul_tarde=asun.blue_hour(o, dia, asun.SunDirection.SETTING, tz),
-        noche_ini=noche_ini, noche_fin=noche_fin,
-    )
-
-
-def luna_en_ventana(lat, lon, ini: datetime, fin: datetime) -> tuple[float, float]:
-    """(iluminación 0-1, fracción de la ventana con la luna sobre el horizonte)."""
-    fase = amoon.phase(ini.date())                       # 0 = nueva, ~14 = llena
-    ilum = (1 - math.cos(2 * math.pi * fase / 29.53)) / 2
-    o = Observer(latitude=lat, longitude=lon)
-    muestras, arriba = 0, 0
-    t = ini
-    while t <= fin:
-        muestras += 1
-        arriba += amoon.elevation(o, t) > 0
-        t += timedelta(minutes=30)
-    return ilum, (arriba / muestras if muestras else 0.0)
+        df = pd.read_csv(csv, comment="#", skip_blank_lines=True)
+        for r in df.itertuples():
+            tipo = getattr(r, "tipo", None)
+            spots.append({"id": id_spot(r.nombre, float(r.lat), float(r.lon)), "nombre": r.nombre,
+                          "lat": float(r.lat), "lon": float(r.lon),
+                          "tipo": tipo if isinstance(tipo, str) else None,
+                          "origen": "propio", "contaminacion": None})
+    if not spots:
+        raise SystemExit("No hay spots: ejecuta descubrir_spots.py o añade alguno a mis_spots.csv")
+    vistos, unicos = set(), []
+    for s in spots:
+        if s["id"] not in vistos:
+            vistos.add(s["id"])
+            unicos.append(s)
+    return unicos
 
 
 # -------------------------------------------------------------- tiempo ----
-def _cache_get(clave, max_edad_s=3 * 3600):
+def _cache_get(clave, max_edad_s=2 * 3600):
     f = CACHE / f"om_{hashlib.sha1(clave.encode()).hexdigest()}.json"
     if f.exists() and time.time() - f.stat().st_mtime < max_edad_s:
         return json.loads(f.read_text())
@@ -182,10 +112,10 @@ def _cache_set(clave, datos):
     (CACHE / f"om_{hashlib.sha1(clave.encode()).hexdigest()}.json").write_text(json.dumps(datos))
 
 
-def pedir_tiempo(coords: list[tuple[float, float]], dias: int, tz_nombre: str) -> list[pd.DataFrame]:
-    """Previsión horaria para una lista de (lat, lon). Devuelve un DataFrame por coordenada,
-    indexado por hora local (naive)."""
-    resultados: list[pd.DataFrame] = []
+def pedir_tiempo(coords: list[tuple[float, float]], dias: int, tz_nombre: str) -> list[dict]:
+    """Previsión horaria para una lista de (lat, lon). Devuelve por coordenada
+    {"elevacion": m, "horas": DataFrame indexado por hora local (naive)}."""
+    resultados: list[dict] = []
     for i in range(0, len(coords), LOTE_COORDS):
         lote = coords[i:i + LOTE_COORDS]
         params = {
@@ -193,189 +123,234 @@ def pedir_tiempo(coords: list[tuple[float, float]], dias: int, tz_nombre: str) -
             "longitude": ",".join(str(c[1]) for c in lote),
             "hourly": ",".join(VARIABLES),
             "timezone": tz_nombre,
-            "forecast_days": min(dias + 1, 16),
+            "forecast_days": min(dias + 1, 16),   # +1: la última noche acaba al día siguiente
         }
         clave = json.dumps(params, sort_keys=True)
         datos = _cache_get(clave)
         if datos is None:
-            r = requests.get(OPEN_METEO_URL, params=params, timeout=60)
-            r.raise_for_status()
-            datos = r.json()
+            for intento in range(5):
+                try:
+                    r = requests.get(OPEN_METEO_URL, params=params, timeout=90,
+                                     headers={"User-Agent": USER_AGENT})
+                except requests.RequestException as e:   # cortes de conexión puntuales
+                    print(f"  Open-Meteo: {e.__class__.__name__}, reintento")
+                    time.sleep(5 * (intento + 1))
+                    continue
+                if r.status_code in (429, 502, 503, 504):
+                    time.sleep(10 * (intento + 1))
+                    continue
+                r.raise_for_status()
+                datos = r.json()
+                break
+            if datos is None:
+                raise SystemExit("Open-Meteo no responde")
             _cache_set(clave, datos)
         if isinstance(datos, dict):      # una sola coordenada → objeto, varias → lista
             datos = [datos]
         for d in datos:
             df = pd.DataFrame(d["hourly"])
             df["time"] = pd.to_datetime(df["time"])
-            resultados.append(df.set_index("time"))
+            resultados.append({"elevacion": d.get("elevation"), "horas": df.set_index("time")})
     return resultados
 
 
-def fila_en(df: pd.DataFrame, t: datetime) -> pd.Series:
-    """Fila de la hora más cercana a t."""
+def fila_en(df: pd.DataFrame, t: datetime) -> dict:
+    """Valores de la hora más cercana a t (interpolar no aporta: el modelo es horario)."""
     t = pd.Timestamp(t.replace(tzinfo=None))
-    return df.iloc[df.index.get_indexer([t], method="nearest")[0]]
+    return df.iloc[df.index.get_indexer([t], method="nearest")[0]].to_dict()
 
 
 def filas_entre(df: pd.DataFrame, ini: datetime, fin: datetime) -> pd.DataFrame:
     return df.loc[pd.Timestamp(ini.replace(tzinfo=None)):pd.Timestamp(fin.replace(tzinfo=None))]
 
 
-# --------------------------------------------------------------- notas ----
-def _v(fila, col, defecto=0.0):
-    v = fila.get(col, defecto)
-    return defecto if v is None or (isinstance(v, float) and math.isnan(v)) else float(v)
-
-
-def nota_luz(local: pd.Series, horizonte: pd.Series) -> tuple[float, str]:
-    """Amanecer/atardecer. Ideal: 30-70 % de nubes altas o medias, pocas bajas
-    en el spot y horizonte despejado para que el sol las ilumine desde abajo."""
-    L, M, H = _v(local, "cloud_cover_low"), _v(local, "cloud_cover_mid"), _v(local, "cloud_cover_high")
-    Lh = _v(horizonte, "cloud_cover_low")
-    P = _v(local, "precipitation_probability")
-    V = _v(local, "visibility", 20000)
-
-    lienzo = max(H, 0.8 * M)
-    if lienzo <= 50:
-        nota = 3 + 7 * lienzo / 50         # cielo despejado: correcto pero plano
-    else:
-        nota = 10 - 8 * (lienzo - 50) / 50  # cubierto de nubes altas: se apaga
-    nota *= 1 - 0.7 * _clamp((L - 40) / 60)    # nubes bajas en el propio spot
-    nota *= 1 - 0.8 * _clamp((Lh - 30) / 70)   # banco de nubes bajas en el horizonte
-    nota *= 1 - 0.6 * P / 100
-    if V < 3000:
-        nota *= 0.6
-    elif V < 10000:
-        nota *= 0.85
-
-    partes = [f"altas {H:.0f}% · medias {M:.0f}% · bajas {L:.0f}%",
-              "horizonte despejado" if Lh < 30 else f"horizonte con bajas {Lh:.0f}%"]
-    if P >= 30:
-        partes.append(f"lluvia {P:.0f}%")
-    if V < 10000:
-        partes.append(f"visibilidad {V / 1000:.0f} km")
-    return round(_clamp(nota, 0, 10), 1), " · ".join(partes)
-
-
-def nota_astro(noche: pd.DataFrame, ilum: float, frac_luna: float) -> tuple[float, str]:
-    if noche.empty:
-        return 0.0, "sin noche astronómica"
-    nubes = noche["cloud_cover"].mean()
-    hum = noche["relative_humidity_2m"].mean()
-    nota = 10 * (1 - nubes / 100) ** 1.5 * (1 - 0.85 * ilum * frac_luna)
-    if hum > 90:
-        nota *= 0.85    # rocío en la lente y calima
-    detalle = (f"nubes {nubes:.0f}% · luna {ilum * 100:.0f}% iluminada, "
-               f"{'fuera' if frac_luna < 0.1 else f'arriba el {frac_luna * 100:.0f}%'} de la noche")
-    return round(_clamp(nota, 0, 10), 1), detalle
-
-
-def nota_niebla(madrugada: pd.DataFrame) -> tuple[float, str]:
-    if madrugada.empty:
-        return 0.0, ""
-    mejor, detalle = 0.0, ""
-    for t, f in madrugada.iterrows():
-        rh, temp, td = _v(f, "relative_humidity_2m"), _v(f, "temperature_2m"), _v(f, "dew_point_2m")
-        viento = _v(f, "wind_speed_10m")
-        n = 10 * _clamp((rh - 85) / 12) * _clamp((3 - (temp - td)) / 3) * _clamp((15 - viento) / 12)
-        if n > mejor:
-            mejor = n
-            detalle = f"humedad {rh:.0f}% · T-Td {temp - td:.1f}° · viento {viento:.0f} km/h a las {t:%H:%M}"
-    return round(mejor, 1), detalle
+def _meteo_momento(f: dict, hz: dict) -> dict:
+    return {"nubes_bajas": _r(_v(f, "cloud_cover_low")), "nubes_medias": _r(_v(f, "cloud_cover_mid")),
+            "nubes_altas": _r(_v(f, "cloud_cover_high")), "nubes_horizonte": _r(_v(hz, "cloud_cover_low")),
+            "visibilidad_km": _r(_v(f, "visibility", 24000) / 1000, 1),
+            "lluvia": _r(_v(f, "precipitation_probability")), "viento": _r(_v(f, "wind_speed_10m")),
+            "temperatura": _r(_v(f, "temperature_2m"), 1), "humedad": _r(_v(f, "relative_humidity_2m"))}
 
 
 # ------------------------------------------------------------- informe ----
-def evaluar(spots: pd.DataFrame, dias: int, tz_nombre: str, hoy: date | None = None) -> list[dict]:
+def _horizontes(spot: dict, dia0: date, tz: ZoneInfo) -> dict:
+    sol0 = astro.calcular_sol(spot["lat"], spot["lon"], dia0, tz)
+    # El azimut del sol cambia menos de 1° al día: usamos el del primer día para todo el informe.
+    # Redondeamos a 0,05° (~5 km, menos que la rejilla del modelo) para compartir peticiones.
+    out = {}
+    for k, az in (("amanecer", sol0.az_amanecer), ("atardecer", sol0.az_atardecer)):
+        if az is not None:
+            la, lo = astro.punto_destino(spot["lat"], spot["lon"], az, KM_HORIZONTE)
+            out[k] = (round(la * 20) / 20, round(lo * 20) / 20)
+    return out
+
+
+def evaluar_spot_dia(spot: dict, dia: date, indice: int, tz: ZoneInfo,
+                     df: pd.DataFrame, hz: dict[str, pd.DataFrame], elevacion: float | None) -> dict:
+    sol = astro.calcular_sol(spot["lat"], spot["lon"], dia, tz)
+    noche = astro.calcular_noche(spot["lat"], spot["lon"], dia, tz, sol)
+    es_agua = (spot.get("tipo") or "") in TIPOS_AGUA
+    notas, meteo, avisos = {}, {}, []
+
+    for momento, hora in (("amanecer", sol.amanecer), ("atardecer", sol.atardecer)):
+        if hora is None or momento not in hz:
+            continue
+        f, fh = fila_en(df, hora), fila_en(hz[momento], hora)
+        n = nota_luz(f, fh, es_agua=es_agua, momento=momento)
+        notas[momento] = n.a_dict()
+        meteo[momento] = _meteo_momento(f, fh)
+
+    # ---- noche: usamos las horas sin luna si hay al menos una; si no, toda la noche
+    lp = (spot.get("contaminacion") or {}).get("zona")
+    if noche.ini and noche.fin:
+        tramos = [t for t in noche.sin_luna if (t[1] - t[0]).total_seconds() >= 1800] \
+            if noche.horas_sin_luna >= 1 else [(noche.ini, noche.fin)]
+        horas_utiles = pd.concat([filas_entre(df, a, b) for a, b in tramos]) if tramos else df.iloc[0:0]
+        if horas_utiles.empty:
+            horas_utiles = filas_entre(df, noche.ini, noche.fin)
+        nubes = float(horas_utiles["cloud_cover"].mean()) if not horas_utiles.empty else 100.0
+        hum = float(horas_utiles["relative_humidity_2m"].mean()) if not horas_utiles.empty else 0.0
+        viento = float(horas_utiles["wind_speed_10m"].mean()) if not horas_utiles.empty else 0.0
+        toda = filas_entre(df, noche.ini, noche.fin)
+        margen = (toda["temperature_2m"] - toda["dew_point_2m"]) if not toda.empty else pd.Series([99.0])
+        n = nota_astro(nubes, hum, viento, float(margen.min()), noche.horas_sin_luna,
+                       noche.horas_oscuras, noche.luna_iluminacion, lp, noche.vl_horas_sin_luna)
+        notas["astro"] = n.a_dict()
+        meteo["noche"] = {
+            "nubes": _r(nubes), "humedad": _r(hum), "viento": _r(viento),
+            "rachas": _r(float(toda["wind_gusts_10m"].max())) if not toda.empty else None,
+            "temp_min": _r(float(toda["temperature_2m"].min()), 1) if not toda.empty else None,
+            "punto_rocio": _r(float(toda["dew_point_2m"].max()), 1) if not toda.empty else None,
+            "margen_rocio": _r(float(margen.min()), 1),
+        }
+    else:
+        notas["astro"] = nota_astro(100, 0, 0, 99, 0, 0, 0, lp).a_dict()
+
+    if sol.amanecer:
+        madrugada = filas_entre(df, sol.amanecer - timedelta(hours=3), sol.amanecer + timedelta(hours=1))
+        bajas_alrededor = None
+        if hz:
+            bajas_alrededor = sum(_v(fila_en(h, sol.amanecer), "cloud_cover_low") for h in hz.values()) / len(hz)
+        notas["niebla"] = nota_niebla(madrugada.to_dict("records"), elevacion, bajas_alrededor).a_dict()
+
+    for n in notas.values():
+        avisos += [a for a in n["avisos"] if a not in avisos]
+
+    return {
+        "fecha": dia.isoformat(), "fiabilidad": fiabilidad(indice),
+        "sol": {"amanecer": _hhmm(sol.amanecer), "atardecer": _hhmm(sol.atardecer),
+                "az_amanecer": _r(sol.az_amanecer), "az_atardecer": _r(sol.az_atardecer),
+                "dorada_manana": _tramo(sol.dorada_manana), "dorada_tarde": _tramo(sol.dorada_tarde),
+                "azul_manana": _tramo(sol.azul_manana), "azul_tarde": _tramo(sol.azul_tarde)},
+        "noche": {
+            "ini": _hhmm(noche.ini), "fin": _hhmm(noche.fin), "horas": _r(noche.horas_oscuras, 1),
+            "luna": {"fase": noche.luna_fase, "iluminacion": _r(noche.luna_iluminacion * 100),
+                     "edad": _r(noche.luna_edad, 1), "salida": _hhmm(noche.luna_salida),
+                     "puesta": _hhmm(noche.luna_puesta),
+                     "sin_luna": [_tramo(t) for t in noche.sin_luna],
+                     "horas_sin_luna": _r(noche.horas_sin_luna, 1)},
+            "via_lactea": {"tramos": [_tramo(t) for t in noche.vl_tramos], "horas": _r(noche.vl_horas, 1),
+                           "horas_sin_luna": _r(noche.vl_horas_sin_luna, 1),
+                           "altura_max": _r(noche.vl_altura_max), "azimut_max": _r(noche.vl_azimut_max),
+                           "hora_max": _hhmm(noche.vl_hora_max),
+                           "azimut_ini": _r(noche.vl_azimut_ini), "azimut_fin": _r(noche.vl_azimut_fin)},
+        },
+        "meteo": meteo, "notas": notas, "avisos": avisos,
+    }
+
+
+def evaluar(spots: list[dict], dias: int, tz_nombre: str, hoy: date | None = None,
+            previsiones: list[dict] | None = None) -> dict:
     tz = ZoneInfo(tz_nombre)
     hoy = hoy or datetime.now(tz).date()
     fechas = [hoy + timedelta(days=i) for i in range(dias)]
 
-    # Coordenadas a pedir: cada spot + sus puntos de horizonte (amanecer y atardecer).
-    # El azimut del sol cambia muy poco en unos días: usamos el del primer día.
-    coords, idx = [], []
-    for s in spots.itertuples():
-        sol0 = calcular_sol(s.lat, s.lon, fechas[0], tz)
-        puntos = {
-            "spot": (round(s.lat, 4), round(s.lon, 4)),
-            "hz_amanecer": punto_destino(s.lat, s.lon, sol0.az_amanecer, KM_HORIZONTE),
-            "hz_atardecer": punto_destino(s.lat, s.lon, sol0.az_atardecer, KM_HORIZONTE),
-        }
-        pos = {}
-        for k, c in puntos.items():
-            pos[k] = len(coords)
+    for s in spots:
+        if s.get("contaminacion") is None:
+            try:
+                s["contaminacion"] = contaminacion(s["lat"], s["lon"])
+            except requests.RequestException as e:
+                print(f"  sin atlas de contaminación para {s['nombre']}: {e}")
+
+    # Coordenadas a pedir: cada spot + sus puntos de horizonte (sin repetir)
+    coords: list[tuple[float, float]] = []
+    pos_coord: dict[tuple[float, float], int] = {}
+
+    def indice(c):
+        if c not in pos_coord:
+            pos_coord[c] = len(coords)
             coords.append(c)
-        idx.append(pos)
-    previsiones = pedir_tiempo(coords, dias, tz_nombre)
+        return pos_coord[c]
 
-    resultados = []
-    for s, pos in zip(spots.itertuples(), idx):
-        df = previsiones[pos["spot"]]
-        for dia in fechas:
-            sol = calcular_sol(s.lat, s.lon, dia, tz)
-            base = {"spot": s.nombre, "lat": s.lat, "lon": s.lon,
-                    "tipo": s.tipo if isinstance(s.tipo, str) else None,
-                    "origen": s.origen, "fecha": dia.isoformat()}
+    planes = []
+    for s in spots:
+        hz = _horizontes(s, fechas[0], tz)
+        planes.append({"spot": indice((round(s["lat"], 4), round(s["lon"], 4))),
+                       "hz": {k: indice(c) for k, c in hz.items()}, "hz_coord": hz})
+    if previsiones is None:
+        print(f"  Open-Meteo: {len(coords)} puntos ({len(spots)} spots + horizontes)")
+        previsiones = pedir_tiempo(coords, dias, tz_nombre)
 
-            if "amanecer" in s.momentos:
-                f = fila_en(df, sol.amanecer)
-                nota, det = nota_luz(f, fila_en(previsiones[pos["hz_amanecer"]], sol.amanecer))
-                resultados.append({**base, "momento": "amanecer", "hora": _hhmm(sol.amanecer),
-                                   "ventana": f"azul {_hhmm(sol.azul_manana[0])} · dorada hasta {_hhmm(sol.dorada_manana[1])}",
-                                   "nota": nota, "detalle": det + _extra_reflejos(s.tipo, f)})
-
-            if "atardecer" in s.momentos:
-                f = fila_en(df, sol.atardecer)
-                nota, det = nota_luz(f, fila_en(previsiones[pos["hz_atardecer"]], sol.atardecer))
-                resultados.append({**base, "momento": "atardecer", "hora": _hhmm(sol.atardecer),
-                                   "ventana": f"dorada desde {_hhmm(sol.dorada_tarde[0])} · azul hasta {_hhmm(sol.azul_tarde[1])}",
-                                   "nota": nota, "detalle": det + _extra_reflejos(s.tipo, f)})
-
-            if "astro" in s.momentos and sol.noche_ini and sol.noche_fin:
-                ilum, frac = luna_en_ventana(s.lat, s.lon, sol.noche_ini, sol.noche_fin)
-                nota, det = nota_astro(filas_entre(df, sol.noche_ini, sol.noche_fin), ilum, frac)
-                resultados.append({**base, "momento": "astro",
-                                   "hora": f"{_hhmm(sol.noche_ini)}–{_hhmm(sol.noche_fin)}",
-                                   "ventana": "noche astronómica", "nota": nota, "detalle": det})
-
-            if "niebla" in s.momentos:
-                nota, det = nota_niebla(filas_entre(df, sol.amanecer - timedelta(hours=3),
-                                                    sol.amanecer + timedelta(hours=1)))
-                if nota >= 4:   # solo la reportamos cuando es probable
-                    resultados.append({**base, "momento": "niebla", "hora": _hhmm(sol.amanecer),
-                                       "ventana": "madrugada", "nota": nota, "detalle": det})
-    return sorted(resultados, key=lambda r: (r["fecha"], -r["nota"]))
+    salida = []
+    for s, plan in zip(spots, planes):
+        p = previsiones[plan["spot"]]
+        hz = {k: previsiones[i]["horas"] for k, i in plan["hz"].items()}
+        dias_spot = [evaluar_spot_dia(s, d, i, tz, p["horas"], hz, p["elevacion"])
+                     for i, d in enumerate(fechas)]
+        salida.append({
+            "id": s["id"], "nombre": s["nombre"], "lat": round(s["lat"], 5), "lon": round(s["lon"], 5),
+            "tipo": s.get("tipo"), "origen": s.get("origen"), "elevacion": _r(p["elevacion"]),
+            "contaminacion": s.get("contaminacion"),
+            "horizonte": {k: list(c) for k, c in plan["hz_coord"].items()},
+            "dias": dias_spot,
+        })
+    return {
+        "generado": datetime.now(tz).isoformat(timespec="minutes"),
+        "zona_horaria": tz_nombre,
+        "fechas": [f.isoformat() for f in fechas],
+        "fuentes": {
+            "tiempo": "Open-Meteo (open-meteo.com), CC BY 4.0",
+            "contaminacion": "World Atlas of Artificial Night Sky Brightness 2025, D. Lorenz (VIIRS)",
+            "mapa": "© colaboradores de OpenStreetMap (ODbL)",
+            "fotos": "Wikimedia Commons (autor y licencia en cada foto)",
+        },
+        "spots": salida,
+    }
 
 
-def _extra_reflejos(tipo, fila) -> str:
-    viento = _v(fila, "wind_speed_10m", 99)
-    if tipo in TIPOS_AGUA and viento < 6:
-        return f" · viento {viento:.0f} km/h: posibles reflejos"
-    return ""
+def mejores(informe: dict, fecha: str, n: int = 5) -> list[tuple[float, str, str]]:
+    filas = []
+    for s in informe["spots"]:
+        for d in s["dias"]:
+            if d["fecha"] == fecha:
+                filas += [(v["nota"], k, s["nombre"]) for k, v in d["notas"].items()]
+    return sorted(filas, reverse=True)[:n]
 
 
 def main():
     p = argparse.ArgumentParser(description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--spots", default="salida/spots.geojson")
+    p.add_argument("--spots", default="public/datos/spots.geojson")
     p.add_argument("--mis-spots", default="mis_spots.csv")
-    p.add_argument("--dias", type=int, default=3)
+    p.add_argument("--dias", type=int, default=DIAS_POR_DEFECTO)
     p.add_argument("--tz", default="Europe/Madrid")
-    p.add_argument("--salida", default="salida/informe.json")
+    p.add_argument("--salida", default="public/datos/informe.json")
     p.add_argument("--top", type=int, default=5, help="mejores por día en pantalla")
     a = p.parse_args()
 
-    spots = cargar_spots(Path(a.spots), Path(a.mis_spots))
+    try:
+        spots = cargar_spots(Path(a.spots), Path(a.mis_spots))
+    except SystemExit as e:   # aún no hay spots (primera ejecución): no es un fallo del workflow
+        print(e)
+        return
     print(f"Evaluando {len(spots)} spots para {a.dias} días…")
-    res = evaluar(spots, a.dias, a.tz)
-    salida = Path(a.salida)
-    salida.parent.mkdir(parents=True, exist_ok=True)
-    salida.write_text(json.dumps({"generado": datetime.now(ZoneInfo(a.tz)).isoformat(timespec="minutes"),
-                                  "resultados": res}, ensure_ascii=False, indent=1, allow_nan=False))
-    df = pd.DataFrame(res)
-    for fecha, g in df.groupby("fecha"):
+    informe = evaluar(spots, a.dias, a.tz)
+    escribir_json(Path(a.salida), informe)
+    for fecha in informe["fechas"]:
         print(f"\n== {fecha} ==")
-        print(g.head(a.top)[["nota", "momento", "hora", "spot", "detalle"]].to_string(index=False))
-    print(f"\nInforme completo en {salida}")
+        for nota, momento, nombre in mejores(informe, fecha, a.top):
+            print(f"  {nota:4.1f}  {momento:9}  {nombre}")
+    print(f"\nInforme en {a.salida} ({Path(a.salida).stat().st_size / 1024:.0f} KB)")
 
 
 if __name__ == "__main__":

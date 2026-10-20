@@ -1,0 +1,424 @@
+{
+ "navacerrada|2026-10-19": {
+  "lat": 40.79,
+  "lon": -3.98,
+  "fecha": "2026-10-19",
+  "sundata": [
+   {
+    "phen": "Begin Civil Twilight",
+    "time": "06:04"
+   },
+   {
+    "phen": "Rise",
+    "time": "06:31"
+   },
+   {
+    "phen": "Upper Transit",
+    "time": "12:01"
+   },
+   {
+    "phen": "Set",
+    "time": "17:30"
+   },
+   {
+    "phen": "End Civil Twilight",
+    "time": "17:57"
+   }
+  ],
+  "moondata": [
+   {
+    "phen": "Rise",
+    "time": "14:16"
+   },
+   {
+    "phen": "Upper Transit",
+    "time": "19:09"
+   }
+  ],
+  "fracillum": "58%",
+  "curphase": "Waxing Gibbous"
+ },
+ "navacerrada|2026-12-21": {
+  "lat": 40.79,
+  "lon": -3.98,
+  "fecha": "2026-12-21",
+  "sundata": [
+   {
+    "phen": "Begin Civil Twilight",
+    "time": "07:06"
+   },
+   {
+    "phen": "Rise",
+    "time": "07:37"
+   },
+   {
+    "phen": "Upper Transit",
+    "time": "12:14"
+   },
+   {
+    "phen": "Set",
+    "time": "16:51"
+   },
+   {
+    "phen": "End Civil Twilight",
+    "time": "17:22"
+   }
+  ],
+  "moondata": [
+   {
+    "phen": "Set",
+    "time": "04:40"
+   },
+   {
+    "phen": "Rise",
+    "time": "14:11"
+   },
+   {
+    "phen": "Upper Transit",
+    "time": "21:59"
+   }
+  ],
+  "fracillum": "90%",
+  "curphase": "Waxing Gibbous"
+ },
+ "navacerrada|2027-03-15": {
+  "lat": 40.79,
+  "lon": -3.98,
+  "fecha": "2027-03-15",
+  "sundata": [
+   {
+    "phen": "Begin Civil Twilight",
+    "time": "06:01"
+   },
+   {
+    "phen": "Rise",
+    "time": "06:28"
+   },
+   {
+    "phen": "Upper Transit",
+    "time": "12:25"
+   },
+   {
+    "phen": "Set",
+    "time": "18:22"
+   },
+   {
+    "phen": "End Civil Twilight",
+    "time": "18:50"
+   }
+  ],
+  "moondata": [
+   {
+    "phen": "Set",
+    "time": "01:29"
+   },
+   {
+    "phen": "Rise",
+    "time": "10:19"
+   },
+   {
+    "phen": "Upper Transit",
+    "time": "18:26"
+   }
+  ],
+  "fracillum": "48%",
+  "curphase": "Waxing Crescent"
+ },
+ "navacerrada|2027-06-21": {
+  "lat": 40.79,
+  "lon": -3.98,
+  "fecha": "2027-06-21",
+  "sundata": [
+   {
+    "phen": "Begin Civil Twilight",
+    "time": "04:11"
+   },
+   {
+    "phen": "Rise",
+    "time": "04:45"
+   },
+   {
+    "phen": "Upper Transit",
+    "time": "12:18"
+   },
+   {
+    "phen": "Set",
+    "time": "19:51"
+   },
+   {
+    "phen": "End Civil Twilight",
+    "time": "20:24"
+   }
+  ],
+  "moondata": [
+   {
+    "phen": "Upper Transit",
+    "time": "01:56"
+   },
+   {
+    "phen": "Set",
+    "time": "06:40"
+   },
+   {
+    "phen": "Rise",
+    "time": "21:50"
+   }
+  ],
+  "fracillum": "95%",
+  "curphase": "Waning Gibbous"
+ },
+ "navacerrada|2027-07-10": {
+  "lat": 40.79,
+  "lon": -3.98,
+  "fecha": "2027-07-10",
+  "sundata": [
+   {
+    "phen": "Begin Civil Twilight",
+    "time": "04:21"
+   },
+   {
+    "phen": "Rise",
+    "time": "04:53"
+   },
+   {
+    "phen": "Upper Transit",
+    "time": "12:21"
+   },
+   {
+    "phen": "Set",
+    "time": "19:49"
+   },
+   {
+    "phen": "End Civil Twilight",
+    "time": "20:22"
+   }
+  ],
+  "moondata": [
+   {
+    "phen": "Rise",
+    "time": "12:27"
+   },
+   {
+    "phen": "Upper Transit",
+    "time": "18:01"
+   },
+   {
+    "phen": "Set",
+    "time": "23:26"
+   }
+  ],
+  "fracillum": "47%",
+  "curphase": "Waxing Crescent"
+ },
+ "finisterre|2026-10-19": {
+  "lat": 42.88,
+  "lon": -9.27,
+  "fecha": "2026-10-19",
+  "sundata": [
+   {
+    "phen": "Begin Civil Twilight",
+    "time": "06:26"
+   },
+   {
+    "phen": "Rise",
+    "time": "06:55"
+   },
+   {
+    "phen": "Upper Transit",
+    "time": "12:22"
+   },
+   {
+    "phen": "Set",
+    "time": "17:48"
+   },
+   {
+    "phen": "End Civil Twilight",
+    "time": "18:17"
+   }
+  ],
+  "moondata": [
+   {
+    "phen": "Rise",
+    "time": "14:44"
+   },
+   {
+    "phen": "Upper Transit",
+    "time": "19:31"
+   }
+  ],
+  "fracillum": "58%",
+  "curphase": "Waxing Gibbous"
+ },
+ "finisterre|2026-12-21": {
+  "lat": 42.88,
+  "lon": -9.27,
+  "fecha": "2026-12-21",
+  "sundata": [
+   {
+    "phen": "Begin Civil Twilight",
+    "time": "07:32"
+   },
+   {
+    "phen": "Rise",
+    "time": "08:05"
+   },
+   {
+    "phen": "Upper Transit",
+    "time": "12:35"
+   },
+   {
+    "phen": "Set",
+    "time": "17:06"
+   },
+   {
+    "phen": "End Civil Twilight",
+    "time": "17:38"
+   }
+  ],
+  "moondata": [
+   {
+    "phen": "Set",
+    "time": "05:09"
+   },
+   {
+    "phen": "Rise",
+    "time": "14:25"
+   },
+   {
+    "phen": "Upper Transit",
+    "time": "22:21"
+   }
+  ],
+  "fracillum": "90%",
+  "curphase": "Waxing Gibbous"
+ },
+ "finisterre|2027-03-15": {
+  "lat": 42.88,
+  "lon": -9.27,
+  "fecha": "2027-03-15",
+  "sundata": [
+   {
+    "phen": "Begin Civil Twilight",
+    "time": "06:22"
+   },
+   {
+    "phen": "Rise",
+    "time": "06:50"
+   },
+   {
+    "phen": "Upper Transit",
+    "time": "12:46"
+   },
+   {
+    "phen": "Set",
+    "time": "18:43"
+   },
+   {
+    "phen": "End Civil Twilight",
+    "time": "19:11"
+   }
+  ],
+  "moondata": [
+   {
+    "phen": "Set",
+    "time": "02:00"
+   },
+   {
+    "phen": "Rise",
+    "time": "10:32"
+   },
+   {
+    "phen": "Upper Transit",
+    "time": "18:48"
+   }
+  ],
+  "fracillum": "48%",
+  "curphase": "Waxing Crescent"
+ },
+ "finisterre|2027-06-21": {
+  "lat": 42.88,
+  "lon": -9.27,
+  "fecha": "2027-06-21",
+  "sundata": [
+   {
+    "phen": "Begin Civil Twilight",
+    "time": "04:23"
+   },
+   {
+    "phen": "Rise",
+    "time": "04:58"
+   },
+   {
+    "phen": "Upper Transit",
+    "time": "12:39"
+   },
+   {
+    "phen": "Set",
+    "time": "20:19"
+   },
+   {
+    "phen": "End Civil Twilight",
+    "time": "20:55"
+   }
+  ],
+  "moondata": [
+   {
+    "phen": "Upper Transit",
+    "time": "02:18"
+   },
+   {
+    "phen": "Set",
+    "time": "06:55"
+   },
+   {
+    "phen": "Rise",
+    "time": "22:18"
+   }
+  ],
+  "fracillum": "95%",
+  "curphase": "Waning Gibbous"
+ },
+ "finisterre|2027-07-10": {
+  "lat": 42.88,
+  "lon": -9.27,
+  "fecha": "2027-07-10",
+  "sundata": [
+   {
+    "phen": "Begin Civil Twilight",
+    "time": "04:33"
+   },
+   {
+    "phen": "Rise",
+    "time": "05:08"
+   },
+   {
+    "phen": "Upper Transit",
+    "time": "12:42"
+   },
+   {
+    "phen": "Set",
+    "time": "20:17"
+   },
+   {
+    "phen": "End Civil Twilight",
+    "time": "20:51"
+   }
+  ],
+  "moondata": [
+   {
+    "phen": "Rise",
+    "time": "12:52"
+   },
+   {
+    "phen": "Upper Transit",
+    "time": "18:23"
+   },
+   {
+    "phen": "Set",
+    "time": "23:43"
+   }
+  ],
+  "fracillum": "47%",
+  "curphase": "Waxing Crescent"
+ }
+}

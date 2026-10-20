@@ -2,12 +2,13 @@
 """
 notificar.py — Envía por Telegram los mejores spots del día (o de mañana).
 
-Lee salida/informe.json (de condiciones.py), se queda con lo que supera el
+Extra opcional, desacoplado de la web. Lee public/datos/informe.json (de condiciones.py), se queda con lo que supera el
 umbral y manda un mensaje con hora, nota, motivo y enlace para llegar.
 
 Configuración (variables de entorno):
   TELEGRAM_TOKEN    token del bot (te lo da @BotFather)
   TELEGRAM_CHAT_ID  tu chat (sácalo con: python notificar.py --chat-id)
+  WEB_URL           opcional, para enlazar la ficha (https://photo-recommender.vercel.app)
 
 Uso:
   python notificar.py --prueba          # imprime el mensaje sin enviarlo
@@ -39,8 +40,26 @@ def elegir_fecha(arg: str | None, tz: ZoneInfo) -> str:
     return (ahora.date() + timedelta(days=1 if ahora.hour >= 14 else 0)).isoformat()
 
 
-def construir_mensaje(informe: dict, fecha: str, umbral: float, top: int) -> str | None:
-    del_dia = [r for r in informe["resultados"] if r["fecha"] == fecha]
+def filas_del_dia(informe: dict, fecha: str) -> list[dict]:
+    """Aplana el informe de condiciones.py: una fila por spot y tipo de salida."""
+    filas = []
+    for s in informe.get("spots", []):
+        d = next((d for d in s["dias"] if d["fecha"] == fecha), None)
+        if not d:
+            continue
+        horas = {"amanecer": d["sol"]["amanecer"], "atardecer": d["sol"]["atardecer"],
+                 "astro": f"{d['noche']['ini']}–{d['noche']['fin']}", "niebla": d["sol"]["amanecer"]}
+        for momento, n in d["notas"].items():
+            motivos = sorted(n["desglose"][1:], key=lambda f: -abs(f["puntos"]))[:2]
+            filas.append({"spot": s["nombre"], "id": s["id"], "lat": s["lat"], "lon": s["lon"],
+                          "momento": momento, "hora": horas.get(momento) or "", "nota": n["nota"],
+                          "detalle": " · ".join(f["texto"] for f in motivos)})
+    return filas
+
+
+def construir_mensaje(informe: dict, fecha: str, umbral: float, top: int,
+                      web: str | None = None) -> str | None:
+    del_dia = filas_del_dia(informe, fecha)
     buenos = sorted((r for r in del_dia if r["nota"] >= umbral), key=lambda r: -r["nota"])[:top]
     d = datetime.fromisoformat(fecha)
     cabecera = f"📷 <b>Fotografía de paisaje · {DIAS[d.weekday()]} {d.day}/{d.month}</b>"
@@ -50,15 +69,17 @@ def construir_mensaje(informe: dict, fecha: str, umbral: float, top: int) -> str
         mejor = max(del_dia, key=lambda r: r["nota"])
         return (f"{cabecera}\n\nNada destaca (umbral {umbral:g}). Lo mejor: "
                 f"{ICONOS.get(mejor['momento'], '')} {html.escape(mejor['spot'])} "
-                f"al {mejor['momento']} con {mejor['nota']:g}/10.")
+                f"({mejor['momento']}) con {mejor['nota']:g}/10.")
     lineas = [cabecera, ""]
     for r in buenos:
         mapa = f"https://www.google.com/maps/dir/?api=1&destination={r['lat']},{r['lon']}"
+        enlaces = f'<a href="{html.escape(mapa)}">Cómo llegar</a>'
+        if web:
+            enlaces += f' · <a href="{html.escape(web.rstrip("/"))}/spot/{r["id"]}">Ficha</a>'
         lineas.append(
             f"{ICONOS.get(r['momento'], '•')} <b>{r['nota']:g}/10 · {html.escape(r['spot'])}</b>\n"
-            f"{r['momento'].capitalize()} {r['hora']} · {html.escape(r.get('ventana', ''))}\n"
-            f"<i>{html.escape(r['detalle'])}</i>\n"
-            f'<a href="{html.escape(mapa)}">Cómo llegar</a>\n')
+            f"{r['momento'].capitalize()} {r['hora']}\n"
+            f"<i>{html.escape(r['detalle'])}</i>\n{enlaces}\n")
     return "\n".join(lineas).strip()
 
 
@@ -84,7 +105,7 @@ def mostrar_chat_id(token: str) -> None:
 def main():
     p = argparse.ArgumentParser(description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--informe", default="salida/informe.json")
+    p.add_argument("--informe", default="public/datos/informe.json")
     p.add_argument("--fecha")
     p.add_argument("--umbral", type=float, default=6.5)
     p.add_argument("--top", type=int, default=5)
@@ -100,7 +121,7 @@ def main():
 
     informe = json.loads(Path(a.informe).read_text())
     fecha = elegir_fecha(a.fecha, ZoneInfo(a.tz))
-    texto = construir_mensaje(informe, fecha, a.umbral, a.top)
+    texto = construir_mensaje(informe, fecha, a.umbral, a.top, os.environ.get("WEB_URL"))
     if texto is None:
         print(f"El informe no tiene datos para {fecha}")
         return

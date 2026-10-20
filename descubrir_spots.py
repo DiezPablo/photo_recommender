@@ -16,7 +16,8 @@ Pipeline:
      amanecer / atardecer / noche / día → para qué momento es bueno cada spot.
   5. OSM (Overpass): nombra los clusters con el mirador/cumbre/embalse más cercano
      y añade como spots los miradores sin fotos (con menos peso).
-  6. Salida: spots.geojson, spots.csv y mapa.html.
+  6. Contaminación lumínica de cada spot (atlas de D. Lorenz, contaminacion.py).
+  7. Salida: spots.geojson (para condiciones.py y la web) y spots.csv.
 
 Uso:
   pip install -r requirements.txt
@@ -48,14 +49,25 @@ from astral import Observer
 from astral.sun import sun
 from sklearn.cluster import DBSCAN
 
+from comun import USER_AGENT as USER_AGENT_DEFECTO, escribir_json, id_spot
+from contaminacion import contaminacion
+
 COMMONS_API = "https://commons.wikimedia.org/w/api.php"
-OVERPASS_URL = "https://overpass-api.de/api/interpreter"
+# Overpass tiene varios espejos públicos; si uno falla o corta la conexión probamos el siguiente
+OVERPASS_URLS = (
+    "https://overpass-api.de/api/interpreter",
+    "https://overpass.openstreetmap.fr/api/interpreter",
+    "https://overpass.kumi.systems/api/interpreter",
+)
 RADIO_TIERRA_M = 6_371_000
 # Wikimedia pide identificarse con un User-Agent descriptivo
-USER_AGENT = os.environ.get("USER_AGENT", "spots-paisaje/0.2 (proyecto personal no comercial)")
+USER_AGENT = os.environ.get("USER_AGENT", USER_AGENT_DEFECTO)
 SESION = requests.Session()
 SESION.headers["User-Agent"] = USER_AGENT
 
+COMMONS_REINTENTOS = 15
+COMMONS_PAUSA_S = 1.0  # entre peticiones: la API pública limita por IP
+FOTOS_POR_SPOT = 6
 TESELA_GRADOS = 0.07   # ~8 km: la geosearch de Commons limita el tamaño de la caja
 
 CATEGORIAS_CALIDAD = ("quality images", "valued images", "featured pictures")
@@ -114,17 +126,30 @@ def _commons(params: dict) -> dict:
     datos = _cache_get(clave)
     if datos is not None:
         return datos
-    for intento in range(4):
-        r = SESION.get(COMMONS_API, params=params, timeout=60)
-        if r.status_code == 429 or "maxlag" in r.text[:200]:
-            time.sleep(5 * (intento + 1))
+    for intento in range(COMMONS_REINTENTOS):
+        try:
+            r = SESION.get(COMMONS_API, params=params, timeout=60)
+        except requests.RequestException as e:
+            print(f"      Commons: {e.__class__.__name__}, reintento", flush=True)
+            time.sleep(10 * (intento + 1))
+            continue
+        if r.status_code == 429 or r.status_code >= 500 or '"maxlag"' in r.text[:300]:
+            # Respetamos lo que pide el servidor (Retry-After) y si no, espera creciente
+            espera = int(r.headers.get("Retry-After", 0) or 0) or 10 * (intento + 1)
+            print(f"      Commons pide esperar ({r.status_code}): {espera} s", flush=True)
+            time.sleep(min(espera, 120) + 1)
             continue
         r.raise_for_status()
         datos = r.json()
         if "error" in datos:
-            raise RuntimeError(f"Commons: {datos['error'].get('info')}")
+            info = datos["error"].get("info", "")
+            if "busy" in info or datos["error"].get("code") in ("maxlag", "ratelimited"):
+                print(f"      Commons ocupado ({info}); espero", flush=True)
+                time.sleep(15 * (intento + 1))
+                continue
+            raise RuntimeError(f"Commons: {info}")
         _cache_set(clave, datos)
-        time.sleep(0.2)
+        time.sleep(COMMONS_PAUSA_S)
         return datos
     raise RuntimeError("Commons no responde (demasiados reintentos)")
 
@@ -290,9 +315,18 @@ def buscar_osm(bbox) -> pd.DataFrame:
     consulta = f"[out:json][timeout:90];({cuerpo});out center tags;"
     datos = _cache_get(consulta)
     if datos is None:
-        r = SESION.post(OVERPASS_URL, data={"data": consulta}, timeout=120)
-        r.raise_for_status()
-        datos = r.json()
+        ultimo_error: Exception | None = None
+        for url in OVERPASS_URLS:
+            try:
+                r = SESION.post(url, data={"data": consulta}, timeout=120)
+                r.raise_for_status()
+                datos = r.json()
+                break
+            except (requests.RequestException, ValueError) as e:
+                print(f"      {url} falla ({e.__class__.__name__}); pruebo otro espejo")
+                ultimo_error = e
+        if datos is None:
+            raise requests.RequestException(f"Ningún espejo de Overpass responde: {ultimo_error}")
         _cache_set(consulta, datos)
     filas = []
     for e in datos.get("elements", []):
@@ -332,8 +366,10 @@ def resumir_spots(fotos: pd.DataFrame, osm: pd.DataFrame, tz: ZoneInfo,
     for cid, g in f.groupby("cluster"):
         lat, lon = g.lat.median(), g.lon.median()
         luz = g[g.luz != "desconocido"].luz.value_counts(normalize=True)
-        # Fotos de ejemplo: primero las de calidad reconocida
-        top = g.sort_values("calidad", ascending=False).dropna(subset=["url_m"]).head(3)
+        # Fotos de ejemplo: primero las de calidad reconocida, y a ser posible de autores distintos
+        candidatas = g.sort_values(["calidad", "datetaken"], ascending=[False, False]).dropna(subset=["url_m"])
+        top = pd.concat([candidatas.drop_duplicates("owner"), candidatas]).drop_duplicates("id").head(FOTOS_POR_SPOT)
+        meses = g.datetaken.dropna().dt.month.value_counts()
         autores = g.owner.nunique()
         n_calidad = int(g.calidad.sum())
         spot = {
@@ -347,11 +383,12 @@ def resumir_spots(fotos: pd.DataFrame, osm: pd.DataFrame, tz: ZoneInfo,
             "pct_amanecer": round(luz.get("amanecer", 0) * 100),
             "pct_atardecer": round(luz.get("atardecer", 0) * 100),
             "pct_noche": round(luz.get("noche", 0) * 100),
-            "meses_top": ",".join(str(int(m)) for m in
-                                  g.datetaken.dropna().dt.month.value_counts().head(3).index),
-            "fotos_ejemplo": list(top.url_m),
-            "enlaces_ejemplo": list(top.web),
-            "creditos_ejemplo": [f"{a} ({l})" if l else str(a) for a, l in zip(top.autor, top.licencia)],
+            "meses": [int(meses.get(m, 0)) for m in range(1, 13)],
+            "meses_top": [int(m) for m in meses.head(3).index],
+            "galeria": [{"url": r.url_m, "enlace": r.web, "autor": (r.autor or r.owner or "")[:80],
+                         "licencia": r.licencia or "", "titulo": (r.titulo or "")[:120],
+                         "fecha": r.datetaken.strftime("%Y-%m-%d") if not pd.isna(r.datetaken) else None}
+                        for r in top.itertuples()],
             "nombre": None, "tipo_osm": None, "dist_osm_m": None, "direccion_vista": None,
         }
         if not osm.empty:
@@ -364,7 +401,7 @@ def resumir_spots(fotos: pd.DataFrame, osm: pd.DataFrame, tz: ZoneInfo,
                 spot.update(nombre=e.nombre, tipo_osm=TIPOS_ES.get(e.tipo, e.tipo),
                             dist_osm_m=int(e.d),
                             direccion_vista=e.direction if isinstance(e.direction, str) else None)
-        if not spot["nombre"]:
+        if not isinstance(spot["nombre"], str) or not spot["nombre"].strip():
             # Último recurso: el título de la foto de mejor calidad
             spot["nombre"] = (top.titulo.iloc[0] if not top.empty else g.titulo.iloc[0])[:70]
         spots.append(spot)
@@ -390,8 +427,8 @@ def miradores_como_spots(miradores: pd.DataFrame, id_inicial: int) -> pd.DataFra
             "spot_id": id_inicial + k, "lat": round(r.lat, 5), "lon": round(r.lon, 5),
             "origen": "osm", "fotos": 0, "fotografos": 0, "fotos_calidad": 0,
             "puntuacion": 0.5, "mejor_momento": "desconocido",
-            "pct_amanecer": 0, "pct_atardecer": 0, "pct_noche": 0, "meses_top": "",
-            "fotos_ejemplo": [], "enlaces_ejemplo": [], "creditos_ejemplo": [],
+            "pct_amanecer": 0, "pct_atardecer": 0, "pct_noche": 0,
+            "meses": [0] * 12, "meses_top": [], "galeria": [],
             "nombre": r.nombre if isinstance(r.nombre, str) else "Mirador",
             "tipo_osm": "mirador", "dist_osm_m": 0,
             "direccion_vista": r.direction if isinstance(r.direction, str) else None,
@@ -400,74 +437,23 @@ def miradores_como_spots(miradores: pd.DataFrame, id_inicial: int) -> pd.DataFra
 
 
 # --------------------------------------------------------------- salida ----
-def _json_seguro(v):
-    """NaN no es JSON válido para el navegador: lo convertimos en null."""
-    if isinstance(v, float) and math.isnan(v):
-        return None
-    if isinstance(v, np.integer):
-        return int(v)
-    if isinstance(v, np.floating):
-        return None if np.isnan(v) else float(v)
-    return v
-
-
 def guardar(spots: pd.DataFrame, salida: Path, zona: str):
+    """spots.geojson (lo leen condiciones.py y la web) y spots.csv para revisar a mano."""
     salida.mkdir(parents=True, exist_ok=True)
-    spots.to_csv(salida / "spots.csv", index=False)
-    features = [{
-        "type": "Feature",
-        "geometry": {"type": "Point", "coordinates": [r.lon, r.lat]},
-        "properties": {k: _json_seguro(v) for k, v in r._asdict().items()
-                       if k not in ("lat", "lon", "Index")},
-    } for r in spots.itertuples()]
-    (salida / "spots.geojson").write_text(json.dumps(
-        {"type": "FeatureCollection", "features": features},
-        ensure_ascii=False, default=str, indent=1, allow_nan=False))
-    _mapa(spots, salida / "mapa.html", zona)
-
-
-COLORES = {"amanecer": "orange", "atardecer": "red", "noche": "darkblue",
-           "día": "green", "desconocido": "gray"}
-
-
-def _mapa(spots, ruta, zona):
-    import folium
-    centro = [spots.lat.mean(), spots.lon.mean()] if not spots.empty else [40.4, -3.7]
-    m = folium.Map(location=centro, zoom_start=10, tiles="OpenStreetMap")
-    capa_fotos = folium.FeatureGroup(name="Spots con fotos (Commons)").add_to(m)
-    capa_osm = folium.FeatureGroup(name="Miradores sin fotos (OSM)", show=False).add_to(m)
-    for r in spots.itertuples():
-        if r.origen == "osm":
-            folium.Marker([r.lat, r.lon], tooltip=r.nombre,
-                          icon=folium.Icon(color="lightgray", icon="eye-open")).add_to(capa_osm)
-            continue
-        imgs = "".join(f'<a href="{w}" target="_blank"><img src="{u}" width="90" '
-                       f'style="margin:2px"></a>'
-                       for u, w in zip(r.fotos_ejemplo, r.enlaces_ejemplo))
-        html = (f"<b>{htmlmod.escape(str(r.nombre))}</b><br>"
-                f"{r.tipo_osm if isinstance(r.tipo_osm, str) else ''}<br>"
-                f"Puntuación {r.puntuacion} · {r.fotografos} autores · {r.fotos} fotos "
-                f"({r.fotos_calidad} de calidad)<br>"
-                f"Mejor momento: <b>{r.mejor_momento}</b> "
-                f"(amanecer {r.pct_amanecer}% · atardecer {r.pct_atardecer}% · noche {r.pct_noche}%)<br>"
-                f"Meses más fotografiados: {r.meses_top}<br>{imgs}<br>"
-                f"<small>{htmlmod.escape(' · '.join(r.creditos_ejemplo))} · Wikimedia Commons</small><br>"
-                f'<a href="https://www.google.com/maps/dir/?api=1&destination={r.lat},{r.lon}" '
-                f'target="_blank">Cómo llegar</a>')
-        folium.CircleMarker(
-            [r.lat, r.lon], radius=5 + 2 * math.log1p(r.fotografos),
-            color=COLORES.get(r.mejor_momento, "gray"), fill=True, fill_opacity=0.8,
-            popup=folium.Popup(html, max_width=320), tooltip=str(r.nombre),
-        ).add_to(capa_fotos)
-    folium.LayerControl().add_to(m)
-    leyenda = ('<div style="position:fixed;bottom:20px;left:20px;z-index:999;background:white;'
-               'padding:8px;border-radius:6px;font-size:13px;box-shadow:0 1px 4px #0003">'
-               f'<b>{htmlmod.escape(zona)}</b><br>'
-               + "".join(f'<span style="color:{c}">●</span> {k}<br>'
-                         for k, c in COLORES.items() if k != "desconocido")
-               + "</div>")
-    m.get_root().html.add_child(folium.Element(leyenda))
-    m.save(str(ruta))
+    features = []
+    for r in spots.to_dict("records"):
+        lat, lon = r.pop("lat"), r.pop("lon")
+        r["id"] = id_spot(r["nombre"], lat, lon)
+        try:
+            r["contaminacion"] = contaminacion(lat, lon)
+        except requests.RequestException as e:
+            print(f"      sin atlas de contaminación para {r['nombre']}: {e}")
+            r["contaminacion"] = None
+        features.append({"type": "Feature", "geometry": {"type": "Point", "coordinates": [lon, lat]},
+                         "properties": r})
+    escribir_json(salida / "spots.geojson",
+                  {"type": "FeatureCollection", "zona": zona, "features": features}, indent=1)
+    spots.drop(columns=["galeria", "meses"]).to_csv(salida / "spots.csv", index=False)
 
 
 # ------------------------------------------------------------------ main ----
@@ -509,7 +495,7 @@ def main():
         osm = pd.DataFrame()
     print(f"      {len(osm)} elementos OSM")
 
-    print("[4/4] Resumiendo y generando mapa…")
+    print("[4/4] Resumiendo spots y contaminación lumínica…")
     spots = resumir_spots(fotos, osm, tz) if n else pd.DataFrame()
     miradores = miradores_sin_fotos(osm, spots)
     if not a.sin_miradores and not miradores.empty:
@@ -521,7 +507,7 @@ def main():
     guardar(spots, salida, a.zona)
 
     con_fotos = spots[spots.origen == "commons"]
-    print(f"\n{len(con_fotos)} spots con fotos · {len(spots) - len(con_fotos)} miradores OSM → {salida}/mapa.html\n")
+    print(f"\n{len(con_fotos)} spots con fotos · {len(spots) - len(con_fotos)} miradores OSM → {salida}/spots.geojson\n")
     if not con_fotos.empty:
         print(con_fotos[["nombre", "tipo_osm", "fotografos", "fotos", "fotos_calidad",
                          "mejor_momento", "puntuacion"]].head(15).to_string(index=False))

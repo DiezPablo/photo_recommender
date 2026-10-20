@@ -1,4 +1,5 @@
-# Una vez al mes vuelve a buscar spots en Wikimedia Commons y OSM y guarda el resultado en el repo.
+# Busca spots en Wikimedia Commons y OpenStreetMap, los guarda en public/datos/spots.geojson y
+# recalcula la previsión. Se lanza el día 1 de cada mes, a mano o al cambiar el código de descubrimiento.
 name: Descubrir spots
 
 on:
@@ -12,14 +13,24 @@ on:
       bbox:
         description: "min_lon,min_lat,max_lon,max_lat"
         default: "-4.30,40.60,-3.55,41.10"
+  push:
+    branches: [main]
+    paths:
+      - descubrir_spots.py
+      - contaminacion.py
+      - .github/workflows/descubrir.yml
 
 permissions:
   contents: write
-  actions: write
+
+concurrency:
+  group: publicar-datos
+  cancel-in-progress: false
 
 jobs:
   descubrir:
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -27,22 +38,30 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements.txt
+
+      # Las respuestas de Commons/Overpass se guardan entre ejecuciones: menos carga para Wikimedia
+      - uses: actions/cache@v4
+        with:
+          path: cache
+          key: apis-${{ github.run_id }}
+          restore-keys: apis-
+
       - name: Buscar spots
         run: |
           python descubrir_spots.py \
             --zona "${{ inputs.zona || 'Sierra de Madrid' }}" \
-            --bbox="${{ inputs.bbox || '-4.30,40.60,-3.55,41.10' }}"
-      - name: Guardar resultados
+            --bbox="${{ inputs.bbox || '-4.30,40.60,-3.55,41.10' }}" \
+            --salida public/datos
+
+      - name: Recalcular previsión con los spots nuevos
+        run: python condiciones.py --salida public/datos/informe.json
+
+      - name: Publicar
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          mkdir -p docs/datos && cp salida/spots.geojson docs/datos/spots.geojson
-          git add salida/spots.geojson salida/spots.csv salida/mapa.html docs/datos/spots.geojson
+          git add public/datos
           git diff --cached --quiet && exit 0
-          git commit -m "Actualizar spots"
-          git pull --rebase
-          git push
-      - name: Recalcular previsión con los spots nuevos
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh workflow run datos.yml -f enviar=false
+          git commit -m "Actualizar spots ($(date -u +%Y-%m-%d))"
+          for i in 1 2 3 4; do git pull --rebase && git push && exit 0; sleep $((i * 5)); done
+          exit 1

@@ -1,5 +1,13 @@
 cache/
 __pycache__/
+.pytest_cache/
 .venv/
 .env
-salida/informe.json
+salida/
+node_modules/
+.next/
+out/
+test-results/
+playwright-report/
+*.tsbuildinfo
+next-env.d.ts
