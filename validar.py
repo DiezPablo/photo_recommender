@@ -256,8 +256,18 @@ def validar_niebla() -> list[str]:
                     lluvia = float(met.loc[a - pd.Timedelta(hours=33):b]["precipitation"].sum())
                     p2, _ = prob_niebla_radiacion(madrugada, noche, lluvia)
                     p1 = max((niebla_v1(f) for f in madrugada), default=0.0)
+                    hm = met.loc[a:b]
+                    dpd = (hm["temperature_2m"] - hm["dew_point_2m"])
+                    i = dpd.idxmin() if not dpd.empty and dpd.notna().any() else None
                     filas.append({"estacion": est, "fecha": d.isoformat(), "mes": d.month, "positivo": hay,
-                                  "v1": p1, "v2": p2})
+                                  "v1": p1, "v2": p2,
+                                  # variables en bruto para ajustar el modelo fuera de línea
+                                  "rh_max": float(hm["relative_humidity_2m"].max()) if not hm.empty else None,
+                                  "dpd_min": float(dpd.min()) if i is not None else None,
+                                  "viento_en_dpd_min": float(hm.loc[i, "wind_speed_10m"]) if i is not None else None,
+                                  "viento_min": float(hm["wind_speed_10m"].min()) if not hm.empty else None,
+                                  "nubes_noche": float(pd.DataFrame(noche)["cloud_cover"].mean()) if noche else None,
+                                  "lluvia_36h": lluvia})
             d += timedelta(days=1)
     if not filas:
         return ["", "## Niebla: sin datos METAR"]
@@ -357,6 +367,9 @@ def main():
                 "v2_sin_camino": nota_luz(local, [], aire, momento=momento).valor,
                 "bajas": local.get("cloud_cover_low"), "medias": local.get("cloud_cover_mid"),
                 "altas": local.get("cloud_cover_high"), "camino40": camino[1]["low"],
+                "humedad": local.get("relative_humidity_2m"), "lluvia": local.get("precipitation"),
+                "lluvia_previa": lluvia_previa,
+                **{f"c{p['km']}_{k}": p[k] for p in camino for k in ("low", "mid", "high")},
                 "aod": aire["aod"], "polvo": aire["polvo"],
             })
         d += timedelta(days=1)
