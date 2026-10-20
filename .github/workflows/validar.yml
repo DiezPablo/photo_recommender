@@ -9,6 +9,7 @@ on:
     paths:
       - puntuacion.py
       - validar.py
+      - validacion/**
       - .github/workflows/validar.yml
 
 jobs:

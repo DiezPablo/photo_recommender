@@ -32,7 +32,7 @@ import requests
 
 import astro
 from comun import USER_AGENT
-from puntuacion import KM_CAMINO, _v, nota_luz
+from puntuacion import KM_CAMINO, _v, nota_luz, prob_niebla_radiacion
 
 COMMONS = "https://commons.wikimedia.org/w/api.php"
 ARCHIVO = "https://archive-api.open-meteo.com/v1/archive"
@@ -204,6 +204,81 @@ def nota_luz_v1(local: dict, horizonte_bajas: float) -> float:
     return max(0.0, min(10.0, n))
 
 
+# ---------------------------------------------------------------- niebla ----
+METAR = "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py"
+AEROPUERTOS = {"LEMD": (40.472, -3.561), "LEGT": (40.294, -3.724), "LEVS": (40.370, -3.785),
+               "LETO": (40.497, -3.446)}
+
+
+def metar(estacion: str) -> pd.DataFrame:
+    """Observaciones METAR (Iowa Environmental Mesonet): fenómenos y visibilidad (millas)."""
+    params = {"station": estacion, "data": ["wxcodes", "vsby"], "year1": DESDE.year, "month1": 1, "day1": 1,
+              "year2": HASTA.year, "month2": 12, "day2": 31, "tz": "Europe/Madrid", "format": "onlycomma",
+              "latlon": "no", "missing": "empty", "trace": "empty", "direct": "no", "report_type": [3, 4]}
+    r = SESION.get(METAR, params=params, timeout=600)
+    r.raise_for_status()
+    from io import StringIO
+    df = pd.read_csv(StringIO(r.text))
+    df["valid"] = pd.to_datetime(df["valid"])
+    return df.set_index("valid").sort_index()
+
+
+def niebla_v1(f: dict) -> float:
+    """Fórmula de niebla publicada hasta oct-2026 (puntuacion.py v1), en 0-1."""
+    rh, t, td, v = _v(f, "relative_humidity_2m"), _v(f, "temperature_2m"), _v(f, "dew_point_2m"), _v(f, "wind_speed_10m", 30)
+    c = lambda x: max(0.0, min(1.0, x))
+    return c((rh - 85) / 12) * c((3 - (t - td)) / 3) * c((15 - v) / 12)
+
+
+def validar_niebla() -> list[str]:
+    filas = []
+    for est, (lat, lon) in AEROPUERTOS.items():
+        try:
+            obs = metar(est)
+            met = era5(lat, lon, ["temperature_2m", "dew_point_2m", "relative_humidity_2m", "wind_speed_10m",
+                                  "cloud_cover", "precipitation"])
+        except (requests.RequestException, RuntimeError, ValueError) as e:
+            print(f"  {est}: sin datos ({e})", flush=True)
+            continue
+        print(f"  {est}: {len(obs)} METAR", flush=True)
+        d = DESDE
+        while d <= HASTA:
+            sol = astro.calcular_sol(lat, lon, d, TZ)
+            if sol.amanecer:
+                a = pd.Timestamp((sol.amanecer - timedelta(hours=3)).replace(tzinfo=None))
+                b = pd.Timestamp((sol.amanecer + timedelta(hours=1)).replace(tzinfo=None))
+                o = obs.loc[a:b]
+                if len(o) >= 3:
+                    wx = o["wxcodes"].fillna("").astype(str)
+                    hay = bool(wx.str.contains(r"FG").any() or (pd.to_numeric(o["vsby"], errors="coerce") < 0.62).any())
+                    madrugada = met.loc[a:b].to_dict("records")
+                    noche = met.loc[a - pd.Timedelta(hours=6):a].to_dict("records")
+                    lluvia = float(met.loc[a - pd.Timedelta(hours=33):b]["precipitation"].sum())
+                    p2, _ = prob_niebla_radiacion(madrugada, noche, lluvia)
+                    p1 = max((niebla_v1(f) for f in madrugada), default=0.0)
+                    filas.append({"estacion": est, "fecha": d.isoformat(), "mes": d.month, "positivo": hay,
+                                  "v1": p1, "v2": p2})
+            d += timedelta(days=1)
+    if not filas:
+        return ["", "## Niebla: sin datos METAR"]
+    df = pd.DataFrame(filas)
+    lineas = ["", "## Niebla al amanecer frente a METAR (FG o visibilidad < 1 km)", "",
+              f"{len(df)} madrugadas en {df.estacion.nunique()} aeropuertos, {int(df.positivo.sum())} con niebla "
+              f"({100 * df.positivo.mean():.1f} %).", "",
+              "| Modelo | AUC global | AUC mismo mes | Prob. media con niebla | Sin niebla |", "|---|---|---|---|---|"]
+    for clave in ("v1", "v2"):
+        glob = auc_por_mes([{**f, "mes": 0} for f in filas], clave)[0]
+        mes = auc_por_mes(filas, clave)[0]
+        lineas.append(f"| {clave} | {glob:.3f} | {mes:.3f} | {df[df.positivo][clave].mean():.2f} | "
+                      f"{df[~df.positivo][clave].mean():.2f} |")
+    lineas += ["", "| Prob. v2 | Madrugadas | % con niebla |", "|---|---|---|"]
+    for lo, hi in ((0, 0.1), (0.1, 0.3), (0.3, 0.5), (0.5, 0.7), (0.7, 1.01)):
+        t = df[(df.v2 >= lo) & (df.v2 < hi)]
+        lineas.append(f"| {lo:.1f}-{min(hi, 1):.1f} | {len(t)} | {100 * t.positivo.mean():.1f} % |")
+    df.to_csv(Path("salida/validacion") / "niebla_historica.csv", index=False)
+    return lineas
+
+
 # --------------------------------------------------------------- métricas ----
 def auc_por_mes(filas: list[dict], clave: str) -> tuple[float, int]:
     """AUC de los días positivos frente a los demás del mismo mes (pares dentro del mes)."""
@@ -319,6 +394,8 @@ def main():
         sub = df[df.momento == momento]
         for v in ("bajas", "medias", "altas", "camino40", "aod", "polvo"):
             lineas.append(f"| {momento} | {v} | {sub[sub.positivo][v].mean():.1f} | {sub[~sub.positivo][v].mean():.1f} |")
+    print("[4/4] Niebla frente a METAR de los aeropuertos de Madrid…", flush=True)
+    lineas += validar_niebla()
     texto = "\n".join(lineas)
     (salida / "validacion.md").write_text(texto)
     (salida / "resultados.json").write_text(json.dumps(resultados, indent=1))

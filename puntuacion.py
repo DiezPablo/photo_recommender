@@ -102,7 +102,7 @@ PESO_CAMINO = {15: 0.55, 40: 0.75, 80: 0.55, 150: 0.3}
 KM_CAMINO = tuple(PESO_CAMINO)
 
 
-PESO_MEDIAS = 0.85   # cuánto cuentan las nubes medias en el lienzo frente a las altas
+PESO_MEDIAS = 0.5    # validado: en ERA5 las medias suelen ser altostratos grises (validar.py, oct-2026)
 
 
 def lienzo(alta: float, media: float, peso_medias: float | None = None) -> float:
