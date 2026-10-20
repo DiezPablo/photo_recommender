@@ -16,24 +16,22 @@ function temaActual(): Tema {
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "oscuro" : "claro";
 }
 
+// El cambio de tema lo hace el script en línea de layout.tsx (funciona antes de que cargue React);
+// aquí solo se refleja qué botón está activo.
 export default function SelectorTema() {
   const [tema, setTema] = useState<Tema | null>(null);
-  useEffect(() => setTema(temaActual()), []);
-
-  function elegir(t: Tema) {
-    document.documentElement.dataset.tema = t;
-    try {
-      localStorage.setItem("tema", t);
-    } catch {}
-    setTema(t);
-    window.dispatchEvent(new CustomEvent("tema", { detail: t }));
-  }
+  useEffect(() => {
+    setTema(temaActual());
+    const f = (e: Event) => setTema((e as CustomEvent<Tema>).detail);
+    window.addEventListener("tema", f);
+    return () => window.removeEventListener("tema", f);
+  }, []);
 
   return (
     <div className="temas" role="group" aria-label="Tema de color">
       {TEMAS.map(({ id, titulo, Icono }) => (
         <button key={id} type="button" title={titulo} aria-label={titulo} aria-pressed={tema === id}
-          onClick={() => elegir(id)}>
+          data-tema-boton={id}>
           <Icono size={16} />
         </button>
       ))}

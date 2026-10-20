@@ -20,8 +20,12 @@ export const viewport: Viewport = {
   ],
 };
 
-// Aplica el tema guardado antes de pintar, para no ver un destello blanco en modo noche
-const scriptTema = `try{var t=localStorage.getItem("tema");if(t)document.documentElement.dataset.tema=t}catch(e){}`;
+// Aplica el tema guardado antes de pintar (sin destello blanco en modo noche) y atiende los botones de
+// tema desde el primer momento, sin esperar a que cargue React (en el campo la cobertura es mala).
+const scriptTema = `(function(){var d=document.documentElement;try{var t=localStorage.getItem("tema");if(t)d.dataset.tema=t}catch(e){}
+document.addEventListener("click",function(e){var b=e.target&&e.target.closest&&e.target.closest("[data-tema-boton]");if(!b)return;
+var t=b.getAttribute("data-tema-boton");d.dataset.tema=t;try{localStorage.setItem("tema",t)}catch(e){}
+window.dispatchEvent(new CustomEvent("tema",{detail:t}))})})()`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const { informe } = cargar();

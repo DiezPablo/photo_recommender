@@ -111,6 +111,13 @@ for (const tema of ["oscuro", "noche"] as const) {
   });
 }
 
+test("el tema cambia antes de que cargue React (mala cobertura)", async ({ page }) => {
+  await page.route("**/_next/static/chunks/**", (r) => r.abort()); // sin la app: solo el script en línea
+  await page.goto("/");
+  await page.getByRole("button", { name: "Modo noche (rojo, para el campo)" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-tema", "noche");
+});
+
 test("funciona sin JavaScript: ranking y filtros son enlaces", async ({ browser, baseURL }) => {
   const ctx = await browser.newContext({ javaScriptEnabled: false, baseURL });
   const page = await ctx.newPage();

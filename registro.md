@@ -138,3 +138,9 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
 - Commons sirve miniaturas de tamaños estándar: pedíamos 640 px y llegaban de 960 px para tarjetas
   de 150-320 px → se piden de 500 px.
 - Desde el contenedor algunas miniaturas dan 429 (IP compartida); los navegadores de verdad no.
+- *Problema* (visto como test intermitente contra producción): si se pulsa un botón de tema antes de
+  que React hidrate la página —fácil con mala cobertura en el campo— no pasaba nada. *Solución*: el
+  cambio de tema lo hace un manejador de clic delegado en el script en línea del `<head>`, activo desde
+  el primer pintado; React solo refleja el botón activo. Test nuevo que bloquea el JS de la app y
+  comprueba que el modo noche se activa igual. Otros reintentos contra producción eran de red (proxy):
+  repetidos sin reintentos, 6/6 en verde.
