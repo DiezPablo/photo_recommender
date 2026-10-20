@@ -80,6 +80,9 @@ PALABRAS_PAISAJE = (
     "coast", "costa", "beach", "playa", "cliff", "acantilado", "lighthouse", "faro",
     "natural park", "parque natural", "national park", "parque nacional", "snow", "nieve",
     "autumn", "otoño", "dehesa", "meadow", "pradera", "gorge", "garganta", "cañón", "hoces",
+    # gallego, catalán, asturiano y términos de costa (vistos al probar en Costa da Morte)
+    "cabo ", "cape ", "capes", "fervenza", "praia", "punta ", "miradoiro", "illa", "ría ", "monte ",
+    "seascape", "coastline", "sea stack", "mar de", "cala ", "platja", "salto de agua", "lagoa",
 )
 # Ojo con subcadenas: "aves" casaría con "waves" y "map" con "maple", por eso van en plural/completas
 PALABRAS_EXCLUIR = (
@@ -449,6 +452,8 @@ _TRADUCCIONES = (
     (r"^(.+) Valley$", r"Valle de \1"),
     (r"^Monastery of (.+)$", r"Monasterio de \1"),
     (r"^Lake (.+)$", r"Lago \1"),
+    (r"^Beach of (.+)$", r"Playa de \1"),
+    (r"^Cape (.+)$", r"Cabo \1"),
 )
 
 

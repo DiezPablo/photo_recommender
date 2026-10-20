@@ -116,3 +116,14 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
 - Workflow `datos` falló la primera vez porque arrancó antes de que existieran spots y `git add` de un
   fichero inexistente rompía → se comprueba antes. Acciones de GitHub actualizadas a sus versiones
   actuales (avisaban de Node 20 obsoleto).
+
+### Segunda zona: Costa da Morte (workflow con `publicar=false`, solo artefacto)
+- 1467 fotos geolocalizadas, pero solo 279 pasaban por paisaje: faltaban términos gallegos y de costa
+  ("Cabo Finisterre", "Fervenza do Ézaro", "Monte Pindo", "praia", "punta", "miradoiro"…).
+  Añadidos (también catalán/asturiano básicos: "platja", "cala"…) → 433 fotos y **25 spots, todos de
+  costa de verdad** (Cabo Fisterra, Fervenza do Ézaro, Punta do Roncudo, Praia de Niñóns, Cabo Touriñán…).
+  Traducción "Beach of X" → "Playa de X". Las fotos de la ISS también aparecían allí (ya excluidas).
+- El pipeline de condiciones funcionó igual (84 spots, notas coherentes: atardeceres de 9+ en las
+  puntas el 21-oct con lienzo de nubes y horizonte oeste despejado sobre el mar).
+- Nota: un `workflow_dispatch` en el grupo de concurrencia reemplaza al run pendiente del mismo grupo
+  (GitHub solo guarda uno en espera); por eso un descubrimiento de Madrid salió "cancelled" y se relanzó.
