@@ -254,7 +254,7 @@ def validar_niebla() -> list[str]:
                     madrugada = met.loc[a:b].to_dict("records")
                     noche = met.loc[a - pd.Timedelta(hours=6):a].to_dict("records")
                     lluvia = float(met.loc[a - pd.Timedelta(hours=33):b]["precipitation"].sum())
-                    p2, _ = prob_niebla_radiacion(madrugada, noche, lluvia)
+                    p2, _ = prob_niebla_radiacion(madrugada)
                     p1 = max((niebla_v1(f) for f in madrugada), default=0.0)
                     hm = met.loc[a:b]
                     dpd = (hm["temperature_2m"] - hm["dew_point_2m"])

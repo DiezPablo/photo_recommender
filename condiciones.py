@@ -337,13 +337,10 @@ def evaluar_spot_dia(spot: dict, dia: date, indice: int, tz: ZoneInfo, datos: di
     # ---- niebla y mar de nubes, al amanecer
     if sol.amanecer:
         madrugada = filas_entre(df, sol.amanecer - timedelta(hours=3), sol.amanecer + timedelta(hours=1))
-        noche_previa = filas_entre(df, sol.amanecer - timedelta(hours=9), sol.amanecer - timedelta(hours=3))
         capas = [c for c in (capa_nubosa(perfil_en(p, sol.amanecer, suelo))
                              for p, suelo in datos.get("perfil", [])) if c]
         capa = max(capas, key=lambda c: c["cobertura"]) if capas else None
-        lluvia_36h = suma_entre(df, "precipitation", sol.amanecer - timedelta(hours=36), sol.amanecer)
         n = nota_niebla(madrugada.to_dict("records"), datos.get("elevacion"), capa, spot.get("tipo"),
-                        noche_previa.to_dict("records"), lluvia_36h,
                         _v(en(df, sol.amanecer), "cloud_cover_low"))
         notas["niebla"] = n.a_dict()
         if capa:

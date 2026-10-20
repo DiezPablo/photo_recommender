@@ -13,8 +13,9 @@ fotógrafos (fuentes en registro.md):
 - Noche: calidad hora a hora (oscuridad × cielo despejado) y se queda la **mejor ventana de 3 h**,
   multiplicada por la transparencia (vapor de agua, aerosoles, humedad) y la contaminación lumínica
   local y la **cúpula de luz hacia donde se mira** (núcleo de la Vía Láctea o el sur).
-- Niebla: niebla de radiación (margen al rocío, calma, noche despejada, lluvia reciente) y **mar
-  de nubes** con el perfil vertical real (techo de la capa nubosa en el llano y altura del spot).
+- Niebla: probabilidad calibrada con 10 años de METAR de los aeropuertos de Madrid (humedad máxima
+  y viento mínimo de madrugada) y **mar de nubes** con el perfil vertical real (techo de la capa
+  nubosa en el llano y altura del spot).
 
 Las notas son sumas de factores con nombre: cada factor muestra cuánto cambia la nota, de modo que
 el desglose de la web suma exactamente la nota (antes del recorte a 0-10).
@@ -320,30 +321,30 @@ TIPOS_VISTA = {"mirador", "cumbre", "acantilado", "cabo", "faro"}
 TIPOS_NIEBLA = {"embalse", "lago", "río", "puente", "cascada", "paraje"}
 
 
-def prob_niebla_radiacion(madrugada: list[dict], noche: list[dict], lluvia_36h: float) -> tuple[float, dict]:
-    """0-1: niebla de radiación en el spot al amanecer, con los ingredientes clásicos de predicción
-    (NWS): margen temperatura-rocío pequeño, viento flojo pero no nulo, noche despejada para que el
-    suelo se enfríe y humedad del suelo (lluvia previa)."""
+# Calibración del índice de niebla con 11 792 madrugadas de METAR (Barajas, Getafe, Cuatro Vientos y
+# Torrejón, 2016-2025) y ERA5: índice → frecuencia real de niebla (FG o visibilidad < 1 km).
+CALIBRACION_NIEBLA = [(0.0, 0.003), (0.3, 0.016), (0.5, 0.04), (0.68, 0.077), (0.8, 0.17), (0.89, 0.25),
+                      (0.97, 0.46), (1.0, 0.5)]
+
+
+def prob_niebla_radiacion(madrugada: list[dict]) -> tuple[float, dict]:
+    """Probabilidad (0-1) de niebla al amanecer en el spot.
+
+    Ajustada con observaciones reales (validar.py): lo que separa las madrugadas con niebla es la
+    **humedad máxima** (rampa del 85 al 100 %) y el **viento mínimo** (la niebla aguanta hasta ~6 km/h
+    y desaparece hacia 20 km/h). La nubosidad de la noche y la lluvia previa, ingredientes clásicos,
+    no aportaron nada una vez conocida la humedad (que ya recoge su efecto), así que no se usan.
+    Si el modelo prevé visibilidad < 1 km, es evidencia directa."""
     if not madrugada:
         return 0.0, {}
-    mejor, det = 0.0, {}
-    cielo_noche = 1 - sum(_v(h, "cloud_cover") for h in noche) / len(noche) / 100 if noche else 0.5
-    for f in madrugada:
-        t, td = _v(f, "temperature_2m"), _v(f, "dew_point_2m", -50)
-        dpd = t - td
-        v = _v(f, "wind_speed_10m", 30)
-        p_dpd = _tramos(dpd, [(0.3, 1.0), (1.0, 0.85), (2.0, 0.45), (3.5, 0.0)])
-        p_v = _tramos(v, [(0, 0.8), (3, 1.0), (8, 0.85), (14, 0.35), (20, 0.0)])
-        p_cielo = 0.55 + 0.45 * cielo_noche      # con cielo cubierto el suelo apenas se enfría
-        p = p_dpd * p_v * p_cielo
-        if lluvia_36h >= 1:
-            p = min(1.0, p * 1.2)
-        vis = _v(f, "visibility", 24000)
-        if vis < 1000:      # el modelo ya la ve
-            p = max(p, 0.9)
-        if p > mejor or not det:
-            mejor, det = max(p, mejor), {"dpd": dpd, "viento": v, "cielo_noche": cielo_noche, "visibilidad": vis}
-    return mejor, det
+    hr = max(_v(f, "relative_humidity_2m") for f in madrugada)
+    viento = min(_v(f, "wind_speed_10m", 30) for f in madrugada)
+    vis = min(_v(f, "visibility", 24000) for f in madrugada)
+    indice = _clamp((hr - 85) / 15) * _clamp((20 - viento) / 14)
+    p = _tramos(indice, CALIBRACION_NIEBLA)
+    if vis < 1000:
+        p = max(p, 0.6)
+    return p, {"humedad": hr, "viento": viento, "visibilidad": vis, "indice": indice}
 
 
 def capa_nubosa(perfil: dict) -> dict | None:
@@ -372,7 +373,6 @@ def capa_nubosa(perfil: dict) -> dict | None:
 
 def nota_niebla(madrugada: list[dict], elevacion_spot: float | None = None,
                 capa: dict | None = None, tipo: str | None = None,
-                noche: list[dict] | None = None, lluvia_36h: float = 0.0,
                 bajas_spot: float | None = None) -> Nota:
     """Niebla y mar de nubes al amanecer: dos escenarios y se queda el mejor.
 
@@ -383,30 +383,31 @@ def nota_niebla(madrugada: list[dict], elevacion_spot: float | None = None,
     """
     if not madrugada:
         return Nota(0.0, "Base: sin datos de madrugada")
-    p, det = prob_niebla_radiacion(madrugada, noche or [], lluvia_36h)
+    p, det = prob_niebla_radiacion(madrugada)
     lluvia = max(_v(x, "precipitation_probability") for x in madrugada)
     vista = (tipo or "") in TIPOS_VISTA
 
     a = Nota(0.0, "Base: sin niebla")
-    if p > 0.03:
-        a.suma(f"Niebla probable en el spot ({p * 100:.0f} %: {det['dpd']:.1f} °C al punto de rocío, "
-               f"viento {det['viento']:.0f} km/h, noche {det['cielo_noche'] * 100:.0f} % despejada"
-               + (f", {lluvia_36h:.0f} mm de lluvia previa" if lluvia_36h >= 1 else "") + ")", 8.0 * p)
-        if det.get("visibilidad", 24000) < 1000:
+    if p >= 0.02:
+        # ~50 % de probabilidad real ya es una apuesta excelente: la niebla nunca es segura
+        a.suma(f"Niebla probable en el spot: {p * 100:.0f} % (humedad máx. {det['humedad']:.0f} %, "
+               f"viento mín. {det['viento']:.0f} km/h)", 9.0 * min(1.0, p / 0.5))
+        if det["visibilidad"] < 1000:
             a.suma(f"El modelo prevé visibilidad de {det['visibilidad'] / 1000:.1f} km", 1.0)
         if vista:
-            a.suma(f"En un {tipo} la niebla tapa la vista: estarás dentro de la nube", -5.5 * p)
+            a.suma(f"En un {tipo} la niebla tapa la vista: estarás dentro de la nube", -0.65 * a.bruta)
         elif (tipo or "") in TIPOS_NIEBLA:
-            a.suma(f"Niebla sobre {tipo}: muy fotogénica", 0.7 * p)
+            a.suma(f"Niebla sobre {tipo}: muy fotogénica", 0.08 * a.bruta)
         if lluvia >= 50:
-            a.suma(f"Lluvia probable ({lluvia:.0f} %): más bruma que niebla fotogénica", -2.0)
+            a.suma(f"Lluvia probable ({lluvia:.0f} %): más bruma que niebla fotogénica", -0.3 * a.bruta)
     else:
-        a.suma("Aire demasiado seco o con viento para que se forme niebla", 0.0, minimo=0)
+        a.suma(f"Aire seco o con viento: niebla improbable ({p * 100:.1f} %)", 0.0, minimo=0)
+    a.extra = {"probabilidad": round(p * 100)}
 
     b = None
     if capa and elevacion_spot is not None:
         margen = elevacion_spot - capa["techo"]
-        dentro = (bajas_spot or 0) >= 60 or p >= 0.5
+        dentro = (bajas_spot or 0) >= 60 or p >= 0.35
         if margen >= 60 and not dentro and capa["cobertura"] >= 50:
             b = Nota(4.0, f"Base: spot por encima del techo de las nubes bajas ({capa['techo']:.0f} m)")
             b.suma(f"Capa nubosa en valles y llano: {capa['cobertura']:.0f} %",

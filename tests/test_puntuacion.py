@@ -163,37 +163,35 @@ def hora(rh, t, td, viento, vis=24000, low=0, lluvia=0, nubes=0):
             "precipitation_probability": lluvia, "cloud_cover": nubes}
 
 
-NOCHE_CLARA = [hora(80, 6, 3, 3)] * 6
-NOCHE_CUBIERTA = [hora(80, 6, 3, 3, nubes=100)] * 6
-
-
-def test_niebla_de_radiacion_en_embalse():
-    assert nota_niebla([hora(99, 3, 2.9, 4, vis=300)], 900, tipo="embalse", noche=NOCHE_CLARA).valor >= 8
+def test_niebla_en_embalse_con_aire_saturado_y_calma():
+    assert nota_niebla([hora(100, 3, 3, 3)], 900, tipo="embalse").valor >= 8.5
 
 
 def test_niebla_dentro_de_un_mirador_es_mala():
-    m = nota_niebla([hora(100, 5, 5, 3, vis=300)], 1400, tipo="mirador", noche=NOCHE_CLARA)
-    e = nota_niebla([hora(100, 5, 5, 3, vis=300)], 1400, tipo="embalse", noche=NOCHE_CLARA)
-    assert m.valor <= 4.5 < e.valor
+    m = nota_niebla([hora(100, 5, 5, 3, vis=300)], 1400, tipo="mirador")
+    e = nota_niebla([hora(100, 5, 5, 3, vis=300)], 1400, tipo="embalse")
+    assert m.valor <= 4 < e.valor
 
 
 def test_aire_seco_sin_niebla():
-    assert nota_niebla([hora(55, 12, 2, 3)], noche=NOCHE_CLARA).valor == 0
+    assert nota_niebla([hora(55, 12, 2, 3)]).valor == 0
 
 
 def test_viento_disipa_la_niebla():
-    assert nota_niebla([hora(98, 5, 4.5, 22)], noche=NOCHE_CLARA).valor < \
-        nota_niebla([hora(98, 5, 4.5, 4)], noche=NOCHE_CLARA).valor
+    assert nota_niebla([hora(99, 5, 4.8, 22)]).valor < nota_niebla([hora(99, 5, 4.8, 4)]).valor
 
 
-def test_noche_cubierta_frena_la_niebla_de_radiacion():
-    assert nota_niebla([hora(97, 5, 3.8, 4)], noche=NOCHE_CUBIERTA).valor < \
-        nota_niebla([hora(97, 5, 3.8, 4)], noche=NOCHE_CLARA).valor
+def test_probabilidad_calibrada_y_monotona():
+    """Calibración con METAR: ni con aire saturado la niebla es segura (~50 %)."""
+    from puntuacion import prob_niebla_radiacion
+    ps = [prob_niebla_radiacion([hora(rh, 5, 4, 4)])[0] for rh in (80, 88, 92, 96, 100)]
+    assert ps == sorted(ps) and ps[0] < 0.01 and 0.4 <= ps[-1] <= 0.55
+    assert prob_niebla_radiacion([hora(90, 5, 4, 4, vis=400)])[0] >= 0.6   # el modelo ya la ve
 
 
-def test_lluvia_previa_favorece_la_niebla():
-    assert nota_niebla([hora(97, 5, 3.6, 4)], noche=NOCHE_CLARA, lluvia_36h=8).valor > \
-        nota_niebla([hora(97, 5, 3.6, 4)], noche=NOCHE_CLARA).valor
+def test_lluvia_resta_a_la_niebla():
+    assert nota_niebla([hora(99, 5, 4.8, 3, lluvia=90)], tipo="embalse").valor < \
+        nota_niebla([hora(99, 5, 4.8, 3)], tipo="embalse").valor
 
 
 PERFIL_INVERSION = {"niveles": [
@@ -212,16 +210,15 @@ def test_capa_nubosa_con_inversion():
 def test_mar_de_nubes_desde_una_cumbre():
     capa = capa_nubosa(PERFIL_INVERSION)
     seco = [hora(70, 5, -2, 6)]
-    n = nota_niebla(seco, 1800, capa, tipo="cumbre", noche=NOCHE_CLARA)
+    n = nota_niebla(seco, 1800, capa, tipo="cumbre")
     assert "mar_de_nubes" in n.avisos and n.valor >= 9
-    debajo = nota_niebla(seco, 700, capa, tipo="mirador", noche=NOCHE_CLARA)
+    debajo = nota_niebla(seco, 700, capa, tipo="mirador")
     assert "mar_de_nubes" not in debajo.avisos
-    dentro = nota_niebla([hora(100, 3, 3, 3, vis=200, low=100)], 1800, capa, tipo="cumbre",
-                         noche=NOCHE_CLARA, bajas_spot=100)
+    dentro = nota_niebla([hora(100, 3, 3, 3, vis=200, low=100)], 1800, capa, tipo="cumbre", bajas_spot=100)
     assert "mar_de_nubes" not in dentro.avisos
     poca = capa_nubosa({"niveles": [{"hpa": 925, "z": 850, "t": 3, "hr": 90, "nubes": 45},
                                     {"hpa": 900, "z": 1080, "t": 7, "hr": 40, "nubes": 0}]})
-    assert "mar_de_nubes" not in nota_niebla(seco, 1800, poca, tipo="cumbre", noche=NOCHE_CLARA).avisos
+    assert "mar_de_nubes" not in nota_niebla(seco, 1800, poca, tipo="cumbre").avisos
 
 
 def test_sin_capa_baja():
