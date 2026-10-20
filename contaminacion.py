@@ -104,3 +104,30 @@ def contaminacion(lat: float, lon: float, radio_px: int = 1) -> dict | None:
     zona, sqm, bortle = PALETA[color]
     return {"zona": zona, "sqm": sqm, "bortle": bortle,
             "descripcion": DESCRIPCION_ZONA[zona[0]]}
+
+
+def _zona_num(zona: str) -> float:
+    """'4b' → 4.5, '0' → 0."""
+    return float(zona[0]) + (0.5 if zona.endswith("b") else 0.0)
+
+
+def cupula(lat: float, lon: float, azimut: float, distancias=(10, 20, 35, 50, 75)) -> dict | None:
+    """Cúpula de luz de ciudades en una dirección (la del núcleo de la Vía Láctea o el sur): la zona
+    más brillante del atlas a lo largo de esa dirección, descontando ~1 zona cada 20 km (la cúpula
+    de Madrid se ve desde la sierra a 50 km, pero baja sobre el horizonte). None si no destaca sobre
+    el cielo del propio spot."""
+    from astro import punto_destino   # import diferido: astro no depende de este módulo
+    local = contaminacion(lat, lon)
+    base = _zona_num(local["zona"]) if local else 0.0
+    mejor = None
+    for d in distancias:
+        la, lo = punto_destino(lat, lon, azimut, d)
+        c = contaminacion(la, lo, radio_px=2)
+        if not c:
+            continue
+        efectiva = _zona_num(c["zona"]) - d / 20
+        if mejor is None or efectiva > mejor[0]:
+            mejor = (efectiva, c["zona"], d)
+    if mejor is None or mejor[0] < base + 0.5 or mejor[0] < 4.5:
+        return None
+    return {"zona": mejor[1], "km": mejor[2], "efectiva": round(mejor[0], 1)}

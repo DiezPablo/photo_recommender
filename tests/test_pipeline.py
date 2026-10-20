@@ -17,25 +17,23 @@ FIX = Path(__file__).parent / "fixtures"
 LP = {"zona": "3b", "sqm": 21.38, "bortle": 4, "descripcion": "rural con algo de resplandor"}
 
 
-class Respuesta:
-    def __init__(self, datos):
-        self.datos, self.status_code, self.headers = datos, 200, {}
-
-    def raise_for_status(self):
-        pass
-
-    def json(self):
-        return self.datos
-
-
 @pytest.fixture(autouse=True)
 def sin_red(monkeypatch, tmp_path):
-    """Ninguna prueba sale a internet: caché vacía y contaminación lumínica fija."""
+    """Ninguna prueba sale a internet: caché vacía, contaminación lumínica fija y las respuestas de
+    Open-Meteo (tiempo, perfil vertical, segundo modelo y CAMS) servidas desde la grabación."""
     monkeypatch.setattr(C, "CACHE", tmp_path / "cache")
     monkeypatch.setattr(D, "CACHE", tmp_path / "cache")
     monkeypatch.setattr(C, "contaminacion", lambda lat, lon: LP)
     monkeypatch.setattr(D, "contaminacion", lambda lat, lon: LP)
+    monkeypatch.setattr(C, "cupula", lambda lat, lon, az: {"zona": "6a", "km": 20, "efectiva": 5.0})
     monkeypatch.setattr(C.requests, "get", lambda *a, **k: pytest.fail("petición de red inesperada"))
+    grabacion = json.loads((FIX / "openmeteo_v2.json").read_text())["respuestas"]
+
+    def get_grabado(url, params, obligatorio=True):
+        clave = json.dumps({"url": url, **params}, sort_keys=True)
+        assert clave in grabacion, f"petición no grabada: {params.get('hourly', '')[:60]}"
+        return grabacion[clave]
+    monkeypatch.setattr(C, "_get", get_grabado)
 
 
 def _sin_nan(obj):
@@ -49,48 +47,43 @@ def _sin_nan(obj):
             _sin_nan(v)
 
 
-def _previsiones():
-    datos = json.loads((FIX / "openmeteo.json").read_text())
-    out = []
-    for d in datos:
-        df = pd.DataFrame(d["hourly"])
-        df["time"] = pd.to_datetime(df["time"])
-        out.append({"elevacion": d.get("elevation"), "horas": df.set_index("time")})
-    return out
-
-
 def _spots():
+    """Los mismos spots con los que se grabaron las respuestas de tests/fixtures/openmeteo_v2.json."""
     return [
-        {"id": id_spot("Puerto de Navacerrada", 40.793, -4.011), "nombre": "Puerto de Navacerrada",
-         "lat": 40.793, "lon": -4.011, "tipo": "mirador", "origen": "propio", "contaminacion": None},
-        {"id": id_spot("Faro de Fisterra", 42.8823, -9.2718), "nombre": "Faro de Fisterra",
-         "lat": 42.8823, "lon": -9.2718, "tipo": "faro", "origen": "propio", "contaminacion": None},
+        {"id": "nav", "nombre": "Puerto de Navacerrada", "lat": 40.793, "lon": -4.011,
+         "tipo": "mirador", "origen": "propio", "contaminacion": None},
+        {"id": "fis", "nombre": "Faro de Fisterra", "lat": 42.8823, "lon": -9.2718,
+         "tipo": "faro", "origen": "propio", "contaminacion": None},
     ]
 
 
 def _fecha_inicial():
-    return date.fromisoformat(json.loads((FIX / "openmeteo.json").read_text())[0]["hourly"]["time"][0][:10])
+    return date.fromisoformat(json.loads((FIX / "openmeteo_v2.json").read_text())["hoy"])
 
 
-def test_informe_con_respuesta_guardada(tmp_path, monkeypatch):
-    spots = _spots()
-    # El orden de coordenadas que pide evaluar() debe coincidir con el de la respuesta guardada:
-    # spot1, hz amanecer1, hz atardecer1, spot2, hz amanecer2, hz atardecer2
-    prev = _previsiones()
-    informe = C.evaluar(spots, 3, "Europe/Madrid", hoy=_fecha_inicial(), previsiones=prev)
+def _informe(dias=3):
+    return C.evaluar(_spots(), dias, "Europe/Madrid", hoy=_fecha_inicial())
+
+
+def test_informe_con_respuestas_grabadas(tmp_path):
+    informe = _informe()
+    assert informe["modelo"] == "v2"
     assert [s["nombre"] for s in informe["spots"]] == ["Puerto de Navacerrada", "Faro de Fisterra"]
     for s in informe["spots"]:
-        assert len(s["dias"]) == 3
-        assert s["contaminacion"] == LP
+        assert len(s["dias"]) == 3 and s["contaminacion"] == LP
+        assert s["elevacion"] is not None
         for d in s["dias"]:
             assert set(d["notas"]) == {"amanecer", "atardecer", "astro", "niebla"}
             for n in d["notas"].values():
                 assert 0 <= n["nota"] <= 10
                 assert n["desglose"] and all("texto" in f and "puntos" in f for f in n["desglose"])
+                assert abs(max(0, min(10, sum(f["puntos"] for f in n["desglose"]))) - n["nota"]) < 0.4
+            for m in ("amanecer", "atardecer"):
+                assert d["notas"][m]["confianza"] in ("alta", "media", "baja")
+                assert [p["km"] for p in d["meteo"][m]["camino"]] == [15, 40, 80, 150]
             assert d["sol"]["amanecer"] < d["sol"]["atardecer"]
             assert 60 < d["sol"]["az_amanecer"] < 130 and 230 < d["sol"]["az_atardecer"] < 300
-            assert d["fiabilidad"] in ("alta", "media", "baja")
-    assert informe["spots"][0]["dias"][0]["fiabilidad"] == "alta"
+            assert d["meteo"]["noche"]["horas"], "falta la nubosidad hora a hora de la noche"
     assert informe["spots"][0]["dias"][2]["fiabilidad"] == "media"
 
     ruta = tmp_path / "informe.json"
@@ -100,12 +93,23 @@ def test_informe_con_respuesta_guardada(tmp_path, monkeypatch):
     _sin_nan(json.loads(texto))
 
 
-def test_peticion_open_meteo_simulada(monkeypatch):
-    """pedir_tiempo() con la respuesta guardada servida como si viniera de la API."""
-    monkeypatch.setattr(C.requests, "get", lambda *a, **k: Respuesta(json.loads((FIX / "openmeteo.json").read_text())))
-    prev = C.pedir_tiempo([(40.793, -4.011)] * 6, 3, "Europe/Madrid")
-    assert len(prev) == 6 and prev[0]["elevacion"] > 1500
-    assert not prev[0]["horas"].empty
+def test_interpolacion_al_pico_de_color():
+    idx = pd.date_range("2026-10-20 19:00", periods=2, freq="h")
+    df = pd.DataFrame({"cloud_cover_low": [0.0, 100.0]}, index=idx)
+    from datetime import datetime
+    assert C.en(df, datetime(2026, 10, 20, 19, 15))["cloud_cover_low"] == pytest.approx(25)
+
+
+def test_perfil_descarta_niveles_bajo_el_suelo():
+    idx = pd.date_range("2026-10-20 08:00", periods=1, freq="h")
+    fila = {}
+    for p, z in zip(C.NIVELES_HPA, (100, 320, 540, 770, 1000, 1470, 1950, 3000)):
+        fila.update({f"geopotential_height_{p}hPa": z, f"temperature_{p}hPa": 5,
+                     f"relative_humidity_{p}hPa": 99, f"cloud_cover_{p}hPa": 90})
+    df = pd.DataFrame([fila], index=idx)
+    from datetime import datetime
+    niveles = C.perfil_en(df, datetime(2026, 10, 20, 8), suelo=650)["niveles"]
+    assert min(x["z"] for x in niveles) >= 680
 
 
 def test_limpiar_json_quita_nan():
@@ -173,7 +177,7 @@ def test_clasificar_paisaje():
 
 # ------------------------------------------------------------ notificar ----
 def test_notificar_lee_el_informe_nuevo():
-    informe = C.evaluar(_spots(), 2, "Europe/Madrid", hoy=_fecha_inicial(), previsiones=_previsiones())
+    informe = _informe()
     fecha = informe["fechas"][0]
     msg = N.construir_mensaje(informe, fecha, umbral=0, top=3, web="https://ejemplo.app")
     assert msg and "/10" in msg and "https://ejemplo.app/spot/" in msg

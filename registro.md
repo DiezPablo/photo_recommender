@@ -170,3 +170,46 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
 - Más zonas a la vez: hoy la web publica una zona (Madrid); `descubrir.yml` admite otra zona y bbox,
   pero publicarla sustituye a la anterior. Para varias, habría que fusionar geojson por zona.
 - El mapa general con ~170 marcadores se ve denso en móvil; si crece, agrupar marcadores (clustering).
+
+## 2026-10-20 · Modelo de predicción v2
+
+### Investigación (qué hace bueno un amanecer, una noche o una niebla)
+- **Sunsethue** (whitepaper): trazado de rayos desde el observador hasta la base de las nubes y de
+  ahí hacia el sol; si algo bloquea el rayo del sol, la nube no se enciende. Las nubes medias y altas
+  reflejan mejor; la humedad en superficie resta. https://sunsethue.com/whitepaper
+- **NOAA/SPC, "The Science of Sunsets"** (Corfidi): el ingrediente común de los colores vivos es el
+  **aire limpio**; los aerosoles bajos y la calima los apagan; cirros y altocúmulos son los que se
+  encienden; una capa media/alta continua con una franja despejada en el horizonte "baña de rojo".
+  https://www.spc.noaa.gov/publications/corfidi/sunset
+- **Stephen Bay** (fotógrafo): un banco de nubes a 30-50 km mar adentro bastó para que no hubiera
+  color; el pico es ~15-20 min antes del amanecer; contrastar modelos (ICON/ECMWF mejor que GFS).
+  https://stephenbayphotography.com/blog/predicting-sunrise-and-sunset-colors/
+- **Sunsethue blog / dZoom**: cobertura ideal 30-75 % (40-60 %), nubes altas siguen encendidas hasta
+  ~30 min tras la puesta, mejor tras una tormenta (aire limpio), menos humedad = colores más vivos.
+- **Noche** (PictureCorrect, Astrospheric, The Photographer's Ephemeris): para Vía Láctea importa la
+  **transparencia** (vapor de agua, humo, polvo, cirros finos), no el seeing; mirar las nubes en la
+  dirección de la foto; la luna solo molesta si está arriba; el rocío.
+- **Niebla de radiación** (NWS): cielo despejado de noche (el suelo se enfría), margen al rocío
+  pequeño, viento flojo pero no nulo, lluvia la tarde anterior la hace mucho más probable; los
+  cirros la frenan. **Mar de nubes** (AEMET, divulgameteo): el techo de la niebla es el tope de la
+  inversión térmica, normalmente de unos cientos de metros.
+
+### Qué cambia (puntuacion.py v2, condiciones.py)
+- **Amanecer/atardecer**: pico de color (±15 min) con interpolación horaria; lienzo = 60 % sobre
+  el spot + 40 % a 15-40 km hacia el sol; **camino de la luz** con nubes bajas a 15/40/80/150 km
+  (transmisión multiplicativa, una capa media espesa lejana corta la luz a las altas); nubes bajas
+  locales tapan el lienzo; **aire**: AOD y polvo de CAMS, humedad, aire lavado tras lluvia; lluvia.
+- **Noche**: calidad hora a hora (nubes y luna) y **mejor ventana de 3 h**; transparencia (vapor de
+  agua total, AOD, humedad); contaminación local recalibrada (un Bortle 4 despejado sí merece la
+  pena: ≥ 8); **cúpula de luz** hacia el núcleo de la Vía Láctea o el sur (atlas a 10-75 km);
+  rachas graduadas.
+- **Niebla**: probabilidad de niebla de radiación con margen al rocío, viento, nubosidad de la noche
+  previa y lluvia de 36 h; **mar de nubes** con el perfil por niveles de presión (1000-700 hPa) en los
+  puntos del llano a 40 km: techo de la capa, cobertura e inversión encima, frente a la altura del
+  spot. Se descartan los niveles por debajo del suelo (extrapolados por el modelo).
+- **Confianza** por nota: se recalcula con las nubes de ECMWF IFS; si difieren > 3 puntos, baja.
+- Peticiones: ~13 variables en el spot, 3 en los puntos del camino (rejilla gruesa lejos), 32 en
+  los perfiles, 4 del segundo modelo y AOD/polvo por celda de 0,4°: unas 400 "llamadas" por
+  ejecución, dentro del límite gratuito de Open-Meteo.
+- **Validación histórica** (`validar.py`, workflow `validar.yml`): días con foto de puesta/salida en
+  Commons (Madrid y Segovia) frente al resto del mismo mes, con ERA5 2016-2025; AUC de v1 frente a v2.

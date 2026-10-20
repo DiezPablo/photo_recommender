@@ -1,0 +1,35 @@
+# Validación histórica de las notas de amanecer/atardecer (validar.py): días con fotos en Commons
+# frente al resto, con el tiempo reanalizado ERA5. El informe queda como artefacto "validacion".
+name: Validar notas
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - puntuacion.py
+      - validar.py
+      - .github/workflows/validar.yml
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Validar
+        run: python validar.py --salida salida/validacion
+      - name: Resumen
+        if: always()
+        run: cat salida/validacion/validacion.md >> "$GITHUB_STEP_SUMMARY" || true
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: validacion
+          path: salida/validacion/
+          retention-days: 30
