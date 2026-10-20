@@ -144,3 +144,29 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
   el primer pintado; React solo refleja el botón activo. Test nuevo que bloquea el JS de la app y
   comprueba que el modo noche se activa igual. Otros reintentos contra producción eran de red (proxy):
   repetidos sin reintentos, 6/6 en verde.
+
+## Estado final (20-oct-2026)
+
+### Definición de hecho
+- [x] **Pipeline real con datos reales y tests en verde**: descubrimiento real en Actions (Sierra de
+  Madrid: 27 spots con fotos + ~145 miradores OSM con nombre) y probado en Costa da Morte (23 spots);
+  condiciones con Open-Meteo real; 68 tests de pytest (astronomía contra USNO/astropy, notas con
+  casos extremos, pipeline con respuestas reales guardadas, JSON sin NaN).
+- [x] **Web con todo lo de "Qué debe mostrar"**, probada en móvil y escritorio (16 tests e2e de
+  Playwright en local y contra producción, capturas revisadas en claro, oscuro y noche, sin errores de consola).
+- [x] **Notas explicables**, validadas con casos sintéticos y revisadas con los datos del 20-oct (de ahí
+  el cambio del modelo de niebla). Falta el contraste en el campo, que solo puede hacer el usuario.
+- [x] **GitHub Actions actualiza solo**: `datos` (cada 3 h), `descubrir` (mensual) y `pruebas`; varias
+  ejecuciones correctas lanzadas por push y a mano (workflow_dispatch). La primera programada con el cron nuevo
+  es a las 09:23 UTC del 20-oct.
+- [x] **Vercel**: `npm run build` limpio, `vercel.json` incluido y desplegando en
+  https://photo-recommender.vercel.app con cada commit (también los de datos).
+- [x] `README.md`, `CLAUDE.md` y este registro al día.
+- [x] Sin secretos en el código (búsqueda de patrones de tokens sin resultados; Telegram solo por secretos de Actions).
+
+### Pendiente / ideas
+- Ajustar los pesos de `puntuacion.py` con la experiencia en el campo (apuntar nota prevista vs. resultado).
+- Notificaciones push de verdad (fuera de alcance por decisión del encargo).
+- Más zonas a la vez: hoy la web publica una zona (Madrid); `descubrir.yml` admite otra zona y bbox,
+  pero publicarla sustituye a la anterior. Para varias, habría que fusionar geojson por zona.
+- El mapa general con ~170 marcadores se ve denso en móvil; si crece, agrupar marcadores (clustering).

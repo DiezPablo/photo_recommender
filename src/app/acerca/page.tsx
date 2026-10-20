@@ -30,9 +30,19 @@ export default function Acerca() {
       </ul>
 
       <h2>Niebla y mar de nubes</h2>
+      <p>Se evalúan dos escenarios entre 3 h antes y 1 h después del amanecer, y se queda el mejor:</p>
       <ul>
-        <li>Se busca la hora más favorable entre 3 h antes y 1 h después del amanecer: humedad por encima del 85 % (hasta +4), temperatura cerca del punto de rocío (hasta +3) y viento flojo (hasta +2). Si el modelo ya prevé visibilidad de menos de 1 km, +1. La lluvia resta.</li>
-        <li><strong>Mar de nubes</strong>: si el spot está a más de 1000 m, despejado, y hay nubes bajas alrededor (en los puntos de horizonte), +5.</li>
+        <li>
+          <strong>Niebla en el propio spot</strong>: según lo cerca que esté el aire de condensar (humedad por encima
+          del 85 %, temperatura a menos de 3 °C del punto de rocío y viento flojo) suma hasta +8, y +1 si el modelo ya
+          prevé visibilidad de menos de 1 km. Es fotogénica en bosques, ríos o embalses, pero en un{" "}
+          <strong>mirador o una cumbre</strong> significa estar dentro de la nube sin ver nada: allí resta hasta −5,5.
+          La lluvia también resta.
+        </li>
+        <li>
+          <strong>Mar de nubes</strong>: si el spot está a más de 900 m, fuera de la niebla, y hay nubes bajas por
+          debajo (en los valles y la meseta, a 40 km), base 4 y hasta +5 según cuántas haya; +1 por encima de 1500 m.
+        </li>
       </ul>
 
       <h2>Fiabilidad</h2>

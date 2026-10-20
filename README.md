@@ -34,8 +34,9 @@ Resumen (detalle en la propia web, página *Cómo se puntúa*, y en `puntuacion.
 - **Noche / Vía Láctea**: base 10; restan nubes, luna (solo si no deja ≥ 3 h de noche sin luna),
   contaminación lumínica del spot, humedad y viento; suma si el núcleo de la Vía Láctea está alto sin luna.
   Avisa de riesgo de rocío en la lente.
-- **Niebla**: humedad, margen al punto de rocío y viento flojo de madrugada; posible **mar de nubes** en
-  spots altos con nubes bajas alrededor.
+- **Niebla**: humedad, margen al punto de rocío y viento flojo de madrugada. En miradores y cumbres,
+  estar dentro de la niebla resta (no se ve nada); lo bueno allí es el **mar de nubes**: spot alto y
+  despejado con nubes bajas por debajo.
 - 5 días de previsión, con aviso de fiabilidad decreciente (las nubes a más de 3 días son poco fiables).
 
 ## En local
