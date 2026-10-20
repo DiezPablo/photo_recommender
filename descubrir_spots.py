@@ -81,7 +81,7 @@ PALABRAS_PAISAJE = (
     "natural park", "parque natural", "national park", "parque nacional", "snow", "nieve",
     "autumn", "otoño", "dehesa", "meadow", "pradera", "gorge", "garganta", "cañón", "hoces",
     # gallego, catalán, asturiano y términos de costa (vistos al probar en Costa da Morte)
-    "cabo ", "cape ", "capes", "fervenza", "praia", "punta ", "miradoiro", "illa", "ría ", "monte ",
+    "cabo ", "cape ", "capes", "fervenza", "praia", "punta ", "miradoiro", "illa", "ría ",
     "seascape", "coastline", "sea stack", "mar de", "cala ", "platja", "salto de agua", "lagoa",
 )
 # Ojo con subcadenas: "aves" casaría con "waves" y "map" con "maple", por eso van en plural/completas
@@ -97,7 +97,8 @@ PALABRAS_EXCLUIR = (
     "mushrooms", "plants of", "churches", "iglesia", "chapels", "ermita",
     "plaza mayor", "streets", "calles", "festivals", "fiestas", "celebrations", "town halls",
     "casas consistoriales", "sculptures", "esculturas", "graffiti", "schools", "instituto",
-    "education", "educación", "skiers", "esquiadores", "sports", "deportes",
+    "education", "educación", "skiers", "esquiadores", "sports", "deportes", "train station",
+    "stations", "estación de", "shearing", "esquileo", "factories", "fábricas", "industrial",
 )
 # Categorías que no sirven como nombre de un spot (demasiado genéricas o administrativas)
 CATEGORIAS_NO_NOMBRE = re.compile(

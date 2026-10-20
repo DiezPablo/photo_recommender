@@ -188,6 +188,13 @@ def test_paisaje_por_inicio_de_palabra():
     assert not D.clasificar_paisaje(["Quality images of churches in Castile and León"])[0]
     assert not D.clasificar_paisaje(["Views of the Cathedral of Segovia from Plaza Mayor"])[0]
     assert D.clasificar_paisaje(["Views of the Alcázar of Segovia from the Eresma Valley"])[0]
+    # pueblos con "Monte" en el nombre no son montañas; estaciones y naves tampoco son paisaje
+    assert not D.clasificar_paisaje(["Ortigosa del Monte train station"])[0]
+    assert not D.clasificar_paisaje(["Cabanillas del Monte shearing shed"])[0]
+    # gallego y costa
+    assert D.clasificar_paisaje(["Fervenza do Ézaro"])[0]
+    assert D.clasificar_paisaje(["Praia de Niñóns"])[0]
+    assert D.clasificar_paisaje(["Cabo Finisterre"])[0]
 
 
 @pytest.mark.parametrize("titulo,esperado", [
