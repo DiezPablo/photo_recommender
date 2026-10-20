@@ -45,8 +45,9 @@ DESDE, HASTA = date(2016, 1, 1), date(2025, 12, 31)
 BUSQUEDAS = ["sunset Madrid", "atardecer Madrid", "puesta de sol Madrid", "sunrise Madrid", "amanecer Madrid",
              "sunset Segovia", "atardecer Segovia", "sunset Guadarrama", "atardecer Guadarrama",
              "sunset Templo de Debod", "atardecer Templo de Debod", "Madrid sky sunset clouds",
-             "sunset Navacerrada", "amanecer sierra Madrid", "sunrise Segovia", "atardecer Alcalá de Henares",
-             "sunset Aranjuez", "atardecer Toledo", "sunset Toledo", "atardecer El Escorial"]
+             "sunset Navacerrada", "amanecer sierra Madrid", "sunrise Segovia", "atardecer El Escorial",
+             "Madrid skyline sunset", "Cuatro Torres sunset", "Casa de Campo atardecer"]
+# (sin Toledo: "sunset Toledo" devuelve sobre todo Toledo, Ohio)
 AZ_ATARDECER = (240, 255, 270, 285, 300)
 AZ_AMANECER = (60, 75, 90, 105, 120)
 SESION = requests.Session()
@@ -90,7 +91,8 @@ def fechas_exif(titulos: list[str]) -> list[datetime]:
         d = _commons({"titles": "|".join(titulos[i:i + 50]), "prop": "imageinfo", "iiprop": "extmetadata",
                       "iiextmetadatafilter": "DateTimeOriginal"})
         for p in d.get("query", {}).get("pages", []):
-            v = ((p.get("imageinfo") or [{}])[0].get("extmetadata", {}).get("DateTimeOriginal", {}).get("value", ""))
+            meta = (p.get("imageinfo") or [{}])[0].get("extmetadata") or {}
+            v = meta.get("DateTimeOriginal", {}).get("value", "") if isinstance(meta, dict) else ""
             m = re.search(r"(\d{4})[-:](\d{2})[-:](\d{2})[ T](\d{2}):(\d{2})", re.sub(r"<[^>]+>", "", v))
             if m:
                 try:
