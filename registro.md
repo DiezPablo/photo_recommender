@@ -60,3 +60,59 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
 - Workflows: `datos.yml` cada 3 h (+ al cambiar el código de notas) y `descubrir.yml` mensual (+ al
   cambiar el código de descubrimiento), ambos en el mismo grupo de concurrencia para no pisarse al
   publicar, con reintentos de `git pull --rebase && git push`.
+
+## 2026-10-20 · Primera ejecución real y ajustes
+
+### Descubrimiento real (GitHub Actions, Sierra de Madrid, bbox -4.30,40.60,-3.55,41.10)
+- 88 teselas, **6189 fotos geolocalizadas**, 1104 pasaban el filtro de paisaje; 20 clusters; 700
+  elementos OSM, 155 miradores sin fotos (72 sin nombre). ~15 min en Actions, sin ningún 429.
+  overpass-api.de dio HTTPError y respondió el espejo francés: los espejos funcionan.
+- **Problemas vistos al revisar los spots uno a uno** y cómo se resolvieron:
+  - Fotos de la **ISS** ("Earth viewed from space") geolocalizadas en la sierra, un Gran Premio de camiones,
+    trenes AVANT, cigüeñas ("Ciconia ciconia" no contiene "birds"), culebras (un cluster de culebras se
+    llamaba "Cabeza de Hierro Mayor"), iglesias, la Plaza Mayor de Segovia, fiestas de pueblo, un instituto
+    → nuevas palabras de exclusión.
+  - "río" casaba con "Navas de Riofrío" (pueblo) → las palabras se comparan **al inicio de palabra**
+    (regex), lo que sigue admitiendo plurales.
+  - Nombres con ids de Flickr, fechas y numeración ("EMBALSE DE SANTILLANA (6495112213)",
+    "Puente de Navalacarreta (2 de mayo de 2015, …) 09") → `limpiar_nombre`.
+  - Mejor fuente de nombre: **la categoría específica de Commons más repetida en el cluster**
+    ("Laguna de los Claveles", "Embalse de Santillana"), traducida si está en inglés con patrones
+    ("X Reservoir" → "Embalse de X"). Orden: OSM con nombre a ≤ 400 m → categoría → OSM a ≤ 600 m →
+    título limpio. Nombres repetidos se numeran.
+  - Miradores OSM sin nombre: toman el del elemento con nombre más cercano ("Mirador junto a Laguna
+    Grande de Peñalara") o se descartan si no hay ninguno a 2,5 km.
+  - Agrupación: con radio 250 m y 4 fotos salían 19-20 spots; con **300 m y 3 fotos (de ≥ 2 autores)**,
+    28 spots, todos de paisaje real (Mirador del Último Pino con el Alcázar, Buitrago, Laguna de los
+    Claveles, Bola del Mundo, Bosque de Finlandia, embalses, cascadas…).
+- Para ajustar sin volver a pedir nada a Commons, `descubrir_spots.py` vuelca las respuestas crudas
+  (`salida/volcado/`, artefacto del workflow) y admite `--desde-volcado DIR`.
+
+### Notas revisadas con los datos de hoy (20-oct)
+- **Niebla saturaba**: madrugada con humedad 100 % y visibilidad 0,4 km en casi toda la sierra → nota
+  10 de niebla en 175 de 175 spots, y el ranking "Todo" era solo niebla. Pero en un mirador o una
+  cumbre, estar dentro de la niebla es no ver nada. *Cambio*: dos escenarios y se queda el mejor:
+  niebla en el spot (buena en bosques, ríos, embalses; −5,5 × probabilidad en miradores y cumbres) y
+  **mar de nubes** (spot ≥ 900 m fuera de la niebla con nubes bajas debajo). Tras el cambio: 6 spots
+  con niebla ≥ 6,5 hoy.
+- Atardecer de hoy: 75 % de nubes altas/medias y horizonte oeste despejado → 7-8 en casi toda la
+  zona. Coherente con la previsión cruda; el tiempo es regional, así que muchos spots puntúan parecido
+  y lo que los distingue es el horizonte hacia el sol, la contaminación lumínica y el tipo.
+- No se puede contrastar con el cielo real desde aquí: queda para el usuario apuntar en el campo si
+  la nota acierta y ajustar los pesos de `puntuacion.py`.
+
+### Web
+- Next.js 16 con páginas estáticas (206 páginas con los datos reales), filtros como enlaces (funciona
+  sin JS) y Leaflet con import dinámico. Primer despliegue en Vercel sin tocar el panel: bastó
+  `vercel.json` con `"framework": "nextjs"`.
+- *Problema*: el build fallaba porque componentes de cliente importaban de un módulo que usa `node:fs`
+  → separado en `src/lib/modelo.ts` (puro) y `src/lib/datos.ts` (servidor).
+- *Problema*: en el contenedor, Chromium no cargaba teselas. Playwright envía también localhost por el
+  proxy (405) → el servidor de pruebas escucha en la IP de la máquina y esa IP se excluye del proxy.
+  Además, la geolocalización solo funciona en contexto seguro: en local el test deja la ubicación
+  guardada; en producción (https) usa el botón real.
+- Ajustes tras revisar capturas: cabecera en móvil (el enlace "Cómo se puntúa" se partía), controles
+  de zoom blancos en modo noche, bandera de colores en la atribución de Leaflet.
+- Workflow `datos` falló la primera vez porque arrancó antes de que existieran spots y `git add` de un
+  fichero inexistente rompía → se comprueba antes. Acciones de GitHub actualizadas a sus versiones
+  actuales (avisaban de Node 20 obsoleto).

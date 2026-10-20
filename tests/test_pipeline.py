@@ -177,3 +177,53 @@ def test_notificar_lee_el_informe_nuevo():
     msg = N.construir_mensaje(informe, fecha, umbral=0, top=3, web="https://ejemplo.app")
     assert msg and "/10" in msg and "https://ejemplo.app/spot/" in msg
     assert N.construir_mensaje(informe, "1999-01-01", 0, 3) is None
+
+
+# ------------------------------------------------- calidad de spots y nombres ----
+def test_paisaje_por_inicio_de_palabra():
+    """'río' no debe casar con 'Riofrío' (un pueblo), ni las fotos de la ISS pasar por paisaje."""
+    assert not D.clasificar_paisaje(["Navas de Riofrío"])[0]
+    assert D.clasificar_paisaje(["Río Lozoya"])[0]
+    assert not D.clasificar_paisaje(["Daytime Earth viewed from space", "Clouds"])[0]
+    assert not D.clasificar_paisaje(["Quality images of churches in Castile and León"])[0]
+    assert not D.clasificar_paisaje(["Views of the Cathedral of Segovia from Plaza Mayor"])[0]
+    assert D.clasificar_paisaje(["Views of the Alcázar of Segovia from the Eresma Valley"])[0]
+
+
+@pytest.mark.parametrize("titulo,esperado", [
+    ("EMBALSE DE SANTILLANA (6495112213)", "Embalse de Santillana"),
+    ("Puente de Navalacarreta (2 de mayo de 2015, Boca del Asno, Segovia) 09", "Puente de Navalacarreta"),
+    ("2011-06-05 Cascada del Purgatorio - panoramio", "Cascada del Purgatorio"),
+    ("Pico de la Miel - 01", "Pico de la Miel"),
+    ("Embalse del río Pirón2", "Embalse del río Pirón"),
+    ("LaSierra9", "La Sierra"),
+])
+def test_limpiar_nombre(titulo, esperado):
+    assert D.limpiar_nombre(titulo) == esperado
+
+
+@pytest.mark.parametrize("cat,esperado", [
+    ("Puentes Viejas Reservoir", "Embalse de Puentes Viejas"),
+    ("Views of Monastery of El Paular", "Monasterio de El Paular"),
+    ("Manzanares River in La Pedriza", "Río Manzanares en La Pedriza"),
+    ("Laguna Grande de Peñalara", "Laguna Grande de Peñalara"),
+])
+def test_traducir_categoria(cat, esperado):
+    assert D.traducir_categoria(cat) == esperado
+
+
+def test_categoria_nombre_ignora_genericas():
+    cats = pd.Series([["Quality images of the Community of Madrid", "Laguna Grande de Peñalara"],
+                      ["Laguna Grande de Peñalara", "Snow at Sierra de Guadarrama"],
+                      ["Laguna Grande de Peñalara", "2012 in Segovia"]])
+    assert D.categoria_nombre(cats, 3) == "Laguna Grande de Peñalara"
+
+
+def test_miradores_sin_nombre():
+    osm = pd.DataFrame([
+        {"osm_id": "node/1", "lat": 40.80, "lon": -3.90, "nombre": None, "tipo": "viewpoint", "ele": None, "direction": None},
+        {"osm_id": "node/2", "lat": 40.805, "lon": -3.90, "nombre": "Pico Pequeño", "tipo": "peak", "ele": None, "direction": None},
+        {"osm_id": "node/3", "lat": 41.50, "lon": -3.00, "nombre": None, "tipo": "viewpoint", "ele": None, "direction": None},
+    ])
+    out = D.nombrar_miradores(osm[osm.tipo == "viewpoint"], osm)
+    assert list(out.nombre) == ["Mirador junto a Pico Pequeño"]   # el aislado y sin nombre se descarta

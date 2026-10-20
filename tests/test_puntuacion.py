@@ -110,7 +110,14 @@ def hora(rh, t, td, viento, vis=24000, low=0, lluvia=0):
 
 
 def test_niebla_densa_probable():
-    assert nota_niebla([hora(99, 5, 4.8, 2, vis=300)]).valor >= 8
+    assert nota_niebla([hora(99, 5, 4.8, 2, vis=300)], tipo="embalse").valor >= 8
+
+
+def test_niebla_dentro_de_un_mirador_es_mala():
+    """En un mirador, estar dentro de la niebla no deja ver nada."""
+    mirador = nota_niebla([hora(100, 5, 5, 2, vis=300)], elevacion_spot=1400, tipo="mirador")
+    bosque = nota_niebla([hora(100, 5, 5, 2, vis=300)], elevacion_spot=1400, tipo=None)
+    assert mirador.valor <= 4.5 < bosque.valor
 
 
 def test_aire_seco_sin_niebla():
@@ -126,7 +133,11 @@ def test_lluvia_resta_a_la_niebla():
 
 
 def test_mar_de_nubes_en_cumbre():
-    n = nota_niebla([hora(80, 3, -2, 5, low=10)], elevacion_spot=1900, bajas_alrededor=90)
-    assert "mar_de_nubes" in n.avisos and n.valor >= 5
+    n = nota_niebla([hora(80, 3, -2, 5, low=10)], elevacion_spot=1900, bajas_alrededor=90, tipo="cumbre")
+    assert "mar_de_nubes" in n.avisos and n.valor >= 9
+    poco = nota_niebla([hora(80, 3, -2, 5, low=10)], elevacion_spot=1900, bajas_alrededor=55, tipo="cumbre")
+    assert poco.valor < n.valor
     llano = nota_niebla([hora(80, 3, -2, 5, low=10)], elevacion_spot=650, bajas_alrededor=90)
     assert "mar_de_nubes" not in llano.avisos
+    dentro = nota_niebla([hora(100, 3, 3, 2, low=100, vis=200)], elevacion_spot=1900, bajas_alrededor=90, tipo="cumbre")
+    assert "mar_de_nubes" not in dentro.avisos      # si el spot está en la nube no hay mar que ver

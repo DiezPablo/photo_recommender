@@ -231,7 +231,8 @@ def evaluar_spot_dia(spot: dict, dia: date, indice: int, tz: ZoneInfo,
         bajas_alrededor = None
         if hz:
             bajas_alrededor = sum(_v(fila_en(h, sol.amanecer), "cloud_cover_low") for h in hz.values()) / len(hz)
-        notas["niebla"] = nota_niebla(madrugada.to_dict("records"), elevacion, bajas_alrededor).a_dict()
+        notas["niebla"] = nota_niebla(madrugada.to_dict("records"), elevacion, bajas_alrededor,
+                                       spot.get("tipo")).a_dict()
 
     for n in notas.values():
         avisos += [a for a in n["avisos"] if a not in avisos]

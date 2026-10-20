@@ -152,45 +152,65 @@ def nota_astro(nubes: float, humedad: float, viento: float, rocio_margen: float,
 
 
 # --------------------------------------------------------- niebla / mar ----
-def nota_niebla(madrugada: list[dict], elevacion_spot: float | None = None,
-                bajas_alrededor: float | None = None) -> Nota:
-    """Niebla al amanecer (en el spot) o mar de nubes (spot alto sobre nubes bajas del entorno).
+TIPOS_VISTA = {"mirador", "cumbre", "acantilado", "cabo", "faro"}
 
-    madrugada: filas horarias (dict) desde 3 h antes hasta 1 h después del amanecer.
-    bajas_alrededor: nubes bajas medias en los puntos de horizonte (más bajos que el spot).
+
+def _prob_niebla(f) -> float:
+    """0-1: lo cerca que está una hora de formar niebla (humedad, margen al rocío y viento)."""
+    rh, t, td = _v(f, "relative_humidity_2m"), _v(f, "temperature_2m"), _v(f, "dew_point_2m")
+    v = _v(f, "wind_speed_10m", 30)
+    p = _clamp((rh - 85) / 12) * _clamp((3 - (t - td)) / 3) * _clamp((15 - v) / 12)
+    if _v(f, "visibility", 24000) < 1000:   # el modelo ya la ve
+        p = max(p, 0.9)
+    return p
+
+
+def nota_niebla(madrugada: list[dict], elevacion_spot: float | None = None,
+                bajas_alrededor: float | None = None, tipo: str | None = None) -> Nota:
+    """Niebla y mar de nubes al amanecer. Se evalúan dos escenarios y se queda el mejor:
+
+    - Niebla en el propio spot: fotogénica en bosques, ríos, embalses o pueblos; en un mirador o
+      una cumbre significa estar dentro de la nube y no ver el paisaje.
+    - Mar de nubes: spot alto y despejado con nubes bajas o niebla por debajo (medidas en los
+      puntos de horizonte, que en la sierra caen sobre los valles y la meseta).
+
+    madrugada: filas horarias desde 3 h antes hasta 1 h después del amanecer.
     """
-    n = Nota(0.0, "Base: sin niebla")
     if not madrugada:
-        return n
-    # la hora más favorable de la madrugada
-    def favorable(f):
-        rh, t, td = _v(f, "relative_humidity_2m"), _v(f, "temperature_2m"), _v(f, "dew_point_2m")
-        v = _v(f, "wind_speed_10m", 30)
-        return _clamp((rh - 85) / 12) * _clamp((3 - (t - td)) / 3) * _clamp((15 - v) / 12)
-    f = max(madrugada, key=favorable)
+        return Nota(0.0, "Base: sin datos de madrugada")
+    f = max(madrugada, key=_prob_niebla)
+    p = _prob_niebla(f)
     rh, t, td = _v(f, "relative_humidity_2m"), _v(f, "temperature_2m"), _v(f, "dew_point_2m")
     v, vis = _v(f, "wind_speed_10m", 30), _v(f, "visibility", 24000)
-    bajas = _v(f, "cloud_cover_low")
-    P = max(_v(x, "precipitation_probability") for x in madrugada)
+    lluvia = max(_v(x, "precipitation_probability") for x in madrugada)
+    vista = (tipo or "") in TIPOS_VISTA
 
-    puntos_h = 4.0 * _clamp((rh - 85) / 12)
-    puntos_td = 3.0 * _clamp((3 - (t - td)) / 3)
-    puntos_v = 2.0 * _clamp((15 - v) / 12)
-    # sin humedad suficiente lo demás no basta: el aire seco no condensa
-    if puntos_h > 0:
-        n.suma(f"Humedad {rh:.0f} %", puntos_h)
-        n.suma(f"Temperatura casi en el punto de rocío ({t - td:.1f} °C de margen)", puntos_td)
-        n.suma(f"Viento flojo ({v:.0f} km/h)", puntos_v)
+    # --- escenario 1: niebla en el spot
+    a = Nota(0.0, "Base: sin niebla")
+    if p > 0.02:
+        a.suma(f"Niebla probable en el spot ({p * 100:.0f} %: humedad {rh:.0f} %, "
+               f"{t - td:.1f} °C al punto de rocío, viento {v:.0f} km/h)", 8.0 * p)
         if vis < 1000:
-            n.suma(f"El modelo ya prevé visibilidad de {vis / 1000:.1f} km", 1.0)
+            a.suma(f"El modelo prevé visibilidad de {vis / 1000:.1f} km", 1.0)
+        if vista:
+            a.suma(f"En un {tipo} la niebla tapa la vista: estarás dentro de la nube", -5.5 * p)
     else:
-        n.suma(f"Aire demasiado seco para niebla ({rh:.0f} %)", 0.0, minimo=0)
-    if P >= 50:
-        n.suma(f"Lluvia probable ({P:.0f} %): más bruma que niebla fotogénica", -2.0)
-    # Mar de nubes: spot alto y despejado con nubes bajas por debajo
-    if (elevacion_spot or 0) >= 1000 and bajas_alrededor is not None:
-        if bajas_alrededor >= 60 and bajas < 40 and rh < 95:
-            n.suma(f"Posible mar de nubes: el spot está a {elevacion_spot:.0f} m y hay nubes bajas "
-                   f"alrededor ({bajas_alrededor:.0f} %)", 5.0)
-            n.avisos.append("mar_de_nubes")
-    return n
+        a.suma(f"Aire demasiado seco o con viento para niebla (humedad {rh:.0f} %, viento {v:.0f} km/h)",
+               0.0, minimo=0)
+    if lluvia >= 50 and p > 0.02:
+        a.suma(f"Lluvia probable ({lluvia:.0f} %): más bruma que niebla fotogénica", -2.0)
+
+    # --- escenario 2: mar de nubes visto desde arriba
+    b = None
+    bajas_spot = _v(f, "cloud_cover_low")
+    if (elevacion_spot or 0) >= 900 and bajas_alrededor is not None and bajas_alrededor >= 50 \
+            and p < 0.3 and bajas_spot < 40:
+        b = Nota(4.0, f"Base: spot alto ({elevacion_spot:.0f} m) y despejado al amanecer")
+        b.suma(f"Nubes bajas por debajo, en valles y meseta ({bajas_alrededor:.0f} %)",
+               5.0 * _clamp((bajas_alrededor - 50) / 40))
+        if (elevacion_spot or 0) >= 1500:
+            b.suma("Muy por encima del techo habitual de las nieblas", 1.0)
+        if lluvia >= 50:
+            b.suma(f"Lluvia probable ({lluvia:.0f} %)", -2.0)
+        b.avisos.append("mar_de_nubes")
+    return b if b is not None and b.valor >= a.valor else a

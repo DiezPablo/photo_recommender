@@ -87,7 +87,23 @@ PALABRAS_EXCLUIR = (
     "coats of arms", "escudo", "museum", "museo", "food", "insects", "birds",
     "flowers", "plaques", "placas", "signs", "vehicles", "trains", "buses",
     "aircraft", "documents", "postage stamps", "paintings",
+    # vistos en la primera ejecución real (Sierra de Madrid, oct-2026):
+    "from space", "iss expedition", "aurora viewed", "earth at night",       # fotos de la ISS geolocalizadas
+    "grand prix", "motorsport", "rail transport", "railway stations", "avant ",
+    "animals", "mammals", "reptiles", "snakes", "coronella", "ciconia", "storks", "fungi",
+    "mushrooms", "plants of", "churches", "iglesia", "chapels", "ermita",
+    "plaza mayor", "streets", "calles", "festivals", "fiestas", "celebrations", "town halls",
+    "casas consistoriales", "sculptures", "esculturas", "graffiti", "schools", "instituto",
+    "education", "educación", "skiers", "esquiadores", "sports", "deportes",
 )
+# Categorías que no sirven como nombre de un spot (demasiado genéricas o administrativas)
+CATEGORIAS_NO_NOMBRE = re.compile(
+    r"quality|valued|featured|images|photographs|taken (in|on|with)|by user|uploaded|panoramio|"
+    r"^\d{4}|\b(19|20)\d\d\b|in the community of|of the community of|in spain|of spain|"
+    r"special area|national park|parque nacional|sierra de guadarrama$|sierra norte$|"
+    r"province of|provincia de|^landscapes|^views of (the )?(community|province)|clouds|snow|"
+    r"cc-by|gfdl|self-published|pd-|license|^files|^media|wikimedia|wiki loves|^(spain|españa|madrid|segovia)$",
+    re.I)
 
 # Elementos OSM interesantes para paisaje
 FILTROS_OSM = [
@@ -244,12 +260,21 @@ def detalles_commons(pageids: list[int]) -> list[dict]:
     return filas
 
 
+def _patron(palabras) -> re.Pattern:
+    # Al inicio de palabra: "río" no casa con "Riofrío" ni "map" con "maple", pero sí admite plurales
+    return re.compile(r"(?<![\w])(?:" + "|".join(re.escape(p.strip()) for p in palabras) + ")", re.I)
+
+
+_RE_PAISAJE = _patron(PALABRAS_PAISAJE)
+_RE_EXCLUIR = _patron(PALABRAS_EXCLUIR)
+
+
 def clasificar_paisaje(categorias: list[str]) -> tuple[bool, bool]:
     """(es_paisaje, es_de_calidad) a partir de las categorías del fichero."""
     cats = " | ".join(categorias).lower()
     calidad = any(c in cats for c in CATEGORIAS_CALIDAD)
-    excluir = any(p in cats for p in PALABRAS_EXCLUIR)
-    paisaje = any(p in cats for p in PALABRAS_PAISAJE)
+    excluir = bool(_RE_EXCLUIR.search(cats))
+    paisaje = bool(_RE_PAISAJE.search(cats))
     return (calidad or paisaje) and not excluir, calidad
 
 
@@ -275,7 +300,7 @@ def filtrar_paisaje(df: pd.DataFrame) -> pd.DataFrame:
                    owner=df["autor_cuenta"].fillna(df["autor"]))
     df = df[df.paisaje].copy()
     return df[["id", "owner", "autor", "licencia", "titulo", "lat", "lon", "calidad",
-               "datetaken", "url_m", "web"]]
+               "datetaken", "url_m", "web", "categorias"]]
 
 
 def buscar_commons(bbox) -> pd.DataFrame:
@@ -300,7 +325,7 @@ def leer_volcado(dir_: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
 
 
 # ------------------------------------------------------------ clustering ----
-def agrupar(df: pd.DataFrame, radio_m=250, min_fotos=4, min_autores=2) -> pd.DataFrame:
+def agrupar(df: pd.DataFrame, radio_m=300, min_fotos=3, min_autores=2) -> pd.DataFrame:
     """DBSCAN con métrica haversine. Devuelve df con columna 'cluster' (-1 = ruido)."""
     coords = np.radians(df[["lat", "lon"]].to_numpy())
     db = DBSCAN(eps=radio_m / RADIO_TIERRA_M, min_samples=min_fotos,
@@ -379,11 +404,66 @@ def _haversine_m(lat1, lon1, lat2, lon2):
 # ------------------------------------------------------------ resumen ----
 TIPOS_ES = {"viewpoint": "mirador", "peak": "cumbre", "waterfall": "cascada",
             "lighthouse": "faro", "beach": "playa", "cape": "cabo",
-            "cliff": "acantilado", "lake": "lago", "reservoir": "embalse"}
+            "cliff": "acantilado", "lake": "lago", "reservoir": "embalse", "water": "lago",
+            "attraction": "paraje"}
+
+
+def limpiar_nombre(t: str) -> str:
+    """Título de foto → nombre de spot: sin ids de Flickr, fechas, numeración ni 'panoramio'."""
+    t = re.sub(r"\((?:[^()]*\d{4}[^()]*|\d+)\)", " ", t)           # (6495112213), (2 de mayo de 2015, …)
+    t = re.sub(r"\b(?:19|20)\d\d[-_.]\d\d[-_.]\d\d\b", " ", t)    # 2011-06-05
+    t = re.sub(r"(?i)\s*-?\s*panoramio\b.*$", " ", t)
+    t = re.sub(r"(?i)\b(?:retouched|cropped|by[- ]\S+|img|dsc|p\d{6,})\b", " ", t)
+    t = re.sub(r"[_]+", " ", t)
+    t = re.sub(r"(?<=[a-záéíóúñ])(?=[A-ZÁÉÍÓÚÑ][a-záéíóúñ])", " ", t)   # LaSierra → La Sierra
+    t = re.sub(r"(?:\s*[-–]\s*|\s+)\d{1,3}$", "", t.strip())         # " - 01", " 09", "Pirón2"
+    t = re.sub(r"(?<=[a-záéíóúñ])\d{1,2}$", "", t)
+    t = re.sub(r"\s{2,}", " ", t).strip(" -–,.")
+    if t.isupper():
+        t = t.title().replace(" De ", " de ").replace(" Del ", " del ").replace(" La ", " la ").replace(" El ", " el ")
+    return t[:70]
+
+
+def categoria_nombre(categorias: pd.Series, n_fotos: int) -> str | None:
+    """La categoría específica más repetida en el cluster (p. ej. 'Laguna Grande de Peñalara'),
+    si la comparten al menos el 35 % de las fotos."""
+    cuenta: dict[str, int] = {}
+    for cats in categorias:
+        for c in set(cats):
+            if not CATEGORIAS_NO_NOMBRE.search(c) and not _RE_EXCLUIR.search(c):
+                cuenta[c] = cuenta.get(c, 0) + 1
+    if not cuenta:
+        return None
+    mejor = max(cuenta, key=lambda c: (cuenta[c], -len(c)))
+    return traducir_categoria(mejor) if cuenta[mejor] >= max(2, 0.35 * n_fotos) else None
+
+
+# Muchas categorías de Commons están en inglés: patrones habituales al castellano
+_TRADUCCIONES = (
+    (r"^Views (?:of|from) (?:the )?(.+)$", r"\1"),
+    (r"^Landscapes of (.+)$", r"\1"),
+    (r"^(.+) Reservoir$", r"Embalse de \1"),
+    (r"^Bridges over (?:the )?(.+) River$", r"Puentes sobre el río \1"),
+    (r"^(.+) River in (.+)$", r"Río \1 en \2"),
+    (r"^(.+) River$", r"Río \1"),
+    (r"^(.+) Valley$", r"Valle de \1"),
+    (r"^Monastery of (.+)$", r"Monasterio de \1"),
+    (r"^Lake (.+)$", r"Lago \1"),
+)
+
+
+def traducir_categoria(c: str) -> str:
+    for _ in range(3):   # "Views of Monastery of X" → "Monastery of X" → "Monasterio de X"
+        anterior = c
+        for patron, cambio in _TRADUCCIONES:
+            c = re.sub(patron, cambio, c)
+        if c == anterior:
+            break
+    return c
 
 
 def resumir_spots(fotos: pd.DataFrame, osm: pd.DataFrame, tz: ZoneInfo,
-                  radio_nombre_m=600) -> pd.DataFrame:
+                  radio_nombre_m=600, radio_osm_seguro_m=400) -> pd.DataFrame:
     f = fotos[fotos.cluster >= 0].copy()
     if f.empty:
         return pd.DataFrame()
@@ -417,21 +497,56 @@ def resumir_spots(fotos: pd.DataFrame, osm: pd.DataFrame, tz: ZoneInfo,
                         for r in top.itertuples()],
             "nombre": None, "tipo_osm": None, "dist_osm_m": None, "direccion_vista": None,
         }
+        # Nombre: elemento OSM con nombre muy cerca > categoría de Commons compartida > OSM a < 600 m
+        # > título limpio de la mejor foto
+        cat = categoria_nombre(g.categorias, len(g)) if "categorias" in g else None
         if not osm.empty:
             d = _haversine_m(lat, lon, osm.lat.to_numpy(), osm.lon.to_numpy())
-            cerca = osm.assign(d=d)[(d <= radio_nombre_m)]
-            con_nombre = cerca[cerca.nombre.notna()]
-            elegido = (con_nombre if not con_nombre.empty else cerca).sort_values("d")
-            if not elegido.empty:
-                e = elegido.iloc[0]
-                spot.update(nombre=e.nombre, tipo_osm=TIPOS_ES.get(e.tipo, e.tipo),
-                            dist_osm_m=int(e.d),
+            cerca = osm.assign(d=d)[(d <= radio_nombre_m)].sort_values("d")
+            con_nombre = cerca[cerca.nombre.map(lambda x: isinstance(x, str) and bool(x.strip()))]
+            e = con_nombre.iloc[0] if not con_nombre.empty else (cerca.iloc[0] if not cerca.empty else None)
+            if e is not None:
+                spot.update(tipo_osm=TIPOS_ES.get(e.tipo, e.tipo), dist_osm_m=int(e.d),
                             direccion_vista=e.direction if isinstance(e.direction, str) else None)
+                if isinstance(e.nombre, str) and e.nombre.strip() and (e.d <= radio_osm_seguro_m or not cat):
+                    spot["nombre"] = e.nombre.strip()
+        if not spot["nombre"] and cat:
+            spot["nombre"] = cat
+            if not spot["tipo_osm"]:
+                spot["tipo_osm"] = tipo_por_nombre(cat)
         if not isinstance(spot["nombre"], str) or not spot["nombre"].strip():
-            # Último recurso: el título de la foto de mejor calidad
-            spot["nombre"] = (top.titulo.iloc[0] if not top.empty else g.titulo.iloc[0])[:70]
+            # Último recurso: el título de la foto de mejor calidad, limpio
+            spot["nombre"] = limpiar_nombre(top.titulo.iloc[0] if not top.empty else g.titulo.iloc[0])
+            if not spot["tipo_osm"]:
+                spot["tipo_osm"] = tipo_por_nombre(spot["nombre"])
         spots.append(spot)
+    # Nombres repetidos (dos clusters en el mismo embalse): numerarlos para distinguirlos
+    vistos: dict[str, int] = {}
+    for sp in sorted(spots, key=lambda x: -x["puntuacion"]):
+        n = vistos.get(sp["nombre"], 0) + 1
+        vistos[sp["nombre"]] = n
+        if n > 1:
+            sp["nombre"] = f"{sp['nombre']} ({n})"
+    # Nombres repetidos (dos clusters en el mismo embalse): numerarlos para distinguirlos
+    vistos: dict[str, int] = {}
+    for sp in sorted(spots, key=lambda x: -x["puntuacion"]):
+        n = vistos.get(sp["nombre"], 0) + 1
+        vistos[sp["nombre"]] = n
+        if n > 1:
+            sp["nombre"] = f"{sp['nombre']} ({n})"
     return pd.DataFrame(spots).sort_values("puntuacion", ascending=False)
+
+
+TIPOS_POR_PALABRA = (("embalse", "embalse"), ("reservoir", "embalse"), ("presa", "embalse"),
+                     ("laguna", "lago"), ("lago", "lago"), ("lake", "lago"), ("cascada", "cascada"),
+                     ("waterfall", "cascada"), ("chorr", "cascada"), ("río", "río"), ("river", "río"),
+                     ("mirador", "mirador"), ("pico", "cumbre"), ("peak", "cumbre"), ("puente", "puente"),
+                     ("bridge", "puente"), ("playa", "playa"), ("faro", "faro"))
+
+
+def tipo_por_nombre(nombre: str) -> str | None:
+    n = nombre.lower()
+    return next((t for palabra, t in TIPOS_POR_PALABRA if palabra in n), None)
 
 
 def miradores_sin_fotos(osm: pd.DataFrame, spots: pd.DataFrame, radio_m=800) -> pd.DataFrame:
@@ -443,6 +558,25 @@ def miradores_sin_fotos(osm: pd.DataFrame, spots: pd.DataFrame, radio_m=800) -> 
     dmin = [(_haversine_m(r.lat, r.lon, spots.lat.to_numpy(), spots.lon.to_numpy())).min()
             for r in v.itertuples()]
     return v[np.array(dmin) > radio_m]
+
+
+def nombrar_miradores(miradores: pd.DataFrame, osm: pd.DataFrame, radio_m=2500) -> pd.DataFrame:
+    """Los miradores sin nombre toman el del elemento OSM con nombre más cercano ('Mirador junto a
+    Pico X'); si no hay ninguno a menos de 2,5 km se descartan (sin fotos ni nombre aportan poco)."""
+    con_nombre = osm[osm.nombre.map(lambda x: isinstance(x, str) and bool(x.strip())) & (osm.tipo != "viewpoint")]
+    nombres = []
+    for r in miradores.itertuples():
+        if isinstance(r.nombre, str) and r.nombre.strip():
+            nombres.append(r.nombre.strip())
+            continue
+        if con_nombre.empty:
+            nombres.append(None)
+            continue
+        d = _haversine_m(r.lat, r.lon, con_nombre.lat.to_numpy(), con_nombre.lon.to_numpy())
+        i = int(np.argmin(d))
+        nombres.append(f"Mirador junto a {con_nombre.nombre.iloc[i]}" if d[i] <= radio_m else None)
+    out = miradores.assign(nombre=nombres)
+    return out[out.nombre.notna()]
 
 
 def miradores_como_spots(miradores: pd.DataFrame, id_inicial: int) -> pd.DataFrame:
@@ -479,7 +613,7 @@ def guardar(spots: pd.DataFrame, salida: Path, zona: str):
                          "properties": r})
     escribir_json(salida / "spots.geojson",
                   {"type": "FeatureCollection", "zona": zona, "features": features}, indent=1)
-    spots.drop(columns=["galeria", "meses"]).to_csv(salida / "spots.csv", index=False)
+    spots.drop(columns=["galeria", "meses"], errors="ignore").to_csv(salida / "spots.csv", index=False)
 
 
 # ------------------------------------------------------------------ main ----
@@ -489,8 +623,8 @@ def main():
     p.add_argument("--zona", default="Sierra de Madrid")
     p.add_argument("--bbox", default="-4.30,40.60,-3.55,41.10",
                    help="min_lon,min_lat,max_lon,max_lat (con negativos: --bbox=...)")
-    p.add_argument("--radio", type=int, default=250, help="radio DBSCAN en metros")
-    p.add_argument("--min-fotos", type=int, default=4)
+    p.add_argument("--radio", type=int, default=300, help="radio DBSCAN en metros")
+    p.add_argument("--min-fotos", type=int, default=3)
     p.add_argument("--min-autores", type=int, default=2)
     p.add_argument("--sin-miradores", action="store_true",
                    help="no añadir miradores de OSM sin fotos como spots")
@@ -533,6 +667,8 @@ def main():
     print("[4/4] Resumiendo spots y contaminación lumínica…")
     spots = resumir_spots(fotos, osm, tz) if n else pd.DataFrame()
     miradores = miradores_sin_fotos(osm, spots)
+    if not miradores.empty:
+        miradores = nombrar_miradores(miradores, osm)
     if not a.sin_miradores and not miradores.empty:
         extra = miradores_como_spots(miradores, int(spots.spot_id.max()) + 1 if not spots.empty else 0)
         spots = pd.concat([spots, extra], ignore_index=True) if not spots.empty else extra
