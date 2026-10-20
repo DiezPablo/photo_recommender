@@ -46,7 +46,9 @@ BUSQUEDAS = ["sunset Madrid", "atardecer Madrid", "puesta de sol Madrid", "sunri
              "sunset Segovia", "atardecer Segovia", "sunset Guadarrama", "atardecer Guadarrama",
              "sunset Templo de Debod", "atardecer Templo de Debod", "Madrid sky sunset clouds",
              "sunset Navacerrada", "amanecer sierra Madrid", "sunrise Segovia", "atardecer El Escorial",
-             "Madrid skyline sunset", "Cuatro Torres sunset", "Casa de Campo atardecer"]
+             "Madrid skyline sunset", "Cuatro Torres sunset", "Casa de Campo atardecer",
+             "Madrid at dusk", "Madrid twilight", "Madrid golden hour", "cielo Madrid nubes", "ocaso Madrid",
+             "crepúsculo Madrid", "Madrid evening sky", "Madrid red sky"]
 # (sin Toledo: "sunset Toledo" devuelve sobre todo Toledo, Ohio)
 AZ_ATARDECER = (240, 255, 270, 285, 300)
 AZ_AMANECER = (60, 75, 90, 105, 120)
@@ -123,6 +125,14 @@ def dias_positivos() -> dict[tuple[str, str], int]:
             pos[(t.date().isoformat(), "atardecer")] += 1
         elif sol.amanecer and timedelta(minutes=-40) <= t - sol.amanecer <= timedelta(minutes=50):
             pos[(t.date().isoformat(), "amanecer")] += 1
+    # Fotos de paisaje geolocalizadas en la Sierra hechas en la ventana de color (del volcado de
+    # descubrir_spots.py; ver validacion/positivos_sierra.csv)
+    extra = Path(__file__).parent / "validacion" / "positivos_sierra.csv"
+    if extra.exists():
+        n0 = len(pos)
+        for r in pd.read_csv(extra).itertuples():
+            pos[(r.t[:10], r.momento)] += 1
+        print(f"  +{len(pos) - n0} días de fotos de la Sierra en la ventana de color", flush=True)
     return dict(pos)
 
 
@@ -300,6 +310,13 @@ def main():
     for lo, hi in ((0, 2), (2, 4), (4, 6), (6, 8), (8, 10.1)):
         t = df[(df.v2 >= lo) & (df.v2 < hi)]
         lineas.append(f"| {lo}-{min(hi, 10):g} | {len(t)} | {100 * t.positivo.mean():.1f} % |")
+    # Qué variables separan los días fotografiados (diagnóstico para ajustar, no para sobreajustar)
+    lineas += ["", "## Diagnóstico: medias en días con foto frente al resto (mismo momento)", "",
+               "| Momento | Variable | Con foto | Resto |", "|---|---|---|---|"]
+    for momento in ("atardecer", "amanecer"):
+        sub = df[df.momento == momento]
+        for v in ("bajas", "medias", "altas", "camino40", "aod", "polvo"):
+            lineas.append(f"| {momento} | {v} | {sub[sub.positivo][v].mean():.1f} | {sub[~sub.positivo][v].mean():.1f} |")
     texto = "\n".join(lineas)
     (salida / "validacion.md").write_text(texto)
     (salida / "resultados.json").write_text(json.dumps(resultados, indent=1))
