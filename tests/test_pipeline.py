@@ -164,6 +164,7 @@ def test_descubrir_con_respuestas_guardadas(monkeypatch, tmp_path):
 
 def test_clasificar_paisaje():
     assert D.clasificar_paisaje(["Landscapes of Madrid", "Quality images"]) == (True, True)
+    assert not D.clasificar_paisaje(["Quality images of Segovia", "Throne room of the Alcázar of Segovia"])[0]
     assert D.clasificar_paisaje(["Sierra de Guadarrama"])[0]
     assert not D.clasificar_paisaje(["Interiors of churches", "Sierra"])[0]
     assert not D.clasificar_paisaje(["Birds of Spain"])[0]

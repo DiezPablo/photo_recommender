@@ -132,3 +132,9 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
   conflicto y fallo. *Solución*: checkout de `main` al empezar y `.github/scripts/publicar.sh`, que
   parte siempre del último `origin/main`, copia encima los ficheros generados (mandan ellos, no hay
   nada que fusionar) y reintenta el push. Probado en local con un remoto simulado y dos publicadores.
+- Revisando la galería en producción: una foto de *calidad* del salón del trono del Alcázar pasaba
+  como paisaje porque bastaba con ser "Quality image". Ahora hace falta siempre una palabra de paisaje;
+  la calidad solo ordena. Mismo número de spots, galerías sin interiores.
+- Commons sirve miniaturas de tamaños estándar: pedíamos 640 px y llegaban de 960 px para tarjetas
+  de 150-320 px → se piden de 500 px.
+- Desde el contenedor algunas miniaturas dan 429 (IP compartida); los navegadores de verdad no.

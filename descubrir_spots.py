@@ -99,6 +99,7 @@ PALABRAS_EXCLUIR = (
     "casas consistoriales", "sculptures", "esculturas", "graffiti", "schools", "instituto",
     "education", "educación", "skiers", "esquiadores", "sports", "deportes", "train station",
     "stations", "estación de", "shearing", "esquileo", "factories", "fábricas", "industrial",
+    "throne", "rooms", "salón", "salas", "halls", "ceilings", "techos", "furniture",
 )
 # Categorías que no sirven como nombre de un spot (demasiado genéricas o administrativas)
 CATEGORIAS_NO_NOMBRE = re.compile(
@@ -229,7 +230,7 @@ def detalles_commons(pageids: list[int]) -> list[dict]:
         lote = pageids[i:i + 50]
         paginas: dict[int, dict] = {}
         params = {"pageids": "|".join(map(str, lote)), "prop": "imageinfo|categories",
-                  "iiprop": "url|user|extmetadata", "iiurlwidth": 640,
+                  "iiprop": "url|user|extmetadata", "iiurlwidth": 500,
                   "iiextmetadatafilter": "DateTimeOriginal|Artist|LicenseShortName|ObjectName",
                   "cllimit": "max", "clshow": "!hidden"}
         cont: dict = {}
@@ -279,7 +280,8 @@ def clasificar_paisaje(categorias: list[str]) -> tuple[bool, bool]:
     calidad = any(c in cats for c in CATEGORIAS_CALIDAD)
     excluir = bool(_RE_EXCLUIR.search(cats))
     paisaje = bool(_RE_PAISAJE.search(cats))
-    return (calidad or paisaje) and not excluir, calidad
+    # La calidad reconocida no basta: hay fotos de calidad de interiores (salón del trono del Alcázar)
+    return paisaje and not excluir, calidad
 
 
 def descargar_commons(bbox) -> pd.DataFrame:
