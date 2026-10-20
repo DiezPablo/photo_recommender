@@ -102,9 +102,13 @@ PESO_CAMINO = {15: 0.55, 40: 0.75, 80: 0.55, 150: 0.3}
 KM_CAMINO = tuple(PESO_CAMINO)
 
 
-def lienzo(alta: float, media: float) -> float:
+PESO_MEDIAS = 0.85   # cuánto cuentan las nubes medias en el lienzo frente a las altas
+
+
+def lienzo(alta: float, media: float, peso_medias: float | None = None) -> float:
     """Fracción (0-1) del cielo con nubes que pueden encenderse: altas y medias, sin contar dos veces."""
-    return 1 - (1 - alta / 100) * (1 - 0.85 * media / 100)
+    w = PESO_MEDIAS if peso_medias is None else peso_medias
+    return 1 - (1 - alta / 100) * (1 - w * media / 100)
 
 
 def calidad_lienzo(c: float) -> float:
@@ -158,7 +162,7 @@ def claridad_aire(aod: float | None, polvo: float | None, humedad: float, lluvia
 
 
 def nota_luz(local, camino: list[dict], aire: dict | None = None, es_agua: bool = False,
-             momento: str = "atardecer") -> Nota:
+             momento: str = "atardecer", peso_medias: float | None = None) -> Nota:
     """Amanecer o atardecer con el modelo de camino de la luz.
 
     local: condiciones en el spot en el pico de color (variables de Open-Meteo, interpoladas).
@@ -175,8 +179,8 @@ def nota_luz(local, camino: list[dict], aire: dict | None = None, es_agua: bool 
 
     # Lienzo: 60 % el cielo sobre el spot, 40 % las nubes a 15-40 km hacia el sol (las que más se encienden)
     cerca = [p for p in camino if p["km"] <= 40] or [{"high": H, "mid": M}]
-    c_sol = sum(lienzo(_v(p, "high"), _v(p, "mid")) for p in cerca) / len(cerca)
-    c = 0.6 * lienzo(H, M) + 0.4 * c_sol
+    c_sol = sum(lienzo(_v(p, "high"), _v(p, "mid"), peso_medias) for p in cerca) / len(cerca)
+    c = 0.6 * lienzo(H, M, peso_medias) + 0.4 * c_sol
     q = calidad_lienzo(c)
     t_media, t_alta, texto_camino = transmision_camino(camino) if camino else (1.0, 1.0, "")
     # si el lienzo es sobre todo de nubes altas, cuenta su transmisión (la luz les llega desde más lejos)

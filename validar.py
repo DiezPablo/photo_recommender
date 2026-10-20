@@ -277,6 +277,8 @@ def main():
                 "v1": nota_luz_v1(local, camino[1]["low"]),
                 "v2": nota_luz(local, camino, aire, momento=momento).valor,
                 "v2_sin_aire": nota_luz(local, camino, None, momento=momento).valor,
+                "v2_medias06": nota_luz(local, camino, aire, momento=momento, peso_medias=0.6).valor,
+                "v2_medias04": nota_luz(local, camino, aire, momento=momento, peso_medias=0.4).valor,
                 "v2_sin_camino": nota_luz(local, [], aire, momento=momento).valor,
                 "bajas": local.get("cloud_cover_low"), "medias": local.get("cloud_cover_mid"),
                 "altas": local.get("cloud_cover_high"), "camino40": camino[1]["low"],
@@ -294,7 +296,7 @@ def main():
     resultados = {}
     for momento in ("atardecer", "amanecer", "ambos"):
         sub = df if momento == "ambos" else df[df.momento == momento]
-        for clave in ("v1", "v2", "v2_sin_aire", "v2_sin_camino"):
+        for clave in ("v1", "v2", "v2_sin_aire", "v2_sin_camino", "v2_medias06", "v2_medias04"):
             auc, n = auc_por_mes(sub.to_dict("records"), clave)
             resultados[f"{momento}/{clave}"] = auc
             lineas.append(f"| {momento} | {clave} | {auc:.3f} | {sub[sub.positivo][clave].mean():.2f} | "
