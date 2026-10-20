@@ -40,9 +40,13 @@ AIRE = "https://air-quality-api.open-meteo.com/v1/air-quality"
 CENTRO = (40.4168, -3.7038)          # Puerta del Sol
 TZ = ZoneInfo("Europe/Madrid")
 DESDE, HASTA = date(2016, 1, 1), date(2025, 12, 31)
-CATEGORIAS = ["Sunsets in Madrid", "Sunrises in Madrid", "Sunsets in the Community of Madrid",
-              "Sunrises in the Community of Madrid", "Sunsets in Segovia", "Sunsets in the province of Segovia",
-              "Sunsets in Madrid (city)", "Twilight in Madrid"]
+# Búsquedas de texto en Commons: devuelven fotos de puestas/salidas de sol de la zona. El filtro
+# que de verdad decide es la hora EXIF (dentro de la ventana de color de ese día).
+BUSQUEDAS = ["sunset Madrid", "atardecer Madrid", "puesta de sol Madrid", "sunrise Madrid", "amanecer Madrid",
+             "sunset Segovia", "atardecer Segovia", "sunset Guadarrama", "atardecer Guadarrama",
+             "sunset Templo de Debod", "atardecer Templo de Debod", "Madrid sky sunset clouds",
+             "sunset Navacerrada", "amanecer sierra Madrid", "sunrise Segovia", "atardecer Alcalá de Henares",
+             "sunset Aranjuez", "atardecer Toledo", "sunset Toledo", "atardecer El Escorial"]
 AZ_ATARDECER = (240, 255, 270, 285, 300)
 AZ_AMANECER = (60, 75, 90, 105, 120)
 SESION = requests.Session()
@@ -66,20 +70,18 @@ def _commons(params: dict) -> dict:
     raise RuntimeError("Commons no responde")
 
 
-def ficheros_de(categoria: str, profundidad: int = 1) -> set[str]:
+def buscar_ficheros(consulta: str, maximo: int = 1500) -> set[str]:
     titulos: set[str] = set()
-    cont: dict = {}
-    while True:
-        d = _commons({"list": "categorymembers", "cmtitle": f"Category:{categoria}", "cmlimit": 500,
-                      "cmtype": "file|subcat", **cont})
-        for m in d.get("query", {}).get("categorymembers", []):
-            if m["ns"] == 6:
-                titulos.add(m["title"])
-            elif m["ns"] == 14 and profundidad > 0:
-                titulos |= ficheros_de(m["title"].removeprefix("Category:"), profundidad - 1)
-        if "continue" not in d:
-            return titulos
-        cont = d["continue"]
+    offset = 0
+    while offset < maximo:
+        d = _commons({"list": "search", "srsearch": consulta, "srnamespace": 6, "srlimit": 500,
+                      "sroffset": offset, "srwhat": "text"})
+        res = d.get("query", {}).get("search", [])
+        titulos |= {r["title"] for r in res if re.search(r"\.(jpe?g|png|tiff?|webp)$", r["title"], re.I)}
+        if "continue" not in d or not res:
+            break
+        offset = d["continue"].get("sroffset", offset + 500)
+    return titulos
 
 
 def fechas_exif(titulos: list[str]) -> list[datetime]:
@@ -101,15 +103,15 @@ def fechas_exif(titulos: list[str]) -> list[datetime]:
 def dias_positivos() -> dict[tuple[str, str], int]:
     """(fecha, momento) → nº de fotos hechas en la ventana de color (EXIF en hora local)."""
     titulos: set[str] = set()
-    for c in CATEGORIAS:
+    for c in BUSQUEDAS:
         try:
-            n = ficheros_de(c)
-        except RuntimeError:
+            n = buscar_ficheros(c)
+        except (RuntimeError, requests.RequestException):
             n = set()
-        print(f"  {c}: {len(n)} ficheros", flush=True)
+        print(f"  «{c}»: {len(n)} ficheros", flush=True)
         titulos |= n
     fechas = fechas_exif(sorted(titulos))
-    print(f"  {len(fechas)} con fecha EXIF", flush=True)
+    print(f"  {len(titulos)} ficheros distintos, {len(fechas)} con fecha EXIF", flush=True)
     pos: dict[tuple[str, str], int] = defaultdict(int)
     for t in fechas:
         if not (DESDE <= t.date() <= HASTA):

@@ -135,7 +135,7 @@ def transmision_camino(camino: list[dict]) -> tuple[float, float, str]:
 
 def claridad_aire(aod: float | None, polvo: float | None, humedad: float, lluvia_previa_mm: float,
                   prob_lluvia: float) -> tuple[float, list[str]]:
-    """Multiplicador del color por la limpieza del aire (0,55-1,12) y motivos."""
+    """Multiplicador del color por la limpieza del aire (0,25-1,12) y motivos."""
     k, motivos = 1.0, []
     if aod is not None:
         f = _tramos(aod, [(0.0, 1.08), (0.1, 1.05), (0.2, 1.0), (0.4, 0.85), (0.8, 0.6)])
@@ -145,15 +145,16 @@ def claridad_aire(aod: float | None, polvo: float | None, humedad: float, lluvia
             motivos.append(f"calima o aerosoles (AOD {aod:.2f})")
         k *= f
     if polvo is not None and polvo > 30:
-        k *= _tramos(polvo, [(30, 0.95), (100, 0.75), (200, 0.6)])
-        motivos.append(f"polvo en suspensión ({polvo:.0f} µg/m³)")
+        # La calima fuerte (15-mar-2022: 150+ µg/m³) deja un cielo pardo con el sol apenas visible
+        k *= _tramos(polvo, [(30, 0.95), (80, 0.7), (150, 0.35), (250, 0.25)])
+        motivos.append(f"calima: polvo en suspensión ({polvo:.0f} µg/m³)")
     if humedad > 85:
         k *= 1 - 0.15 * _clamp((humedad - 85) / 15)
         motivos.append(f"humedad {humedad:.0f} %")
     if lluvia_previa_mm >= 1 and prob_lluvia < 30:
         k *= 1.08
         motivos.append(f"aire lavado por la lluvia ({lluvia_previa_mm:.0f} mm en las 24 h previas)")
-    return _clamp(k, 0.55, 1.12), motivos
+    return _clamp(k, 0.25, 1.12), motivos
 
 
 def nota_luz(local, camino: list[dict], aire: dict | None = None, es_agua: bool = False,
@@ -202,10 +203,11 @@ def nota_luz(local, camino: list[dict], aire: dict | None = None, es_agua: bool 
     vis_cielo = 1 - 0.85 * (L / 100) ** 1.3
     total = a.paso(f"Nubes bajas sobre el spot ({L:.0f} %) tapan el cielo", total, luz + color * vis_cielo)
     color *= vis_cielo
-    # 4) aire
+    # 4) aire: afecta sobre todo al color; con calima o aerosoles densos vela también la luz directa
     if motivos_aire:
-        total = a.paso("Aire: " + ", ".join(motivos_aire), total, luz + color * k)
-        color *= k
+        k_luz = min(1.0, 0.3 + 0.7 * k) if k < 1 else 1.0
+        total = a.paso("Aire: " + ", ".join(motivos_aire), total, luz * k_luz + color * k)
+        luz, color = luz * k_luz, color * k
     # 5) lluvia y visibilidad
     m = (1 - 0.6 * P / 100) * (0.5 if lluvia >= 0.5 else 1.0)
     if m < 0.99:

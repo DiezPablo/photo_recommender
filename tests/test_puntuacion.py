@@ -226,3 +226,11 @@ def test_mar_de_nubes_desde_una_cumbre():
 
 def test_sin_capa_baja():
     assert capa_nubosa({"niveles": [{"hpa": 900, "z": 1000, "t": 5, "hr": 50, "nubes": 0}]}) is None
+
+
+def test_calima_extrema_del_15_de_marzo_de_2022():
+    """ERA5 vio el polvo como 100 % de nubes altas; con 168 µg/m³ el sol apenas se veía."""
+    local = cielo(mid=30, high=100, hum=40)
+    cam = camino(altas=(100, 100, 100, 100))
+    assert luz(local, cam, polvo=168).valor <= 3.2
+    assert luz(local, cam).valor >= 6.5
