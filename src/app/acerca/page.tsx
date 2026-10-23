@@ -7,8 +7,8 @@ export default function Acerca() {
     <main className="prosa">
       <h1>Cómo se puntúa</h1>
       <p>
-        Cada spot recibe cada día una nota de 0 a 10 para cuatro salidas: amanecer, atardecer, noche estrellada / Vía
-        Láctea y niebla. Los modelos se basan en cómo trabajan los servicios especializados (Sunsethue, Astrospheric),
+        Cada spot recibe cada día una nota de 0 a 10 para cinco salidas: amanecer, atardecer, noche estrellada / Vía
+        Láctea, niebla o mar de nubes y salida o puesta de la luna. Los modelos se basan en cómo trabajan los servicios especializados (Sunsethue, Astrospheric),
         en la física del color del cielo (NOAA) y en lo que repiten los fotógrafos, y están contrastados con datos
         históricos. En la ficha de cada spot verás qué ha sumado y qué ha restado: el desglose suma exactamente la nota.
       </p>
@@ -25,7 +25,15 @@ export default function Acerca() {
         <li><strong>Nubes bajas sobre ti</strong>: tapan el lienzo.</li>
         <li><strong>Aire</strong>: el aire limpio da colores vivos. Los aerosoles y sobre todo la <strong>calima</strong> (polvo del Sáhara) los apagan y velan el sol; la humedad alta resta; tras la lluvia el aire está lavado y suma.</li>
         <li><strong>Lluvia</strong> en el momento, visibilidad, y reflejos en el agua si no hay viento.</li>
+        <li><strong>Relieve</strong>: con el modelo digital del terreno se calcula el horizonte real de cada spot. Si una montaña tapa el sol, se esconde antes (verás la hora real) y se pierden la luz rasante y el color del cielo bajo.</li>
       </ul>
+
+      <h2>Luna sobre el paisaje</h2>
+      <p>
+        La foto de la luna grande saliendo (o poniéndose) en el crepúsculo: puntúa cuando la luna está casi llena,
+        asoma sobre el relieve con el sol entre 6° bajo el horizonte y 2° sobre él (el paisaje aún tiene luz y la
+        exposición se equilibra) y no hay nubes bajas en su dirección.
+      </p>
 
       <h2>Noche estrellada y Vía Láctea</h2>
       <ul>
@@ -55,7 +63,8 @@ export default function Acerca() {
       <p>
         La previsión cubre 5 días: las nubes se predicen bien a 1-2 días, regular al tercero y mal después. Además,
         cada nota se recalcula con las nubes de un segundo modelo (ECMWF): si las dos notas difieren mucho, verás
-        “previsión dudosa”. Los datos se recalculan cada 3 horas.
+        “previsión dudosa”. Los datos se recalculan dos veces al día (madrugada y mediodía), lo que permite el
+        servicio gratuito de previsión para toda España.
       </p>
 
       <h2>Cómo se ha validado</h2>
@@ -71,6 +80,8 @@ export default function Acerca() {
           <tr><th>Previsión</th><td><a href="https://open-meteo.com/">Open-Meteo</a> (CC BY 4.0), con ECMWF IFS como segundo modelo</td></tr>
           <tr><th>Aerosoles y polvo</th><td>CAMS (Copernicus) vía Open-Meteo</td></tr>
           <tr><th>Sol, luna y Vía Láctea</th><td>Cálculo propio (astral, Meeus)</td></tr>
+          <tr><th>Relieve</th><td>Modelo digital del terreno (teselas Terrarium, Mapzen/AWS Open Data)</td></tr>
+          <tr><th>Spots</th><td><a href="https://www.wikidata.org/">Wikidata</a> (CC0) y OpenStreetMap</td></tr>
           <tr><th>Contaminación lumínica</th><td><a href="https://djlorenz.github.io/astronomy/lp/">World Atlas of Artificial Night Sky Brightness 2025</a>, D. Lorenz</td></tr>
           <tr><th>Mapa y nombres</th><td>© <a href="https://www.openstreetmap.org/copyright">colaboradores de OpenStreetMap</a> (ODbL)</td></tr>
           <tr><th>Fotos</th><td><a href="https://commons.wikimedia.org/">Wikimedia Commons</a>, con la licencia de cada autor</td></tr>
