@@ -298,3 +298,10 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
 - Ficha: título grande, ficha técnica, foto con crédito, lectura de hoy (cifra + medidor), «el día, hora a
   hora» y desglose como libro de cuentas.
 - Modo rojo: ningún bloque grande brillante (las casillas excelentes van con borde).
+
+## 2026-10-23 · Descubrimiento nacional: segundo intento
+- OSM ya va en una consulta por bloque (≈15 min en total) y Commons respeta su presupuesto de 150 min
+  (5500 de 14 519 candidatos contados; el resto se puntúa con Wikidata y se completa en las siguientes
+  ejecuciones gracias a la caché).
+- Cayó en la última fase (galerías, ~1450/1500) por `int(NaN or 0)`: en Python NaN es «verdadero».
+  Corregido con `_entero()` y prueba. La caché se guardó, así que el reintento reutiliza Commons y el DEM.

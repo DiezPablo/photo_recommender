@@ -256,3 +256,10 @@ def test_horizonte_con_terreno_sintetico(monkeypatch):
     dentro = lambda az, a, b: a <= az <= b if a <= b else az >= a or az <= b   # sectores que cruzan el norte
     assert any(dentro(90, a, b) for a, b in H.apertura(p))
     assert not any(dentro(270, a, b) for a, b in H.apertura(p))
+
+
+def test_entero_tolera_nan():
+    """El descubrimiento nacional cayó tras 5 h por `int(NaN or 0)`: los recuentos sin contar son NaN."""
+    import numpy as np
+    from descubrir_espana import _entero
+    assert _entero(np.nan) == 0 and _entero(None) == 0 and _entero(4.0) == 4 and _entero("x") == 0

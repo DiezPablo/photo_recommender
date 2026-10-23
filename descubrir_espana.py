@@ -333,8 +333,8 @@ def main():
         props = {
             "id": id_spot(nombre, r.lat, r.lon), "nombre": nombre, "tipo_osm": r.tipo, "origen": r.fuente,
             "provincia": r.provincia, "ccaa": r.ccaa, "wikidata": r.wikidata if isinstance(r.wikidata, str) else None,
-            "fotos": int(r.fotos_cerca or 0), "fotografos": autores, "fotos_calidad": 0,
-            "puntuacion": round(float(r.puntuacion), 2), "sitelinks": int(r.sitelinks or 0),
+            "fotos": _entero(r.fotos_cerca), "fotografos": autores, "fotos_calidad": 0,
+            "puntuacion": round(float(r.puntuacion), 2), "sitelinks": _entero(r.sitelinks),
             "mejor_momento": "desconocido", "pct_amanecer": 0, "pct_atardecer": 0, "pct_noche": 0,
             "meses": meses, "meses_top": [i + 1 for i in np.argsort(meses)[::-1][:3] if meses[i] > 0],
             "galeria": fotos,
@@ -353,6 +353,15 @@ def main():
         salida / "spots.csv", index=False)
     print(f"\n{len(features)} spots → {salida}/spots.geojson ({(salida / 'spots.geojson').stat().st_size / 1e6:.1f} MB)")
     print(sel.groupby("ccaa").size().sort_values(ascending=False).to_string())
+
+
+def _entero(v) -> int:
+    """Entero de un valor de pandas que puede ser None o NaN (NaN es «verdadero»: `NaN or 0` es NaN)."""
+    try:
+        v = float(v)
+    except (TypeError, ValueError):
+        return 0
+    return int(v) if np.isfinite(v) else 0
 
 
 if __name__ == "__main__":
