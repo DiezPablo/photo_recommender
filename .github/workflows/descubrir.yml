@@ -29,8 +29,10 @@ on:
 permissions:
   contents: write
 
+# Cola propia: el descubrimiento dura horas y no debe frenar las previsiones diarias (datos.yml).
+# Publicar a la vez no rompe nada: cada publicación parte del último main y sube sus ficheros.
 concurrency:
-  group: publicar-datos
+  group: descubrir
   cancel-in-progress: false
 
 jobs:
