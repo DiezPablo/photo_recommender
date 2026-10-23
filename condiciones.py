@@ -148,7 +148,12 @@ def _get(url: str, params: dict, obligatorio: bool = True):
             print(f"  {url.split('/')[2]} respondió {r.status_code}: sigo sin esos datos")
             return None
         r.raise_for_status()
-        datos = r.json()
+        try:
+            datos = r.json()
+        except ValueError:   # a veces responde 200 con el cuerpo vacío o cortado: se reintenta
+            print(f"  {url.split('/')[2]}: respuesta no JSON, reintento")
+            time.sleep(10 * (intento + 1))
+            continue
         _cache_set(clave, datos)
         return datos
     if obligatorio:
