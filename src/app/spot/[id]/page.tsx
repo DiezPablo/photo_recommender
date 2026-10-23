@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import Anillo from "@/components/Anillo";
 import Desglose from "@/components/Desglose";
-import { IconoAmanecer, IconoAtardecer, IconoCamara, IconoLuna, IconoNoche, IconoRuta } from "@/components/Iconos";
+import PlanDelDia from "@/components/PlanDelDia";
+import { IconoAmanecer, IconoAtardecer, IconoCamara, IconoLuna, IconoMomento, IconoNoche, IconoRuta } from "@/components/Iconos";
 import MapaSpot from "@/components/MapaSpot";
 import Panorama from "@/components/Panorama";
 import type { LineaMapa } from "@/components/Mapa";
 import {
-  calificacion, cargar, type Dia, etiquetaDia, getSpot, horaDe, MESES_LARGOS, MOMENTOS, NOMBRE_CORTO, rumbo,
+  calificacion, cargar, type Dia, etiquetaDia, getSpot, horaDe, MESES_LARGOS, miniatura, MOMENTOS, NOMBRE_CORTO, rumbo,
   type Spot, TEXTO_AVISO, tramoTexto,
 } from "@/lib/datos";
 
@@ -201,7 +203,7 @@ function BloqueDia({ dia, indice, spot }: { dia: Dia; indice: number; spot: Spot
         <div className="notas-grid">
           {MOMENTOS.map((m) => {
             const n = dia.notas[m];
-            return n ? <Desglose key={m} momento={m} n={n} subtitulo={horaDe(dia, m)} /> : null;
+            return n ? <Desglose key={m} momento={m} n={n} subtitulo={horaDe(dia, m)} id={indice === 0 ? `nota-${m}` : undefined} /> : null;
           })}
         </div>
         <div className="datos-grid">
@@ -229,6 +231,8 @@ export default async function PaginaSpot({ params }: Props) {
   if (hoy?.sol.az_atardecer != null) lineas.push({ azimut: hoy.sol.az_atardecer, km: 6, color: "var(--acento)", etiqueta: `Puesta del sol (${rumbo(hoy.sol.az_atardecer)})` });
   if (hoy?.noche.via_lactea.azimut_max != null) lineas.push({ azimut: hoy.noche.via_lactea.azimut_max, km: 4, color: "var(--vl)", etiqueta: "Núcleo de la Vía Láctea en su punto más alto", discontinua: true });
   if (vista !== null) lineas.push({ azimut: vista, km: 3, color: "var(--texto-2)", etiqueta: "Orientación de la vista (OSM)", discontinua: true });
+  const foto = miniatura(desc?.galeria?.[0]?.url, 960);
+  const mejorHoy = hoy ? MOMENTOS.reduce((a, m) => ((hoy.notas[m]?.nota ?? -1) > (hoy.notas[a]?.nota ?? -1) ? m : a), MOMENTOS[0]) : "atardecer";
   const maxMes = Math.max(...(desc?.meses ?? [0]), 1);
   const gmaps = `https://www.google.com/maps/dir/?api=1&destination=${spot.lat},${spot.lon}`;
   // Google no deja usar sus fotos gratis ni guardarlas (la API de Places es de pago): enlace a su ficha
@@ -237,33 +241,53 @@ export default async function PaginaSpot({ params }: Props) {
 
   return (
     <main className="ficha">
-      <div className="migas"><Link href="/">← Ranking</Link></div>
-      <header className="ficha-cab">
-        <h1>{spot.nombre}</h1>
-        <div className="etiquetas">
-          {spot.tipo && <span className="etiqueta"><b>{spot.tipo}</b></span>}
-          {spot.elevacion !== null && <span className="etiqueta"><b>{spot.elevacion}</b> m</span>}
-          {spot.contaminacion && (
-            <span className="etiqueta" title={`Zona ${spot.contaminacion.zona} del atlas de D. Lorenz (brillo en el cénit); Bortle es una equivalencia aproximada`}>
-              ≈ Bortle <b>{spot.contaminacion.bortle}</b> · {spot.contaminacion.sqm.toFixed(2)} mag/″²
-            </span>
+      <header className={`ficha-portada cielo-${mejorHoy}${foto ? " con-foto" : ""}`}>
+        {foto && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={foto} alt="" className="destacado-foto" fetchPriority="high" />
+        )}
+        <div className="destacado-in">
+          <div className="migas"><Link href="/">← Ranking</Link></div>
+          <h1>{spot.nombre}</h1>
+          <div className="etiquetas">
+            {spot.tipo && <span className="etiqueta"><b>{spot.tipo}</b></span>}
+            {spot.elevacion !== null && <span className="etiqueta"><b>{spot.elevacion}</b> m</span>}
+            {spot.contaminacion && (
+              <span className="etiqueta" title={`Zona ${spot.contaminacion.zona} del atlas de D. Lorenz (brillo en el cénit); Bortle es una equivalencia aproximada`}>
+                ≈ Bortle <b>{spot.contaminacion.bortle}</b> · {spot.contaminacion.sqm.toFixed(2)} mag/″²
+              </span>
+            )}
+            {vista !== null && <span className="etiqueta">Vista hacia <b>{rumbo(vista)}</b></span>}
+            {desc && desc.fotografos > 0 && (
+              <span className="etiqueta"><b>{desc.fotos}</b> fotos de <b>{desc.fotografos}</b> autores en Commons</span>
+            )}
+            {spot.origen === "osm" && <span className="etiqueta">Mirador de OpenStreetMap (sin fotos en Commons)</span>}
+            {spot.origen === "propio" && <span className="etiqueta">Spot propio</span>}
+            {(spot.provincia ?? desc?.provincia) && (
+              <span className="etiqueta">{spot.provincia ?? desc?.provincia} · {spot.ccaa ?? desc?.ccaa}</span>
+            )}
+          </div>
+          <div className="acciones">
+            <a className="boton primario" href={gmaps} target="_blank" rel="noopener"><IconoRuta size={16} /> Cómo llegar</a>
+            <a className="boton" href={gmapsVer} target="_blank" rel="noopener">Ver fotos en Google Maps</a>
+            <a className="boton" href={osmRuta} target="_blank" rel="noopener">Ruta en OpenStreetMap</a>
+          </div>
+          {hoy && (
+            <ul className="hoy-anillos" aria-label="Notas de hoy">
+              {MOMENTOS.map((m) => hoy.notas[m] ? (
+                <li key={m}>
+                  <a href={`#nota-${m}`}>
+                    <Anillo nota={hoy.notas[m]!.nota} tam={52} grosor={4.5} />
+                    <small><IconoMomento momento={m} size={13} /> {NOMBRE_CORTO[m]}</small>
+                  </a>
+                </li>
+              ) : null)}
+            </ul>
           )}
-          {vista !== null && <span className="etiqueta">Vista hacia <b>{rumbo(vista)}</b></span>}
-          {desc && desc.fotografos > 0 && (
-            <span className="etiqueta"><b>{desc.fotos}</b> fotos de <b>{desc.fotografos}</b> autores en Commons</span>
-          )}
-          {spot.origen === "osm" && <span className="etiqueta">Mirador de OpenStreetMap (sin fotos en Commons)</span>}
-          {spot.origen === "propio" && <span className="etiqueta">Spot propio</span>}
-          {(spot.provincia ?? desc?.provincia) && (
-            <span className="etiqueta">{spot.provincia ?? desc?.provincia} · {spot.ccaa ?? desc?.ccaa}</span>
-          )}
-        </div>
-        <div className="acciones">
-          <a className="boton primario" href={gmaps} target="_blank" rel="noopener"><IconoRuta size={16} /> Cómo llegar</a>
-          <a className="boton" href={gmapsVer} target="_blank" rel="noopener">Ver fotos en Google Maps</a>
-          <a className="boton" href={osmRuta} target="_blank" rel="noopener">Ruta en OpenStreetMap</a>
         </div>
       </header>
+
+      {hoy && <PlanDelDia dia={hoy} />}
 
       <div className="ficha-grid">
         <section>

@@ -44,7 +44,7 @@ test("portada: ranking, mapa con marcadores y filtros", async ({ page }, info) =
   expect(n).toBeGreaterThan(0);
 
   // notas ordenadas de mayor a menor
-  const notas = (await page.locator(".ranking .nota").allInnerTexts()).map(Number);
+  const notas = (await page.locator(".ranking .anillo-num").allInnerTexts()).map(Number);
   expect([...notas].sort((a, b) => b - a)).toEqual(notas);
 
   // mapa con un marcador por spot
@@ -59,7 +59,7 @@ test("portada: ranking, mapa con marcadores y filtros", async ({ page }, info) =
   await expect(page).toHaveURL(/\/dia\/0\/atardecer$/);
   await expect(page.locator("h1")).toContainText("Atardecer");
   // filtro de día: mañana
-  await page.getByRole("link", { name: /Mañana/ }).click();
+  await page.locator(".filtros").getByRole("link", { name: /Mañana/ }).click();
   await expect(page).toHaveURL(/\/dia\/1\/atardecer$/);
   await expect(page.locator(".ranking .fila").first()).toBeVisible();
   expect(errores).toEqual([]);

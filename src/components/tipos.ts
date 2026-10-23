@@ -17,4 +17,6 @@ export interface FilaRanking {
   dudosa: boolean;
   provincia: string | null;
   ccaa: string | null;
+  /** miniatura de Commons (la primera foto de la galería) */
+  foto: string | null;
 }

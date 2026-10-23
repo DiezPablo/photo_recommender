@@ -275,3 +275,13 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
   del horizonte (sol, luna, Vía Láctea), horas reales sobre el relieve y provincia.
 - **Fallo corregido**: dos actualizaciones del 21-oct cayeron porque Open-Meteo respondió 200 con el
   cuerpo vacío; ahora se reintenta.
+
+## 2026-10-23 · Rediseño de la web
+- Tipografías Fraunces (títulos) e Inter (interfaz) con `next/font` (autoalojadas en el build).
+- Notas como anillos (SVG, `Anillo.tsx`); los colores de nota pasan a la variable `--color-nota`.
+- Portada: «Mejor plan» destacado (foto de Commons o cielo dibujado según la salida) y matriz
+  «Los próximos días» (mejor nota por tipo y día, enlaza a cada ranking). Ranking con miniatura.
+- Ficha: portada con foto, anillos de hoy, «El plan de hoy» (línea temporal 4:00→7:00 del día
+  siguiente con hora azul/dorada, Vía Láctea y cada salida con su nota).
+- Mapa: se probó CARTO (Voyager/Dark Matter), pero ahora devuelve una tesela «API key required";
+  se mantiene OSM estándar invertido con CSS en los temas oscuros.

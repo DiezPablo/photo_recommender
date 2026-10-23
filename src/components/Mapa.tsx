@@ -77,8 +77,9 @@ export default function Mapa({
       await import("leaflet/dist/leaflet.css");
       if (cancelado || !caja.current || mapa.current) return;
       const m = L.map(caja.current, { zoomControl: true, attributionControl: true, scrollWheelZoom: !enlazar ? false : true });
+      // Teselas estándar de OSM (CARTO ya pide clave); en los temas oscuros se invierten con CSS
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 18,
+        maxZoom: 19,
         attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       }).addTo(m);
       // sin la bandera de colores del prefijo (rompería el modo noche)

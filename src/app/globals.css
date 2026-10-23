@@ -24,8 +24,15 @@
   --n-texto: #fff;
   --sombra: 0 1px 2px rgb(40 30 10 / 6%), 0 4px 16px rgb(40 30 10 / 6%);
   --radio: 14px;
-  --mapa-filtro: none;
+  --mapa-filtro: saturate(0.75);
   --foto-filtro: none;
+  --pista: color-mix(in srgb, var(--texto) 10%, transparent);
+  --cielo-noche: #1d2442;
+  --cielo-azul: #4d6fa8;
+  --cielo-dorada: #f0b25c;
+  --cielo-dia: #cfe6f4;
+  --f-cuerpo: var(--f-ui), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --f-titulo: var(--f-display), Georgia, "Times New Roman", serif;
   color-scheme: light;
 }
 
@@ -51,7 +58,8 @@
     --n-regular: #c58b2a;
     --n-floja: #555b66;
     --sombra: 0 1px 2px rgb(0 0 0 / 30%), 0 6px 20px rgb(0 0 0 / 25%);
-    --mapa-filtro: brightness(0.75) contrast(1.1) saturate(0.6);
+    --mapa-filtro: invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9) saturate(0.5);
+    --cielo-dia: #5b7c95;
     color-scheme: dark;
   }
 }
@@ -77,7 +85,8 @@
   --n-regular: #c58b2a;
   --n-floja: #555b66;
   --sombra: 0 1px 2px rgb(0 0 0 / 30%), 0 6px 20px rgb(0 0 0 / 25%);
-  --mapa-filtro: brightness(0.75) contrast(1.1) saturate(0.6);
+  --mapa-filtro: invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9) saturate(0.5);
+  --cielo-dia: #5b7c95;
   color-scheme: dark;
 }
 
@@ -105,6 +114,11 @@
   --n-texto: #ff6a60;
   --sombra: none;
   --mapa-filtro: grayscale(1) invert(1) brightness(0.55) sepia(1) saturate(6) hue-rotate(-50deg) brightness(0.6);
+  --pista: #2a0503;
+  --cielo-noche: #0c0000;
+  --cielo-azul: #3a0606;
+  --cielo-dorada: #8a0f0b;
+  --cielo-dia: #5c0a07;
   --foto-filtro: grayscale(1) sepia(1) saturate(5) hue-rotate(-50deg) brightness(0.45);
   color-scheme: dark;
 }
@@ -115,12 +129,13 @@ body {
   margin: 0;
   background: var(--fondo);
   color: var(--texto);
-  font: 16px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font: 16px/1.5 var(--f-cuerpo);
   font-feature-settings: "tnum" 1;
 }
 a { color: var(--enlace); text-underline-offset: 2px; }
 img { max-width: 100%; display: block; filter: var(--foto-filtro); }
 h1, h2, h3 { line-height: 1.2; margin: 0; letter-spacing: -0.01em; }
+h1, h2, .marca b { font-family: var(--f-titulo); font-weight: 600; font-optical-sizing: auto; }
 :focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; border-radius: 6px; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
@@ -220,8 +235,8 @@ select.boton { padding-right: 8px; }
 
 .ranking { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .fila {
-  display: grid; grid-template-columns: 52px 1fr auto; gap: 12px; align-items: center;
-  padding: 12px; background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio);
+  display: grid; grid-template-columns: 64px 1fr auto; gap: 12px; align-items: center;
+  padding: 10px 12px 10px 10px; background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio);
   color: inherit; text-decoration: none; box-shadow: var(--sombra);
   transition: border-color 0.15s, transform 0.15s;
 }
@@ -231,7 +246,12 @@ select.boton { padding-right: 8px; }
 .fila .meta { font-size: 0.82rem; color: var(--texto-2); display: flex; flex-wrap: wrap; gap: 2px 10px; }
 .fila .por-que { margin: 2px 0 0; font-size: 0.8rem; color: var(--texto-3); margin-top: 2px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .fila .dist { font-size: 0.8rem; color: var(--texto-2); white-space: nowrap; }
-.fila .flecha { color: var(--texto-3); }
+.fila-foto {
+  width: 64px; height: 64px; border-radius: 10px; overflow: hidden; display: grid; place-items: center;
+  color: #fff; background-color: var(--superficie-2);
+}
+.fila-foto img { width: 100%; height: 100%; object-fit: cover; }
+.fila h3 { font-weight: 650; letter-spacing: -0.015em; }
 .fila-txt { min-width: 0; }
 
 .nota {
@@ -240,17 +260,19 @@ select.boton { padding-right: 8px; }
 }
 .nota small { font-size: 0.6rem; font-weight: 600; opacity: 0.9; margin-top: 3px; letter-spacing: 0; text-transform: uppercase; }
 .nota.grande { width: 72px; height: 72px; font-size: 1.8rem; border-radius: 18px; }
-.n-top { background: var(--n-top); }
-.n-buena { background: var(--n-buena); }
-.n-regular { background: var(--n-regular); }
-.n-floja { background: var(--n-floja); }
+.n-top { --color-nota: var(--n-top); }
+.n-buena { --color-nota: var(--n-buena); }
+.n-regular { --color-nota: var(--n-regular); }
+.n-floja { --color-nota: var(--n-floja); }
+.nota, .marcador, .mini-notas span, .semana-celda, .plan-punto, .plan-tramo { background: var(--color-nota); }
+.cal { color: var(--color-nota); font-weight: 650; }
+:root[data-tema="noche"] .cal { color: var(--texto); }
 .vacio { padding: 24px; text-align: center; color: var(--texto-2); background: var(--superficie); border: 1px dashed var(--borde); border-radius: var(--radio); }
 
 /* -------------------------------------------------------------------- ficha */
 .ficha { max-width: 1100px; margin: 0 auto; padding: 16px 16px 48px; display: grid; gap: 20px; }
 .migas { font-size: 0.85rem; color: var(--texto-3); }
-.ficha-cab { display: grid; gap: 8px; }
-.ficha-cab h1 { font-size: clamp(1.5rem, 4vw, 2.2rem); }
+
 .etiquetas { display: flex; flex-wrap: wrap; gap: 6px; }
 .etiqueta { font-size: 0.8rem; padding: 3px 10px; border-radius: 999px; background: var(--superficie-2); color: var(--texto-2); }
 .etiqueta b { color: var(--texto); font-weight: 600; }
@@ -288,7 +310,8 @@ details.dia[open] > summary { border-bottom: 1px solid var(--borde); }
 .notas-grid { display: grid; gap: 12px; }
 @media (min-width: 700px) { .notas-grid { grid-template-columns: 1fr 1fr; } }
 .nota-tarjeta { border: 1px solid var(--borde); border-radius: 12px; padding: 12px; display: grid; gap: 10px; background: var(--fondo); }
-.nota-tarjeta header { display: flex; align-items: center; gap: 12px; }
+.nota-tarjeta header { display: flex; align-items: center; gap: 14px; }
+.nota-tarjeta { scroll-margin-top: 80px; }
 .nota-tarjeta header h3 { font-size: 1rem; }
 .nota-tarjeta header p { margin: 0; font-size: 0.82rem; color: var(--texto-2); }
 .confianza { margin: 2px 0 0; font-size: 0.75rem; }
@@ -336,3 +359,106 @@ dl.datos dd { margin: 0; text-align: right; font-weight: 550; }
 .prosa td, .prosa th { border-bottom: 1px solid var(--borde); padding: 6px 8px; text-align: left; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* ------------------------------------------------------------ anillo de nota */
+.anillo { position: relative; display: inline-grid; place-items: center; flex: none; color: var(--texto); }
+.anillo svg { position: absolute; inset: 0; }
+.anillo-num { position: relative; font-weight: 750; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+.anillo-txt { position: absolute; bottom: -1.4em; font-size: 0.65rem; color: var(--texto-2); white-space: nowrap; }
+
+/* Cielos de cada salida: fondo cuando no hay foto (y bajo la foto mientras carga) */
+.cielo-amanecer { background-image: linear-gradient(160deg, #233561 0%, #8d5f8c 45%, #f19a6b 80%, #fbd38d 100%); }
+.cielo-atardecer { background-image: linear-gradient(160deg, #2a1b47 0%, #9c3d5a 45%, #e8674a 75%, #f6b25a 100%); }
+.cielo-astro { background-image: radial-gradient(120% 90% at 70% 10%, #3b2d74 0%, #15193a 45%, #05070f 100%); }
+.cielo-niebla { background-image: linear-gradient(180deg, #6f7f90 0%, #a9b6c2 55%, #dfe4e8 100%); }
+.cielo-luna { background-image: radial-gradient(40% 50% at 78% 30%, #f3e3bf 0%, #8f8ba3 18%, #2c3a5c 55%, #0d1426 100%); }
+:root[data-tema="noche"] :is(.cielo-amanecer, .cielo-atardecer, .cielo-astro, .cielo-niebla, .cielo-luna) {
+  background-image: linear-gradient(160deg, #1a0000, #000);
+}
+
+/* --------------------------------------------------- destacado y portada ficha */
+.columna { display: grid; gap: 16px; min-width: 0; }
+.destacado, .ficha-portada {
+  position: relative; overflow: hidden; border-radius: calc(var(--radio) + 4px); color: #fff;
+  isolation: isolate; box-shadow: var(--sombra);
+}
+.destacado-foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+.destacado::after, .ficha-portada::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg, rgb(0 0 0 / 5%) 0%, rgb(0 0 0 / 25%) 40%, rgb(0 0 0 / 72%) 100%);
+}
+.destacado-in { display: grid; gap: 12px; padding: 18px; min-height: 230px; align-content: end; }
+.destacado.con-foto .destacado-in { min-height: 300px; }
+.antetitulo { margin: 0 0 auto; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 650; opacity: 0.9; }
+.destacado-fila { display: flex; align-items: center; gap: 14px; }
+.destacado h2 { font-size: clamp(1.35rem, 3.5vw, 1.7rem); line-height: 1.15; }
+.destacado h2 a { color: inherit; text-decoration: none; }
+.destacado h2 a:hover { text-decoration: underline; }
+.destacado-meta { margin: 4px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 0.88rem; opacity: 0.92; }
+.destacado-porque { margin: 0; font-size: 0.86rem; opacity: 0.88; }
+.destacado .anillo, .ficha-portada .anillo { color: #fff; --pista: rgb(255 255 255 / 22%); }
+.destacado .anillo, .hoy-anillos .anillo { background: rgb(0 0 0 / 28%); border-radius: 50%; backdrop-filter: blur(6px); }
+.boton.translucido { background: rgb(255 255 255 / 16%); border-color: rgb(255 255 255 / 35%); color: #fff; backdrop-filter: blur(6px); }
+.boton.translucido:hover { background: rgb(255 255 255 / 26%); }
+:root[data-tema="noche"] :is(.destacado, .ficha-portada) { color: var(--texto); }
+:root[data-tema="noche"] :is(.destacado, .ficha-portada) .anillo { color: var(--texto); }
+:root[data-tema="noche"] .boton.translucido { color: var(--texto); border-color: var(--borde); }
+
+.ficha-portada .destacado-in { min-height: 260px; padding: 20px; }
+.ficha-portada.con-foto .destacado-in { min-height: 380px; }
+.ficha-portada h1 { font-size: clamp(1.7rem, 5vw, 2.8rem); line-height: 1.05; text-wrap: balance; }
+.ficha-portada .migas { margin-bottom: auto; }
+.ficha-portada .migas a { color: inherit; opacity: 0.9; }
+.ficha-portada .etiqueta { background: rgb(255 255 255 / 16%); color: rgb(255 255 255 / 88%); backdrop-filter: blur(6px); }
+.ficha-portada .etiqueta b { color: #fff; }
+.ficha-portada .boton:not(.primario) { background: rgb(255 255 255 / 14%); border-color: rgb(255 255 255 / 30%); color: #fff; backdrop-filter: blur(6px); }
+:root[data-tema="noche"] .ficha-portada :is(.etiqueta, .etiqueta b, .boton:not(.primario)) { color: var(--texto); background: var(--superficie-2); }
+.hoy-anillos { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 14px; }
+.hoy-anillos a { display: grid; justify-items: center; gap: 4px; color: inherit; text-decoration: none; }
+.hoy-anillos small { display: inline-flex; align-items: center; gap: 3px; font-size: 0.72rem; opacity: 0.92; }
+
+/* ------------------------------------------------------------------ semana */
+.semana h2 { font-size: 1.05rem; }
+.semana-tabla { display: grid; gap: 4px; align-items: center; font-size: 0.82rem; }
+.semana-dia, .semana-tipo { color: var(--texto-2); text-decoration: none; border-radius: 8px; padding: 4px 6px; }
+.semana-dia { display: grid; justify-items: center; line-height: 1.15; font-weight: 600; text-transform: capitalize; }
+.semana-dia small { font-weight: 400; color: var(--texto-3); font-size: 0.7rem; }
+.semana-tipo { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.semana-dia[aria-current], .semana-tipo[aria-current] { color: var(--texto); background: var(--superficie-2); }
+.semana-dia:hover, .semana-tipo:hover { color: var(--texto); }
+.semana-celda {
+  display: grid; place-items: center; height: 34px; border-radius: 8px; color: var(--n-texto);
+  font-weight: 700; font-size: 0.82rem; text-decoration: none; font-variant-numeric: tabular-nums;
+  transition: transform 0.12s;
+}
+.semana-celda.n-floja { background: var(--superficie-2); color: var(--texto-3); }
+.semana-celda.n-regular { background: color-mix(in srgb, var(--n-regular) 30%, var(--superficie)); color: var(--texto); }
+.semana-celda:hover { transform: scale(1.06); }
+.semana-celda.actual { outline: 2px solid var(--texto); outline-offset: 1px; }
+.semana-celda.vacia { background: none; color: var(--texto-3); }
+
+/* ----------------------------------------------------------- plan del día */
+.plan { display: grid; gap: 14px; }
+.plan h2 { margin: 0; }
+.plan-eje { display: grid; gap: 6px; }
+.plan-cielo { position: relative; height: 30px; border-radius: 8px; }
+.plan-vl { position: absolute; top: 3px; height: 4px; border-radius: 2px; background: var(--vl); opacity: 0.9; }
+.plan-tramo { position: absolute; bottom: 4px; height: 8px; border-radius: 4px; box-shadow: 0 0 0 2px rgb(255 255 255 / 70%); }
+.plan-punto {
+  position: absolute; top: 50%; width: 16px; height: 16px; border-radius: 50%; translate: -50% -50%;
+  box-shadow: 0 0 0 2.5px var(--superficie), 0 1px 4px rgb(0 0 0 / 40%);
+}
+.plan-horas { position: relative; height: 14px; font-size: 0.68rem; color: var(--texto-3); }
+.plan-horas span { position: absolute; translate: -50% 0; }
+.plan-horas span:first-child { translate: 0 0; }
+.plan-leyenda { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 0.75rem; color: var(--texto-2); }
+.plan-leyenda i { display: inline-block; width: 12px; height: 8px; border-radius: 2px; margin-right: 5px; }
+.plan-lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+@media (min-width: 700px) { .plan-lista { grid-template-columns: 1fr 1fr; } }
+.plan-lista a {
+  display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 12px;
+  background: var(--fondo); border: 1px solid var(--borde); color: inherit; text-decoration: none;
+}
+.plan-lista a:hover { border-color: var(--texto-3); }
+.plan-lista b { display: flex; align-items: center; gap: 5px; font-size: 0.92rem; }
+.plan-lista small { display: block; color: var(--texto-2); font-size: 0.78rem; line-height: 1.35; }

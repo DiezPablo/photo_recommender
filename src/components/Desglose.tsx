@@ -1,23 +1,21 @@
 import { calificacion, type Momento, NOMBRE_MOMENTO, type NotaMomento, TEXTO_CONFIANZA } from "@/lib/modelo";
+import Anillo from "./Anillo";
 import { IconoMomento } from "./Iconos";
 
 /** Tarjeta de una nota con su desglose: qué suma y qué resta. */
-export default function Desglose({ momento, n, subtitulo }: { momento: Momento; n: NotaMomento; subtitulo: string }) {
+export default function Desglose({ momento, n, subtitulo, id }: { momento: Momento; n: NotaMomento; subtitulo: string; id?: string }) {
   const cal = calificacion(n.nota);
   const max = Math.max(...n.desglose.slice(1).map((f) => Math.abs(f.puntos)), 1);
   const suma = n.desglose.reduce((a, f) => a + f.puntos, 0);
   return (
-    <article className="nota-tarjeta" data-momento={momento}>
+    <article className="nota-tarjeta" data-momento={momento} id={id}>
       <header>
-        <span className={`nota grande ${cal.clase}`}>
-          {n.nota.toFixed(1)}
-          <small>{cal.texto}</small>
-        </span>
+        <Anillo nota={n.nota} tam={64} grosor={5.5} etiqueta={false} />
         <div>
           <h3 style={{ display: "flex", gap: 6, alignItems: "center" }}>
             <IconoMomento momento={momento} /> {NOMBRE_MOMENTO[momento]}
           </h3>
-          <p>{subtitulo}</p>
+          <p><span className={`cal ${cal.clase}`}>{cal.texto}</span> · {subtitulo}</p>
           {n.confianza && (
             <p className={`confianza c-${n.confianza}`} title="Misma nota calculada con las nubes de un segundo modelo (ECMWF)">
               {TEXTO_CONFIANZA[n.confianza]}

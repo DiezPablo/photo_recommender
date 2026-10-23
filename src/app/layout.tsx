@@ -1,9 +1,14 @@
 import type { Metadata, Viewport } from "next";
+import { Fraunces, Inter } from "next/font/google";
 import Link from "next/link";
 import SelectorTema from "@/components/SelectorTema";
 import { IconoInfo, Logo } from "@/components/Iconos";
 import { cargar } from "@/lib/datos";
 import "./globals.css";
+
+// Tipografías autoalojadas en el build (sin peticiones a Google desde el navegador)
+const display = Fraunces({ subsets: ["latin"], variable: "--f-display", display: "swap", axes: ["opsz"] });
+const ui = Inter({ subsets: ["latin"], variable: "--f-ui", display: "swap" });
 
 export const metadata: Metadata = {
   title: { default: "Spots de paisaje · España", template: "%s · Spots de paisaje" },
@@ -31,7 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const { informe } = cargar();
   const generado = informe ? new Date(informe.generado) : null;
   return (
-    <html lang="es" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning className={`${display.variable} ${ui.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: scriptTema }} />
       </head>

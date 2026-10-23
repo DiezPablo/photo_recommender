@@ -6,7 +6,8 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { NOMBRE_CORTO } from "@/lib/modelo";
 import { distanciaKm, guardarUbicacion, leerUbicacion, type Ubicacion } from "@/lib/ubicacion";
-import { IconoCamara, IconoFlecha, IconoMomento, IconoUbicacion } from "./Iconos";
+import Anillo from "./Anillo";
+import { IconoCamara, IconoMomento, IconoUbicacion } from "./Iconos";
 import type { FilaRanking } from "./tipos";
 
 const RADIOS = [0, 25, 50, 100, 200, 400];
@@ -134,8 +135,11 @@ export default function Ranking({ filas, total, urlTodos, comunidades, mostrarMo
           {visibles.map((f) => (
             <li key={f.id}>
               <Link href={`/spot/${f.id}`} className="fila" data-spot={f.id}>
-                <span className={`nota ${f.clase}`} aria-label={`Nota ${f.nota} sobre 10`}>
-                  {f.nota.toFixed(1)}
+                <span className={`fila-foto cielo-${f.momento}`} aria-hidden="true">
+                  {f.foto
+                    // eslint-disable-next-line @next/next/no-img-element
+                    ? <img src={f.foto} alt="" loading="lazy" width={64} height={64} />
+                    : <IconoMomento momento={f.momento} size={22} />}
                 </span>
                 <div className="fila-txt">
                   <h3>{f.nombre}</h3>
@@ -154,7 +158,7 @@ export default function Ranking({ filas, total, urlTodos, comunidades, mostrarMo
                   </div>
                   {f.motivos.length > 0 && <p className="por-que">{f.motivos.join(" · ")}</p>}
                 </div>
-                <span className="flecha"><IconoFlecha /></span>
+                <Anillo nota={f.nota} tam={50} grosor={4.5} />
               </Link>
             </li>
           ))}

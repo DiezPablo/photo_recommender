@@ -1,6 +1,6 @@
 // Filas del ranking de un día y tipo de salida (solo servidor: lee los datos con datos.ts).
 import type { FilaRanking } from "@/components/tipos";
-import { calificacion, cargar, type Filtro, horaDe, motivos, notaDe } from "./datos";
+import { calificacion, cargar, type Filtro, horaDe, miniatura, motivos, notaDe } from "./datos";
 
 /** Cuántos spots se envían en el HTML (sin JavaScript se ve este top). El resto, en JSON aparte. */
 export const TOP_HTML = 60;
@@ -20,6 +20,7 @@ export function filasRanking(d: number, filtro: Filtro): FilaRanking[] {
         dudosa: n.nota.confianza === "baja",
         provincia: s.provincia ?? s.descubierto?.provincia ?? null,
         ccaa: s.ccaa ?? s.descubierto?.ccaa ?? null,
+        foto: miniatura(s.descubierto?.galeria?.[0]?.url, 120),
       };
     })
     .filter((f): f is FilaRanking => f !== null)

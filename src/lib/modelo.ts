@@ -272,3 +272,9 @@ export const TEXTO_AVISO: Record<string, string> = {
   mar_de_nubes: "Posible mar de nubes",
   techo_nubes_cerca: "El techo de las nubes bajas está a la altura del spot: puede quedar dentro o justo encima",
 };
+
+/** Miniatura de Commons de otro ancho (Commons solo sirve anchos estándar: 120, 250, 330, 500, 960…). */
+export function miniatura(url: string | null | undefined, ancho: 120 | 250 | 330 | 500 | 960): string | null {
+  if (!url) return null;
+  return /\/\d+px-/.test(url) ? url.replace(/\/\d+px-/, `/${ancho}px-`) : url;
+}

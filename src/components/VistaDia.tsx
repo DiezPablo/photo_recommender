@@ -1,8 +1,10 @@
 // Portada: filtros (enlaces normales, sin JavaScript), ranking y mapa del día elegido.
 import Link from "next/link";
-import { cargar, etiquetaDia, FILTROS, type Filtro, NOMBRE_CORTO, NOMBRE_MOMENTO } from "@/lib/datos";
+import { cargar, etiquetaDia, FILTROS, type Filtro, miniatura, MOMENTOS, NOMBRE_CORTO, NOMBRE_MOMENTO } from "@/lib/datos";
 import { filasRanking, TOP_HTML, urlRanking } from "@/lib/ranking";
+import Destacado from "./Destacado";
 import { IconoMomento } from "./Iconos";
+import Semana, { type Mejor } from "./Semana";
 import Mapa from "./Mapa";
 import Ranking from "./Ranking";
 
@@ -31,6 +33,19 @@ export default function VistaDia({ d, filtro }: { d: number; filtro: Filtro }) {
   const fiab = spots[0].dias[d]?.fiabilidad ?? "alta";
   const et = etiquetaDia(fecha, d);
   const buenos = filas.filter((f) => f.nota >= 6.5).length;
+  const mejores: Record<string, Mejor[]> = {};
+  for (const m of MOMENTOS) {
+    mejores[m] = informe.fechas.map((_, i) => {
+      let b: Mejor = null;
+      for (const s of spots) {
+        const n = s.dias[i]?.notas[m]?.nota;
+        if (n !== undefined && (!b || n > b.nota)) b = { nota: n, nombre: s.nombre };
+      }
+      return b;
+    });
+  }
+  const primero = top[0];
+  const fotoPrimero = primero ? miniatura(spots.find((s) => s.id === primero.id)?.descubierto?.galeria?.[0]?.url, 960) : null;
 
   return (
     <>
@@ -62,6 +77,10 @@ export default function VistaDia({ d, filtro }: { d: number; filtro: Filtro }) {
             {buenos > 0 ? `${buenos} ${buenos === 1 ? "spot con buena nota" : "spots con buena nota"}` : "Ningún spot destaca"} de {filas.length}
           </span>
           <span className={`fiabilidad ${fiab}`}>{TEXTO_FIABILIDAD[fiab]}</span>
+        </div>
+        <div className="columna">
+          {primero && <Destacado f={primero} foto={fotoPrimero} dia={et.corto === "Hoy" || et.corto === "Mañana" ? et.corto.toLowerCase() : et.largo} />}
+          <Semana fechas={informe.fechas} mejores={mejores} d={d} filtro={filtro} ruta={rutaDia} />
         </div>
         <Mapa
           puntos={top.map((f) => ({
