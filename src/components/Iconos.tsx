@@ -32,6 +32,9 @@ export const IconoSol = IconoTodo;
 export const IconoLuna = (p: P) => (
   <Svg {...p}><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" /></Svg>
 );
+export const IconoLunaLlena = (p: P) => (
+  <Svg {...p}><circle cx="12" cy="10" r="5.5" /><path d="M2 20h20M6 17h12" /></Svg>
+);
 export const IconoClaro = (p: P) => (
   <Svg {...p}><circle cx="12" cy="12" r="4.5" /><path d="M12 2v2M12 20v2M2 12h2M20 12h2" /></Svg>
 );
@@ -59,6 +62,7 @@ export function IconoMomento({ momento, size }: { momento: Filtro; size?: number
     case "atardecer": return <IconoAtardecer size={size} />;
     case "astro": return <IconoNoche size={size} />;
     case "niebla": return <IconoNiebla size={size} />;
+    case "luna": return <IconoLunaLlena size={size} />;
     default: return <IconoTodo size={size} />;
   }
 }

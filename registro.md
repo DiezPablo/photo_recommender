@@ -236,3 +236,42 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
 - **No validado empíricamente** (sin verdad disponible gratis): la nota nocturna (las nubes y la luna
   son deterministas una vez prevista la nubosidad; la contaminación lumínica viene del atlas) y el mar
   de nubes (no hay observaciones del techo de la niebla). Quedan razonados físicamente y con tests.
+
+## 2026-10-23 · Recomendador de toda España
+
+### Decisiones (el usuario pidió España entera, predicciones de todo y que la orientación la decida yo)
+- **Spots** (`descubrir_espana.py`): candidatos de Wikidata (lugares con foto P18 y artículos:
+  ~2700 montañas, ~1300 playas, lagos, embalses, cascadas, miradores, cabos, faros, cañones,
+  acantilados) y de OpenStreetMap por bloques de 2° (miradores con nombre, cumbres con Wikidata,
+  cascadas, faros, cabos, acantilados). Se fusionan (mismo Wikidata o < 400 m), se asigna provincia
+  y comunidad (polígonos del IGN simplificados en `datos_base/provincias.geojson`) y se puntúa la
+  popularidad con las fotos de Commons a menos de 500 m. Selección: los 12 mejores de cada provincia
+  + el resto por nota nacional hasta ~1500. El primer cálculo hace ~13 000 peticiones a Commons:
+  caché persistente en Actions y corte por tiempo (`--minutos`), la siguiente ejecución continúa.
+- **Orientación = horizonte del terreno** (`horizonte.py`): teselas Terrarium de AWS (gratis, sin
+  clave), ángulo del relieve cada 2° hasta 60 km con curvatura y refracción, zoom 12/11/10 según la
+  distancia. Contraste: Peñalara 2415 m (real 2428) abierto en todas direcciones; Puerto de
+  Navacerrada tapado al este por la Bola del Mundo (6,7°); Embalse de Santillana con La Pedriza al
+  norte; Fisterra abierto al oeste sobre el mar. Se usa para la hora real a la que el sol asoma o se
+  esconde tras el relieve (astral `time_at_elevation`), restar la luz rasante y el cielo bajo cuando
+  una montaña tapa el sol, que la luna tras una montaña no ilumine, que el núcleo de la Vía Láctea
+  tenga que asomar 2° sobre las crestas, y el panorama de la ficha.
+- **Nuevo tipo: luna** (salida o puesta sobre el paisaje en el crepúsculo, ± 75 min del atardecer o
+  amanecer): iluminación, altura del sol (ideal entre -6° y +2°, paisaje y luna equilibrados), relieve
+  y nubes hacia la luna. El 26-oct-2026 la luna llena sale a las 18:12 con el sol a +1°: nota 10.
+- **Fotos de Google**: no es posible gratis (la API de Places es de pago, pide clave y sus
+  condiciones prohíben guardar las fotos). Cada ficha enlaza "Ver fotos en Google Maps".
+- **Límites de Open-Meteo** (gratis: 10 000 llamadas/día, 600/min, por IP; >10 variables cuenta
+  más): en el spot se piden exactamente 10 variables (nubosidad total y punto de rocío se derivan),
+  rejillas compartidas (spot 0,05°, camino del sol 0,1-0,5°, perfil vertical 0,5°, segundo modelo
+  0,25°, aerosoles 0,4°), ritmo ≤ 450 llamadas/min y **2 actualizaciones al día** (≈05:47 y 14:47).
+- **Publicación**: con ~1500 spots el informe pesa ~20 MB y no puede ir al historial de git en cada
+  actualización. Va a la release `datos` (se sobrescribe) y un commit mínimo
+  (`public/datos/version.json`) hace que Vercel reconstruya; `scripts/descargar-datos.mjs` descarga
+  los datos antes de cada build (si no puede, usa los locales).
+- **Web**: ranking con el top 60 nacional en el HTML (sin JavaScript) y la lista completa en JSON
+  estático por día y tipo (`/datos-ranking/[d]/[tipo]`) para filtrar por distancia y comunidad;
+  mapa con todos los spots como puntos en canvas (miles sin ralentizar el móvil); ficha con panorama
+  del horizonte (sol, luna, Vía Láctea), horas reales sobre el relieve y provincia.
+- **Fallo corregido**: dos actualizaciones del 21-oct cayeron porque Open-Meteo respondió 200 con el
+  cuerpo vacío; ahora se reintenta.

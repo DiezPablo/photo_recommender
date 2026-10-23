@@ -29,7 +29,7 @@ from zoneinfo import ZoneInfo
 import requests
 
 API = "https://api.telegram.org/bot{token}/{metodo}"
-ICONOS = {"amanecer": "🌅", "atardecer": "🌇", "astro": "🌌", "niebla": "🌫️"}
+ICONOS = {"amanecer": "🌅", "atardecer": "🌇", "astro": "🌌", "niebla": "🌫️", "luna": "🌕"}
 DIAS = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
 
 
@@ -48,7 +48,8 @@ def filas_del_dia(informe: dict, fecha: str) -> list[dict]:
         if not d:
             continue
         horas = {"amanecer": d["sol"]["amanecer"], "atardecer": d["sol"]["atardecer"],
-                 "astro": f"{d['noche']['ini']}–{d['noche']['fin']}", "niebla": d["sol"]["amanecer"]}
+                 "astro": f"{d['noche']['ini']}–{d['noche']['fin']}", "niebla": d["sol"]["amanecer"],
+                 "luna": (d["noche"]["luna"].get("evento") or {}).get("hora", "")}
         for momento, n in d["notas"].items():
             motivos = sorted(n["desglose"][1:], key=lambda f: -abs(f["puntos"]))[:2]
             filas.append({"spot": s["nombre"], "id": s["id"], "lat": s["lat"], "lon": s["lon"],

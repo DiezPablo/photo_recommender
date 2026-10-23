@@ -28,34 +28,44 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import time
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+import numpy as np
 import pandas as pd
 import requests
 
 import astro
 from comun import USER_AGENT, escribir_json, id_spot
 from contaminacion import contaminacion, cupula
-from puntuacion import KM_CAMINO, _v, capa_nubosa, nota_astro, nota_luz, nota_niebla
+import horizonte as hzmod
+from puntuacion import KM_CAMINO, _v, capa_nubosa, nota_astro, nota_luna, nota_luz, nota_niebla
 
 OPEN_METEO_URL = "https://api.open-meteo.com/v1/forecast"
 AIRE_URL = "https://air-quality-api.open-meteo.com/v1/air-quality"
+# Open-Meteo cuenta 1 llamada por punto hasta 10 variables (gratis: 10 000 al día, 600 al minuto):
+# en el spot se piden exactamente 10 y se derivan la nubosidad total y el punto de rocío.
 VARS_SPOT = [
-    "cloud_cover", "cloud_cover_low", "cloud_cover_mid", "cloud_cover_high",
-    "visibility", "precipitation_probability", "precipitation", "wind_speed_10m", "wind_gusts_10m",
-    "relative_humidity_2m", "dew_point_2m", "temperature_2m", "total_column_integrated_water_vapour",
+    "cloud_cover_low", "cloud_cover_mid", "cloud_cover_high", "visibility", "precipitation_probability",
+    "precipitation", "wind_speed_10m", "wind_gusts_10m", "relative_humidity_2m", "temperature_2m",
 ]
 VARS_CAMINO = ["cloud_cover_low", "cloud_cover_mid", "cloud_cover_high"]
 NIVELES_HPA = (1000, 975, 950, 925, 900, 850, 800, 700)
 VARS_PERFIL = [f"{v}_{p}hPa" for p in NIVELES_HPA
-               for v in ("temperature", "relative_humidity", "cloud_cover", "geopotential_height")]
+               for v in ("temperature", "relative_humidity", "cloud_cover", "geopotential_height")] + [
+    "total_column_integrated_water_vapour"]
 VARS_ALT = ["cloud_cover", "cloud_cover_low", "cloud_cover_mid", "cloud_cover_high"]
 MODELO_ALT = "ecmwf_ifs025"
-REDONDEO_CAMINO = {15: 0.05, 40: 0.1, 80: 0.2, 150: 0.25}   # grados: lejos basta una rejilla gruesa
+# Rejillas (grados) para compartir peticiones entre spots: lejos del spot basta una rejilla gruesa
+REDONDEO_SPOT = 0.05
+REDONDEO_CAMINO = {15: 0.1, 40: 0.25, 80: 0.25, 150: 0.5}
+REDONDEO_PERFIL = 0.5
+REDONDEO_ALT = 0.25     # ECMWF IFS tiene 0,25° de resolución: más fino no aporta
 KM_PERFIL = 40          # el perfil vertical se toma en el llano, en los puntos a 40 km
+LLAMADAS_POR_MINUTO = 450
 MIN_PICO = 15           # el color es máximo ~15 min antes de salir el sol / después de ponerse
 LOTE_COORDS = 100
 DIAS_POR_DEFECTO = 5
@@ -97,7 +107,8 @@ def cargar_spots(geojson: Path | None, csv: Path | None) -> list[dict]:
             spots.append({"id": p.get("id") or id_spot(nombre, lat, lon), "nombre": nombre,
                           "lat": lat, "lon": lon, "tipo": p.get("tipo_osm"),
                           "origen": p.get("origen") or "commons",
-                          "contaminacion": p.get("contaminacion")})
+                          "contaminacion": p.get("contaminacion"), "relieve": p.get("horizonte"),
+                          "provincia": p.get("provincia"), "ccaa": p.get("ccaa")})
     if csv and csv.exists():
         df = pd.read_csv(csv, comment="#", skip_blank_lines=True)
         for r in df.itertuples():
@@ -105,7 +116,7 @@ def cargar_spots(geojson: Path | None, csv: Path | None) -> list[dict]:
             spots.append({"id": id_spot(r.nombre, float(r.lat), float(r.lon)), "nombre": r.nombre,
                           "lat": float(r.lat), "lon": float(r.lon),
                           "tipo": tipo if isinstance(tipo, str) else None,
-                          "origen": "propio", "contaminacion": None})
+                          "origen": "propio", "contaminacion": None, "relieve": None})
     if not spots:
         raise SystemExit("No hay spots: ejecuta descubrir_spots.py o añade alguno a mis_spots.csv")
     vistos, unicos = set(), []
@@ -166,8 +177,10 @@ def pedir(coords: list[tuple[float, float]], variables: list[str], dias: int, tz
     """Serie horaria para una lista de (lat, lon). Por coordenada: {"elevacion", "horas": DataFrame
     indexado por hora local (naive)}, o None si una API opcional no respondió."""
     out: list[dict | None] = []
+    peso = max(1.0, len(variables) / 10)
     for i in range(0, len(coords), LOTE_COORDS):
         lote = coords[i:i + LOTE_COORDS]
+        _ritmo(len(lote) * peso)
         params = {"latitude": ",".join(str(c[0]) for c in lote),
                   "longitude": ",".join(str(c[1]) for c in lote),
                   "hourly": ",".join(variables), "timezone": tz_nombre,
@@ -183,13 +196,47 @@ def pedir(coords: list[tuple[float, float]], variables: list[str], dias: int, tz
     return out
 
 
+_ventana_llamadas: list[tuple[float, float]] = []
+LLAMADAS = {"total": 0.0}
+
+
+def _ritmo(llamadas: float) -> None:
+    """Respeta el límite por minuto de Open-Meteo (las llamadas se miden por punto y variables)."""
+    if os.environ.get("SIN_RITMO"):
+        return
+    ahora = time.time()
+    _ventana_llamadas[:] = [(t, n) for t, n in _ventana_llamadas if ahora - t < 60]
+    usadas = sum(n for _, n in _ventana_llamadas)
+    if usadas + llamadas > LLAMADAS_POR_MINUTO and _ventana_llamadas:
+        espera = 60 - (ahora - _ventana_llamadas[0][0]) + 1
+        time.sleep(max(0.0, espera))
+        _ventana_llamadas.clear()
+    _ventana_llamadas.append((time.time(), llamadas))
+    LLAMADAS["total"] += llamadas
+
+
 def _a_tabla(d: dict) -> dict:
     df = pd.DataFrame(d["hourly"])
     df["time"] = pd.to_datetime(df["time"])
     df = df.set_index("time").apply(pd.to_numeric, errors="coerce")
     # con models=… las columnas llevan el nombre del modelo como sufijo: se quita
     df.columns = [c.removesuffix(f"_{MODELO_ALT}") for c in df.columns]
-    return {"elevacion": d.get("elevation"), "horas": df}
+    return {"elevacion": d.get("elevation"), "horas": _derivar(df)}
+
+
+def _derivar(df: pd.DataFrame) -> pd.DataFrame:
+    """Variables que no se piden para no pasar de 10 por punto."""
+    if "cloud_cover" not in df and {"cloud_cover_low", "cloud_cover_mid", "cloud_cover_high"} <= set(df):
+        capas = df[["cloud_cover_low", "cloud_cover_mid", "cloud_cover_high"]].fillna(0) / 100
+        maximo = capas.max(axis=1)
+        aleatorio = 1 - (1 - capas).prod(axis=1)
+        # entre solapamiento máximo y aleatorio, como hacen los modelos
+        df["cloud_cover"] = 100 * (maximo + aleatorio) / 2
+    if "dew_point_2m" not in df and {"temperature_2m", "relative_humidity_2m"} <= set(df):
+        t, hr = df["temperature_2m"], df["relative_humidity_2m"].clip(lower=1)
+        g = np.log(hr / 100) + 17.625 * t / (243.04 + t)       # Magnus
+        df["dew_point_2m"] = 243.04 * g / (17.625 - g)
+    return df
 
 
 # ---------------------------------------------------------- interpolación ----
@@ -264,8 +311,15 @@ def evaluar_spot_dia(spot: dict, dia: date, indice: int, tz: ZoneInfo, datos: di
     """datos: {"spot": df, "elevacion", "camino": {momento: [(km, df)]}, "perfil": [(df, elevación)],
     "alt": df, "aire": df}."""
     df, alt, aq = datos["spot"], datos.get("alt"), datos.get("aire")
+    perfil_relieve = spot.get("relieve")
+    hz = (lambda az: hzmod.angulo(perfil_relieve, az) or 0.0) if perfil_relieve else None
     sol = astro.calcular_sol(spot["lat"], spot["lon"], dia, tz)
-    noche = astro.calcular_noche(spot["lat"], spot["lon"], dia, tz, sol)
+    noche = astro.calcular_noche(spot["lat"], spot["lon"], dia, tz, sol, horizonte=hz)
+    relieve = {}
+    if hz:
+        for m in ("amanecer", "atardecer"):
+            hora_r, ang = astro.sol_sobre_relieve(spot["lat"], spot["lon"], dia, tz, hz, m)
+            relieve[m] = (hora_r, ang)
     es_agua = (spot.get("tipo") or "") in TIPOS_AGUA
     notas, meteo, avisos = {}, {}, []
 
@@ -282,11 +336,13 @@ def evaluar_spot_dia(spot: dict, dia: date, indice: int, tz: ZoneInfo, datos: di
                            "high": _v(fc, "cloud_cover_high")})
         aire = _aire_en(aq, t)
         aire["lluvia_previa_mm"] = suma_entre(df, "precipitation", t - timedelta(hours=24), t - timedelta(hours=1))
-        n = nota_luz(f, camino, aire, es_agua=es_agua, momento=momento)
+        h_rel, ang_rel = relieve.get(momento, (None, None))
+        kw_rel = {"relieve": ang_rel, "hora_relieve": _hhmm(h_rel)}
+        n = nota_luz(f, camino, aire, es_agua=es_agua, momento=momento, **kw_rel)
         d = n.a_dict()
         if alt is not None:
             fa = {**f, **{k: v for k, v in en(alt, t).items() if k in VARS_ALT}}
-            d["confianza"] = _confianza(n.valor, nota_luz(fa, camino, aire, es_agua, momento).valor)
+            d["confianza"] = _confianza(n.valor, nota_luz(fa, camino, aire, es_agua, momento, **kw_rel).valor)
         notas[momento] = d
         meteo[momento] = _meteo_momento(f, camino, aire)
 
@@ -312,7 +368,8 @@ def evaluar_spot_dia(spot: dict, dia: date, indice: int, tz: ZoneInfo, datos: di
             cup = None
         if cup:
             cup["hacia"] = "el núcleo de la Vía Láctea" if hacia_nucleo else "el sur"
-        vapor = en(df, mitad).get("total_column_integrated_water_vapour")
+        perfiles = [p for p, _ in datos.get("perfil", []) if p is not None]
+        vapor = en(perfiles[0], mitad).get("total_column_integrated_water_vapour") if perfiles else None
         args = dict(sqm=lp.get("sqm"), zona_lp=lp.get("zona"), cupula=cup,
                     vapor_mm=None if vapor is None or pd.isna(vapor) else float(vapor),
                     aod=aire_noche["aod"], elevacion=datos.get("elevacion"),
@@ -339,6 +396,21 @@ def evaluar_spot_dia(spot: dict, dia: date, indice: int, tz: ZoneInfo, datos: di
     else:
         notas["astro"] = nota_astro([], None).a_dict()
 
+    # ---- luna sobre el paisaje en el crepúsculo
+    ev = astro.evento_luna(spot["lat"], spot["lon"], dia, tz, sol, hz)
+    evento = None
+    if ev:
+        evento = {"tipo": ev.tipo, "hora": _hhmm(ev.hora), "azimut": round(ev.azimut), "horizonte": round(ev.horizonte, 1),
+                  "iluminacion": round(ev.iluminacion, 2), "altura_sol": round(ev.altura_sol, 1)}
+        lado = "amanecer" if ev.tipo == "salida" else "atardecer"   # la luna llena sale por el este y se pone por el oeste
+        cam_luna = [{"km": km, "low": _v(en(h, ev.hora), "cloud_cover_low")} for km, h in datos["camino"].get(lado, [])]
+        notas["luna"] = nota_luna(evento, en(df, ev.hora), cam_luna).a_dict()
+        if alt is not None:
+            fa = {**en(df, ev.hora), **{k: v for k, v in en(alt, ev.hora).items() if k in VARS_ALT}}
+            notas["luna"]["confianza"] = _confianza(notas["luna"]["nota"], nota_luna(evento, fa, cam_luna).valor)
+    else:
+        notas["luna"] = nota_luna(None).a_dict()
+
     # ---- niebla y mar de nubes, al amanecer
     if sol.amanecer:
         madrugada = filas_entre(df, sol.amanecer - timedelta(hours=3), sol.amanecer + timedelta(hours=1))
@@ -358,6 +430,10 @@ def evaluar_spot_dia(spot: dict, dia: date, indice: int, tz: ZoneInfo, datos: di
     return {
         "fecha": dia.isoformat(), "fiabilidad": fiabilidad(indice),
         "sol": {"amanecer": _hhmm(sol.amanecer), "atardecer": _hhmm(sol.atardecer),
+                "amanecer_relieve": _hhmm(relieve.get("amanecer", (None,))[0]),
+                "atardecer_relieve": _hhmm(relieve.get("atardecer", (None,))[0]),
+                "relieve_amanecer": _r(relieve.get("amanecer", (None, None))[1], 1),
+                "relieve_atardecer": _r(relieve.get("atardecer", (None, None))[1], 1),
                 "az_amanecer": _r(sol.az_amanecer), "az_atardecer": _r(sol.az_atardecer),
                 "dorada_manana": _tramo(sol.dorada_manana), "dorada_tarde": _tramo(sol.dorada_tarde),
                 "azul_manana": _tramo(sol.azul_manana), "azul_tarde": _tramo(sol.azul_tarde)},
@@ -366,7 +442,7 @@ def evaluar_spot_dia(spot: dict, dia: date, indice: int, tz: ZoneInfo, datos: di
             "luna": {"fase": noche.luna_fase, "iluminacion": _r(noche.luna_iluminacion * 100),
                      "edad": _r(noche.luna_edad, 1), "salida": _hhmm(noche.luna_salida),
                      "puesta": _hhmm(noche.luna_puesta),
-                     "sin_luna": [_tramo(t) for t in noche.sin_luna],
+                     "sin_luna": [_tramo(t) for t in noche.sin_luna], "evento": evento,
                      "horas_sin_luna": _r(noche.horas_sin_luna, 1)},
             "via_lactea": {"tramos": [_tramo(t) for t in noche.vl_tramos], "horas": _r(noche.vl_horas, 1),
                            "horas_sin_luna": _r(noche.vl_horas_sin_luna, 1),
@@ -381,7 +457,7 @@ def evaluar_spot_dia(spot: dict, dia: date, indice: int, tz: ZoneInfo, datos: di
 def planificar(spots: list[dict], dia0: date, tz: ZoneInfo) -> tuple[dict, list[dict]]:
     """Qué puntos pedir y a qué spot sirve cada uno. El azimut del sol cambia menos de 1° al día:
     se usa el del primer día para todo el informe."""
-    puntos: dict[str, dict[tuple[float, float], int]] = {"spot": {}, "camino": {}, "perfil": {}}
+    puntos: dict[str, dict[tuple[float, float], int]] = {"spot": {}, "camino": {}, "perfil": {}, "alt": {}}
 
     def indice(tipo, c):
         return puntos[tipo].setdefault(c, len(puntos[tipo]))
@@ -389,8 +465,9 @@ def planificar(spots: list[dict], dia0: date, tz: ZoneInfo) -> tuple[dict, list[
     planes = []
     for s in spots:
         sol0 = astro.calcular_sol(s["lat"], s["lon"], dia0, tz)
-        plan = {"spot": indice("spot", (round(s["lat"], 3), round(s["lon"], 3))), "camino": {},
-                "perfil": [], "horizonte": {}}
+        plan = {"spot": indice("spot", _redondear((s["lat"], s["lon"]), REDONDEO_SPOT)), "camino": {},
+                "perfil": [], "horizonte": {},
+                "alt": indice("alt", _redondear((s["lat"], s["lon"]), REDONDEO_ALT))}
         for momento, az in (("amanecer", sol0.az_amanecer), ("atardecer", sol0.az_atardecer)):
             if az is None:
                 continue
@@ -399,21 +476,21 @@ def planificar(spots: list[dict], dia0: date, tz: ZoneInfo) -> tuple[dict, list[
                 c = _redondear(astro.punto_destino(s["lat"], s["lon"], az, km), REDONDEO_CAMINO[km])
                 plan["camino"][momento].append((km, indice("camino", c)))
                 if km == KM_PERFIL:
-                    plan["perfil"].append(indice("perfil", c))
+                    plan["perfil"].append(indice("perfil", _redondear(c, REDONDEO_PERFIL)))
                     plan["horizonte"][momento] = list(c)
         planes.append(plan)
     return puntos, planes
 
 
 def pedir_todo(puntos: dict, dias: int, tz_nombre: str) -> dict:
-    c_spot, c_camino, c_perfil = (list(puntos[k]) for k in ("spot", "camino", "perfil"))
-    print(f"  Open-Meteo: {len(c_spot)} spots, {len(c_camino)} puntos del camino del sol, "
-          f"{len(c_perfil)} perfiles verticales")
+    c_spot, c_camino, c_perfil, c_alt = (list(puntos[k]) for k in ("spot", "camino", "perfil", "alt"))
+    print(f"  Open-Meteo: {len(c_spot)} celdas de spots, {len(c_camino)} puntos del camino del sol, "
+          f"{len(c_perfil)} perfiles verticales, {len(c_alt)} celdas del segundo modelo")
     prev = {
         "spot": pedir(c_spot, VARS_SPOT, dias, tz_nombre, extra={"past_days": 2}),
         "camino": pedir(c_camino, VARS_CAMINO, dias, tz_nombre),
         "perfil": pedir(c_perfil, VARS_PERFIL, dias, tz_nombre),
-        "alt": pedir(c_spot, VARS_ALT, dias, tz_nombre, extra={"models": MODELO_ALT}, obligatorio=False),
+        "alt": pedir(c_alt, VARS_ALT, dias, tz_nombre, extra={"models": MODELO_ALT}, obligatorio=False),
     }
     # Aerosoles y polvo (CAMS): rejilla de 0,4°, basta un punto por celda
     celdas = sorted({_redondear(c, 0.4) for c in c_spot})
@@ -421,6 +498,7 @@ def pedir_todo(puntos: dict, dias: int, tz_nombre: str) -> dict:
                  obligatorio=False)
     por_celda = dict(zip(celdas, aire))
     prev["aire"] = [por_celda.get(_redondear(c, 0.4)) for c in c_spot]
+    print(f"  ≈ {LLAMADAS['total']:.0f} llamadas a Open-Meteo en esta ejecución")
     return prev
 
 
@@ -455,12 +533,14 @@ def evaluar(spots: list[dict], dias: int, tz_nombre: str, hoy: date | None = Non
                             for m, pts in plan["camino"].items()},
                  "perfil": [(horas(previsiones["perfil"], i), (previsiones["perfil"][i] or {}).get("elevacion"))
                             for i in plan["perfil"]],
-                 "alt": horas(previsiones.get("alt"), plan["spot"]),
+                 "alt": horas(previsiones.get("alt"), plan["alt"]),
                  "aire": horas(previsiones.get("aire"), plan["spot"])}
         dias_spot = [evaluar_spot_dia(s, d, i, tz, datos) for i, d in enumerate(fechas)]
         salida.append({
             "id": s["id"], "nombre": s["nombre"], "lat": round(s["lat"], 5), "lon": round(s["lon"], 5),
-            "tipo": s.get("tipo"), "origen": s.get("origen"), "elevacion": _r(p["elevacion"]),
+            "tipo": s.get("tipo"), "origen": s.get("origen"),
+            "elevacion": _r((s.get("relieve") or {}).get("elevacion") or p["elevacion"]),
+            "provincia": s.get("provincia"), "ccaa": s.get("ccaa"),
             "contaminacion": s.get("contaminacion"), "horizonte": plan["horizonte"],
             "dias": dias_spot,
         })

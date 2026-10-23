@@ -163,7 +163,8 @@ def claridad_aire(aod: float | None, polvo: float | None, humedad: float, lluvia
 
 
 def nota_luz(local, camino: list[dict], aire: dict | None = None, es_agua: bool = False,
-             momento: str = "atardecer", peso_medias: float | None = None) -> Nota:
+             momento: str = "atardecer", peso_medias: float | None = None,
+             relieve: float | None = None, hora_relieve: str | None = None) -> Nota:
     """Amanecer o atardecer con el modelo de camino de la luz.
 
     local: condiciones en el spot en el pico de color (variables de Open-Meteo, interpoladas).
@@ -220,10 +221,62 @@ def nota_luz(local, camino: list[dict], aire: dict | None = None, es_agua: bool 
         total = a.paso(t, total, total * m)
     if V < 5000:
         total = a.paso(f"Visibilidad {V / 1000:.1f} km: niebla o bruma en el spot", total, total * 0.6)
+    # 6) relieve hacia el sol: una montaña delante quita la luz rasante y tapa el cielo bajo, donde
+    #    está el color más intenso (horizonte.py, modelo digital de elevaciones)
+    if relieve is not None and relieve > 1.0:
+        f_luz = 1 - _clamp((relieve - 1) / 6)
+        f_color = 1 - 0.5 * _clamp((relieve - 2) / 12)
+        verbo = "asoma" if momento == "amanecer" else "se esconde"
+        total = a.paso(f"Relieve hacia el sol a {relieve:.0f}°: {verbo} tras las montañas"
+                       + (f" a las {hora_relieve}" if hora_relieve else ""), total, luz * f_luz + color * f_color)
+        luz, color = luz * f_luz, color * f_color
     if es_agua and viento < 6:
         n.suma(f"Viento casi nulo ({viento:.0f} km/h): reflejos en el agua", 0.4)
         n.avisos.append("reflejos")
     n.extra = {"lienzo": round(c * 100), "transmision": round(T * 100), "claridad": round(k, 2)}
+    if relieve is not None:
+        n.extra["relieve"] = round(relieve, 1)
+    return n
+
+
+# ============================================================ luna ====
+def nota_luna(evento: dict | None, local: dict | None = None, camino: list[dict] | None = None) -> Nota:
+    """Salida (o puesta) de la luna sobre el paisaje en el crepúsculo.
+
+    evento: {"tipo", "hora" "HH:MM", "iluminacion" 0-1, "altura_sol" (°), "horizonte" (°), "azimut"}.
+    local: nubes en el spot en ese momento; camino: nubes bajas hacia la luna (15-150 km).
+    Lo buscado: luna casi llena, que aparece con el sol entre -6° y +2° (el paisaje aún tiene luz y la
+    exposición se equilibra) y un horizonte limpio en su dirección."""
+    if not evento:
+        n = Nota(0.0, "Sin salida ni puesta de luna en el crepúsculo")
+        return n
+    ilum, hsol = evento["iluminacion"], evento["altura_sol"]
+    accion = "Sale" if evento["tipo"] == "salida" else "Se pone"
+    n = Nota(10.0, f"{accion} la luna a las {evento['hora']} hacia {evento['azimut']:.0f}°: luna llena en el crepúsculo")
+    a = _Acumulador(n)
+    total = 10.0
+    total = a.paso(f"Luna al {ilum * 100:.0f} %", total, total * (0.35 + 0.65 * _clamp((ilum - 0.4) / 0.55)))
+    luz = _tramos(hsol, [(-12, 0.0), (-6, 0.8), (-3, 1.0), (1, 1.0), (4, 0.6), (10, 0.2)])
+    total = a.paso(f"Sol a {hsol:.0f}° en ese momento: " + ("luz de crepúsculo equilibrada" if luz > 0.9
+                   else "aún hay mucha luz" if hsol > 1 else "ya es de noche: paisaje oscuro"),
+                   total, total * (0.3 + 0.7 * luz))
+    if evento.get("horizonte", 0) > 4:
+        total = a.paso(f"Relieve de {evento['horizonte']:.0f}°: asoma ya alta, sin el efecto de luna grande en el horizonte",
+                       total, total * (1 - 0.3 * _clamp((evento["horizonte"] - 4) / 8)))
+    if camino:
+        t_bajas = 1.0
+        for p in camino:
+            t_bajas *= 1 - PESO_CAMINO.get(int(p["km"]), 0.4) * _v(p, "low") / 100
+        if t_bajas < 0.97:
+            total = a.paso(f"Nubes bajas hacia la luna (hasta {max(_v(p, 'low') for p in camino):.0f} %)",
+                           total, total * t_bajas)
+    if local:
+        nubes = _v(local, "cloud_cover", 0)
+        if nubes > 20:
+            total = a.paso(f"Nubosidad en el spot {nubes:.0f} %", total, total * (1 - 0.8 * _clamp((nubes - 20) / 80)))
+        P = _v(local, "precipitation_probability")
+        if P > 20:
+            total = a.paso(f"Lluvia {P:.0f} %", total, total * (1 - 0.6 * P / 100))
     return n
 
 

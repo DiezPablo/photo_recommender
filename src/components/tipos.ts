@@ -15,4 +15,6 @@ export interface FilaRanking {
   /** fotógrafos distintos en Commons: desempata y da contexto */
   autores: number;
   dudosa: boolean;
+  provincia: string | null;
+  ccaa: string | null;
 }

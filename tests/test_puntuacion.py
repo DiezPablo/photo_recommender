@@ -231,3 +231,22 @@ def test_calima_extrema_del_15_de_marzo_de_2022():
     cam = camino(altas=(100, 100, 100, 100))
     assert luz(local, cam, polvo=168).valor <= 3.2
     assert luz(local, cam).valor >= 6.5
+
+
+# ========================================================= relieve y luna ====
+def test_montana_hacia_el_sol_resta():
+    libre = nota_luz(cielo(high=50), camino(), relieve=0.5).valor
+    valle = nota_luz(cielo(high=50), camino(), relieve=9, hora_relieve="18:40")
+    assert valle.valor < libre - 1.5
+    assert any("18:40" in t for t, _ in valle.factores)
+
+
+def test_luna_llena_saliendo_al_atardecer_es_excelente():
+    from puntuacion import nota_luna
+    e = {"tipo": "salida", "hora": "18:11", "iluminacion": 1.0, "altura_sol": 1.0, "horizonte": 0.5, "azimut": 73}
+    assert nota_luna(e, {"cloud_cover": 5}, camino()).valor >= 9
+    assert nota_luna({**e, "iluminacion": 0.45}).valor < 7          # luna poco llena
+    assert nota_luna({**e, "altura_sol": -11}).valor < 7             # ya es de noche: paisaje negro
+    assert nota_luna(e, {"cloud_cover": 95}).valor < 3               # cubierto
+    assert nota_luna(e, None, camino(bajas=(0, 100, 0, 0))).valor < 6  # banco de nubes hacia la luna
+    assert nota_luna(None).valor == 0

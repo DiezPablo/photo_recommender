@@ -1,12 +1,14 @@
-# Recalcula la previsión cada 3 horas y la publica en public/datos/ (Vercel redespliega la web
-# con cada commit). La ejecución de la tarde además manda el aviso opcional por Telegram.
-# GitHub interpreta el cron en UTC: 17:17 UTC = 19:17 en verano, 18:17 en invierno.
+# Previsión para todos los spots de España, dos veces al día (madrugada, con los modelos de la noche,
+# y mediodía, para decidir el atardecer). Los datos van a la release "datos" y Vercel reconstruye la
+# web. La ejecución del mediodía manda además el aviso opcional por Telegram.
+# Dos ejecuciones al día para no pasar del límite gratuito de Open-Meteo (10 000 llamadas/día).
+# GitHub interpreta el cron en UTC y suele ejecutarlo con retraso.
 name: Datos
 
 on:
   schedule:
-    - cron: "23 */3 * * *"     # actualizar datos
-    - cron: "17 17 * * *"      # actualizar datos + aviso de la tarde
+    - cron: "47 3 * * *"       # ~05:47 hora peninsular en verano, 04:47 en invierno
+    - cron: "47 12 * * *"      # ~14:47 / 13:47: previsión fresca para el atardecer
   workflow_dispatch:
     inputs:
       enviar:
@@ -19,6 +21,7 @@ on:
       - condiciones.py
       - puntuacion.py
       - astro.py
+      - horizonte.py
       - mis_spots.csv
       - .github/workflows/datos.yml
 
@@ -32,11 +35,13 @@ concurrency:
 jobs:
   datos:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: main   # siempre los últimos spots, aunque el run lo lanzara un commit anterior
+          ref: main
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
@@ -48,16 +53,23 @@ jobs:
           path: cache/lp
           key: atlas-lp-2025
 
+      - name: Spots publicados
+        run: |
+          mkdir -p public/datos
+          curl -fsSL https://github.com/${{ github.repository }}/releases/download/datos/spots.geojson.gz \
+            | gunzip > /tmp/spots.geojson && mv /tmp/spots.geojson public/datos/spots.geojson \
+            || echo "Sin spots en la release: se usan los del repositorio"
+
       - name: Calcular condiciones
         run: |
           mkdir -p salida
           python condiciones.py --salida salida/informe.json
 
-      - name: Publicar datos
-        run: .github/scripts/publicar.sh "Datos $(date -u +%Y-%m-%dT%H:%MZ)" salida/informe.json
+      - name: Publicar
+        run: .github/scripts/publicar_release.sh "Datos $(date -u +%Y-%m-%dT%H:%MZ)" salida/informe.json
 
       - name: Aviso por Telegram (opcional)
-        if: github.event.schedule == '17 17 * * *' || inputs.enviar
+        if: github.event.schedule == '47 12 * * *' || inputs.enviar
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -66,4 +78,4 @@ jobs:
           if [ -z "$TELEGRAM_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
             echo "Sin secretos de Telegram: no se envía aviso."; exit 0
           fi
-          python notificar.py --silencio
+          python notificar.py --informe salida/informe.json --silencio

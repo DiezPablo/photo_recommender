@@ -1,7 +1,7 @@
 // Tipos del informe y utilidades puras: se pueden usar tanto en el servidor como en el navegador.
 
-export type Momento = "amanecer" | "atardecer" | "astro" | "niebla";
-export const MOMENTOS: Momento[] = ["amanecer", "atardecer", "astro", "niebla"];
+export type Momento = "amanecer" | "atardecer" | "astro" | "niebla" | "luna";
+export const MOMENTOS: Momento[] = ["amanecer", "atardecer", "astro", "niebla", "luna"];
 export type Filtro = Momento | "todos";
 export const FILTROS: Filtro[] = ["todos", ...MOMENTOS];
 
@@ -10,7 +10,8 @@ export const NOMBRE_MOMENTO: Record<Filtro, string> = {
   amanecer: "Amanecer",
   atardecer: "Atardecer",
   astro: "Noche y Vía Láctea",
-  niebla: "Niebla",
+  niebla: "Niebla y mar de nubes",
+  luna: "Salida o puesta de luna",
 };
 export const NOMBRE_CORTO: Record<Filtro, string> = {
   todos: "Todo",
@@ -18,6 +19,7 @@ export const NOMBRE_CORTO: Record<Filtro, string> = {
   atardecer: "Atardecer",
   astro: "Noche",
   niebla: "Niebla",
+  luna: "Luna",
 };
 
 export interface Factor {
@@ -76,6 +78,11 @@ export interface Dia {
     dorada_tarde: Tramo | null;
     azul_manana: Tramo | null;
     azul_tarde: Tramo | null;
+    /** hora a la que el sol asoma / se esconde tras el relieve y ángulo del relieve en esa dirección */
+    amanecer_relieve?: string | null;
+    atardecer_relieve?: string | null;
+    relieve_amanecer?: number | null;
+    relieve_atardecer?: number | null;
   };
   noche: {
     ini: string | null;
@@ -89,6 +96,7 @@ export interface Dia {
       puesta: string | null;
       sin_luna: Tramo[];
       horas_sin_luna: number | null;
+      evento?: EventoLuna | null;
     };
     via_lactea: {
       tramos: Tramo[];
@@ -104,6 +112,15 @@ export interface Dia {
   meteo: { amanecer?: MeteoMomento; atardecer?: MeteoMomento; noche?: MeteoNoche };
   notas: Partial<Record<Momento, NotaMomento>>;
   avisos: string[];
+}
+
+export interface EventoLuna {
+  tipo: "salida" | "puesta";
+  hora: string;
+  azimut: number;
+  horizonte: number;
+  iluminacion: number;
+  altura_sol: number;
 }
 
 export interface Contaminacion {
@@ -123,6 +140,8 @@ export interface SpotInforme {
   elevacion: number | null;
   contaminacion: Contaminacion | null;
   horizonte: { amanecer?: [number, number]; atardecer?: [number, number] };
+  provincia?: string | null;
+  ccaa?: string | null;
   dias: Dia[];
 }
 
@@ -160,6 +179,11 @@ export interface SpotDescubierto {
   galeria: Foto[];
   tipo_osm: string | null;
   direccion_vista: string | null;
+  provincia?: string | null;
+  ccaa?: string | null;
+  wikidata?: string | null;
+  /** horizonte del terreno: ángulos (décimas de grado) cada 360/n grados desde el norte */
+  horizonte?: { elevacion: number; angulos: number[] } | null;
 }
 
 /** Spot del informe + lo que se sabe de él por Commons/OSM (si lo hay). */
@@ -186,11 +210,15 @@ export function notaDe(dia: Dia | undefined, filtro: Filtro): { momento: Momento
 export function horaDe(dia: Dia, momento: Momento): string {
   switch (momento) {
     case "amanecer":
-      return dia.sol.amanecer ?? "—";
+      return dia.sol.amanecer_relieve ?? dia.sol.amanecer ?? "—";
     case "atardecer":
-      return dia.sol.atardecer ?? "—";
+      return dia.sol.atardecer_relieve ?? dia.sol.atardecer ?? "—";
     case "niebla":
       return dia.sol.amanecer ? `madrugada · ${dia.sol.amanecer}` : "madrugada";
+    case "luna": {
+      const e = dia.noche.luna.evento;
+      return e ? `${e.tipo === "salida" ? "sale" : "se pone"} ${e.hora}` : "—";
+    }
     case "astro": {
       const sl = dia.noche.luna.sin_luna;
       if (dia.noche.luna.horas_sin_luna && sl.length && dia.noche.luna.horas_sin_luna < (dia.noche.horas ?? 0) - 0.2)

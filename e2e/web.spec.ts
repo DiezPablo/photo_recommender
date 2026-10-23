@@ -75,7 +75,7 @@ test("ficha de un spot: notas con desglose, sol, luna, Vía Láctea, fotos y có
   await expect(page.locator("h1")).toHaveText(nombre);
   const hoy = page.locator("details.dia").first();
   await expect(hoy).toHaveAttribute("open", "");
-  await expect(hoy.locator(".nota-tarjeta")).toHaveCount(4);
+  await expect(hoy.locator(".nota-tarjeta")).toHaveCount(5);
   await expect(hoy.locator(".desglose li").first()).toBeVisible();
   for (const t of ["Salida del sol", "Puesta del sol", "Hora dorada", "Azimut del sol", "Noche astronómica", "Fase", "Núcleo sobre 10°", "Contaminación lumínica"])
     await expect(hoy.getByText(t, { exact: true }).first()).toBeVisible();

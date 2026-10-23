@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Desglose from "@/components/Desglose";
 import { IconoAmanecer, IconoAtardecer, IconoCamara, IconoLuna, IconoNoche, IconoRuta } from "@/components/Iconos";
 import MapaSpot from "@/components/MapaSpot";
+import Panorama from "@/components/Panorama";
 import type { LineaMapa } from "@/components/Mapa";
 import {
   calificacion, cargar, type Dia, etiquetaDia, getSpot, horaDe, MESES_LARGOS, MOMENTOS, NOMBRE_CORTO, rumbo,
@@ -74,6 +75,12 @@ function BloqueLuz({ dia, momento }: { dia: Dia; momento: "amanecer" | "atardece
       <dl className="datos">
         <dt>{am ? "Salida del sol" : "Puesta del sol"}</dt>
         <dd>{am ? s.amanecer : s.atardecer}</dd>
+        {(am ? s.amanecer_relieve : s.atardecer_relieve) && (am ? s.amanecer_relieve : s.atardecer_relieve) !== (am ? s.amanecer : s.atardecer) && (
+          <>
+            <dt>{am ? "Asoma sobre el relieve" : "Se esconde tras el relieve"}</dt>
+            <dd>{am ? s.amanecer_relieve : s.atardecer_relieve} ({am ? s.relieve_amanecer : s.relieve_atardecer}°)</dd>
+          </>
+        )}
         <dt>Hora azul</dt>
         <dd>{tramoTexto(am ? s.azul_manana : s.azul_tarde)}</dd>
         <dt>Hora dorada</dt>
@@ -112,6 +119,12 @@ function BloqueNoche({ dia, spot }: { dia: Dia; spot: Spot }) {
           <dd>{n.luna.fase} · {n.luna.iluminacion} %</dd>
           <dt>Salida · puesta</dt>
           <dd>{n.luna.salida ?? "—"} · {n.luna.puesta ?? "—"}</dd>
+          {n.luna.evento && (
+            <>
+              <dt>{n.luna.evento.tipo === "salida" ? "Asoma sobre el paisaje" : "Se oculta tras el paisaje"}</dt>
+              <dd>{n.luna.evento.hora} hacia {rumbo(n.luna.evento.azimut)} (sol a {n.luna.evento.altura_sol}°)</dd>
+            </>
+          )}
           <dt>Noche sin luna</dt>
           <dd>
             {n.luna.sin_luna.length ? n.luna.sin_luna.map((t) => tramoTexto(t)).join(", ") : "ninguna"}
@@ -218,6 +231,8 @@ export default async function PaginaSpot({ params }: Props) {
   if (vista !== null) lineas.push({ azimut: vista, km: 3, color: "var(--texto-2)", etiqueta: "Orientación de la vista (OSM)", discontinua: true });
   const maxMes = Math.max(...(desc?.meses ?? [0]), 1);
   const gmaps = `https://www.google.com/maps/dir/?api=1&destination=${spot.lat},${spot.lon}`;
+  // Google no deja usar sus fotos gratis ni guardarlas (la API de Places es de pago): enlace a su ficha
+  const gmapsVer = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spot.nombre)}%20${spot.lat},${spot.lon}`;
   const osmRuta = `https://www.openstreetmap.org/directions?to=${spot.lat}%2C${spot.lon}#map=13/${spot.lat}/${spot.lon}`;
 
   return (
@@ -239,9 +254,13 @@ export default async function PaginaSpot({ params }: Props) {
           )}
           {spot.origen === "osm" && <span className="etiqueta">Mirador de OpenStreetMap (sin fotos en Commons)</span>}
           {spot.origen === "propio" && <span className="etiqueta">Spot propio</span>}
+          {(spot.provincia ?? desc?.provincia) && (
+            <span className="etiqueta">{spot.provincia ?? desc?.provincia} · {spot.ccaa ?? desc?.ccaa}</span>
+          )}
         </div>
         <div className="acciones">
           <a className="boton primario" href={gmaps} target="_blank" rel="noopener"><IconoRuta size={16} /> Cómo llegar</a>
+          <a className="boton" href={gmapsVer} target="_blank" rel="noopener">Ver fotos en Google Maps</a>
           <a className="boton" href={osmRuta} target="_blank" rel="noopener">Ruta en OpenStreetMap</a>
         </div>
       </header>
@@ -295,6 +314,21 @@ export default async function PaginaSpot({ params }: Props) {
           )}
         </section>
       </div>
+
+      {desc?.horizonte?.angulos?.length ? (
+        <section className="tarjeta" aria-label="Horizonte del terreno">
+          <h2>Horizonte y orientación</h2>
+          <Panorama
+            angulos={desc.horizonte.angulos}
+            marcas={[
+              ...(hoy?.sol.az_amanecer != null ? [{ azimut: hoy.sol.az_amanecer, texto: `Sale el sol ${hoy.sol.amanecer_relieve ?? hoy.sol.amanecer}`, color: "var(--sol)" }] : []),
+              ...(hoy?.sol.az_atardecer != null ? [{ azimut: hoy.sol.az_atardecer, texto: `Se pone ${hoy.sol.atardecer_relieve ?? hoy.sol.atardecer}`, color: "var(--acento)" }] : []),
+              ...(hoy?.noche.luna.evento ? [{ azimut: hoy.noche.luna.evento.azimut, texto: `Luna ${hoy.noche.luna.evento.hora}`, color: "var(--luna)", altura: hoy.noche.luna.evento.horizonte }] : []),
+              ...(hoy?.noche.via_lactea.azimut_max != null ? [{ azimut: hoy.noche.via_lactea.azimut_max, texto: `Vía Láctea ${hoy.noche.via_lactea.hora_max}`, color: "var(--vl)", altura: hoy.noche.via_lactea.altura_max ?? undefined }] : []),
+            ]}
+          />
+        </section>
+      ) : null}
 
       <section style={{ display: "grid", gap: 10 }} aria-label="Previsión por días">
         {spot.dias.map((d, i) => <BloqueDia key={d.fecha} dia={d} indice={i} spot={spot} />)}

@@ -1,25 +1,27 @@
-# Busca spots en Wikimedia Commons y OpenStreetMap, los guarda en public/datos/spots.geojson y
-# recalcula la previsión. Se lanza el día 1 de cada mes, a mano o al cambiar el código de descubrimiento.
+# Busca los spots de toda España (Wikidata + OpenStreetMap + popularidad en Commons), calcula el
+# horizonte del terreno de cada uno y publica spots.geojson e informe.json en la release "datos".
+# El primer cálculo es largo (~13 000 peticiones a Commons): la caché se guarda entre ejecuciones y,
+# si se agota el tiempo, la siguiente continúa.
 name: Descubrir spots
 
 on:
   schedule:
-    - cron: "41 6 1 * *"      # día 1 de cada mes
+    - cron: "41 2 1 * *"      # día 1 de cada mes
   workflow_dispatch:
     inputs:
-      zona:
-        description: "Nombre de la zona"
-        default: "Sierra de Madrid"
-      bbox:
-        description: "min_lon,min_lat,max_lon,max_lat"
-        default: "-4.30,40.60,-3.55,41.10"
-      publicar:
-        description: "Publicar en la web (si no, solo se guarda como artefacto para revisar)"
-        type: boolean
-        default: true
+      total:
+        description: "Número de spots"
+        default: "1500"
+      por_provincia:
+        description: "Mínimo de spots por provincia"
+        default: "12"
+      minutos:
+        description: "Tiempo máximo para consultar Commons (min)"
+        default: "240"
   push:
     branches: [main]
     paths:
+      - descubrir_espana.py
       - descubrir_spots.py
       - contaminacion.py
       - .github/workflows/descubrir.yml
@@ -34,7 +36,9 @@ concurrency:
 jobs:
   descubrir:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 345
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -45,19 +49,19 @@ jobs:
           cache: pip
       - run: pip install -r requirements.txt
 
-      # Las respuestas de Commons/Overpass se guardan entre ejecuciones: menos carga para Wikimedia
+      # Respuestas de Commons, Wikidata y Overpass, teselas del terreno y del atlas: entre ejecuciones
       - uses: actions/cache@v6
         with:
           path: cache
-          key: apis-${{ github.run_id }}
-          restore-keys: apis-
+          key: descubrir-${{ github.run_id }}
+          restore-keys: descubrir-
 
       - name: Buscar spots
         run: |
-          python descubrir_spots.py \
-            --zona "${{ inputs.zona || 'Sierra de Madrid' }}" \
-            --bbox="${{ inputs.bbox || '-4.30,40.60,-3.55,41.10' }}" \
-            --salida salida
+          python descubrir_espana.py --salida salida \
+            --total "${{ inputs.total || '1500' }}" \
+            --por-provincia "${{ inputs.por_provincia || '12' }}" \
+            --minutos "${{ inputs.minutos || '240' }}"
 
       - name: Previsión con los spots nuevos
         run: python condiciones.py --spots salida/spots.geojson --salida salida/informe.json
@@ -65,11 +69,10 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: spots
-          path: salida/
+          path: salida/spots.*
           retention-days: 14
 
       - name: Publicar
-        if: github.event_name != 'workflow_dispatch' || inputs.publicar
         run: |
-          .github/scripts/publicar.sh "Actualizar spots ($(date -u +%Y-%m-%d))" \
+          .github/scripts/publicar_release.sh "Actualizar spots ($(date -u +%Y-%m-%d))" \
             salida/spots.geojson salida/spots.csv salida/informe.json

@@ -6,9 +6,9 @@ import { cargar } from "@/lib/datos";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: { default: "Spots de paisaje · Sierra de Madrid", template: "%s · Spots de paisaje" },
+  title: { default: "Spots de paisaje · España", template: "%s · Spots de paisaje" },
   description:
-    "¿Merece la pena salir a fotografiar? Nota diaria de amanecer, atardecer, noche estrellada y niebla para spots de paisaje de la Sierra de Madrid, con el porqué.",
+    "¿Merece la pena salir a fotografiar? Nota diaria de amanecer, atardecer, noche estrellada, niebla y luna para spots de paisaje de toda España, con el porqué.",
 };
 
 export const viewport: Viewport = {
@@ -42,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Logo />
               <span>
                 <b>Spots de paisaje</b>
-                <small>Sierra de Madrid · ¿merece la pena salir?</small>
+                <small>Toda España · ¿merece la pena salir?</small>
               </span>
             </Link>
             <nav>

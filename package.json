@@ -8,7 +8,9 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "prebuild": "node scripts/descargar-datos.mjs",
+    "datos": "node scripts/descargar-datos.mjs"
   },
   "dependencies": {
     "leaflet": "1.9.4",

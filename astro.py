@@ -193,8 +193,13 @@ def _tramos(muestras: list[tuple[datetime, bool]], paso: timedelta) -> list[tupl
     return tramos
 
 
-def calcular_noche(lat: float, lon: float, dia: date, tz: ZoneInfo, sol: Sol | None = None) -> Noche:
+def calcular_noche(lat: float, lon: float, dia: date, tz: ZoneInfo, sol: Sol | None = None,
+                   horizonte=None) -> Noche:
+    """horizonte: función azimut → ángulo del relieve (grados), o None si el horizonte es plano.
+    Con relieve, la luna tras una montaña no ilumina el cielo y el núcleo de la Vía Láctea tiene que
+    asomar 2° por encima de las crestas."""
     sol = sol or calcular_sol(lat, lon, dia, tz)
+    hz = horizonte or (lambda az: 0.0)
     o = Observer(latitude=lat, longitude=lon)
     mediodia = datetime(dia.year, dia.month, dia.day, 12, tzinfo=tz)
     medianoche = mediodia + timedelta(hours=12)
@@ -214,9 +219,9 @@ def calcular_noche(lat: float, lon: float, dia: date, tz: ZoneInfo, sol: Sol | N
     muestras_luna, muestras_vl, muestras_vl_oscuro = [], [], []
     t = sol.noche_ini
     while t < sol.noche_fin:
-        luna_abajo = amoon.elevation(o, t) < -0.5
+        luna_abajo = amoon.elevation(o, t) < max(-0.5, hz(amoon.azimuth(o, t)))
         alt_vl, az_vl = posicion_centro_galactico(lat, lon, t)
-        vl = alt_vl >= ALTURA_MIN_VIA_LACTEA
+        vl = alt_vl >= max(ALTURA_MIN_VIA_LACTEA, hz(az_vl) + 2)
         muestras_luna.append((t, luna_abajo))
         muestras_vl.append((t, vl))
         muestras_vl_oscuro.append((t, vl and luna_abajo))
@@ -235,6 +240,68 @@ def calcular_noche(lat: float, lon: float, dia: date, tz: ZoneInfo, sol: Sol | N
         n.vl_azimut_ini = posicion_centro_galactico(lat, lon, n.vl_tramos[0][0])[1]
         n.vl_azimut_fin = posicion_centro_galactico(lat, lon, n.vl_tramos[-1][1])[1]
     return n
+
+
+# ------------------------------------------------------- relieve y luna ----
+def sol_sobre_relieve(lat: float, lon: float, dia: date, tz: ZoneInfo, horizonte,
+                      momento: str) -> tuple[datetime | None, float | None]:
+    """Hora a la que el sol asoma (amanecer) o se esconde (atardecer) tras el relieve, y el ángulo del
+    horizonte en ese punto. El azimut cambia con la altura, así que se itera dos veces."""
+    o = Observer(latitude=lat, longitude=lon)
+    direccion = asun.SunDirection.RISING if momento == "amanecer" else asun.SunDirection.SETTING
+    t = _seguro(asun.sunrise if momento == "amanecer" else asun.sunset, o, dia, tz)
+    if t is None:
+        return None, None
+    h = 0.0
+    for _ in range(2):
+        h = max(0.0, horizonte(asun.azimuth(o, t)))
+        if h <= 0.3:
+            return t, h
+        t2 = _seguro(asun.time_at_elevation, o, h, dia, direccion, tz)
+        if t2 is None:     # el sol no llega a superar el relieve ese día
+            return None, h
+        t = t2
+    return t, h
+
+
+@dataclass
+class EventoLuna:
+    tipo: str               # "salida" (luna llena al anochecer) o "puesta" (al amanecer)
+    hora: datetime          # cuando asoma sobre el relieve / se esconde tras él
+    azimut: float
+    horizonte: float        # ángulo del relieve en ese azimut
+    iluminacion: float
+    altura_sol: float       # altura del sol en ese momento: entre -6° y +2° el paisaje y la luna se equilibran
+
+
+def evento_luna(lat: float, lon: float, dia: date, tz: ZoneInfo, sol: Sol, horizonte=None) -> EventoLuna | None:
+    """Salida de la luna cerca del atardecer o puesta cerca del amanecer (± 75 min): la foto de la
+    luna grande sobre el paisaje con luz de crepúsculo. Devuelve el mejor evento del día o None."""
+    hz = horizonte or (lambda az: 0.0)
+    o = Observer(latitude=lat, longitude=lon)
+    candidatos = []
+    for tipo, f, ref in (("salida", amoon.moonrise, sol.atardecer), ("puesta", amoon.moonset, sol.amanecer)):
+        if ref is None:
+            continue
+        for d in (dia - timedelta(days=1), dia, dia + timedelta(days=1)):
+            t = _evento_luna(f, o, d, tz)
+            if t is None or abs((t - ref).total_seconds()) > 3 * 3600:
+                continue
+            # momento en que la luna supera (o baja de) el relieve: paso de 2 min
+            paso = timedelta(minutes=2 if tipo == "salida" else -2)
+            for _ in range(120):
+                az = amoon.azimuth(o, t)
+                if amoon.elevation(o, t) >= max(0.0, hz(az)):
+                    break
+                t += paso
+            if abs((t - ref).total_seconds()) > 75 * 60:
+                continue
+            ilum = iluminacion_luna(t)
+            candidatos.append(EventoLuna(tipo, t, amoon.azimuth(o, t), max(0.0, hz(amoon.azimuth(o, t))),
+                                         ilum, asun.elevation(o, t)))
+    if not candidatos:
+        return None
+    return max(candidatos, key=lambda e: e.iluminacion - abs(e.altura_sol + 2) / 20)
 
 
 def punto_destino(lat: float, lon: float, azimut_deg: float, km: float) -> tuple[float, float]:

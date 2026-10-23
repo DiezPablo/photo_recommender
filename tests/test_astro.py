@@ -107,3 +107,31 @@ def test_punto_destino():
     assert abs(lat - 40.0) < 0.01 and lon > -4.0
     lat, lon = astro.punto_destino(40.0, -4.0, 0, 111.2)
     assert abs(lat - 41.0) < 0.01
+
+
+def test_relieve_retrasa_el_amanecer_y_adelanta_el_atardecer():
+    tz = ZoneInfo("Europe/Madrid")
+    d = date(2026, 10, 23)
+    sol = astro.calcular_sol(40.72, -3.85, d, tz)
+    montana = lambda az: 5.0
+    am, h1 = astro.sol_sobre_relieve(40.72, -3.85, d, tz, montana, "amanecer")
+    at, h2 = astro.sol_sobre_relieve(40.72, -3.85, d, tz, montana, "atardecer")
+    assert h1 == h2 == 5.0
+    assert 20 < (am - sol.amanecer).total_seconds() / 60 < 45
+    assert 20 < (sol.atardecer - at).total_seconds() / 60 < 45
+    llano, _ = astro.sol_sobre_relieve(40.72, -3.85, d, tz, lambda az: 0.0, "atardecer")
+    assert llano == sol.atardecer
+
+
+def test_luna_llena_sale_al_atardecer_del_26_oct_2026():
+    tz = ZoneInfo("Europe/Madrid")
+    d = date(2026, 10, 26)
+    e = astro.evento_luna(40.72, -3.85, d, tz, astro.calcular_sol(40.72, -3.85, d, tz))
+    assert e.tipo == "salida" and e.iluminacion > 0.97 and -3 < e.altura_sol < 3
+
+
+def test_relieve_tapa_la_via_lactea():
+    tz = ZoneInfo("Europe/Madrid")
+    libre = astro.calcular_noche(40.79, -3.98, date(2027, 6, 21), tz)
+    tapada = astro.calcular_noche(40.79, -3.98, date(2027, 6, 21), tz, horizonte=lambda az: 25.0 if 140 < az < 220 else 0.0)
+    assert libre.vl_horas > 2 and tapada.vl_horas == 0

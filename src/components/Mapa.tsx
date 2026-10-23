@@ -47,7 +47,10 @@ export default function Mapa({
   zoom,
   enlazar = true,
   etiqueta = "Mapa de spots",
+  urlTodos,
 }: {
+  /** con urlTodos, JSON con el resto de spots: se dibujan como puntos ligeros (canvas) */
+  urlTodos?: string;
   puntos: PuntoMapa[];
   lineas?: LineaMapa[];
   zoom?: number;
@@ -58,6 +61,11 @@ export default function Mapa({
   const mapa = useRef<LMap | null>(null);
   const capa = useRef<LayerGroup | null>(null);
   const [listo, setListo] = useState(false);
+  const [todos, setTodos] = useState<PuntoMapa[]>([]);
+  useEffect(() => {
+    if (!urlTodos) return;
+    fetch(urlTodos).then((r) => (r.ok ? r.json() : [])).then(setTodos).catch(() => setTodos([]));
+  }, [urlTodos]);
   const [ubic, setUbic] = useState<Ubicacion | null>(null);
   const [tema, setTema] = useState(0);
 
@@ -102,6 +110,21 @@ export default function Mapa({
       const g = capa.current!;
       g.clearLayers();
       const limites: [number, number][] = [];
+      if (todos.length) {
+        // el resto de spots: círculos en canvas (miles de puntos sin ralentizar el móvil)
+        const lienzo = L.canvas({ padding: 0.3 });
+        const destacados = new Set(puntos.map((p) => p.id));
+        for (const p of todos) {
+          if (destacados.has(p.id)) continue;
+          L.circleMarker([p.lat, p.lon], {
+            renderer: lienzo, radius: 4, weight: 1, color: colorCss("var(--superficie)"),
+            fillColor: colorCss(`var(--${(p.clase ?? "n-floja").replace("n-", "n-")})`), fillOpacity: 0.9,
+          }).bindPopup(
+            `<strong>${esc(p.nombre)}</strong>${p.nota !== undefined ? ` · ${p.nota.toFixed(1)}/10` : ""}` +
+              `<br><a href="/spot/${encodeURIComponent(p.id)}">Ver ficha →</a>`,
+          ).addTo(g);
+        }
+      }
       for (const p of puntos) {
         for (const l of lineas) {
           const fin = destino(p.lat, p.lon, l.azimut, l.km);
@@ -136,11 +159,12 @@ export default function Mapa({
           radius: 7, color: colorCss("var(--superficie)"), weight: 2, fillColor: colorCss("var(--acento)"), fillOpacity: 1,
         }).bindTooltip("Tu ubicación").addTo(g);
       }
-      if (zoom && puntos.length === 1 && !lineas.length) m.setView([puntos[0].lat, puntos[0].lon], zoom);
+      if (ubic && enlazar && urlTodos) m.setView([ubic.lat, ubic.lon], 8);
+      else if (zoom && puntos.length === 1 && !lineas.length) m.setView([puntos[0].lat, puntos[0].lon], zoom);
       else if (limites.length) m.fitBounds(L.latLngBounds(limites), { padding: [28, 28], maxZoom: zoom ?? 13 });
       else m.setView([40.8, -3.9], 9);
     })();
-  }, [listo, puntos, lineas, ubic, zoom, enlazar, tema]);
+  }, [listo, puntos, lineas, ubic, zoom, enlazar, tema, todos, urlTodos]);
 
   return (
     <div ref={caja} className="mapa-caja" role="region" aria-label={etiqueta} data-listo={listo ? "si" : "no"}>
