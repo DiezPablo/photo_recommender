@@ -2,8 +2,7 @@
 // siguiente (para que quepa la noche entera) y,
 // encima, cuándo ocurre cada salida con su nota. Sin JavaScript.
 import { calificacion, type Dia, type Momento, motivos, NOMBRE_MOMENTO } from "@/lib/modelo";
-import Anillo from "./Anillo";
-import { IconoMomento } from "./Iconos";
+import Cifra from "./Cifra";
 
 const INI = 4 * 60;
 const FIN = INI + 27 * 60;
@@ -76,8 +75,8 @@ export default function PlanDelDia({ dia }: { dia: Dia }) {
     .filter((t): t is readonly [number, number] => t[0] !== null && t[1] !== null);
 
   return (
-    <section className="tarjeta plan" aria-label="Plan del día">
-      <h2>El plan de hoy</h2>
+    <section className="seccion plan" aria-label="Plan del día">
+      <h2 className="rotulo">El día, hora a hora</h2>
       <div className="plan-eje" aria-hidden="true">
         <div className="plan-cielo" style={{ background: `linear-gradient(90deg, ${paradas.join(", ")})` }}>
           {vl.map(([a, b], i) => (
@@ -100,10 +99,11 @@ export default function PlanDelDia({ dia }: { dia: Dia }) {
         {ev.map((x) => (
           <li key={x.momento}>
             <a href={`#nota-${x.momento}`}>
-              <Anillo nota={x.nota} tam={44} grosor={4} />
+              <span className="plan-hora">{x.hora.match(/\d{1,2}:\d{2}/)?.[0] ?? "—"}</span>
+              <Cifra nota={x.nota} />
               <span>
-                <b><IconoMomento momento={x.momento} size={15} /> {NOMBRE_MOMENTO[x.momento]}</b>
-                <small>{x.hora}{x.porque ? ` · ${x.porque}` : ""}</small>
+                <b>{NOMBRE_MOMENTO[x.momento]}</b>
+                <small>{x.hora}{x.porque ? `. ${x.porque}` : ""}</small>
               </span>
             </a>
           </li>

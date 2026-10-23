@@ -6,8 +6,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { NOMBRE_CORTO } from "@/lib/modelo";
 import { distanciaKm, guardarUbicacion, leerUbicacion, type Ubicacion } from "@/lib/ubicacion";
-import Anillo from "./Anillo";
-import { IconoCamara, IconoMomento, IconoUbicacion } from "./Iconos";
+import Cifra from "./Cifra";
 import type { FilaRanking } from "./tipos";
 
 const RADIOS = [0, 25, 50, 100, 200, 400];
@@ -122,7 +121,7 @@ export default function Ranking({ filas, total, urlTodos, comunidades, mostrarMo
             </>
           ) : (
             <button type="button" className="boton" onClick={pedirUbicacion}>
-              <IconoUbicacion size={16} /> Cerca de mí
+              Cerca de mí
             </button>
           )}
           {estado && <span role="status">{estado}</span>}
@@ -132,33 +131,26 @@ export default function Ranking({ filas, total, urlTodos, comunidades, mostrarMo
         <p className="vacio">{todas || !necesitaTodas ? "Ningún spot con esos filtros. Amplía la distancia o cambia de comunidad." : "Cargando…"}</p>
       ) : (
         <ol className="ranking" aria-label="Ranking de spots">
-          {visibles.map((f) => (
+          {visibles.map((f, i) => (
             <li key={f.id}>
               <Link href={`/spot/${f.id}`} className="fila" data-spot={f.id}>
-                <span className={`fila-foto cielo-${f.momento}`} aria-hidden="true">
-                  {f.foto
-                    // eslint-disable-next-line @next/next/no-img-element
-                    ? <img src={f.foto} alt="" loading="lazy" width={64} height={64} />
-                    : <IconoMomento momento={f.momento} size={22} />}
-                </span>
+                <span className="pos">{String(i + 1).padStart(2, "0")}</span>
+                <Cifra nota={f.nota} />
                 <div className="fila-txt">
                   <h3>{f.nombre}</h3>
-                  <div className="meta">
-                    {mostrarMomento && (
-                      <span style={{ display: "inline-flex", gap: 4, alignItems: "center" }}>
-                        <IconoMomento momento={f.momento} size={14} /> {NOMBRE_CORTO[f.momento]}
-                      </span>
-                    )}
+                  <p className="meta">
+                    {mostrarMomento && <span>{NOMBRE_CORTO[f.momento]}</span>}
                     <span>{f.hora}</span>
-                    {f.tipo && <span>{f.tipo}</span>}
                     {f.provincia && <span>{f.provincia}</span>}
-                    {f.autores > 0 && <span title="Fotógrafos distintos con fotos aquí en Wikimedia Commons" style={{ display: "inline-flex", gap: 3, alignItems: "center" }}><IconoCamara size={13} /> {f.autores}</span>}
-                    {f.dudosa && <span className="dudosa" title="Los modelos meteorológicos no coinciden">previsión dudosa</span>}
                     {f.km !== null && <span className="dist">{f.km < 10 ? f.km.toFixed(1) : Math.round(f.km)} km</span>}
-                  </div>
-                  {f.motivos.length > 0 && <p className="por-que">{f.motivos.join(" · ")}</p>}
+                    {f.dudosa && <span className="dudosa" title="Los modelos meteorológicos no coinciden">dudosa</span>}
+                  </p>
+                  {f.motivos.length > 0 && <p className="por-que">{f.motivos.join(". ")}.</p>}
                 </div>
-                <Anillo nota={f.nota} tam={50} grosor={4.5} />
+                {f.foto && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img className="fila-foto" src={f.foto} alt="" loading="lazy" width={60} height={60} />
+                )}
               </Link>
             </li>
           ))}

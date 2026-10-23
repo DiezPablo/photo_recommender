@@ -67,12 +67,12 @@ export function IconoMomento({ momento, size }: { momento: Filtro; size?: number
   }
 }
 
-export function Logo({ size = 30 }: { size?: number }) {
+/** Sol rasante sobre el horizonte. */
+export function Logo({ size = 22 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden="true">
-      <rect width="32" height="32" rx="8" fill="var(--acento)" />
-      <circle cx="21" cy="12" r="4" fill="var(--superficie)" />
-      <path d="M3 25 12 13l6 8 3-3 8 7Z" fill="var(--superficie)" opacity="0.92" />
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M5 16a7 7 0 0 1 14 0Z" fill="var(--acento)" />
+      <path d="M1 16h22M4 19.5h16" stroke="currentColor" strokeWidth="1.6" />
     </svg>
   );
 }

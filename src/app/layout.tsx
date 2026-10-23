@@ -1,17 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Archivo, IBM_Plex_Mono } from "next/font/google";
 import Link from "next/link";
 import SelectorTema from "@/components/SelectorTema";
-import { IconoInfo, Logo } from "@/components/Iconos";
+import { Logo } from "@/components/Iconos";
 import { cargar } from "@/lib/datos";
 import "./globals.css";
 
 // Tipografías autoalojadas en el build (sin peticiones a Google desde el navegador)
-const display = Fraunces({ subsets: ["latin"], variable: "--f-display", display: "swap", axes: ["opsz"] });
-const ui = Inter({ subsets: ["latin"], variable: "--f-ui", display: "swap" });
+// Archivo (grotesca con eje de anchura: las cifras van estrechas) y Plex Mono para datos y rótulos.
+const ui = Archivo({ subsets: ["latin"], variable: "--f-ui", display: "swap", axes: ["wdth"] });
+const mono = IBM_Plex_Mono({ subsets: ["latin"], variable: "--f-mono", display: "swap", weight: ["400", "500"] });
 
 export const metadata: Metadata = {
-  title: { default: "Spots de paisaje · España", template: "%s · Spots de paisaje" },
+  title: { default: "Rasante · previsión para fotografía de paisaje", template: "%s · Rasante" },
   description:
     "¿Merece la pena salir a fotografiar? Nota diaria de amanecer, atardecer, noche estrellada, niebla y luna para spots de paisaje de toda España, con el porqué.",
 };
@@ -20,8 +21,8 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f5f2ec" },
-    { media: "(prefers-color-scheme: dark)", color: "#0f1217" },
+    { media: "(prefers-color-scheme: light)", color: "#f2f1ed" },
+    { media: "(prefers-color-scheme: dark)", color: "#0e0f11" },
   ],
 };
 
@@ -36,24 +37,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const { informe } = cargar();
   const generado = informe ? new Date(informe.generado) : null;
   return (
-    <html lang="es" suppressHydrationWarning className={`${display.variable} ${ui.variable}`}>
+    <html lang="es" suppressHydrationWarning className={`${ui.variable} ${mono.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: scriptTema }} />
       </head>
       <body>
         <header className="cabecera">
           <div className="cabecera-in">
-            <Link href="/" className="marca">
+            <Link href="/" className="marca" aria-label="Rasante, inicio">
               <Logo />
-              <span>
-                <b>Spots de paisaje</b>
-                <small>Toda España · ¿merece la pena salir?</small>
-              </span>
+              <b>Rasante</b>
+              <small className="solo-ancho">Previsión para fotografía de paisaje · España</small>
             </Link>
             <nav>
-              <Link href="/acerca" aria-label="Cómo se puntúa" title="Cómo se puntúa">
-                <IconoInfo size={18} /> <span className="solo-ancho">Cómo se puntúa</span>
-              </Link>
+              <Link href="/acerca">Método</Link>
               <SelectorTema />
             </nav>
           </div>
@@ -62,7 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <footer className="pie">
           <div>
             <span>
-              Previsión:{" "}
+              <b>Rasante</b> · Previsión:{" "}
               <a href="https://open-meteo.com/" rel="noopener">Open-Meteo</a> (CC BY 4.0) · Mapa: ©{" "}
               <a href="https://www.openstreetmap.org/copyright" rel="noopener">colaboradores de OpenStreetMap</a> · Fotos:{" "}
               <a href="https://commons.wikimedia.org/" rel="noopener">Wikimedia Commons</a> (autor y licencia en cada una) ·

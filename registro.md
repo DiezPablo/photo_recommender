@@ -285,3 +285,16 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
   siguiente con hora azul/dorada, Vía Láctea y cada salida con su nota).
 - Mapa: se probó CARTO (Voyager/Dark Matter), pero ahora devuelve una tesela «API key required";
   se mantiene OSM estándar invertido con CSS en los temas oscuros.
+
+## 2026-10-23 · Segunda vuelta de diseño: «Rasante»
+- La primera vuelta (anillos, tarjetas con degradado, píldoras, Fraunces + Inter sobre beige) tenía todos
+  los tópicos de una web hecha con IA. Nueva dirección: almanaque de campo.
+- Marca «Rasante» (la luz rasante del amanecer y el atardecer), con un sol sobre el horizonte como logo.
+- Archivo (con eje de anchura: cifras estrechas) + IBM Plex Mono para rótulos y datos. Filetes en lugar
+  de tarjetas, sin sombras ni esquinas redondeadas.
+- Una sola escala de color, la de la luz: gris → ocre → naranja → bermellón.
+- Portada: titular, mejor spot con cifra grande y foto (con crédito), almanaque tipo × día que hace de
+  filtro (sustituye a las píldoras), ranking numerado y mapa a sangre (gris, que destaquen los puntos).
+- Ficha: título grande, ficha técnica, foto con crédito, lectura de hoy (cifra + medidor), «el día, hora a
+  hora» y desglose como libro de cuentas.
+- Modo rojo: ningún bloque grande brillante (las casillas excelentes van con borde).

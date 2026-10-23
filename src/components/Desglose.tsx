@@ -1,6 +1,5 @@
 import { calificacion, type Momento, NOMBRE_MOMENTO, type NotaMomento, TEXTO_CONFIANZA } from "@/lib/modelo";
-import Anillo from "./Anillo";
-import { IconoMomento } from "./Iconos";
+import Cifra from "./Cifra";
 
 /** Tarjeta de una nota con su desglose: qué suma y qué resta. */
 export default function Desglose({ momento, n, subtitulo, id }: { momento: Momento; n: NotaMomento; subtitulo: string; id?: string }) {
@@ -10,11 +9,9 @@ export default function Desglose({ momento, n, subtitulo, id }: { momento: Momen
   return (
     <article className="nota-tarjeta" data-momento={momento} id={id}>
       <header>
-        <Anillo nota={n.nota} tam={64} grosor={5.5} etiqueta={false} />
+        <Cifra nota={n.nota} className="grande" />
         <div>
-          <h3 style={{ display: "flex", gap: 6, alignItems: "center" }}>
-            <IconoMomento momento={momento} /> {NOMBRE_MOMENTO[momento]}
-          </h3>
+          <h3>{NOMBRE_MOMENTO[momento]}</h3>
           <p><span className={`cal ${cal.clase}`}>{cal.texto}</span> · {subtitulo}</p>
           {n.confianza && (
             <p className={`confianza c-${n.confianza}`} title="Misma nota calculada con las nubes de un segundo modelo (ECMWF)">

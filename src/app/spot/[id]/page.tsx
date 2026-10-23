@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import Anillo from "@/components/Anillo";
+import Cifra from "@/components/Cifra";
 import Desglose from "@/components/Desglose";
 import PlanDelDia from "@/components/PlanDelDia";
-import { IconoAmanecer, IconoAtardecer, IconoCamara, IconoLuna, IconoMomento, IconoNoche, IconoRuta } from "@/components/Iconos";
 import MapaSpot from "@/components/MapaSpot";
 import Panorama from "@/components/Panorama";
 import type { LineaMapa } from "@/components/Mapa";
@@ -72,8 +71,8 @@ function BloqueLuz({ dia, momento }: { dia: Dia; momento: "amanecer" | "atardece
   const s = dia.sol;
   const am = momento === "amanecer";
   return (
-    <div className="tarjeta">
-      <h2>{am ? <IconoAmanecer /> : <IconoAtardecer />} {am ? "Amanecer" : "Atardecer"}</h2>
+    <div className="panel">
+      <h3 className="rotulo">{am ? "Amanecer" : "Atardecer"}</h3>
       <dl className="datos">
         <dt>{am ? "Salida del sol" : "Puesta del sol"}</dt>
         <dd>{am ? s.amanecer : s.atardecer}</dd>
@@ -112,8 +111,8 @@ function BloqueNoche({ dia, spot }: { dia: Dia; spot: Spot }) {
   const lp = spot.contaminacion;
   return (
     <>
-      <div className="tarjeta">
-        <h2><IconoLuna /> Luna y oscuridad</h2>
+      <div className="panel">
+        <h3 className="rotulo">Luna y oscuridad</h3>
         <dl className="datos">
           <dt>Noche astronómica</dt>
           <dd>{n.ini ? `${n.ini}–${n.fin}` : "no hay"}</dd>
@@ -140,8 +139,8 @@ function BloqueNoche({ dia, spot }: { dia: Dia; spot: Spot }) {
           )}
         </dl>
       </div>
-      <div className="tarjeta">
-        <h2><IconoNoche /> Vía Láctea y meteo nocturna</h2>
+      <div className="panel">
+        <h3 className="rotulo">Vía Láctea y meteo nocturna</h3>
         <dl className="datos">
           {(() => {
             const v = dia.notas.astro?.modelo?.ventana as [string, string] | undefined;
@@ -188,8 +187,8 @@ function BloqueDia({ dia, indice, spot }: { dia: Dia; indice: number; spot: Spot
           {MOMENTOS.map((m) => {
             const n = dia.notas[m];
             return n ? (
-              <span key={m} className={calificacion(n.nota).clase} title={`${NOMBRE_CORTO[m]}: ${n.nota}`}>
-                {NOMBRE_CORTO[m]} {n.nota.toFixed(1)}
+              <span key={m} title={`${NOMBRE_CORTO[m]}: ${n.nota}`}>
+                <small>{NOMBRE_CORTO[m]}</small> <Cifra nota={n.nota} />
               </span>
             ) : null;
           })}
@@ -211,7 +210,7 @@ function BloqueDia({ dia, indice, spot }: { dia: Dia; indice: number; spot: Spot
           <BloqueLuz dia={dia} momento="atardecer" />
           <BloqueNoche dia={dia} spot={spot} />
         </div>
-        <p style={{ margin: 0, fontSize: "0.78rem", color: "var(--texto-3)" }}>
+        <p className="nota-pie">
           * Horizonte: máximo de nubes bajas en el camino del sol (a 15, 40, 80 y 150 km en su dirección). Si hay un
           banco de nubes allí, el sol no llega a iluminar el cielo desde abajo.
         </p>
@@ -231,8 +230,9 @@ export default async function PaginaSpot({ params }: Props) {
   if (hoy?.sol.az_atardecer != null) lineas.push({ azimut: hoy.sol.az_atardecer, km: 6, color: "var(--acento)", etiqueta: `Puesta del sol (${rumbo(hoy.sol.az_atardecer)})` });
   if (hoy?.noche.via_lactea.azimut_max != null) lineas.push({ azimut: hoy.noche.via_lactea.azimut_max, km: 4, color: "var(--vl)", etiqueta: "Núcleo de la Vía Láctea en su punto más alto", discontinua: true });
   if (vista !== null) lineas.push({ azimut: vista, km: 3, color: "var(--texto-2)", etiqueta: "Orientación de la vista (OSM)", discontinua: true });
-  const foto = miniatura(desc?.galeria?.[0]?.url, 960);
-  const mejorHoy = hoy ? MOMENTOS.reduce((a, m) => ((hoy.notas[m]?.nota ?? -1) > (hoy.notas[a]?.nota ?? -1) ? m : a), MOMENTOS[0]) : "atardecer";
+  const portada = desc?.galeria?.[0] ?? null;
+  const provincia = spot.provincia ?? desc?.provincia;
+  const ccaa = spot.ccaa ?? desc?.ccaa;
   const maxMes = Math.max(...(desc?.meses ?? [0]), 1);
   const gmaps = `https://www.google.com/maps/dir/?api=1&destination=${spot.lat},${spot.lon}`;
   // Google no deja usar sus fotos gratis ni guardarlas (la API de Places es de pago): enlace a su ficha
@@ -241,51 +241,61 @@ export default async function PaginaSpot({ params }: Props) {
 
   return (
     <main className="ficha">
-      <header className={`ficha-portada cielo-${mejorHoy}${foto ? " con-foto" : ""}`}>
-        {foto && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={foto} alt="" className="destacado-foto" fetchPriority="high" />
-        )}
-        <div className="destacado-in">
-          <div className="migas"><Link href="/">← Ranking</Link></div>
-          <h1>{spot.nombre}</h1>
-          <div className="etiquetas">
-            {spot.tipo && <span className="etiqueta"><b>{spot.tipo}</b></span>}
-            {spot.elevacion !== null && <span className="etiqueta"><b>{spot.elevacion}</b> m</span>}
-            {spot.contaminacion && (
-              <span className="etiqueta" title={`Zona ${spot.contaminacion.zona} del atlas de D. Lorenz (brillo en el cénit); Bortle es una equivalencia aproximada`}>
-                ≈ Bortle <b>{spot.contaminacion.bortle}</b> · {spot.contaminacion.sqm.toFixed(2)} mag/″²
-              </span>
-            )}
-            {vista !== null && <span className="etiqueta">Vista hacia <b>{rumbo(vista)}</b></span>}
-            {desc && desc.fotografos > 0 && (
-              <span className="etiqueta"><b>{desc.fotos}</b> fotos de <b>{desc.fotografos}</b> autores en Commons</span>
-            )}
-            {spot.origen === "osm" && <span className="etiqueta">Mirador de OpenStreetMap (sin fotos en Commons)</span>}
-            {spot.origen === "propio" && <span className="etiqueta">Spot propio</span>}
-            {(spot.provincia ?? desc?.provincia) && (
-              <span className="etiqueta">{spot.provincia ?? desc?.provincia} · {spot.ccaa ?? desc?.ccaa}</span>
-            )}
-          </div>
-          <div className="acciones">
-            <a className="boton primario" href={gmaps} target="_blank" rel="noopener"><IconoRuta size={16} /> Cómo llegar</a>
-            <a className="boton" href={gmapsVer} target="_blank" rel="noopener">Ver fotos en Google Maps</a>
-            <a className="boton" href={osmRuta} target="_blank" rel="noopener">Ruta en OpenStreetMap</a>
-          </div>
-          {hoy && (
-            <ul className="hoy-anillos" aria-label="Notas de hoy">
-              {MOMENTOS.map((m) => hoy.notas[m] ? (
-                <li key={m}>
-                  <a href={`#nota-${m}`}>
-                    <Anillo nota={hoy.notas[m]!.nota} tam={52} grosor={4.5} />
-                    <small><IconoMomento momento={m} size={13} /> {NOMBRE_CORTO[m]}</small>
-                  </a>
-                </li>
-              ) : null)}
-            </ul>
+      <nav className="migas rotulo" aria-label="Migas">
+        <Link href="/">← Ranking</Link>
+        {provincia && <span>{provincia}</span>}
+        {ccaa && <span>{ccaa}</span>}
+      </nav>
+      <header className="ficha-cab">
+        <h1>{spot.nombre}</h1>
+        <dl className="ficha-datos">
+          {spot.tipo && (<div><dt>Tipo</dt><dd>{spot.tipo}</dd></div>)}
+          {spot.elevacion !== null && (<div><dt>Altitud</dt><dd>{spot.elevacion} m</dd></div>)}
+          {spot.contaminacion && (
+            <div title={`Zona ${spot.contaminacion.zona} del atlas de D. Lorenz (brillo en el cénit); Bortle es una equivalencia aproximada`}>
+              <dt>Cielo</dt><dd>Bortle ≈{spot.contaminacion.bortle} · {spot.contaminacion.sqm.toFixed(2)}</dd>
+            </div>
           )}
-        </div>
+          {vista !== null && (<div><dt>Vista</dt><dd>{rumbo(vista)}</dd></div>)}
+          {desc && desc.fotografos > 0 && (<div><dt>En Commons</dt><dd>{desc.fotos} fotos · {desc.fotografos} autores</dd></div>)}
+          {spot.origen === "osm" && (<div><dt>Fuente</dt><dd>Mirador de OpenStreetMap</dd></div>)}
+          {spot.origen === "propio" && (<div><dt>Fuente</dt><dd>Spot propio</dd></div>)}
+        </dl>
+        <p className="enlaces">
+          <a href={gmaps} target="_blank" rel="noopener">Cómo llegar ↗</a>
+          <a href={gmapsVer} target="_blank" rel="noopener">Fotos en Google Maps ↗</a>
+          <a href={osmRuta} target="_blank" rel="noopener">Ruta en OpenStreetMap ↗</a>
+        </p>
       </header>
+
+      {portada && (
+        <figure className="foto-tira grande">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={miniatura(portada.url, 960) ?? portada.url} alt={portada.titulo || spot.nombre} fetchPriority="high" />
+          <figcaption>
+            Foto: <a href={portada.enlace} target="_blank" rel="noopener">{portada.autor}</a> · {portada.licencia || "Wikimedia Commons"}
+            {portada.fecha ? ` · ${portada.fecha.slice(0, 4)}` : ""}
+          </figcaption>
+        </figure>
+      )}
+
+      {hoy && (
+        <section className="lectura" aria-label="Notas de hoy">
+          <h2 className="rotulo">Hoy</h2>
+          <ol>
+            {MOMENTOS.map((m) => hoy.notas[m] ? (
+              <li key={m}>
+                <a href={`#nota-${m}`}>
+                  <span className="rotulo">{NOMBRE_CORTO[m]}</span>
+                  <Cifra nota={hoy.notas[m]!.nota} className="grande" />
+                  <span className={`medidor ${calificacion(hoy.notas[m]!.nota).clase}`}><i style={{ width: `${hoy.notas[m]!.nota * 10}%` }} /></span>
+                  <small>{horaDe(hoy, m)}</small>
+                </a>
+              </li>
+            ) : null)}
+          </ol>
+        </section>
+      )}
 
       {hoy && <PlanDelDia dia={hoy} />}
 
@@ -299,8 +309,8 @@ export default async function PaginaSpot({ params }: Props) {
             {vista !== null && <span><i style={{ background: "var(--texto-2)" }} />Vista (OSM)</span>}
           </div>
         </section>
-        <section className="tarjeta">
-          <h2><IconoCamara /> Lo que fotografía la gente</h2>
+        <section className="seccion">
+          <h2 className="rotulo">Lo que fotografía la gente</h2>
           {desc && desc.galeria.length > 0 ? (
             <div className="galeria">
               {desc.galeria.map((f) => (
@@ -340,8 +350,8 @@ export default async function PaginaSpot({ params }: Props) {
       </div>
 
       {desc?.horizonte?.angulos?.length ? (
-        <section className="tarjeta" aria-label="Horizonte del terreno">
-          <h2>Horizonte y orientación</h2>
+        <section className="seccion" aria-label="Horizonte del terreno">
+          <h2 className="rotulo">Horizonte y orientación</h2>
           <Panorama
             angulos={desc.horizonte.angulos}
             marcas={[
@@ -354,7 +364,8 @@ export default async function PaginaSpot({ params }: Props) {
         </section>
       ) : null}
 
-      <section style={{ display: "grid", gap: 10 }} aria-label="Previsión por días">
+      <section className="dias" aria-label="Previsión por días">
+        <h2 className="rotulo">Previsión día a día · el desglose suma exactamente la nota</h2>
         {spot.dias.map((d, i) => <BloqueDia key={d.fecha} dia={d} indice={i} spot={spot} />)}
       </section>
     </main>

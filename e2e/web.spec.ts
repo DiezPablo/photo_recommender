@@ -44,7 +44,7 @@ test("portada: ranking, mapa con marcadores y filtros", async ({ page }, info) =
   expect(n).toBeGreaterThan(0);
 
   // notas ordenadas de mayor a menor
-  const notas = (await page.locator(".ranking .anillo-num").allInnerTexts()).map(Number);
+  const notas = (await page.locator(".ranking .cifra").allInnerTexts()).map(Number);
   expect([...notas].sort((a, b) => b - a)).toEqual(notas);
 
   // mapa con un marcador por spot
