@@ -44,7 +44,9 @@ from contaminacion import contaminacion
 WIKIDATA = "https://query.wikidata.org/sparql"
 PROVINCIAS = Path(__file__).parent / "datos_base" / "provincias.geojson"
 # Bloques para Overpass (lon0, lat0, lon1, lat1): península + Baleares en 2°×2° y Canarias aparte
-BLOQUES = [(x, y, x + 2, y + 2) for x in range(-10, 5, 2) for y in range(36, 44, 2)] + [(-18.3, 27.5, -13.3, 29.5)]
+# Bloques para Overpass (lon0, lat0, lon1, lat1): península y Baleares en 4°×4° y Canarias aparte.
+# Una sola consulta por bloque con todos los tipos (con una por tipo y bloque de 2° tardaba 2 h).
+BLOQUES = [(x, y, x + 4, y + 4) for x in range(-10, 5, 4) for y in (36, 40)] + [(-18.3, 27.5, -13.3, 29.5)]
 # Tipos de Wikidata (QID → tipo de spot)
 TIPOS_WD = {
     "Q8502": "cumbre", "Q207326": "cumbre", "Q23397": "lago", "Q131681": "embalse", "Q40080": "playa",
@@ -133,36 +135,59 @@ def candidatos_wikidata() -> pd.DataFrame:
 
 
 # ----------------------------------------------------------------- OSM ----
+def _tipo_osm(t: dict) -> str | None:
+    if t.get("tourism") == "viewpoint":
+        return "mirador"
+    if t.get("natural") == "peak":
+        return "cumbre"
+    if t.get("waterway") == "waterfall":
+        return "cascada"
+    if t.get("man_made") == "lighthouse":
+        return "faro"
+    if t.get("natural") == "cape":
+        return "cabo"
+    if t.get("natural") == "cliff":
+        return "acantilado"
+    return None
+
+
 def candidatos_osm() -> pd.DataFrame:
     filas = []
     for x0, y0, x1, y1 in BLOQUES:
         caja = f"({y0},{x0},{y1},{x1})"
-        for filtro, tipo in FILTROS_OSM:
-            consulta = f"[out:json][timeout:180];({filtro}{caja};);out center tags;"
-            datos = D._cache_get(consulta)
-            if datos is None:
+        cuerpo = "".join(f"{filtro}{caja};" for filtro, _ in FILTROS_OSM)
+        consulta = f"[out:json][timeout:300];({cuerpo});out center tags;"
+        datos = D._cache_get(consulta)
+        if datos is None:
+            t = time.time()
+            for intento in range(3):
                 for url in D.OVERPASS_URLS:
                     try:
-                        r = SESION.post(url, data={"data": consulta}, timeout=240)
+                        r = SESION.post(url, data={"data": consulta}, timeout=360)
                         r.raise_for_status()
                         datos = r.json()
                         break
                     except (requests.RequestException, ValueError):
                         continue
-                if datos is None:
-                    print(f"      Overpass no responde para {tipo} {caja}")
-                    continue
-                D._cache_set(consulta, datos)
-                time.sleep(2)
-            for e in datos.get("elements", []):
-                lat = e.get("lat") or e.get("center", {}).get("lat")
-                lon = e.get("lon") or e.get("center", {}).get("lon")
-                if lat is None:
-                    continue
-                t = e.get("tags", {})
-                filas.append({"nombre": t.get("name:es") or t.get("name"), "lat": lat, "lon": lon, "tipo": tipo,
-                              "wikidata": t.get("wikidata"), "imagen": None, "sitelinks": 0,
-                              "direccion_vista": t.get("direction"), "ele": t.get("ele"), "fuente": "osm"})
+                if datos is not None:
+                    break
+                time.sleep(30 * (intento + 1))
+            if datos is None:
+                print(f"      Overpass no responde para el bloque {caja}")
+                continue
+            D._cache_set(consulta, datos)
+            print(f"      bloque {caja}: {len(datos.get('elements', []))} elementos en {time.time() - t:.0f} s", flush=True)
+            time.sleep(5)
+        for e in datos.get("elements", []):
+            lat = e.get("lat") or e.get("center", {}).get("lat")
+            lon = e.get("lon") or e.get("center", {}).get("lon")
+            t = e.get("tags", {})
+            tipo = _tipo_osm(t)
+            if lat is None or tipo is None:
+                continue
+            filas.append({"nombre": t.get("name:es") or t.get("name"), "lat": lat, "lon": lon, "tipo": tipo,
+                          "wikidata": t.get("wikidata"), "imagen": None, "sitelinks": 0,
+                          "direccion_vista": t.get("direction"), "ele": t.get("ele"), "fuente": "osm"})
     print(f"      OSM: {len(filas)} elementos", flush=True)
     return pd.DataFrame(filas)
 
@@ -262,6 +287,7 @@ def main():
     print(f"      {len(cand)} candidatos en España", flush=True)
 
     print("[2/5] Popularidad: fotos de Commons a menos de 500 m…", flush=True)
+    t0 = time.time()   # el presupuesto de --minutos es solo para Commons
     n_fotos, cortado = [], False
     for k, r in enumerate(cand.itertuples(), 1):
         if time.time() - t0 > args.minutos * 60:
@@ -273,8 +299,9 @@ def main():
         except (RuntimeError, requests.RequestException):
             n_fotos.append(None)
         if k % 500 == 0:
-            print(f"      {k}/{len(cand)}", flush=True)
-    cand["fotos_cerca"] = n_fotos
+            print(f"      {k}/{len(cand)} ({(time.time() - t0) / 60:.0f} min)", flush=True)
+    cand["fotos_cerca"] = pd.to_numeric(pd.Series(n_fotos, index=cand.index), errors="coerce").astype(float)
+    cand["sitelinks"] = pd.to_numeric(cand["sitelinks"], errors="coerce").fillna(0).astype(float)
     if cortado:
         print("      Tiempo agotado: los candidatos sin contar usan solo Wikidata; la próxima ejecución sigue.")
     cand["puntuacion"] = (np.log1p(cand.fotos_cerca.fillna(0)) + 0.6 * np.log1p(cand.sitelinks.fillna(0))
