@@ -1,0 +1,121 @@
+/* Base: elementos HTML, tarjeta, rótulo y cifras de nota. */
+
+* {
+  box-sizing: border-box;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font: 16px/1.5 var(--f-cuerpo);
+  -webkit-font-smoothing: antialiased;
+}
+a {
+  color: var(--enlace);
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  text-underline-offset: 3px;
+}
+a:hover {
+  text-decoration-color: currentColor;
+}
+img {
+  max-width: 100%;
+  display: block;
+  filter: var(--foto-filtro);
+}
+h1,
+h2,
+h3 {
+  line-height: 1.1;
+  margin: 0;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+p {
+  margin: 0;
+}
+:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+::selection {
+  background: var(--acento);
+  color: var(--fondo);
+}
+
+/* Tarjeta: la superficie base de casi todo */
+.tarjeta,
+.destacado,
+.almanaque,
+.bloque-ranking,
+.filtros-rutas,
+.seccion,
+.panel,
+details.dia,
+.nota-tarjeta,
+.lectura,
+.por-comunidad {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+}
+
+/* Rótulo: etiqueta pequeña en versalitas (sans); la mono queda para cifras y datos */
+.rotulo {
+  font: 600 0.7rem/1.4 var(--f-cuerpo);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--texto-3);
+}
+h2.rotulo,
+h3.rotulo {
+  font-weight: 650;
+}
+
+/* Cifras: notas en Archivo estrecha, teñidas por la escala */
+.cifra {
+  font-family: var(--f-cuerpo);
+  font-variation-settings: "wdth" 72;
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in oklab, var(--color-nota) var(--mezcla-nota), var(--texto));
+}
+.cifra.grande {
+  font-size: 3rem;
+}
+.cifra.enorme {
+  font-size: clamp(4.5rem, 12vw, 6.5rem);
+  letter-spacing: -0.04em;
+}
+.n-top {
+  --color-nota: var(--n-top);
+}
+.n-buena {
+  --color-nota: var(--n-buena);
+}
+.n-regular {
+  --color-nota: var(--n-regular);
+}
+.n-floja {
+  --color-nota: var(--n-floja);
+}
+.cal {
+  color: var(--color-nota);
+}

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import VistaDia from "@/components/VistaDia";
-import { cargar, etiquetaDia, FILTROS, type Filtro, NOMBRE_MOMENTO } from "@/lib/datos";
+import VistaDia from "@/features/spots/componentes/VistaDia";
+import { cargar, etiquetaDia, FILTROS, type Filtro, NOMBRE_MOMENTO } from "@/features/spots/datos";
 
 export const dynamicParams = false;
 

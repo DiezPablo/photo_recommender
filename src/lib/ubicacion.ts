@@ -1,24 +1,35 @@
-// Ubicación del usuario compartida entre el ranking y el mapa (solo en el navegador).
+// Ubicación del usuario compartida entre el ranking, el buscador de rutas y los mapas (solo en el navegador).
+import { useMemo } from "react";
+import { escribirAlmacen, leerAlmacen, useAlmacen } from "@/lib/almacen";
+
+const CLAVE = "ubicacion";
+
 export interface Ubicacion {
   lat: number;
   lon: number;
 }
 
-export function leerUbicacion(): Ubicacion | null {
+function interpretar(texto: string | null): Ubicacion | null {
   try {
-    const u = JSON.parse(localStorage.getItem("ubicacion") ?? "null");
+    const u = JSON.parse(texto ?? "null");
     return u && typeof u.lat === "number" && typeof u.lon === "number" ? u : null;
   } catch {
     return null;
   }
 }
 
+export function leerUbicacion(): Ubicacion | null {
+  return interpretar(leerAlmacen(CLAVE));
+}
+
 export function guardarUbicacion(u: Ubicacion | null) {
-  try {
-    if (u) localStorage.setItem("ubicacion", JSON.stringify(u));
-    else localStorage.removeItem("ubicacion");
-  } catch {}
-  window.dispatchEvent(new CustomEvent("ubicacion", { detail: u }));
+  escribirAlmacen(CLAVE, u ? JSON.stringify(u) : null);
+}
+
+/** La ubicación guardada, que se actualiza en todos los componentes al pedirla u olvidarla. */
+export function useUbicacion(): Ubicacion | null {
+  const texto = useAlmacen(CLAVE);
+  return useMemo(() => interpretar(texto), [texto]);
 }
 
 export function distanciaKm(a: Ubicacion, b: Ubicacion): number {
@@ -44,12 +55,25 @@ export function pedirUbicacion(): Promise<{ ok: true; ubic: Ubicacion } | { ok: 
       if (e.code === e.PERMISSION_DENIED)
         return resolver({
           ok: false,
-          error: "Has bloqueado la ubicación para esta web. Actívala en los ajustes del navegador (en iPhone: Ajustes › Privacidad › Localización › Safari) y vuelve a pulsar.",
+          error:
+            "Has bloqueado la ubicación para esta web. Actívala en los ajustes del navegador (en iPhone: Ajustes › Privacidad › Localización › Safari) y vuelve a pulsar.",
         });
       if (reintento)
-        return navigator.geolocation.getCurrentPosition(exito, (e2) => fallo(e2, false), { enableHighAccuracy: false, maximumAge: 3600000, timeout: 20000 });
-      resolver({ ok: false, error: "No llega la señal de ubicación. Comprueba que la localización del móvil está activada e inténtalo de nuevo." });
+        return navigator.geolocation.getCurrentPosition(exito, (e2) => fallo(e2, false), {
+          enableHighAccuracy: false,
+          maximumAge: 3600000,
+          timeout: 20000,
+        });
+      resolver({
+        ok: false,
+        error:
+          "No llega la señal de ubicación. Comprueba que la localización del móvil está activada e inténtalo de nuevo.",
+      });
     };
-    navigator.geolocation.getCurrentPosition(exito, (e) => fallo(e, true), { enableHighAccuracy: false, maximumAge: 600000, timeout: 12000 });
+    navigator.geolocation.getCurrentPosition(exito, (e) => fallo(e, true), {
+      enableHighAccuracy: false,
+      maximumAge: 600000,
+      timeout: 12000,
+    });
   });
 }

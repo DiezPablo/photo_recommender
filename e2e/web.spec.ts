@@ -19,7 +19,9 @@ function vigilar(page: Page) {
 
 /** Espera (sin fallar) a que el mapa tenga teselas, para que las capturas lo muestren. */
 async function esperarTeselas(page: Page) {
-  await page.waitForFunction(() => document.querySelectorAll(".leaflet-tile-loaded").length > 3, null, { timeout: 8000 }).catch(() => {});
+  await page
+    .waitForFunction(() => document.querySelectorAll(".leaflet-tile-loaded").length > 3, null, { timeout: 8000 })
+    .catch(() => {});
 }
 
 test("los datos publicados responden y son JSON válido sin NaN", async ({ request }) => {
@@ -59,7 +61,10 @@ test("portada: ranking, mapa con marcadores y filtros", async ({ page }, info) =
   await expect(page).toHaveURL(/\/dia\/0\/atardecer$/);
   await expect(page.locator("h1")).toContainText("Atardecer");
   // filtro de día: mañana
-  await page.locator(".filtros").getByRole("link", { name: /Mañana/ }).click();
+  await page
+    .locator(".filtros")
+    .getByRole("link", { name: /Mañana/ })
+    .click();
   await expect(page).toHaveURL(/\/dia\/1\/atardecer$/);
   await expect(page.locator(".ranking .fila").first()).toBeVisible();
   expect(errores).toEqual([]);
@@ -77,7 +82,16 @@ test("ficha de un spot: notas con desglose, sol, luna, Vía Láctea, fotos y có
   await expect(hoy).toHaveAttribute("open", "");
   await expect(hoy.locator(".nota-tarjeta")).toHaveCount(5);
   await expect(hoy.locator(".desglose li").first()).toBeVisible();
-  for (const t of ["Salida del sol", "Puesta del sol", "Hora dorada", "Azimut del sol", "Noche astronómica", "Fase", "Núcleo sobre 10°", "Contaminación lumínica"])
+  for (const t of [
+    "Salida del sol",
+    "Puesta del sol",
+    "Hora dorada",
+    "Azimut del sol",
+    "Noche astronómica",
+    "Fase",
+    "Núcleo sobre 10°",
+    "Contaminación lumínica",
+  ])
     await expect(hoy.getByText(t, { exact: true }).first()).toBeVisible();
   await expect(page.getByRole("link", { name: "Cómo llegar" })).toHaveAttribute("href", /google\.com\/maps\/dir/);
   await expect(page.locator(".mapa-caja[data-listo=si]")).toBeVisible();
@@ -149,7 +163,10 @@ test("cerca de mí: distancia y filtro por radio", async ({ page, context }) => 
   await expect(page.locator(".fila .dist").first()).toBeVisible();
   const total = await page.locator(".ranking .fila").count();
   await page.getByLabel("Distancia máxima").selectOption("25");
-  const cerca = await page.locator(".ranking .fila").count().catch(() => 0);
+  const cerca = await page
+    .locator(".ranking .fila")
+    .count()
+    .catch(() => 0);
   expect(cerca).toBeLessThanOrEqual(total);
   await page.getByLabel("Ordenar por").selectOption("distancia");
 });

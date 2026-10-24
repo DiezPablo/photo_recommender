@@ -7,8 +7,8 @@ name: Datos
 
 on:
   schedule:
-    - cron: "47 3 * * *"       # ~05:47 hora peninsular en verano, 04:47 en invierno
-    - cron: "47 12 * * *"      # ~14:47 / 13:47: previsión fresca para el atardecer
+    - cron: "47 3 * * *" # ~05:47 hora peninsular en verano, 04:47 en invierno
+    - cron: "47 12 * * *" # ~14:47 / 13:47: previsión fresca para el atardecer
   workflow_dispatch:
     inputs:
       enviar:

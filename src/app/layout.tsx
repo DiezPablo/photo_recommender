@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, IBM_Plex_Mono } from "next/font/google";
 import Link from "next/link";
-import SelectorTema from "@/components/SelectorTema";
-import { Logo } from "@/components/Iconos";
-import { cargar } from "@/lib/datos";
+import SelectorTema from "@/ui/SelectorTema";
+import { Logo } from "@/ui/Iconos";
+import { cargar } from "@/features/spots/datos";
 import "./globals.css";
 
 // Tipografías autoalojadas en el build (sin peticiones a Google desde el navegador)
@@ -52,7 +52,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <nav>
               <Link href="/">Spots</Link>
               <Link href="/rutas">Rutas</Link>
-              <Link href="/acerca" className="solo-ancho">Método</Link>
+              <Link href="/acerca" className="solo-ancho">
+                Método
+              </Link>
               <SelectorTema />
             </nav>
           </div>
@@ -62,12 +64,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div>
             <span>
               <b>Rasante</b> · <Link href="/acerca">Método</Link> · Previsión:{" "}
-              <a href="https://open-meteo.com/" rel="noopener">Open-Meteo</a> (CC BY 4.0) · Mapa: ©{" "}
-              <a href="https://www.openstreetmap.org/copyright" rel="noopener">colaboradores de OpenStreetMap</a> · Fotos:{" "}
-              <a href="https://commons.wikimedia.org/" rel="noopener">Wikimedia Commons</a> (autor y licencia en cada una) ·
-              Contaminación lumínica:{" "}
-              <a href="https://djlorenz.github.io/astronomy/lp/" rel="noopener">atlas de D. Lorenz 2025</a> · Rutas:
-              OpenStreetMap, <a href="https://misendafedme.es" rel="noopener">FEDME</a> (CC BY 4.0) y Caminos Naturales (MAPA)
+              <a href="https://open-meteo.com/" rel="noopener">
+                Open-Meteo
+              </a>{" "}
+              (CC BY 4.0) · Mapa: ©{" "}
+              <a href="https://www.openstreetmap.org/copyright" rel="noopener">
+                colaboradores de OpenStreetMap
+              </a>{" "}
+              · Fotos:{" "}
+              <a href="https://commons.wikimedia.org/" rel="noopener">
+                Wikimedia Commons
+              </a>{" "}
+              (autor y licencia en cada una) · Contaminación lumínica:{" "}
+              <a href="https://djlorenz.github.io/astronomy/lp/" rel="noopener">
+                atlas de D. Lorenz 2025
+              </a>{" "}
+              · Rutas: OpenStreetMap,{" "}
+              <a href="https://misendafedme.es" rel="noopener">
+                FEDME
+              </a>{" "}
+              (CC BY 4.0) y Caminos Naturales (MAPA)
             </span>
             {generado && (
               <span>

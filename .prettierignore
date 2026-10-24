@@ -1,0 +1,12 @@
+.next
+node_modules
+public
+capturas
+test-results
+cache
+package-lock.json
+*.md
+rasante
+tests
+salida
+src/app/icon.svg

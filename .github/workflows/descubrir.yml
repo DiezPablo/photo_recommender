@@ -6,7 +6,7 @@ name: Descubrir spots
 
 on:
   schedule:
-    - cron: "41 2 1 * *"      # día 1 de cada mes
+    - cron: "41 2 1 * *" # día 1 de cada mes
   workflow_dispatch:
     inputs:
       total:

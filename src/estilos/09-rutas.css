@@ -1,0 +1,308 @@
+/* Rutas de senderismo: marcas de sendero, explorador, filtros, listados y ficha. */
+
+.marca-sendero {
+  display: inline-block;
+  flex: none;
+  width: 18px;
+  height: 12px;
+  vertical-align: -1px;
+  border-radius: 3px;
+  background: linear-gradient(var(--t-blanco) 0 50%, var(--c-marca, var(--t-otro)) 50% 100%);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--texto) 18%, transparent);
+}
+.t-gr,
+.t-europeo {
+  --c-marca: var(--t-gr);
+}
+.t-pr {
+  --c-marca: var(--t-pr);
+}
+.t-sl,
+.t-via-verde {
+  --c-marca: var(--t-sl);
+}
+.t-camino-de-santiago {
+  --c-marca: var(--t-santiago);
+}
+.t-camino-natural {
+  --c-marca: var(--t-natural);
+}
+
+.rutas {
+  gap: 20px;
+}
+.rutas > .titular,
+.rutas > .explorador,
+.rutas > .por-comunidad {
+  order: 0;
+}
+@media (min-width: 1000px) {
+  .rutas {
+    grid-template-columns: 1fr;
+  }
+}
+.explorador {
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+}
+.explorador > .columna {
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+}
+.explorador > .mapa-caja {
+  height: 60vh;
+  min-height: 300px;
+}
+@media (max-width: 999px) {
+  .explorador > .columna {
+    display: contents;
+  }
+  .filtros-rutas {
+    order: 1;
+  }
+  .explorador > .mapa-caja {
+    order: 2;
+  }
+  .explorador .bloque-ranking {
+    order: 3;
+  }
+}
+@media (min-width: 1000px) {
+  .explorador {
+    grid-template-columns: minmax(520px, 620px) 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  .explorador > .mapa-caja {
+    position: sticky;
+    top: 84px;
+    height: calc(100vh - 108px);
+  }
+}
+.filtros-rutas {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+}
+.campo {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.campo input,
+.campo select {
+  width: 100%;
+  min-width: 0;
+  cursor: auto;
+  font-weight: 500;
+}
+.campo select {
+  cursor: pointer;
+}
+.campo input:focus,
+.campo select:focus {
+  outline: none;
+  border-color: var(--acento);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--acento) 25%, transparent);
+}
+.campos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+@media (min-width: 560px) {
+  .campos {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.tipos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tipos button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--borde);
+  background: var(--superficie);
+  color: var(--texto-2);
+  font: 550 0.84rem var(--f-cuerpo);
+  transition:
+    background-color 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+}
+.tipos button:hover {
+  color: var(--texto);
+  border-color: color-mix(in srgb, var(--texto) 30%, var(--borde));
+}
+.tipos button[aria-pressed="true"] {
+  background: var(--texto);
+  border-color: var(--texto);
+  color: var(--fondo);
+}
+.casilla {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.casilla input {
+  accent-color: var(--acento);
+  width: 16px;
+  height: 16px;
+}
+
+.lista-rutas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+.prosa .lista-rutas {
+  margin: 0 0 8px;
+  background: var(--superficie);
+  border-radius: var(--radio-m);
+  padding: 6px;
+  box-shadow: var(--sombra);
+}
+.fila-ruta {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 12px 10px;
+  border-radius: var(--radio-m);
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 0.15s;
+}
+.fila-ruta:hover {
+  background: var(--superficie-2);
+}
+.fila-ruta .marca-sendero {
+  margin-top: 4px;
+}
+.fila-ruta h3 {
+  font-size: 1rem;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+.por-comunidad {
+  padding: 18px;
+}
+.por-comunidad h2 {
+  margin-bottom: 10px;
+}
+.por-comunidad ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 6px;
+}
+.por-comunidad li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: var(--radio-s);
+  background: var(--fondo);
+  transition: background-color 0.15s;
+}
+.por-comunidad li:hover {
+  background: var(--superficie-2);
+}
+.por-comunidad a {
+  color: var(--texto);
+  text-decoration: none;
+  font-weight: 550;
+}
+.por-comunidad small {
+  font: 500 0.74rem var(--f-datos);
+  color: var(--texto-3);
+}
+.prosa.ancha {
+  max-width: 900px;
+}
+.prosa.ancha h2 {
+  font-size: 1.1rem;
+}
+
+.tipo-ruta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--texto-2);
+}
+.enlace-boton {
+  border: 0;
+}
+.marca-ruta {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font: 700 11px var(--f-cuerpo);
+  color: #fff;
+  border: 2px solid var(--superficie);
+  box-shadow: 0 2px 6px rgb(0 0 0 / 30%);
+}
+.marca-ruta.salida {
+  background: var(--suma);
+}
+.marca-ruta.fin {
+  background: var(--texto);
+  color: var(--fondo);
+}
+.leyenda-mapa .marca-ruta {
+  width: 18px;
+  height: 18px;
+  font-size: 9px;
+  border-width: 1px;
+  box-shadow: none;
+  margin-right: 5px;
+  vertical-align: -4px;
+}
+.perfil-ruta {
+  margin: 0;
+}
+.perfil-ruta svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.perfil-ruta text {
+  font-family: var(--f-datos);
+}
+.perfil-ruta figcaption {
+  margin-top: 6px;
+  font: 0.72rem var(--f-cuerpo);
+  color: var(--texto-3);
+}
+.descripcion {
+  font-size: 0.92rem;
+  color: var(--texto-2);
+  line-height: 1.6;
+}
+.avisos-ruta {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 0.9rem;
+  color: var(--texto-2);
+  display: grid;
+  gap: 6px;
+}

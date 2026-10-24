@@ -1,0 +1,85 @@
+/* Mapas (Leaflet): contenedor, controles, ventanas y marcadores de nota. */
+
+.mapa-caja {
+  overflow: hidden;
+  border: 1px solid var(--borde);
+  background: var(--superficie-2);
+  position: relative;
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  isolation: isolate;
+}
+.mapa-caja .leaflet-tile-pane {
+  filter: var(--mapa-filtro);
+}
+.mapa-vacio {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--texto-3);
+  font: 500 0.85rem var(--f-cuerpo);
+}
+.leaflet-container {
+  font: inherit;
+  background: var(--superficie-2);
+}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: var(--superficie);
+  color: var(--texto);
+  border-radius: var(--radio-m);
+  box-shadow: var(--sombra-alta);
+}
+.leaflet-popup-content {
+  margin: 12px 16px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+.leaflet-popup-content a {
+  font-weight: 650;
+  color: var(--acento);
+}
+.leaflet-control-attribution {
+  background: color-mix(in srgb, var(--superficie) 80%, transparent) !important;
+  color: var(--texto-3) !important;
+  font: 0.64rem var(--f-cuerpo);
+  border-radius: 8px 0 0 0;
+}
+.leaflet-control-attribution a {
+  color: var(--texto-2) !important;
+}
+.mapa-caja .leaflet-bar {
+  border: 0;
+  border-radius: var(--radio-m);
+  box-shadow: var(--sombra-alta);
+  overflow: hidden;
+}
+.mapa-caja .leaflet-bar a {
+  background: var(--superficie);
+  color: var(--texto);
+  border-bottom-color: var(--borde);
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+}
+.mapa-caja .leaflet-bar a:hover {
+  background: var(--superficie-2);
+}
+.marcador {
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--color-nota);
+  font: 650 11px var(--f-cuerpo);
+  color: #1d1608;
+  border: 2px solid var(--superficie);
+  box-shadow: 0 2px 6px rgb(0 0 0 / 30%);
+}
+.marcador.n-top {
+  color: var(--n-top-texto);
+}
+.marcador.pequeno {
+  box-shadow: 0 1px 2px rgb(0 0 0 / 25%);
+  border-width: 1.5px;
+}

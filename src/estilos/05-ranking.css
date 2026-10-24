@@ -1,0 +1,156 @@
+/* Ranking de spots, botones y desplegables. */
+
+.bloque-ranking {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+.bloque-ranking > .rotulo {
+  padding: 2px 4px 0;
+}
+.herramientas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.86rem;
+  color: var(--texto-2);
+}
+.boton,
+.campo input,
+.campo select,
+select.boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  min-height: 40px;
+  border: 1px solid var(--borde);
+  background: var(--superficie);
+  color: var(--texto);
+  padding: 8px 14px;
+  border-radius: var(--radio-m);
+  font: 550 0.88rem var(--f-cuerpo);
+  text-decoration: none;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s,
+    background-color 0.15s;
+}
+.boton:hover,
+.campo select:hover {
+  border-color: color-mix(in srgb, var(--texto) 30%, var(--borde));
+}
+.boton.primario {
+  background: var(--texto);
+  border-color: var(--texto);
+  color: var(--fondo);
+}
+select.boton,
+.campo select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 34px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--texto-2) 50%),
+    linear-gradient(135deg, var(--texto-2) 50%, transparent 50%);
+  background-position:
+    calc(100% - 17px) 52%,
+    calc(100% - 12px) 52%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.resumen-cerca {
+  font: 600 0.86rem var(--f-cuerpo);
+  color: var(--acento);
+  padding: 0 4px;
+}
+.estado-ubic {
+  flex-basis: 100%;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: var(--texto-2);
+  padding: 8px 12px;
+  border-radius: var(--radio-s);
+  background: var(--acento-suave);
+}
+.ranking {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+.fila {
+  display: grid;
+  grid-template-columns: 1.6rem 3.1rem 1fr auto;
+  gap: 12px;
+  align-items: start;
+  padding: 12px 10px;
+  border-radius: var(--radio-m);
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 0.15s;
+}
+.fila:hover {
+  background: var(--superficie-2);
+}
+.fila .pos {
+  font: 500 0.72rem var(--f-datos);
+  color: var(--texto-3);
+  padding-top: 6px;
+}
+.fila .cifra {
+  padding-top: 2px;
+}
+.fila h3 {
+  font-size: 1.02rem;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+.fila .meta,
+.fila-ruta .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  margin-top: 4px;
+  font: 500 0.78rem/1.45 var(--f-cuerpo);
+  color: var(--texto-2);
+}
+.fila .por-que {
+  margin-top: 4px;
+  font-size: 0.83rem;
+  line-height: 1.4;
+  color: var(--texto-3);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.fila .dist,
+.fila-ruta .dist {
+  color: var(--acento);
+  font-weight: 650;
+}
+.fila .dudosa {
+  color: var(--resta);
+}
+.fila-txt {
+  min-width: 0;
+}
+.fila-foto {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  background: var(--superficie-2);
+  border-radius: var(--radio-s);
+}
+.vacio {
+  padding: 24px;
+  color: var(--texto-2);
+  text-align: center;
+  background: var(--superficie-2);
+  border-radius: var(--radio-m);
+}

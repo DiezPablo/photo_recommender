@@ -1,6 +1,6 @@
 // Descarga los datos publicados por GitHub Actions (release "datos") antes de compilar la web.
 // Si no hay red o la release aún no existe, se usan los ficheros que ya haya en public/datos.
-import { mkdir, readFile, writeFile, stat } from "node:fs/promises";
+import { mkdir, writeFile, stat } from "node:fs/promises";
 import { gunzipSync } from "node:zlib";
 import path from "node:path";
 

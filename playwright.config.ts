@@ -9,7 +9,9 @@ import { defineConfig, devices } from "@playwright/test";
 // en ese caso el servidor local se sirve en la IP de la máquina y esa IP se excluye del proxy.
 const proxy = process.env.HTTPS_PROXY;
 const ipLocal =
-  Object.values(networkInterfaces()).flat().find((i) => i && i.family === "IPv4" && !i.internal)?.address ?? "127.0.0.1";
+  Object.values(networkInterfaces())
+    .flat()
+    .find((i) => i && i.family === "IPv4" && !i.internal)?.address ?? "127.0.0.1";
 const host = proxy ? ipLocal : "localhost";
 const base = process.env.BASE_URL ?? `http://${host}:3100`;
 

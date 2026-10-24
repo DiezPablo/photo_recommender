@@ -1,0 +1,292 @@
+/* Portada: disposición (columna + mapa fijo), titular, destacado, acciones, fotos y almanaque. */
+
+/* En el móvil la columna se deshace para que el mapa quede entre el almanaque y el ranking */
+.portada {
+  max-width: var(--ancho);
+  margin: 0 auto;
+  display: grid;
+  gap: 20px;
+  padding: 24px 16px 48px;
+}
+.columna {
+  display: contents;
+}
+.portada > .mapa-caja {
+  height: 58vh;
+  min-height: 300px;
+  order: 4;
+}
+.titular {
+  order: 1;
+}
+.destacado {
+  order: 2;
+}
+.almanaque {
+  order: 3;
+}
+.bloque-ranking {
+  order: 5;
+}
+@media (min-width: 1000px) {
+  .portada {
+    grid-template-columns: minmax(520px, 620px) 1fr;
+    gap: 24px;
+    padding: 24px 24px 48px;
+    align-items: start;
+  }
+  .columna {
+    display: grid;
+    gap: 20px;
+    align-content: start;
+    min-width: 0;
+  }
+  .portada > .mapa-caja {
+    position: sticky;
+    top: 84px;
+    height: calc(100vh - 108px);
+    order: 2;
+  }
+}
+
+.titular {
+  display: grid;
+  gap: 8px;
+  padding: 8px 4px 4px;
+}
+.titular h1 {
+  font-size: clamp(2.1rem, 5.5vw, 3.2rem);
+  font-weight: 750;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.destacado {
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+  overflow: hidden;
+}
+.destacado-fila {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 18px;
+  align-items: start;
+}
+.destacado-txt {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding-top: 4px;
+}
+.destacado h2 {
+  font-size: clamp(1.35rem, 3.4vw, 1.75rem);
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.destacado h2 a {
+  color: inherit;
+  text-decoration: none;
+}
+.destacado h2 a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+.destacado-porque {
+  color: var(--texto-2);
+  font-size: 0.93rem;
+  line-height: 1.5;
+}
+.destacado .foto-tira {
+  margin: 0 -20px -20px;
+}
+.destacado .foto-tira img {
+  border-radius: 0;
+}
+.destacado .foto-tira figcaption {
+  padding: 0 20px 12px;
+}
+
+/* Enlaces de acción como botones cápsula; el primero, principal */
+.enlaces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+.enlaces a,
+.enlace-boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font: 600 0.86rem var(--f-cuerpo);
+  color: var(--texto);
+  text-decoration: none;
+  cursor: pointer;
+  background: var(--superficie-2);
+  border: 1px solid transparent;
+  transition:
+    background-color 0.15s,
+    transform 0.15s;
+}
+.enlaces a:hover,
+.enlace-boton:hover {
+  background: color-mix(in srgb, var(--superficie-2) 70%, var(--texto) 10%);
+}
+.enlaces a:first-child {
+  background: var(--texto);
+  color: var(--fondo);
+}
+.enlaces a:first-child:hover {
+  background: color-mix(in srgb, var(--texto) 85%, var(--acento));
+}
+.enlaces a:active,
+.enlace-boton:active {
+  transform: scale(0.97);
+}
+
+.foto-tira {
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+.foto-tira img {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  object-fit: cover;
+  background: var(--superficie-2);
+  border-radius: var(--radio-m);
+}
+.foto-tira.grande img {
+  aspect-ratio: 16 / 8;
+  max-height: 62vh;
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+}
+.foto-tira figcaption {
+  font: 400 0.7rem var(--f-cuerpo);
+  color: var(--texto-3);
+}
+.foto-tira figcaption a {
+  color: inherit;
+}
+
+/* Almanaque: tipo × día, celdas redondeadas */
+.almanaque {
+  display: grid;
+  gap: 4px;
+  padding: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.alm-esquina {
+  font: 600 0.62rem var(--f-cuerpo);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--texto-3);
+  align-self: end;
+  padding: 0 0 6px 4px;
+}
+.alm-fila {
+  display: contents;
+}
+.alm-dia {
+  display: grid;
+  justify-items: center;
+  padding: 6px 2px;
+  text-decoration: none;
+  color: var(--texto-3);
+  border-radius: var(--radio-s);
+  font: 650 0.78rem/1.2 var(--f-cuerpo);
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+.alm-dia small {
+  font: 500 0.68rem var(--f-cuerpo);
+  color: var(--texto-3);
+}
+.alm-dia:hover {
+  color: var(--texto);
+  background: var(--superficie-2);
+}
+.alm-dia[aria-current] {
+  color: var(--texto);
+  background: var(--superficie-2);
+}
+.alm-tipo {
+  display: flex;
+  align-items: center;
+  padding: 0 10px 0 6px;
+  height: 40px;
+  border-radius: var(--radio-s);
+  color: var(--texto-2);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 550;
+  transition: background-color 0.15s;
+}
+.alm-tipo:hover {
+  color: var(--texto);
+  background: var(--superficie-2);
+}
+.alm-tipo[aria-current] {
+  color: var(--texto);
+  font-weight: 700;
+}
+.alm-tipo[aria-current]::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 8px;
+  background: var(--acento);
+}
+.alm-celda {
+  display: grid;
+  place-items: center;
+  height: 40px;
+  border-radius: var(--radio-s);
+  background: var(--fondo);
+  text-decoration: none;
+  color: var(--texto-3);
+  font: 500 0.82rem var(--f-datos);
+  transition:
+    transform 0.12s,
+    box-shadow 0.12s;
+}
+.alm-celda.n-regular {
+  background: var(--tinte-regular);
+  color: var(--texto-2);
+}
+.alm-celda.n-buena {
+  background: var(--tinte-buena);
+  color: var(--texto);
+}
+.alm-celda.n-top {
+  background: var(--n-top);
+  color: var(--n-top-texto);
+  font-weight: 500;
+}
+.alm-celda:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgb(0 0 0 / 12%);
+}
+.alm-celda.actual {
+  box-shadow:
+    0 0 0 2px var(--superficie),
+    0 0 0 4px var(--acento);
+}
+.alm-celda.vacia {
+  color: var(--borde);
+  background: none;
+}
+.alm-mejor {
+  color: var(--texto-3);
+  font-size: 0.72rem;
+}
+.alm-mejor::before {
+  content: "máx ";
+  font-size: 0.6rem;
+}

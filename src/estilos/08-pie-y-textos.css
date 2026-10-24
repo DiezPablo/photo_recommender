@@ -1,0 +1,95 @@
+/* Pie, páginas de texto, movimiento reducido y ajustes del modo noche. */
+
+.pie {
+  border-top: 1px solid var(--borde);
+  color: var(--texto-3);
+  font: 0.74rem/1.6 var(--f-cuerpo);
+  margin-top: 24px;
+}
+.pie div {
+  max-width: var(--ancho);
+  margin: 0 auto;
+  padding: 22px 20px 32px;
+  display: grid;
+  gap: 6px;
+}
+.pie b {
+  color: var(--texto);
+  font: 800 0.9rem var(--f-cuerpo);
+  letter-spacing: -0.02em;
+}
+.pie a {
+  color: var(--texto-2);
+}
+.prosa {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 20px 64px;
+}
+.prosa h1 {
+  font-size: clamp(2rem, 5vw, 2.9rem);
+  font-weight: 750;
+  letter-spacing: -0.04em;
+  margin-bottom: 18px;
+}
+.prosa h2 {
+  font-size: 1.25rem;
+  margin: 36px 0 10px;
+}
+.prosa p,
+.prosa li {
+  line-height: 1.65;
+}
+.prosa p {
+  margin: 0 0 12px;
+}
+.prosa li {
+  margin-bottom: 6px;
+}
+.prosa table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.88rem;
+  background: var(--superficie);
+  border-radius: var(--radio-m);
+  overflow: hidden;
+  box-shadow: var(--sombra);
+}
+.prosa td,
+.prosa th {
+  border-bottom: 1px solid var(--borde);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+.prosa tr:last-child > * {
+  border-bottom: 0;
+}
+.prosa th {
+  font: 600 0.7rem var(--f-cuerpo);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--texto-3);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* En modo noche ningún bloque grande puede brillar: las casillas excelentes se marcan con borde */
+:root[data-tema="noche"] .alm-celda.n-top {
+  background: #2a0303;
+  color: var(--acento);
+  box-shadow: inset 0 0 0 1px var(--acento);
+}
+:root[data-tema="noche"] .alm-celda.actual {
+  box-shadow: 0 0 0 2px var(--acento);
+}
+:root[data-tema="noche"] .enlaces a:first-child {
+  background: var(--acento-suave);
+  color: var(--acento);
+}

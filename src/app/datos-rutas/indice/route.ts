@@ -1,5 +1,5 @@
 // Todas las rutas en forma compacta (lista, filtros y puntos del mapa). Estático, generado en el build.
-import { cargarRutas, filaRuta } from "@/lib/rutas";
+import { cargarRutas, filaRuta } from "@/features/rutas/datos";
 
 export const dynamic = "force-static";
 

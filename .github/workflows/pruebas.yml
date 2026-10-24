@@ -36,7 +36,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run typecheck
+      - name: Tipos, lint y formato
+        run: npm run check
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npx playwright test

@@ -1,7 +1,7 @@
 // JSON estático con todos los spots de un día y tipo (compacto): lo usan el mapa y los filtros de
 // distancia y comunidad. Se genera en el build, como las páginas.
-import { cargar, FILTROS, type Filtro } from "@/lib/datos";
-import { filasRanking } from "@/lib/ranking";
+import { cargar, FILTROS, type Filtro } from "@/features/spots/datos";
+import { filasRanking } from "@/features/spots/ranking";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
