@@ -2,17 +2,17 @@
 - USNO (Observatorio Naval de EE. UU., API rstt/oneday): salida/puesta de sol y luna, iluminación.
 - astropy: altura y azimut del centro galáctico.
 Tolerancias: 3 minutos en horas, 2 puntos en iluminación, 0,5° en posición."""
+
 import json
-from datetime import date, datetime, timedelta, timezone
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import pytest
 
-import astro
+from rasante.cielo import astro
 
 FIX = Path(__file__).parent / "fixtures"
-UTC = ZoneInfo("UTC")
 USNO = json.loads((FIX / "usno_rstt.json").read_text())
 
 
@@ -45,6 +45,7 @@ def test_luna_contra_usno(clave):
     dia = date.fromisoformat(c["fecha"])
     from astral import Observer
     from astral import moon as amoon
+
     o = Observer(latitude=c["lat"], longitude=c["lon"])
     for fen, f in (("Rise", amoon.moonrise), ("Set", amoon.moonset)):
         ref = _evento(c["moondata"], fen)
@@ -53,19 +54,25 @@ def test_luna_contra_usno(clave):
         nuestra = f(o, dia, UTC)
         assert _cerca(nuestra, _hora(c["fecha"], ref), minutos=4), (fen, nuestra, ref)
     # USNO da la iluminación a las 12 h del día pedido (entero en %); comprobado con astroplan
-    ilum = astro.iluminacion_luna(datetime(dia.year, dia.month, dia.day, 12, tzinfo=timezone.utc))
+    ilum = astro.iluminacion_luna(datetime(dia.year, dia.month, dia.day, 12, tzinfo=UTC))
     assert abs(ilum * 100 - int(c["fracillum"].rstrip("%"))) <= 2
 
 
 def test_nombre_fase_coherente_con_usno():
-    traduce = {"Waxing Gibbous": "gibosa creciente", "Waning Gibbous": "gibosa menguante",
-               "Waxing Crescent": "creciente", "Waning Crescent": "menguante",
-               "First Quarter": "cuarto creciente", "Last Quarter": "cuarto menguante",
-               "Full Moon": "luna llena", "New Moon": "luna nueva"}
+    traduce = {
+        "Waxing Gibbous": "gibosa creciente",
+        "Waning Gibbous": "gibosa menguante",
+        "Waxing Crescent": "creciente",
+        "Waning Crescent": "menguante",
+        "First Quarter": "cuarto creciente",
+        "Last Quarter": "cuarto menguante",
+        "Full Moon": "luna llena",
+        "New Moon": "luna nueva",
+    }
     aciertos = 0
     for c in USNO.values():
         d = date.fromisoformat(c["fecha"])
-        t = datetime(d.year, d.month, d.day, 12, tzinfo=timezone.utc)
+        t = datetime(d.year, d.month, d.day, 12, tzinfo=UTC)
         nuestro = astro.nombre_fase(astro.edad_luna(t), astro.iluminacion_luna(t))
         ref = traduce[c["curphase"]]
         # USNO solo llama "cuarto" al día exacto; nosotros a ±3 puntos del 50 %
@@ -76,7 +83,7 @@ def test_nombre_fase_coherente_con_usno():
 
 def test_centro_galactico_contra_astropy():
     for c in json.loads((FIX / "astropy_centro_galactico.json").read_text()):
-        t = datetime.fromisoformat(c["utc"]).replace(tzinfo=timezone.utc)
+        t = datetime.fromisoformat(c["utc"]).replace(tzinfo=UTC)
         alt, az = astro.posicion_centro_galactico(c["lat"], c["lon"], t)
         assert abs(alt - c["alt"]) < 0.5, (c, alt)
         assert abs((az - c["az"] + 180) % 360 - 180) < 0.5, (c, az)
@@ -88,8 +95,8 @@ def test_via_lactea_temporada():
     junio = astro.calcular_noche(40.79, -3.98, date(2027, 6, 21), tz)
     diciembre = astro.calcular_noche(40.79, -3.98, date(2026, 12, 21), tz)
     assert junio.vl_horas > 2
-    assert 15 < junio.vl_altura_max < 25        # 90 - 40,8 - 29 ≈ 20°
-    assert 160 < junio.vl_azimut_max < 200      # culmina hacia el sur
+    assert 15 < junio.vl_altura_max < 25  # 90 - 40,8 - 29 ≈ 20°
+    assert 160 < junio.vl_azimut_max < 200  # culmina hacia el sur
     assert diciembre.vl_horas == 0
 
 
@@ -133,5 +140,7 @@ def test_luna_llena_sale_al_atardecer_del_26_oct_2026():
 def test_relieve_tapa_la_via_lactea():
     tz = ZoneInfo("Europe/Madrid")
     libre = astro.calcular_noche(40.79, -3.98, date(2027, 6, 21), tz)
-    tapada = astro.calcular_noche(40.79, -3.98, date(2027, 6, 21), tz, horizonte=lambda az: 25.0 if 140 < az < 220 else 0.0)
+    tapada = astro.calcular_noche(
+        40.79, -3.98, date(2027, 6, 21), tz, horizonte=lambda az: 25.0 if 140 < az < 220 else 0.0
+    )
     assert libre.vl_horas > 2 and tapada.vl_horas == 0

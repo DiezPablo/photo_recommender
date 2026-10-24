@@ -18,10 +18,11 @@ on:
   push:
     branches: [main]
     paths:
-      - condiciones.py
-      - puntuacion.py
-      - astro.py
-      - horizonte.py
+      - rasante/prevision/**
+      - rasante/notas/**
+      - rasante/cielo/**
+      - rasante/terreno/**
+      - rasante/comun/**
       - mis_spots.csv
       - .github/workflows/datos.yml
 
@@ -46,7 +47,8 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-      - run: pip install -r requirements.txt
+          cache-dependency-path: pyproject.toml
+      - run: pip install -e .
 
       - uses: actions/cache@v6
         with:
@@ -63,7 +65,7 @@ jobs:
       - name: Calcular condiciones
         run: |
           mkdir -p salida
-          python condiciones.py --salida salida/informe.json
+          python -m rasante prevision --salida salida/informe.json
 
       - name: Publicar
         run: .github/scripts/publicar_release.sh "Datos $(date -u +%Y-%m-%dT%H:%MZ)" salida/informe.json
@@ -78,4 +80,4 @@ jobs:
           if [ -z "$TELEGRAM_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
             echo "Sin secretos de Telegram: no se envía aviso."; exit 0
           fi
-          python notificar.py --informe salida/informe.json --silencio
+          python -m rasante avisos --informe salida/informe.json --silencio

@@ -2,8 +2,10 @@ cache
 tests
 e2e
 __pycache__
+rasante
+pyproject.toml
 *.py
-requirements*.txt
 registro.md
 ENCARGO.md
-validacion
+docs
+capturas

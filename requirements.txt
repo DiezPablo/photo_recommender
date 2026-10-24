@@ -1,8 +1,0 @@
-requests>=2.31
-pandas>=2.1
-numpy>=1.26
-scikit-learn>=1.4
-astral>=3.2
-pillow>=10.0
-shapely>=2.0
-osmium>=4.0

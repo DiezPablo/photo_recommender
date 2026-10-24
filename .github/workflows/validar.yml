@@ -1,4 +1,4 @@
-# Validación histórica de las notas de amanecer/atardecer (validar.py): días con fotos en Commons
+# Validación histórica de las notas de amanecer/atardecer (rasante.validacion): días con fotos en Commons
 # frente al resto, con el tiempo reanalizado ERA5. El informe queda como artefacto "validacion".
 name: Validar notas
 
@@ -7,9 +7,8 @@ on:
   push:
     branches: [main]
     paths:
-      - puntuacion.py
-      - validar.py
-      - validacion/**
+      - rasante/notas/**
+      - rasante/validacion/**
       - .github/workflows/validar.yml
 
 jobs:
@@ -22,9 +21,10 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-      - run: pip install -r requirements.txt
+          cache-dependency-path: pyproject.toml
+      - run: pip install -e .
       - name: Validar
-        run: python validar.py --salida salida/validacion
+        run: python -m rasante validar --salida salida/validacion
       - name: Resumen
         if: always()
         run: cat salida/validacion/validacion.md >> "$GITHUB_STEP_SUMMARY" || true

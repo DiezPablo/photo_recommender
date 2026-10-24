@@ -1,9 +1,14 @@
+# Python
 cache/
 __pycache__/
 .pytest_cache/
+.ruff_cache/
+*.egg-info/
 .venv/
 .env
 salida/
+
+# Web
 node_modules/
 .next/
 out/

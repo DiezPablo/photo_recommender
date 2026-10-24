@@ -1,19 +1,29 @@
 """Casos sintéticos extremos: cada factor físico mueve la nota en el sentido correcto."""
+
 import pytest
 
-from puntuacion import capa_nubosa, nota_astro, nota_luz, nota_niebla, prob_niebla_radiacion
+from rasante.notas import capa_nubosa, nota_astro, nota_luz, nota_niebla, prob_niebla_radiacion
 
 
 # ================================================================== luz ====
 def cielo(low=0, mid=0, high=0, lluvia=0, mm=0.0, vis=24000, viento=10, hum=60):
-    return {"cloud_cover_low": low, "cloud_cover_mid": mid, "cloud_cover_high": high,
-            "precipitation_probability": lluvia, "precipitation": mm, "visibility": vis,
-            "wind_speed_10m": viento, "relative_humidity_2m": hum}
+    return {
+        "cloud_cover_low": low,
+        "cloud_cover_mid": mid,
+        "cloud_cover_high": high,
+        "precipitation_probability": lluvia,
+        "precipitation": mm,
+        "visibility": vis,
+        "wind_speed_10m": viento,
+        "relative_humidity_2m": hum,
+    }
 
 
 def camino(bajas=(0, 0, 0, 0), medias=(0, 0, 0, 0), altas=(0, 0, 0, 0)):
-    return [{"km": km, "low": b, "mid": m, "high": h}
-            for km, b, m, h in zip((15, 40, 80, 150), bajas, medias, altas)]
+    return [
+        {"km": km, "low": b, "mid": m, "high": h}
+        for km, b, m, h in zip((15, 40, 80, 150), bajas, medias, altas, strict=True)
+    ]
 
 
 def luz(local=None, cam=None, **aire):
@@ -74,11 +84,14 @@ def test_reflejos_solo_en_agua_y_sin_viento():
     assert "reflejos" in agua.avisos and "reflejos" not in tierra.avisos
 
 
-@pytest.mark.parametrize("local,cam", [
-    (cielo(low=50, high=60, lluvia=40, vis=3000, hum=95), camino(bajas=(30, 70, 20, 0))),
-    (cielo(high=100), camino()),
-    (cielo(), camino()),
-])
+@pytest.mark.parametrize(
+    "local,cam",
+    [
+        (cielo(low=50, high=60, lluvia=40, vis=3000, hum=95), camino(bajas=(30, 70, 20, 0))),
+        (cielo(high=100), camino()),
+        (cielo(), camino()),
+    ],
+)
 def test_desglose_suma_la_nota(local, cam):
     d = nota_luz(local, cam, {"aod": 0.3}).a_dict()
     total = sum(f["puntos"] for f in d["desglose"])
@@ -92,8 +105,14 @@ def test_valores_ausentes_no_rompen():
 
 # =============================================================== noche ====
 def noche(nubes=0, luna=0.0, n=8):
-    return [{"t": f"{(21 + i) % 24:02d}:00", "nubes": nubes(i) if callable(nubes) else nubes,
-             "luna": luna(i) if callable(luna) else luna} for i in range(n)]
+    return [
+        {
+            "t": f"{(21 + i) % 24:02d}:00",
+            "nubes": nubes(i) if callable(nubes) else nubes,
+            "luna": luna(i) if callable(luna) else luna,
+        }
+        for i in range(n)
+    ]
 
 
 def astro(horas=None, **k):
@@ -158,9 +177,16 @@ def test_desglose_astro_suma_la_nota():
 
 # ============================================================== niebla ====
 def hora(rh, t, td, viento, vis=24000, low=0, lluvia=0, nubes=0):
-    return {"relative_humidity_2m": rh, "temperature_2m": t, "dew_point_2m": td,
-            "wind_speed_10m": viento, "visibility": vis, "cloud_cover_low": low,
-            "precipitation_probability": lluvia, "cloud_cover": nubes}
+    return {
+        "relative_humidity_2m": rh,
+        "temperature_2m": t,
+        "dew_point_2m": td,
+        "wind_speed_10m": viento,
+        "visibility": vis,
+        "cloud_cover_low": low,
+        "precipitation_probability": lluvia,
+        "cloud_cover": nubes,
+    }
 
 
 def test_niebla_en_embalse_con_aire_saturado_y_calma():
@@ -183,23 +209,28 @@ def test_viento_disipa_la_niebla():
 
 def test_probabilidad_calibrada_y_monotona():
     """Calibración con METAR: ni con aire saturado la niebla es segura (~50 %)."""
-    from puntuacion import prob_niebla_radiacion
+    from rasante.notas import prob_niebla_radiacion
+
     ps = [prob_niebla_radiacion([hora(rh, 5, 4, 4)])[0] for rh in (80, 88, 92, 96, 100)]
     assert ps == sorted(ps) and ps[0] < 0.01 and 0.4 <= ps[-1] <= 0.55
-    assert prob_niebla_radiacion([hora(90, 5, 4, 4, vis=400)])[0] >= 0.6   # el modelo ya la ve
+    assert prob_niebla_radiacion([hora(90, 5, 4, 4, vis=400)])[0] >= 0.6  # el modelo ya la ve
 
 
 def test_lluvia_resta_a_la_niebla():
-    assert nota_niebla([hora(99, 5, 4.8, 3, lluvia=90)], tipo="embalse").valor < \
-        nota_niebla([hora(99, 5, 4.8, 3)], tipo="embalse").valor
+    assert (
+        nota_niebla([hora(99, 5, 4.8, 3, lluvia=90)], tipo="embalse").valor
+        < nota_niebla([hora(99, 5, 4.8, 3)], tipo="embalse").valor
+    )
 
 
-PERFIL_INVERSION = {"niveles": [
-    {"hpa": 950, "z": 650, "t": 4, "hr": 100, "nubes": 95},
-    {"hpa": 925, "z": 850, "t": 3, "hr": 99, "nubes": 90},
-    {"hpa": 900, "z": 1080, "t": 7, "hr": 45, "nubes": 0},
-    {"hpa": 850, "z": 1520, "t": 6, "hr": 30, "nubes": 0},
-]}
+PERFIL_INVERSION = {
+    "niveles": [
+        {"hpa": 950, "z": 650, "t": 4, "hr": 100, "nubes": 95},
+        {"hpa": 925, "z": 850, "t": 3, "hr": 99, "nubes": 90},
+        {"hpa": 900, "z": 1080, "t": 7, "hr": 45, "nubes": 0},
+        {"hpa": 850, "z": 1520, "t": 6, "hr": 30, "nubes": 0},
+    ]
+}
 
 
 def test_capa_nubosa_con_inversion():
@@ -216,8 +247,14 @@ def test_mar_de_nubes_desde_una_cumbre():
     assert "mar_de_nubes" not in debajo.avisos
     dentro = nota_niebla([hora(100, 3, 3, 3, vis=200, low=100)], 1800, capa, tipo="cumbre", bajas_spot=100)
     assert "mar_de_nubes" not in dentro.avisos
-    poca = capa_nubosa({"niveles": [{"hpa": 925, "z": 850, "t": 3, "hr": 90, "nubes": 45},
-                                    {"hpa": 900, "z": 1080, "t": 7, "hr": 40, "nubes": 0}]})
+    poca = capa_nubosa(
+        {
+            "niveles": [
+                {"hpa": 925, "z": 850, "t": 3, "hr": 90, "nubes": 45},
+                {"hpa": 900, "z": 1080, "t": 7, "hr": 40, "nubes": 0},
+            ]
+        }
+    )
     assert "mar_de_nubes" not in nota_niebla(seco, 1800, poca, tipo="cumbre").avisos
 
 
@@ -242,12 +279,13 @@ def test_montana_hacia_el_sol_resta():
 
 
 def test_luna_llena_saliendo_al_atardecer_es_excelente():
-    from puntuacion import nota_luna
+    from rasante.notas import nota_luna
+
     e = {"tipo": "salida", "hora": "18:11", "iluminacion": 1.0, "altura_sol": 1.0, "horizonte": 0.5, "azimut": 73}
     assert nota_luna(e, {"cloud_cover": 5}, camino()).valor >= 9
-    assert nota_luna({**e, "iluminacion": 0.45}).valor < 7          # luna poco llena
-    assert nota_luna({**e, "altura_sol": -11}).valor < 7             # ya es de noche: paisaje negro
-    assert nota_luna(e, {"cloud_cover": 95}).valor < 3               # cubierto
+    assert nota_luna({**e, "iluminacion": 0.45}).valor < 7  # luna poco llena
+    assert nota_luna({**e, "altura_sol": -11}).valor < 7  # ya es de noche: paisaje negro
+    assert nota_luna(e, {"cloud_cover": 95}).valor < 3  # cubierto
     assert nota_luna(e, None, camino(bajas=(0, 100, 0, 0))).valor < 6  # banco de nubes hacia la luna
     assert nota_luna(None).valor == 0
 

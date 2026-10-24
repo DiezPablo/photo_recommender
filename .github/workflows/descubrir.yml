@@ -21,9 +21,10 @@ on:
   push:
     branches: [main]
     paths:
-      - descubrir_espana.py
-      - descubrir_spots.py
-      - contaminacion.py
+      - rasante/spots/**
+      - rasante/comun/territorio.py
+      - rasante/recursos/provincias.geojson
+      - rasante/recursos/vecinos.geojson
       - .github/workflows/descubrir.yml
 
 permissions:
@@ -49,7 +50,8 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-      - run: pip install -r requirements.txt
+          cache-dependency-path: pyproject.toml
+      - run: pip install -e .
 
       # Respuestas de Commons, Wikidata y Overpass, teselas del terreno y del atlas: entre ejecuciones.
       # Se guardan aunque el trabajo falle o se corte, para no repetir horas de peticiones.
@@ -61,13 +63,13 @@ jobs:
 
       - name: Buscar spots
         run: |
-          python descubrir_espana.py --salida salida \
+          python -m rasante spots --salida salida \
             --total "${{ inputs.total || '1500' }}" \
             --por-provincia "${{ inputs.por_provincia || '12' }}" \
             --minutos "${{ inputs.minutos || '150' }}"
 
       - name: Previsión con los spots nuevos
-        run: python condiciones.py --spots salida/spots.geojson --salida salida/informe.json
+        run: python -m rasante prevision --spots salida/spots.geojson --salida salida/informe.json
 
       - uses: actions/upload-artifact@v7
         with:

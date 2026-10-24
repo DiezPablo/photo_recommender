@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rasante"
+version = "2.0.0"
+description = "Previsión para fotografía de paisaje y nocturna, y rutas de senderismo, en toda España"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Uso personal, no comercial" }
+authors = [{ name = "Pablo Díez" }]
+dependencies = [
+  "astral>=3.2",
+  "numpy>=1.26",
+  "osmium>=4.0",
+  "pandas>=2.1",
+  "pillow>=10.0",
+  "requests>=2.31",
+  "scikit-learn>=1.4",
+  "shapely>=2.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+
+[project.scripts]
+rasante = "rasante.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["rasante*"]
+
+[tool.setuptools.package-data]
+rasante = ["recursos/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = [".", "tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = ["cache", "node_modules", ".next", "public"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+ignore = [
+  "E501",    # las líneas largas se dejan al formateador
+  "E731",    # lambdas con nombre en código numérico corto
+  "RUF001", "RUF002", "RUF003",  # texto en español: comillas «», guiones y signos tipográficos a propósito
+  "SIM108",  # el ternario no siempre es más legible
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["rasante"]
+
+[tool.ruff.format]
+quote-style = "double"
