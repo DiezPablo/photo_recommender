@@ -41,7 +41,7 @@ CCAA_POR_PROVINCIA = {
 }
 
 
-# Nombres de provincia tal como vienen en datos_base/provincias.geojson
+# Nombres de provincia tal como vienen en rasante/recursos/provincias.geojson
 _CCAA_POR_NOMBRE = {
     "Illes Balears": "Illes Balears",
     "Asturias": "Principado de Asturias",
@@ -99,7 +99,7 @@ _CCAA_POR_NOMBRE = {
 
 
 def ccaa_de(provincia: str | None, ccaa: str | None = None) -> str | None:
-    """Comunidad correcta a partir del nombre de la provincia (tal como viene en datos_base/provincias.geojson)."""
+    """Comunidad correcta a partir del nombre de la provincia (tal como viene en rasante/recursos/provincias.geojson)."""
     return _CCAA_POR_NOMBRE.get(provincia or "", ccaa)
 
 

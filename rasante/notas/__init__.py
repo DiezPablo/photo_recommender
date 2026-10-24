@@ -2,7 +2,7 @@
 Modelos de predicción: nota 0-10 por tipo de salida, con desglose explicable.
 
 Versión 2 (oct-2026), basada en lo que miden los servicios especializados y lo que repiten los
-fotógrafos (fuentes en registro.md):
+fotógrafos (fuentes en docs/decisiones.md):
 
 - Amanecer/atardecer: modelo de **camino de la luz** (como Sunsethue): para que las nubes se
   enciendan hace falta (1) un lienzo de nubes medias/altas sobre el observador y hacia el sol,

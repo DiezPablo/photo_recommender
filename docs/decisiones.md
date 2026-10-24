@@ -1,6 +1,6 @@
 # Registro de decisiones y problemas
 
-Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
+Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encargo.md)). Lo más reciente, abajo. Los nombres de ficheros de las entradas antiguas son los de entonces (antes del paquete `rasante`, oct-2026).
 
 ## 2026-10-19/20 · Arranque
 
@@ -394,3 +394,27 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
   y por cercanía), el mapa se centra en ti y se dice en claro («23 spots a menos de 100 km de ti…»).
 - Errores explicados: permiso bloqueado (con la ruta de ajustes en iPhone) o sin señal (reintento automático
   con la ubicación aproximada). Función común `pedirUbicacion()` en `src/lib/ubicacion.ts`.
+
+## 2026-10-25 · Proyecto profesional: paquete, estructura por funcionalidades y herramientas
+- **Pipeline → paquete `rasante`** (antes 11 scripts sueltos en la raíz): `comun` (caché, red, JSON, ids,
+  territorio), `cielo` (astro, contaminación lumínica), `terreno` (horizonte), `notas` (un módulo por tipo de
+  salida), `prevision` (Open-Meteo, series, evaluación, CLI), `spots`, `rutas`, `validacion`, `avisos`.
+  Una sola entrada: `python -m rasante <orden>`. Dependencias y herramientas en `pyproject.toml`.
+- Fuera el **descubrimiento antiguo de la Sierra** (`descubrir_spots.py`), sustituido por el nacional; de él
+  solo seguían vivos los auxiliares de Commons (ahora `rasante.spots.commons`).
+- **Caché unificada** (`rasante.comun.cache.CacheJson`) con el mismo formato de ficheros de antes, para no
+  invalidar la caché de Actions (horas de peticiones a Commons).
+- La primera ejecución real tras el troceo falló por un **import diferido dentro de una función**
+  (`from astro import …` en `cupula`) que ni ruff ni los tests veían (los tests sustituyen esa función).
+  Test nuevo que importa todos los módulos del paquete.
+- **Web por funcionalidades**: `src/features/{spots,rutas}` (componentes, modelo, datos de servidor marcados
+  con `server-only`), `src/ui` (piezas comunes, `useMapaBase` para los dos mapas, antes duplicado),
+  `src/lib` (almacén externo, ubicación) y `src/estilos` (CSS por áreas, mismo orden de cascada).
+- **Estado externo con `useSyncExternalStore`** (ubicación, preferencias, filtros en la URL, tema) en lugar
+  de copiarlo con `setState` dentro de efectos (lo marca la regla `react-hooks/set-state-in-effect`).
+- Al unificar los mapas apareció un **bucle de render**: el hook avisa al mover el mapa → el mapa de spots
+  se renderiza → `lineas = []` crea un array nuevo → se repinta y reencuadra → el mapa se mueve… La página
+  no daba error pero nunca terminaba de navegar. Lo cazaron las pruebas e2e; arreglado con una constante.
+- Herramientas: ruff (lint + formato) y pytest para Python; ESLint (config de Next), Prettier y `tsc` para
+  la web; todo en CI (`pruebas.yml`). `Makefile` con las órdenes habituales. Documentación en `docs/`.
+- Spots propios (`mis_spots.csv`): ahora con provincia, comunidad y horizonte del terreno.
