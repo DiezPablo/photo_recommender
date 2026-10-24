@@ -5,7 +5,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { NOMBRE_CORTO } from "@/lib/modelo";
-import { distanciaKm, guardarUbicacion, leerUbicacion, type Ubicacion } from "@/lib/ubicacion";
+import { distanciaKm, guardarUbicacion, leerUbicacion, pedirUbicacion, type Ubicacion } from "@/lib/ubicacion";
 import Cifra from "./Cifra";
 import type { FilaRanking } from "./tipos";
 
@@ -40,19 +40,13 @@ export default function Ranking({ filas, total, urlTodos, comunidades, mostrarMo
     return () => window.removeEventListener("ubicacion", f);
   }, []);
 
-  function pedirUbicacion() {
-    if (!navigator.geolocation) return setEstado("Tu navegador no da la ubicación");
+  async function buscarUbicacion() {
     setEstado("Buscando tu ubicación…");
-    navigator.geolocation.getCurrentPosition(
-      (p) => {
-        const u = { lat: +p.coords.latitude.toFixed(3), lon: +p.coords.longitude.toFixed(3) };
-        guardarUbicacion(u);
-        setUbic(u);
-        setEstado("");
-      },
-      () => setEstado("No se pudo obtener la ubicación"),
-      { maximumAge: 600000, timeout: 15000 },
-    );
+    const r = await pedirUbicacion();
+    if (!r.ok) return setEstado(r.error);
+    setUbic(r.ubic);
+    cambiarRadio(100);   // lo que se espera de «cerca de mí»: lo bueno a una distancia razonable
+    setEstado("");
   }
 
   function cambiarRadio(r: number) {
@@ -120,12 +114,19 @@ export default function Ranking({ filas, total, urlTodos, comunidades, mostrarMo
               </button>
             </>
           ) : (
-            <button type="button" className="boton" onClick={pedirUbicacion}>
+            <button type="button" className="boton" onClick={buscarUbicacion}>
               Cerca de mí
             </button>
           )}
-          {estado && <span role="status">{estado}</span>}
+          {estado && <span role="status" className="estado-ubic">{estado}</span>}
         </div>
+      )}
+      {js && ubic && (
+        <p className="resumen-cerca" aria-live="polite">
+          {!todas ? "Buscando spots cerca de ti…" : radio
+            ? `${coinciden} ${coinciden === 1 ? "spot" : "spots"} a menos de ${radio} km de ti${ccaa ? ` en ${ccaa}` : ""}, ${orden === "distancia" ? "del más cercano al más lejano" : "de mejor a peor nota"}`
+            : `Todos los spots, con la distancia a ti`}
+        </p>
       )}
       {visibles.length === 0 ? (
         <p className="vacio">{todas || !necesitaTodas ? "Ningún spot con esos filtros. Amplía la distancia o cambia de comunidad." : "Cargando…"}</p>

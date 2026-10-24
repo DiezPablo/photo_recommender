@@ -5,7 +5,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { DIFICULTADES, duracion, type FilaRuta, RANGOS_KM, TIPOS_RUTA, type TipoRuta } from "@/lib/modeloRutas";
-import { distanciaKm, guardarUbicacion, leerUbicacion, type Ubicacion } from "@/lib/ubicacion";
+import { distanciaKm, leerUbicacion, pedirUbicacion, type Ubicacion } from "@/lib/ubicacion";
 import MapaRutas from "./MapaRutas";
 
 const POR_PAGINA = 50;
@@ -77,22 +77,16 @@ export default function ExploradorRutas({ comunidades }: { comunidades: string[]
     } catch {}
   }, []);
 
-  function pedirUbicacion() {
-    if (!navigator.geolocation) return setEstado("Tu navegador no da la ubicación");
+  async function buscarUbicacion() {
     setEstado("Buscando tu ubicación…");
-    navigator.geolocation.getCurrentPosition(
-      (p) => {
-        const u = { lat: +p.coords.latitude.toFixed(3), lon: +p.coords.longitude.toFixed(3) };
-        guardarUbicacion(u);
-        setUbic(u);
-        setOrden("cerca");
-        setRadio(50);
-        setEstado("");
-      },
-      () => setEstado("No se pudo obtener la ubicación"),
-      { maximumAge: 600000, timeout: 15000 },
-    );
+    const r = await pedirUbicacion();
+    if (!r.ok) return setEstado(r.error);
+    setUbic(r.ubic);
+    setOrden("cerca");
+    setRadio(50);
+    setEstado("");
   }
+
 
   const filtradas = useMemo(() => {
     if (!todas) return [];
@@ -184,9 +178,9 @@ export default function ExploradorRutas({ comunidades }: { comunidades: string[]
                 </select>
               </label>
             ) : (
-              <button type="button" className="boton" onClick={pedirUbicacion}>Cerca de mí</button>
+              <button type="button" className="boton" onClick={buscarUbicacion}>Cerca de mí</button>
             )}
-            {estado && <span role="status">{estado}</span>}
+            {estado && <span role="status" className="estado-ubic">{estado}</span>}
           </div>
         </div>
 

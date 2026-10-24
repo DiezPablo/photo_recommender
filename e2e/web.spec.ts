@@ -136,6 +136,11 @@ test("cerca de mí: distancia y filtro por radio", async ({ page, context }) => 
   await page.goto("/");
   if (await page.evaluate(() => window.isSecureContext)) {
     await page.getByRole("button", { name: "Cerca de mí" }).click();
+    // lo que ve el usuario: filtrado a 100 km y dicho en claro
+    await expect(page.locator(".resumen-cerca")).toContainText("a menos de 100 km de ti");
+    const kms = (await page.locator(".fila .dist").allInnerTexts()).map((t) => parseFloat(t));
+    expect(kms.length).toBeGreaterThan(0);
+    expect(Math.max(...kms)).toBeLessThanOrEqual(100);
   } else {
     // http://IP no es contexto seguro y el navegador no da la ubicación: la dejamos guardada como haría el botón
     await page.evaluate(() => localStorage.setItem("ubicacion", JSON.stringify({ lat: 40.4168, lon: -3.7038 })));

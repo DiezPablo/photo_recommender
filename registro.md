@@ -387,3 +387,10 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
 - Mapa como tarjeta flotante y fija en escritorio; botones, campos y chips redondeados con foco visible;
   acciones principales en cápsula negra; micro-transiciones (respetan `prefers-reduced-motion`).
 - Almanaque con celdas redondeadas separadas; casilla actual con anillo azul; días de la ficha como acordeones.
+
+## 2026-10-25 · «Cerca de mí» no parecía funcionar
+- Sí obtenía la ubicación, pero la lista seguía siendo el ranking nacional («Cualquier distancia», «Por nota»)
+  y solo aparecía en pequeño la distancia de cada spot. Ahora, al obtenerla, se filtra a 100 km (rutas: 50 km
+  y por cercanía), el mapa se centra en ti y se dice en claro («23 spots a menos de 100 km de ti…»).
+- Errores explicados: permiso bloqueado (con la ruta de ajustes en iPhone) o sin señal (reintento automático
+  con la ubicación aproximada). Función común `pedirUbicacion()` en `src/lib/ubicacion.ts`.
