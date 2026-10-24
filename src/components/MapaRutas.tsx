@@ -118,6 +118,8 @@ export default function MapaRutas({ filas, ruta, alto }: {
   useEffect(() => {
     if (!listo || !filas || !mapa.current) return;
     const m = mapa.current;
+    // hasta que el mapa tiene centro (el encuadre inicial es asíncrono) no hay vista que consultar
+    if (!(m as unknown as { _loaded?: boolean })._loaded) return;
     if (m.getZoom() < ZOOM_TRAZADOS) {
       lineas.current?.clearLayers();
       return;
