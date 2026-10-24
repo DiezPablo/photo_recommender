@@ -12,6 +12,8 @@ export function filasRanking(d: number, filtro: Filtro): FilaRanking[] {
       const n = notaDe(dia, filtro);
       if (!dia || !n) return null;
       return {
+        bruta: n.nota.desglose.reduce((a, f) => a + f.puntos, 0),
+        calidad: s.descubierto?.puntuacion ?? 0,
         id: s.id, nombre: s.nombre, lat: s.lat, lon: s.lon, tipo: s.tipo,
         nota: n.nota.nota, clase: calificacion(n.nota.nota).clase, momento: n.momento,
         hora: horaDe(dia, n.momento),
@@ -23,8 +25,11 @@ export function filasRanking(d: number, filtro: Filtro): FilaRanking[] {
         foto: miniatura(s.descubierto?.galeria?.[0]?.url, 120),
       };
     })
-    .filter((f): f is FilaRanking => f !== null)
-    .sort((a, b) => b.nota - a.nota || b.autores - a.autores || a.nombre.localeCompare(b.nombre));
+    .filter((f) => f !== null)
+    // A escala nacional muchos spots llegan al 10: desempata la nota sin recortar y después la calidad del
+    // spot (popularidad en Commons y cielo oscuro, de descubrir_espana.py)
+    .sort((a, b) => b.nota - a.nota || b.bruta - a.bruta || b.calidad - a.calidad || a.nombre.localeCompare(b.nombre))
+    .map(({ bruta: _b, calidad: _c, ...f }) => f as FilaRanking);
 }
 
 export function urlRanking(d: number, filtro: Filtro): string {

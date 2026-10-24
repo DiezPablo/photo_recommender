@@ -262,6 +262,8 @@ h2.rotulo, h3.rotulo { font-weight: 500; letter-spacing: 0.07em; }
 .alm-celda:hover { box-shadow: inset 0 0 0 1px var(--texto); }
 .alm-celda.actual { box-shadow: inset 0 0 0 2px var(--texto); }
 .alm-celda.vacia { color: var(--borde); }
+.alm-mejor { color: var(--texto-3); font-size: 0.72rem; }
+.alm-mejor::before { content: "máx "; font-size: 0.6rem; }
 .alm-fila:last-child > * { border-bottom: 1px solid var(--borde); }
 
 /* ----------------------------------------------------------------- ranking */

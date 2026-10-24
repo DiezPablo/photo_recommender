@@ -34,11 +34,14 @@ export default function VistaDia({ d, filtro }: { d: number; filtro: Filtro }) {
   for (const m of FILTROS) {
     mejores[m] = informe.fechas.map((_, i) => {
       let b: Mejor = null;
+      let excelentes = 0;
       for (const s of spots) {
         const n = notaDe(s.dias[i], m)?.nota.nota;
-        if (n !== undefined && (!b || n > b.nota)) b = { nota: n, nombre: s.nombre };
+        if (n === undefined) continue;
+        if (n >= 8) excelentes++;
+        if (!b || n > b.nota) b = { nota: n, nombre: s.nombre, excelentes: 0 };
       }
-      return b;
+      return b && { ...b, excelentes };
     });
   }
   const primero = top[0];
