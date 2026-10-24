@@ -320,3 +320,11 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
     cuchilleros», Madrid centro). Se resta según el cielo del atlas (−1,6 bajo 18,5 mag/″², −0,9 bajo 19,5,
     −0,3 bajo 20,5, +0,3 desde 21,3): los iconos urbanos con cientos de fotos siguen entrando.
   - **Nombres genéricos** de OSM fuera («Mural», «Picnic», «Spotting», «Begiratokia»…).
+
+## 2026-10-24 · Segundo descubrimiento nacional (con filtros) y ajustes
+- 1500 spots: ninguno fuera de España ni con nombre genérico; salen más iconos de paisaje (Cabo de Gata,
+  Trafalgar, Bolonia, Calar Alto, Cap de Creus, Teide, Torrent de Pareis, Bola del Mundo). 639 con cielo
+  ≥ 21 mag/″² y 81 bajo 18,5 (iconos urbanos con muchas fotos).
+- Niebla: la regla «visibilidad del modelo < 1 km ⇒ ≥ 60 %» (no calibrada con METAR) exige ahora humedad
+  ≥ 90 %; en Lagos de Cabdella daba niebla con un 71 % de humedad y salía como mejor plan de España.
+- Mapa de portada: se encuadra la península (Canarias alejaba el encuadre hasta Francia y Marruecos).

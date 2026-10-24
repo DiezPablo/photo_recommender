@@ -387,7 +387,9 @@ def prob_niebla_radiacion(madrugada: list[dict]) -> tuple[float, dict]:
     **humedad máxima** (rampa del 85 al 100 %) y el **viento mínimo** (la niebla aguanta hasta ~6 km/h
     y desaparece hacia 20 km/h). La nubosidad de la noche y la lluvia previa, ingredientes clásicos,
     no aportaron nada una vez conocida la humedad (que ya recoge su efecto), así que no se usan.
-    Si el modelo prevé visibilidad < 1 km, es evidencia directa."""
+    Si el modelo prevé visibilidad < 1 km con el aire casi saturado (≥ 90 %), es evidencia directa; con el
+    aire seco no (en cumbres y lagos de montaña la visibilidad del modelo baja sin niebla: en los Lagos de
+    Cabdella daba 0,3 km con un 71 % de humedad). Esta regla no está en la calibración con METAR."""
     if not madrugada:
         return 0.0, {}
     hr = max(_v(f, "relative_humidity_2m") for f in madrugada)
@@ -395,7 +397,7 @@ def prob_niebla_radiacion(madrugada: list[dict]) -> tuple[float, dict]:
     vis = min(_v(f, "visibility", 24000) for f in madrugada)
     indice = _clamp((hr - 85) / 15) * _clamp((20 - viento) / 14)
     p = _tramos(indice, CALIBRACION_NIEBLA)
-    if vis < 1000:
+    if vis < 1000 and hr >= 90:
         p = max(p, 0.6)
     return p, {"humedad": hr, "viento": viento, "visibilidad": vis, "indice": indice}
 

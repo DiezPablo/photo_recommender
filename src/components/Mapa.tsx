@@ -162,7 +162,12 @@ export default function Mapa({
       }
       if (ubic && enlazar && urlTodos) m.setView([ubic.lat, ubic.lon], 8);
       else if (zoom && puntos.length === 1 && !lineas.length) m.setView([puntos[0].lat, puntos[0].lon], zoom);
-      else if (limites.length) m.fitBounds(L.latLngBounds(limites), { padding: [28, 28], maxZoom: zoom ?? 13 });
+      else if (limites.length) {
+        // Con Canarias dentro el encuadre se aleja hasta Francia y Marruecos: se encuadra la península
+        const peninsula = limites.filter(([la]) => la > 34);
+        const encuadre = urlTodos && peninsula.length ? peninsula : limites;
+        m.fitBounds(L.latLngBounds(encuadre), { padding: [28, 28], maxZoom: zoom ?? 13 });
+      }
       else m.setView([40.8, -3.9], 9);
     })();
   }, [listo, puntos, lineas, ubic, zoom, enlazar, tema, todos, urlTodos]);

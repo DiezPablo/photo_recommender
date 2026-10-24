@@ -1,7 +1,7 @@
 """Casos sintéticos extremos: cada factor físico mueve la nota en el sentido correcto."""
 import pytest
 
-from puntuacion import capa_nubosa, nota_astro, nota_luz, nota_niebla
+from puntuacion import capa_nubosa, nota_astro, nota_luz, nota_niebla, prob_niebla_radiacion
 
 
 # ================================================================== luz ====
@@ -250,3 +250,11 @@ def test_luna_llena_saliendo_al_atardecer_es_excelente():
     assert nota_luna(e, {"cloud_cover": 95}).valor < 3               # cubierto
     assert nota_luna(e, None, camino(bajas=(0, 100, 0, 0))).valor < 6  # banco de nubes hacia la luna
     assert nota_luna(None).valor == 0
+
+
+def test_visibilidad_baja_sin_humedad_no_es_niebla():
+    """Lagos de Cabdella (24-oct-2026): el modelo daba 0,3 km de visibilidad con un 71 % de humedad."""
+    seco = [{"relative_humidity_2m": 71, "wind_speed_10m": 9, "visibility": 300}]
+    humedo = [{"relative_humidity_2m": 95, "wind_speed_10m": 9, "visibility": 300}]
+    assert prob_niebla_radiacion(seco)[0] < 0.1
+    assert prob_niebla_radiacion(humedo)[0] >= 0.6
