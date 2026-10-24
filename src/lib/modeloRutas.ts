@@ -33,8 +33,9 @@ export interface Ruta {
   fin: [number, number];
   bbox: [number, number, number, number];
   perfil: [number, number][];
-  linea: string;
-  linea_mapa: string;
+  /** trazado por trozos (encoded polyline); los datos antiguos traen un único string */
+  linea: string | string[];
+  linea_mapa: string | string[];
 }
 
 /** Lo que viaja al navegador para listar y filtrar todas las rutas. */
@@ -93,7 +94,19 @@ export function decodificar(s: string, precision = 5): [number, number][] {
   return puntos;
 }
 
+/** Trozos del trazado decodificados: [[[lat, lon], …], …]. */
+export function trozos(l: string | string[]): [number, number][][] {
+  return (Array.isArray(l) ? l : [l]).map((t) => decodificar(t)).filter((t) => t.length > 0);
+}
+
+/** Más de esto ya no es una jornada: se expresa en días de marcha. */
+export const HORAS_JORNADA = 7;
+
 export function duracion(h: number): string {
+  if (h > 12) {
+    const dias = Math.ceil(h / HORAS_JORNADA);
+    return `${dias} jornadas`;
+  }
   const total = Math.round(h * 4) * 15; // a cuartos de hora: es una estimación
   const hh = Math.floor(total / 60), mm = total % 60;
   return hh ? (mm ? `${hh} h ${mm} min` : `${hh} h`) : `${mm} min`;

@@ -58,10 +58,11 @@ export default async function PaginaRuta({ params }: Props) {
           <div><dt>Distancia</dt><dd>{r.km.toLocaleString("es-ES")} km</dd></div>
           <div><dt>Desnivel</dt><dd>+{r.subida} / −{r.bajada} m</dd></div>
           <div title="Método MIDE: 4 km/h en llano, 400 m/h subiendo, 600 m/h bajando; sin paradas">
-            <dt>Tiempo estimado</dt><dd>{duracion(r.horas)}</dd>
+            <dt>Tiempo estimado</dt>
+            <dd>{duracion(r.horas)}{r.horas > 12 ? ` (~${Math.round(r.horas)} h de marcha)` : ""}</dd>
           </div>
           <div title="Estimación por tiempo, desnivel y altitud: no es la valoración MIDE oficial">
-            <dt>Esfuerzo</dt><dd>{r.dificultad}</dd>
+            <dt>Esfuerzo</dt><dd>{r.horas > 12 ? "varias etapas" : r.dificultad}</dd>
           </div>
           <div><dt>Recorrido</dt><dd>{r.circular ? "circular" : "lineal"}</dd></div>
           {r.alt_max !== null && <div><dt>Altitud</dt><dd>{r.alt_min}–{r.alt_max} m</dd></div>}

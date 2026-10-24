@@ -5,18 +5,22 @@ import Cifra from "@/components/Cifra";
 import Desglose from "@/components/Desglose";
 import PlanDelDia from "@/components/PlanDelDia";
 import MapaSpot from "@/components/MapaSpot";
+import { filasRanking, TOP_HTML } from "@/lib/ranking";
 import Panorama from "@/components/Panorama";
 import type { LineaMapa } from "@/components/Mapa";
 import {
-  calificacion, cargar, type Dia, etiquetaDia, getSpot, horaDe, MESES_LARGOS, miniatura, MOMENTOS, NOMBRE_CORTO, rumbo,
+  calificacion, type Dia, etiquetaDia, getSpot, horaDe, MESES_LARGOS, miniatura, MOMENTOS, NOMBRE_CORTO, rumbo,
   type Spot, TEXTO_AVISO, tramoTexto,
 } from "@/lib/datos";
 
-export const dynamicParams = false;
+// 1500 fichas prerenderizadas ocupaban ~800 MB, cerca del límite de 1 GB de Vercel: se prerenderizan solo
+// las más vistas (las del ranking de hoy) y el resto se genera al visitarlas (ISR) y queda en caché hasta
+// el siguiente despliegue, que llega con cada actualización de datos.
+export const dynamicParams = true;
+export const revalidate = false;
 
 export function generateStaticParams() {
-  const ids = cargar().spots.map((s) => ({ id: s.id }));
-  return ids.length ? ids : [{ id: "sin-datos" }];
+  return filasRanking(0, "todos").slice(0, TOP_HTML).map((f) => ({ id: f.id }));
 }
 
 type Props = { params: Promise<{ id: string }> };

@@ -62,48 +62,54 @@ def longitud_m(coords: list[tuple[float, float]]) -> float:
     return sum(metros(coords[i], coords[i + 1]) for i in range(len(coords) - 1))
 
 
-def ordenar_tramos(tramos: list[list[tuple[float, float]]]) -> list[tuple[float, float]]:
-    """Une los tramos de una ruta en un único recorrido: empieza por un extremo y va enlazando el tramo
-    más cercano (dándole la vuelta si hace falta). Los saltos entre tramos no cuentan como distancia."""
-    if not tramos:
-        return []
+Camino = list[list[tuple[float, float]]]     # recorrido: trozos continuos, en orden de marcha
+UNIR_M = 30                                   # trozos a menos de esto se consideran continuos
+
+
+def ordenar_tramos(tramos: Camino) -> Camino:
+    """Ordena los tramos de una ruta como un recorrido: empieza por el extremo más aislado y va enlazando
+    el tramo más cercano (dándole la vuelta si hace falta). Los que empiezan donde acaba el anterior
+    (< 30 m) se funden; los demás quedan como trozos separados: el hueco no se recorre ni se dibuja."""
     pendientes = [list(t) for t in tramos if len(t) >= 2]
     if not pendientes:
         return []
-    # empezar por el tramo cuyo extremo esté más lejos de todos los demás (un extremo de la ruta)
+
     def aislamiento(t, i):
         p = t[i]
         return min((metros(p, o[j]) for o in pendientes if o is not t for j in (0, -1)), default=0)
     t0, extremo = max(((t, i) for t in pendientes for i in (0, -1)), key=lambda x: aislamiento(*x))
     pendientes.remove(t0)
-    camino = list(t0) if extremo == 0 else list(t0[::-1])
+    partes = [list(t0) if extremo == 0 else list(t0[::-1])]
     while pendientes:
-        fin = camino[-1]
-        mejor = min(((t, d) for t in pendientes for d in (0, -1)), key=lambda x: metros(fin, x[0][x[1]]))
-        t, d = mejor
+        fin = partes[-1][-1]
+        t, d = min(((t, d) for t in pendientes for d in (0, -1)), key=lambda x: metros(fin, x[0][x[1]]))
         pendientes.remove(t)
-        camino.extend(t if d == 0 else t[::-1])
-    return camino
+        siguiente = t if d == 0 else t[::-1]
+        if metros(fin, siguiente[0]) < UNIR_M:
+            partes[-1].extend(siguiente[1:])
+        else:
+            partes.append(list(siguiente))
+    return partes
 
 
-def orientar(camino: list[tuple[float, float]], sentido) -> list[tuple[float, float]]:
+def orientar(partes: Camino, sentido) -> Camino:
     """Sentido de marcha. Con (principio, final) de la fuente (orden de los miembros de la relación o de
     la línea oficial), el recorrido empieza por el extremo más cercano al principio. Si no se sabe, se
     empieza por el extremo más bajo: en montaña las rutas lineales suelen subir desde el aparcamiento."""
-    ini, fin = camino[0], camino[-1]
+    ini, fin = partes[0][0], partes[-1][-1]
+    al_reves = [p[::-1] for p in partes[::-1]]
     if sentido:
         a, b = sentido
         if metros(a, b) > 200:
-            al_reves = metros(fin, a) + metros(ini, b) < metros(ini, a) + metros(fin, b)
-            return camino[::-1] if al_reves else camino
+            return al_reves if metros(fin, a) + metros(ini, b) < metros(ini, a) + metros(fin, b) else partes
     if metros(ini, fin) < 300:
-        return camino
+        return partes
     try:
         if horizonte.altura(fin[1], fin[0]) < horizonte.altura(ini[1], ini[0]) - 20:
-            return camino[::-1]
+            return al_reves
     except (requests.RequestException, TypeError):
         pass
-    return camino
+    return partes
 
 
 def partes_unidas(lineas: list[list[tuple[float, float]]]) -> list[list[tuple[float, float]]]:
@@ -137,26 +143,25 @@ def codificar(coords: list[tuple[float, float]], precision: int = 5) -> str:
     return "".join(salida)
 
 
-def muestrear(coords: list[tuple[float, float]], paso_m: float) -> list[tuple[float, float, float]]:
-    """Puntos cada `paso_m` metros a lo largo del recorrido: (lon, lat, distancia acumulada en m).
-    Los saltos de más de 500 m entre tramos no se recorren."""
-    puntos = [(coords[0][0], coords[0][1], 0.0)]
-    acum, resto = 0.0, 0.0
-    for a, b in zip(coords, coords[1:]):
-        d = metros(a, b)
-        if d > 500 and len(coords) > 2:   # salto entre tramos sueltos
-            puntos.append((b[0], b[1], acum))
-            resto = 0.0
-            continue
-        pos = paso_m - resto
-        while pos <= d:
-            f = pos / d
-            puntos.append((a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, acum + pos))
-            pos += paso_m
-        resto = d - (pos - paso_m)
-        acum += d
-    if puntos[-1][2] < acum:
-        puntos.append((coords[-1][0], coords[-1][1], acum))
+def muestrear(partes: Camino, paso_m: float) -> list[tuple[float, float, float]]:
+    """Puntos cada `paso_m` metros a lo largo del recorrido: (lon, lat, distancia acumulada en m). Los
+    huecos entre trozos no suman distancia."""
+    puntos: list[tuple[float, float, float]] = []
+    acum = 0.0
+    for coords in partes:
+        puntos.append((coords[0][0], coords[0][1], acum))
+        resto = 0.0
+        for a, b in zip(coords, coords[1:]):
+            d = metros(a, b)
+            pos = paso_m - resto
+            while pos <= d:
+                f = pos / d
+                puntos.append((a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, acum + pos))
+                pos += paso_m
+            resto = d - (pos - paso_m)
+            acum += d
+        if puntos[-1][2] < acum:
+            puntos.append((coords[-1][0], coords[-1][1], acum))
     return puntos
 
 
@@ -382,13 +387,14 @@ def fusionar(osm: list[dict], oficiales: list[dict]) -> list[dict]:
 # ---------------------------------------------------------------- cálculo ----
 def completar(r: dict, provincias) -> dict | None:
     """Recorrido, métricas y ubicación. None si la ruta no sirve (muy corta, fuera de España…)."""
-    camino = ordenar_tramos(r["tramos"])
-    if len(camino) < 2:
+    partes = ordenar_tramos(r["tramos"])
+    if not partes:
         return None
-    km = sum(longitud_m(t) for t in r["tramos"]) / 1000
+    km = sum(longitud_m(t) for t in partes) / 1000
     if km < 0.5 or km > 1500:
         return None
-    camino = orientar(camino, r.get("sentido"))
+    partes = orientar(partes, r.get("sentido"))
+    camino = [p for t in partes for p in t]
     ini, fin = camino[0], camino[-1]
     info = provincias.de(ini[1], ini[0]) or provincias.de(fin[1], fin[0])
     if not info:
@@ -397,7 +403,7 @@ def completar(r: dict, provincias) -> dict | None:
     if not info:
         return None
     # perfil: en rutas muy largas basta un punto cada ~100 m
-    pts = muestrear(simplificar(camino, 5), PASO_M if km < 60 else 100)
+    pts = muestrear([simplificar(t, 5) for t in partes], PASO_M if km < 60 else 100)
     alturas = []
     for lon, lat, _ in pts:
         try:
@@ -422,7 +428,6 @@ def completar(r: dict, provincias) -> dict | None:
     if circular:
         subida = bajada = max(subida, bajada)    # en una circular se sube lo que se baja
     horas = tiempo_mide(km, subida, bajada)
-    simple = simplificar(camino, SIMPLIFICAR_M)
     xs, ys = [c[0] for c in camino], [c[1] for c in camino]
     nombre = r["nombre"] or r["ref"]
     return {
@@ -436,9 +441,55 @@ def completar(r: dict, provincias) -> dict | None:
         "provincia": info["provincia"], "ccaa": ccaa_de(info["provincia"], info.get("ccaa")),
         "inicio": [round(ini[1], 5), round(ini[0], 5)], "fin": [round(fin[1], 5), round(fin[0], 5)],
         "bbox": [round(min(xs), 4), round(min(ys), 4), round(max(xs), 4), round(max(ys), 4)],
-        "perfil": perfil, "linea": codificar(simple),
-        "linea_mapa": codificar(simplificar(camino, SIMPLIFICAR_MAPA_M if km < 60 else 200)),
+        "perfil": perfil,
+        # trazado por trozos (los huecos no se dibujan)
+        "linea": [codificar(simplificar(t, SIMPLIFICAR_M)) for t in partes],
+        "linea_mapa": [codificar(simplificar(t, SIMPLIFICAR_MAPA_M if km < 60 else 200)) for t in partes
+                       if longitud_m(t) > 50 or len(partes) == 1],
     }
+
+
+PRIORIDAD_FUENTE = {"osm+fedme": 5, "fedme": 4, "osm+mapa": 3, "osm": 2, "mapa": 1}
+
+
+def quitar_duplicados(rutas: list[dict]) -> list[dict]:
+    """La misma ruta puede venir dos veces (la etapa del GR 131 como sendero FEDME y como Camino Natural;
+    tramos repetidos en los datos del Ministerio). Duplicado = salida y llegada a menos de 200 m (o
+    intercambiadas) y la misma distancia (± 5 %). Se queda la de mejor fuente; si las dos tienen código
+    oficial distinto (el GR 92 y el GR 249 comparten etapas) se quedan ambas."""
+    def clave(p):
+        return (round(p[0] / 0.002), round(p[1] / 0.002))
+    rejilla: dict[tuple[int, int], list[int]] = {}
+    for i, r in enumerate(rutas):
+        rejilla.setdefault(clave(r["inicio"]), []).append(i)
+    fuera = set()
+    orden = sorted(range(len(rutas)), key=lambda i: (-PRIORIDAD_FUENTE.get(rutas[i]["fuente"], 0),
+                                                       rutas[i]["ref"] is None, rutas[i]["id"]))
+    for i in orden:
+        if i in fuera:
+            continue
+        a = rutas[i]
+        cx, cy = clave(a["inicio"])
+        vecinos = [j for dx in (-1, 0, 1) for dy in (-1, 0, 1) for j in rejilla.get((cx + dx, cy + dy), [])]
+        # también los que empiezan donde esta acaba (recorrido al revés)
+        fx, fy = clave(a["fin"])
+        vecinos += [j for dx in (-1, 0, 1) for dy in (-1, 0, 1) for j in rejilla.get((fx + dx, fy + dy), [])]
+        for j in set(vecinos):
+            if j == i or j in fuera:
+                continue
+            b = rutas[j]
+            if abs(a["km"] - b["km"]) > 0.05 * max(a["km"], b["km"]):
+                continue
+            d = lambda p, q: metros((p[1], p[0]), (q[1], q[0]))
+            mismo = d(a["inicio"], b["inicio"]) < 200 and d(a["fin"], b["fin"]) < 200
+            reves = d(a["inicio"], b["fin"]) < 200 and d(a["fin"], b["inicio"]) < 200
+            if not (mismo or reves):
+                continue
+            if a["ref"] and b["ref"] and a["ref"] != b["ref"]:
+                continue
+            fuera.add(j)
+    print(f"      {len(fuera)} rutas duplicadas fuera", flush=True)
+    return [r for k, r in enumerate(rutas) if k not in fuera]
 
 
 SOLO_CODIGO = re.compile(r"^(?:(?:[A-Z]{0,4}[- ]?)?\d+(?:[.,]\d+)?[A-Z]?|\d+[- ]?[A-Z]{1,3})$", re.I)
@@ -513,6 +564,7 @@ def main():
         if r["id"] not in vistos:
             vistos.add(r["id"])
             unicas.append(r)
+    unicas = quitar_duplicados(unicas)
     nombrar(unicas)
     print("[4/4] Guardando…", flush=True)
     destino = Path(args.salida) / "rutas.json"

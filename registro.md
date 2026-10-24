@@ -356,3 +356,16 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
   límite de 1 GB de ficheros estáticos de Vercel. Las fichas se generan al visitarlas (ISR, `revalidate = false`)
   y `rutas.json` va en la función (`outputFileTracingIncludes`). La salida del build sigue en ~860 MB.
 - Orden por defecto «Destacadas»: senderos oficiales y señalizados primero (el alfabético empezaba por «02 SE»).
+
+## 2026-10-24 · Revisión: geometría de rutas, duplicados y tamaño del build
+- El perfil salía más corto que la ruta en 718 rutas: el muestreo tomaba las rectas de más de 500 m (vías
+  verdes, pistas simplificadas) por huecos entre tramos. Ahora el recorrido es una lista de trozos en orden de
+  marcha (se funden los que están a < 30 m); los huecos ni se recorren ni se dibujan (el trazado y el GPX van
+  por trozos: antes se unían con rectas falsas).
+- Duplicados (113 casos de misma salida, llegada y distancia: etapas del GR 131 que son también Camino
+  Natural, tramos repetidos del Ministerio): se queda la mejor fuente, salvo dos códigos oficiales distintos.
+- Rutas de más de 12 h de marcha (Camino Mozárabe, 416 km) se muestran en jornadas de ~7 h.
+- Los filtros de /rutas van en la URL: sobreviven a ir a una ruta y volver, y se pueden compartir.
+- Build: las fichas de spot ocupaban 803 MB (1500 × ~530 KB de HTML + RSC), a 100 MB del límite de Vercel.
+  Se prerenderizan solo las 60 del ranking de hoy; el resto, ISR como las rutas. Salida del build: 863 → 92 MB,
+  tiempo 165 → 32 s.

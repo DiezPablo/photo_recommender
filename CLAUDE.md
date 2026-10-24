@@ -12,7 +12,10 @@ explicable. Todo gratuito y **sin IA/LLM por decisión del usuario**. El encargo
   `rutas.py` (rutas de senderismo: extracto PBF de OSM + FEDME/Caminos Naturales del IGN → `rutas.json`;
   workflow `rutas.yml`, mensual), `validar.py` (validación histórica: ERA5 + fotos de Commons + METAR; workflow `validar.yml`, artefacto `validacion`).
   Antes de cambiar pesos de `puntuacion.py`, mira el informe de validación y no ajustes más allá del ruido.
-- Web Next.js 16 (App Router) en `src/`: páginas estáticas generadas en el build leyendo `public/datos`.
+- Web Next.js 16 (App Router) en `src/`: páginas generadas en el build leyendo `public/datos`, salvo las
+  fichas `/spot/[id]` (fuera del top del día) y `/ruta/[id]`, que se generan al visitarlas (ISR, caché hasta
+  el siguiente despliegue) para no pasar el límite de 1 GB de ficheros estáticos de Vercel; los JSON que leen
+  van en la función con `outputFileTracingIncludes` (`next.config.ts`).
   `src/lib/datos.ts` solo servidor (usa `fs`); los componentes de cliente importan de `src/lib/modelo.ts`.
   Rutas: `/` (= `/dia/0/todos`), `/dia/[d]/[tipo]`, `/spot/[id]`, `/acerca`, `/rutas`, `/rutas/[ccaa]`,
   `/ruta/[id]` (JSON estáticos: `/datos-rutas/indice` y `/datos-rutas/celda/[c]`, trazados por celdas de 1°). Filtros de día y tipo son

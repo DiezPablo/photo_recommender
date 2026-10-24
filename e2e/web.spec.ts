@@ -194,3 +194,15 @@ test("rutas sin JavaScript: listado por comunidad y ficha", async ({ browser, ba
   await expect(page.locator(".perfil-ruta svg")).toBeVisible();
   await ctx.close();
 });
+
+test("rutas: los filtros sobreviven a ir a una ruta y volver", async ({ page }) => {
+  await page.goto("/rutas");
+  await expect(page.locator(".fila-ruta").first()).toBeVisible();
+  await page.getByPlaceholder(/Nombre/).fill("Peñalara");
+  await expect(page).toHaveURL(/q=Pe%C3%B1alara|q=Peñalara/);
+  await page.locator(".fila-ruta").first().click();
+  await expect(page).toHaveURL(/\/ruta\//);
+  await page.goBack();
+  await expect(page.getByPlaceholder(/Nombre/)).toHaveValue("Peñalara");
+  await expect(page.locator(".fila-ruta").first()).toContainText(/Peñalara/i);
+});

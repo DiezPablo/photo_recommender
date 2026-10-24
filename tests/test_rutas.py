@@ -14,18 +14,41 @@ def test_codificar_ejemplo_de_google():
 
 def test_ordenar_tramos_une_y_da_la_vuelta():
     a = [(0.0, 0.0), (0.0, 0.01)]
-    b = [(0.0, 0.02), (0.0, 0.01)]          # al revés
-    c = [(0.0, 0.03), (0.0, 0.02)]          # al revés
-    camino = R.ordenar_tramos([b, a, c])
+    b = [(0.0, 0.02), (0.0, 0.01)]          # al revés y contiguo: se funde
+    c = [(0.0, 0.05), (0.0, 0.04)]          # al revés y separado ~3 km: trozo aparte
+    partes = R.ordenar_tramos([b, c, a])
+    assert len(partes) == 2
+    camino = [p for t in partes for p in t]
     lats = [p[1] for p in camino]
     assert lats == sorted(lats) or lats == sorted(lats, reverse=True)
-    assert {camino[0][1], camino[-1][1]} == {0.0, 0.03}
 
 
 def test_orientar_por_sentido_de_la_fuente():
-    camino = [(0.0, 0.0), (0.0, 0.01), (0.0, 0.02)]
-    assert R.orientar(camino, ((0.0, 0.02), (0.0, 0.0)))[0] == (0.0, 0.02)
-    assert R.orientar(camino, ((0.0, 0.0), (0.0, 0.02)))[0] == (0.0, 0.0)
+    partes = [[(0.0, 0.0), (0.0, 0.01)], [(0.0, 0.03), (0.0, 0.04)]]
+    al_reves = R.orientar(partes, ((0.0, 0.04), (0.0, 0.0)))
+    assert al_reves[0][0] == (0.0, 0.04) and al_reves[-1][-1] == (0.0, 0.0)
+    assert R.orientar(partes, ((0.0, 0.0), (0.0, 0.04))) is partes
+
+
+def test_muestrear_no_cuenta_los_huecos_ni_corta_rectas_largas():
+    # una recta de 2 km (como una vía verde simplificada) no es un hueco
+    recta = [[(0.0, 0.0), (0.0, 0.018)]]
+    pts = R.muestrear(recta, 30)
+    assert pts[-1][2] == pytest.approx(R.metros((0.0, 0.0), (0.0, 0.018)))
+    # dos trozos de ~1 km separados por ~3 km: la distancia es ~2 km
+    dos = [[(0.0, 0.0), (0.0, 0.009)], [(0.0, 0.036), (0.0, 0.045)]]
+    total = R.muestrear(dos, 30)[-1][2]
+    assert total == pytest.approx(2 * R.metros((0.0, 0.0), (0.0, 0.009)), rel=0.01)
+
+
+def test_quitar_duplicados():
+    base = {"km": 10.0, "inicio": [40.0, -4.0], "fin": [40.05, -4.0], "ref": None}
+    fedme = {**base, "id": "fedme-1", "fuente": "fedme", "ref": "GR 131"}
+    mapa = {**base, "id": "mapa-1", "fuente": "mapa", "km": 10.2, "inicio": [40.05, -4.0], "fin": [40.0, -4.0]}
+    gr249 = {**base, "id": "fedme-2", "fuente": "fedme", "ref": "GR 249"}
+    otra = {**base, "id": "osm-9", "fuente": "osm", "km": 14.0}
+    ids = [r["id"] for r in R.quitar_duplicados([mapa, fedme, gr249, otra])]
+    assert sorted(ids) == ["fedme-1", "fedme-2", "osm-9"]
 
 
 def test_desnivel_ignora_ruido_del_dem():
@@ -44,7 +67,7 @@ def test_tiempo_mide():
 
 def test_muestrear_cada_30_m():
     coords = [(0.0, 0.0), (0.0, 0.009)]        # ~1 km hacia el norte
-    pts = R.muestrear(coords, 30)
+    pts = R.muestrear([coords], 30)
     assert 33 <= len(pts) <= 36
     assert pts[-1][2] == pytest.approx(R.metros(coords[0], coords[1]))
 

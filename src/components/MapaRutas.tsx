@@ -4,7 +4,7 @@
 //  - una ruta: su trazado con inicio y final.
 import { useEffect, useRef, useState } from "react";
 import type { LayerGroup, Map as LMap } from "leaflet";
-import { celda, decodificar, type FilaRuta, type TipoRuta } from "@/lib/modeloRutas";
+import { celda, type FilaRuta, type TipoRuta, trozos } from "@/lib/modeloRutas";
 import { leerUbicacion } from "@/lib/ubicacion";
 
 const ZOOM_TRAZADOS = 10;
@@ -27,14 +27,14 @@ export default function MapaRutas({ filas, ruta, alto }: {
   /** modo general: rutas visibles (ya filtradas) */
   filas?: FilaRuta[];
   /** modo una ruta */
-  ruta?: { id: string; nombre: string; linea: string; tipo: TipoRuta };
+  ruta?: { id: string; nombre: string; linea: string | string[]; tipo: TipoRuta };
   alto?: string;
 }) {
   const caja = useRef<HTMLDivElement>(null);
   const mapa = useRef<LMap | null>(null);
   const puntos = useRef<LayerGroup | null>(null);
   const lineas = useRef<LayerGroup | null>(null);
-  const celdas = useRef(new Map<string, { id: string; nombre: string; tipo: TipoRuta; l: string }[]>());
+  const celdas = useRef(new Map<string, { id: string; nombre: string; tipo: TipoRuta; l: string | string[] }[]>());
   const encuadrado = useRef(false);
   const [listo, setListo] = useState(false);
   const [vista, setVista] = useState(0);
@@ -75,10 +75,11 @@ export default function MapaRutas({ filas, ruta, alto }: {
       const L = (await import("leaflet")).default;
       const g = lineas.current!;
       g.clearLayers();
-      const pts = decodificar(ruta.linea);
+      const partes = trozos(ruta.linea);
+      const pts = partes.flat();
       const color = colorTipo(ruta.tipo);
-      L.polyline(pts, { color: getComputedStyle(document.documentElement).getPropertyValue("--fondo").trim(), weight: 7, opacity: 0.9 }).addTo(g);
-      L.polyline(pts, { color, weight: 4 }).addTo(g);
+      L.polyline(partes, { color: getComputedStyle(document.documentElement).getPropertyValue("--fondo").trim(), weight: 7, opacity: 0.9 }).addTo(g);
+      L.polyline(partes, { color, weight: 4 }).addTo(g);
       const marca = (p: [number, number], texto: string, clase: string) =>
         L.marker(p, { icon: L.divIcon({ className: "", html: `<div class="marca-ruta ${clase}">${texto}</div>`, iconSize: [22, 22], iconAnchor: [11, 11] }), title: texto === "S" ? "Salida" : "Llegada" }).addTo(g);
       marca(pts[pts.length - 1], "F", "fin");
@@ -148,7 +149,7 @@ export default function MapaRutas({ filas, ruta, alto }: {
       for (const c of necesarias)
         for (const t of celdas.current.get(c) ?? []) {
           if (!visibles.has(t.id)) continue;
-          L.polyline(decodificar(t.l), { color: colorTipo(t.tipo), weight: 3, opacity: 0.85 }).bindPopup(popup(t)).addTo(g);
+          L.polyline(trozos(t.l), { color: colorTipo(t.tipo), weight: 3, opacity: 0.85 }).bindPopup(popup(t)).addTo(g);
         }
     })();
     return () => { cancelado = true; };

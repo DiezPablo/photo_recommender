@@ -34,16 +34,46 @@ export default function ExploradorRutas({ comunidades }: { comunidades: string[]
   const [limite, setLimite] = useState(POR_PAGINA);
   const [estado, setEstado] = useState("");
 
+  const [listoUrl, setListoUrl] = useState(false);
+
+  // Filtros en la URL (?q=&ccaa=&tipo=&km=&dif=&circular=1&orden=): al volver desde una ruta siguen ahí y
+  // una búsqueda se puede compartir. Se lee al cargar y se escribe con replaceState (sin recargar).
+  useEffect(() => {
+    const p = new URLSearchParams(window.location.search);
+    if (p.get("q")) setTexto(p.get("q")!);
+    if (p.get("ccaa")) setCcaa(p.get("ccaa")!);
+    if (p.get("tipo")) setTipos(new Set(p.get("tipo")!.split(",").filter((t) => TIPOS_RUTA.includes(t as TipoRuta)) as TipoRuta[]));
+    if (p.get("km")) setRango(p.get("km")!);
+    if (p.get("dif")) setDif(p.get("dif")!);
+    if (p.get("circular")) setCircular(true);
+    if (p.get("orden")) setOrden(p.get("orden") as typeof orden);
+    setListoUrl(true);
+  }, []);
+
+  useEffect(() => {
+    if (!listoUrl) return;
+    const p = new URLSearchParams();
+    if (texto.trim()) p.set("q", texto.trim());
+    if (ccaa) p.set("ccaa", ccaa);
+    if (tipos.size) p.set("tipo", [...tipos].join(","));
+    if (rango) p.set("km", rango);
+    if (dif) p.set("dif", dif);
+    if (circular) p.set("circular", "1");
+    if (orden !== "destacadas" && orden !== "cerca") p.set("orden", orden);
+    const q = p.toString();
+    window.history.replaceState(window.history.state, "", q ? `?${q}` : window.location.pathname);
+  }, [listoUrl, texto, ccaa, tipos, rango, dif, circular, orden]);
+
   useEffect(() => {
     fetch("/datos-rutas/indice").then((r) => (r.ok ? r.json() : Promise.reject())).then(setTodas).catch(() => setError(true));
     const u = leerUbicacion();
     setUbic(u);
     if (u) {
-      setOrden("cerca");
+      if (!new URLSearchParams(window.location.search).get("orden")) setOrden("cerca");
       setRadio(50);
     }
     try {
-      setCcaa(localStorage.getItem("rutas-ccaa") ?? "");
+      if (!new URLSearchParams(window.location.search).get("ccaa")) setCcaa(localStorage.getItem("rutas-ccaa") ?? "");
     } catch {}
   }, []);
 
