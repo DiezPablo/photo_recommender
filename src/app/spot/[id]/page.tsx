@@ -231,7 +231,7 @@ export default async function PaginaSpot({ params }: Props) {
   const vista = azimutVista(desc?.direccion_vista);
   const lineas: LineaMapa[] = [];
   if (hoy?.sol.az_amanecer != null) lineas.push({ azimut: hoy.sol.az_amanecer, km: 6, color: "var(--sol)", etiqueta: `Salida del sol (${rumbo(hoy.sol.az_amanecer)})` });
-  if (hoy?.sol.az_atardecer != null) lineas.push({ azimut: hoy.sol.az_atardecer, km: 6, color: "var(--acento)", etiqueta: `Puesta del sol (${rumbo(hoy.sol.az_atardecer)})` });
+  if (hoy?.sol.az_atardecer != null) lineas.push({ azimut: hoy.sol.az_atardecer, km: 6, color: "var(--n-top)", etiqueta: `Puesta del sol (${rumbo(hoy.sol.az_atardecer)})` });
   if (hoy?.noche.via_lactea.azimut_max != null) lineas.push({ azimut: hoy.noche.via_lactea.azimut_max, km: 4, color: "var(--vl)", etiqueta: "Núcleo de la Vía Láctea en su punto más alto", discontinua: true });
   if (vista !== null) lineas.push({ azimut: vista, km: 3, color: "var(--texto-2)", etiqueta: "Orientación de la vista (OSM)", discontinua: true });
   const portada = desc?.galeria?.[0] ?? null;
@@ -308,7 +308,7 @@ export default async function PaginaSpot({ params }: Props) {
           <MapaSpot punto={{ id: spot.id, nombre: spot.nombre, lat: spot.lat, lon: spot.lon, clase: "n-top" }} lineas={lineas} />
           <div className="leyenda-mapa">
             <span><i style={{ background: "var(--sol)" }} />Salida del sol {rumbo(hoy?.sol.az_amanecer)}</span>
-            <span><i style={{ background: "var(--acento)" }} />Puesta {rumbo(hoy?.sol.az_atardecer)}</span>
+            <span><i style={{ background: "var(--n-top)" }} />Puesta {rumbo(hoy?.sol.az_atardecer)}</span>
             {hoy?.noche.via_lactea.azimut_max != null && <span><i style={{ background: "var(--vl)" }} />Vía Láctea</span>}
             {vista !== null && <span><i style={{ background: "var(--texto-2)" }} />Vista (OSM)</span>}
           </div>
@@ -360,7 +360,7 @@ export default async function PaginaSpot({ params }: Props) {
             angulos={desc.horizonte.angulos}
             marcas={[
               ...(hoy?.sol.az_amanecer != null ? [{ azimut: hoy.sol.az_amanecer, texto: `Sale el sol ${hoy.sol.amanecer_relieve ?? hoy.sol.amanecer}`, color: "var(--sol)" }] : []),
-              ...(hoy?.sol.az_atardecer != null ? [{ azimut: hoy.sol.az_atardecer, texto: `Se pone ${hoy.sol.atardecer_relieve ?? hoy.sol.atardecer}`, color: "var(--acento)" }] : []),
+              ...(hoy?.sol.az_atardecer != null ? [{ azimut: hoy.sol.az_atardecer, texto: `Se pone ${hoy.sol.atardecer_relieve ?? hoy.sol.atardecer}`, color: "var(--n-top)" }] : []),
               ...(hoy?.noche.luna.evento ? [{ azimut: hoy.noche.luna.evento.azimut, texto: `Luna ${hoy.noche.luna.evento.hora}`, color: "var(--luna)", altura: hoy.noche.luna.evento.horizonte }] : []),
               ...(hoy?.noche.via_lactea.azimut_max != null ? [{ azimut: hoy.noche.via_lactea.azimut_max, texto: `Vía Láctea ${hoy.noche.via_lactea.hora_max}`, color: "var(--vl)", altura: hoy.noche.via_lactea.altura_max ?? undefined }] : []),
             ]}

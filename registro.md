@@ -369,3 +369,12 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
 - Build: las fichas de spot ocupaban 803 MB (1500 × ~530 KB de HTML + RSC), a 100 MB del límite de Vercel.
   Se prerenderizan solo las 60 del ranking de hoy; el resto, ISR como las rutas. Salida del build: 863 → 92 MB,
   tiempo 165 → 32 s.
+
+## 2026-10-24 · Fuera el rojo: hora dorada y hora azul
+- Al usuario no le gustaba el rojo. Además comunicaba alarma justo en las notas excelentes. Nueva paleta con
+  sentido fotográfico: **hora dorada** para la escala de notas (gris → arena → ámbar → bronce dorado) y **hora
+  azul** para la interfaz (acento, foco, selección, ubicación). Logo y favicon: sol dorado.
+- Legibilidad: en tema claro las cifras de nota se mezclan un 16 % con la tinta (el ámbar puro sobre papel no
+  llega al contraste de texto); en oscuro van puras y la casilla excelente lleva texto oscuro sobre dorado.
+- La puesta de sol (mapa y horizonte) pasa del acento a bronce: una puesta no puede ser azul.
+- Se mantienen el modo rojo nocturno (funcional) y el rojo de los GR (es la marca oficial del sendero).

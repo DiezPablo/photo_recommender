@@ -1,5 +1,6 @@
 /* Rasante — estilos. Dirección: almanaque de campo. Papel y tinta, filetes en vez de tarjetas, cifras
-   estrechas y una sola escala de color, la de la luz: gris (floja) → ocre → naranja → bermellón (excelente).
+   estrechas y dos colores con sentido para un fotógrafo: la hora dorada para las notas (gris → arena → ámbar →
+   bronce dorado) y la hora azul para la interfaz (acento, foco, selección).
    Tres temas: claro, oscuro y "noche" (solo rojos sobre negro, para no perder la adaptación a la oscuridad). */
 
 :root {
@@ -10,21 +11,23 @@
   --texto: #141413;
   --texto-2: #57554f;
   --texto-3: #8c8981;
-  --acento: #d8461b;
-  --acento-suave: #f6dfd3;
+  --acento: #2c4f8a;
+  --acento-suave: #dfe6f2;
   --enlace: #141413;
-  --sol: #e0821b;
+  --sol: #e3a020;
   --luna: #5d6b88;
   --vl: #6a4fb3;
   --suma: #2c7a4b;
-  --resta: #c0392b;
-  --n-top: #c42d12;
-  --n-buena: #e2621f;
-  --n-regular: #c4913f;
-  --n-floja: #a29f97;
+  --resta: #b0533c;
+  --n-top: #b07410;
+  --n-buena: #e0a53a;
+  --n-regular: #d5c49a;
+  --n-floja: #a8a49b;
   --n-texto: #fff;
-  --tinte-regular: color-mix(in srgb, var(--n-regular) 20%, var(--fondo));
-  --tinte-buena: color-mix(in srgb, var(--n-buena) 34%, var(--fondo));
+  --n-top-texto: #fff;
+  --mezcla-nota: 84%;     /* las cifras se oscurecen con la tinta: el ámbar sobre papel claro se lee mal */
+  --tinte-regular: color-mix(in srgb, var(--n-regular) 30%, var(--fondo));
+  --tinte-buena: color-mix(in srgb, var(--n-buena) 38%, var(--fondo));
   --sombra: none;
   --mapa-filtro: grayscale(0.85) contrast(0.92) brightness(1.04);
   --foto-filtro: none;
@@ -54,20 +57,22 @@
     --texto: #ecebe6;
     --texto-2: #a9a7a0;
     --texto-3: #6f6d67;
-    --acento: #ff6a3d;
-    --acento-suave: #3a1a10;
+    --acento: #8fb1ea;
+    --acento-suave: #1b2740;
     --enlace: #ecebe6;
     --sol: #f2a541;
     --luna: #a9b7d6;
     --vl: #a98bf0;
     --suma: #5fc48a;
-    --resta: #ff7b6b;
-    --n-top: #ff4f2b;
-    --n-buena: #f47c38;
-    --n-regular: #c99a52;
+    --resta: #e58a72;
+    --n-top: #f3b642;
+    --n-buena: #c98f35;
+    --n-regular: #7f6f4f;
     --n-floja: #5c5b57;
-    --tinte-regular: color-mix(in srgb, var(--n-regular) 18%, var(--fondo));
-    --tinte-buena: color-mix(in srgb, var(--n-buena) 30%, var(--fondo));
+    --n-top-texto: #1a1305;
+    --mezcla-nota: 100%;
+    --tinte-regular: color-mix(in srgb, var(--n-regular) 30%, var(--fondo));
+    --tinte-buena: color-mix(in srgb, var(--n-buena) 34%, var(--fondo));
     --mapa-filtro: grayscale(1) invert(1) brightness(0.82) contrast(0.88);
     --cielo-noche: #090b14;
     --cielo-azul: #2c4370;
@@ -85,20 +90,22 @@
   --texto: #ecebe6;
   --texto-2: #a9a7a0;
   --texto-3: #6f6d67;
-  --acento: #ff6a3d;
-  --acento-suave: #3a1a10;
+  --acento: #8fb1ea;
+  --acento-suave: #1b2740;
   --enlace: #ecebe6;
   --sol: #f2a541;
   --luna: #a9b7d6;
   --vl: #a98bf0;
   --suma: #5fc48a;
-  --resta: #ff7b6b;
-  --n-top: #ff4f2b;
-  --n-buena: #f47c38;
-  --n-regular: #c99a52;
+  --resta: #e58a72;
+  --n-top: #f3b642;
+  --n-buena: #c98f35;
+  --n-regular: #7f6f4f;
   --n-floja: #5c5b57;
-  --tinte-regular: color-mix(in srgb, var(--n-regular) 18%, var(--fondo));
-  --tinte-buena: color-mix(in srgb, var(--n-buena) 30%, var(--fondo));
+  --n-top-texto: #1a1305;
+  --mezcla-nota: 100%;
+  --tinte-regular: color-mix(in srgb, var(--n-regular) 30%, var(--fondo));
+  --tinte-buena: color-mix(in srgb, var(--n-buena) 34%, var(--fondo));
   --mapa-filtro: grayscale(1) invert(1) brightness(0.82) contrast(0.88);
   --cielo-noche: #090b14;
   --cielo-azul: #2c4370;
@@ -109,6 +116,8 @@
 
 /* Modo noche: solo rojos, sin blancos ni azules, brillo mínimo */
 :root[data-tema="noche"] {
+  --mezcla-nota: 100%;
+  --n-top-texto: #000;
   --t-gr: #ff3b30;
   --t-pr: #c9251e;
   --t-sl: #8a0f0b;
@@ -163,7 +172,7 @@ h1, h2, h3 { line-height: 1.1; margin: 0; font-weight: 650; letter-spacing: -0.0
 p { margin: 0; }
 :focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-::selection { background: var(--acento); color: #fff; }
+::selection { background: var(--acento); color: var(--fondo); }
 
 /* Rótulo: la voz de "instrumento" (mono, versalitas pequeñas) */
 .rotulo {
@@ -174,7 +183,8 @@ h2.rotulo, h3.rotulo { font-weight: 500; letter-spacing: 0.07em; }
 /* Cifras: notas en Archivo estrecha, teñidas por la escala */
 .cifra {
   font-family: var(--f-cuerpo); font-variation-settings: "wdth" 72; font-weight: 700; font-size: 1.6rem;
-  line-height: 0.9; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: var(--color-nota);
+  line-height: 0.9; letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
+  color: color-mix(in oklab, var(--color-nota) var(--mezcla-nota), var(--texto));
 }
 .cifra.grande { font-size: 3rem; }
 .cifra.enorme { font-size: clamp(4.5rem, 12vw, 6.5rem); letter-spacing: -0.04em; }
@@ -272,7 +282,7 @@ h2.rotulo, h3.rotulo { font-weight: 500; letter-spacing: 0.07em; }
 }
 .alm-celda.n-regular { background: var(--tinte-regular); color: var(--texto-2); }
 .alm-celda.n-buena { background: var(--tinte-buena); color: var(--texto); }
-.alm-celda.n-top { background: var(--n-top); color: var(--n-texto); font-weight: 500; }
+.alm-celda.n-top { background: var(--n-top); color: var(--n-top-texto); font-weight: 500; }
 .alm-celda:hover { box-shadow: inset 0 0 0 1px var(--texto); }
 .alm-celda.actual { box-shadow: inset 0 0 0 2px var(--texto); }
 .alm-celda.vacia { color: var(--borde); }
@@ -329,9 +339,10 @@ select.boton { padding-right: 6px; }
 .mapa-caja .leaflet-bar a:hover { background: var(--superficie-2); }
 .marcador {
   border-radius: 50%; display: grid; place-items: center; background: var(--color-nota);
-  font: 600 11px var(--f-datos); color: var(--n-texto); border: 1.5px solid var(--fondo);
+  font: 600 11px var(--f-datos); color: #1d1608; border: 1.5px solid var(--fondo);
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--texto) 50%, transparent);
 }
+.marcador.n-top { color: var(--n-top-texto); }
 .marcador.pequeno { box-shadow: none; opacity: 0.9; }
 
 /* -------------------------------------------------------------------- ficha */
