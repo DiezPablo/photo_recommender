@@ -378,3 +378,12 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
   llega al contraste de texto); en oscuro van puras y la casilla excelente lleva texto oscuro sobre dorado.
 - La puesta de sol (mapa y horizonte) pasa del acento a bronce: una puesta no puede ser azul.
 - Se mantienen el modo rojo nocturno (funcional) y el rojo de los GR (es la marca oficial del sendero).
+
+## 2026-10-25 · Toque más moderno
+- De «almanaque de filetes» a tarjetas: superficies blancas con esquinas de 18/12/8 px y sombra suave sobre el
+  papel cálido; filetes negros fuera. La identidad se mantiene (Archivo, cifras estrechas, hora dorada y azul).
+- Rótulos en sans en versalitas (la mono queda para cifras y datos: almanaque, horas, desglose).
+- Cabecera translúcida con desenfoque; navegación y selector de tema en cápsulas (segmented control).
+- Mapa como tarjeta flotante y fija en escritorio; botones, campos y chips redondeados con foco visible;
+  acciones principales en cápsula negra; micro-transiciones (respetan `prefers-reduced-motion`).
+- Almanaque con celdas redondeadas separadas; casilla actual con anillo azul; días de la ficha como acordeones.
