@@ -15,10 +15,13 @@ explicable. Todo gratuito y **sin IA/LLM por decisión del usuario**. El encargo
   `src/lib/datos.ts` solo servidor (usa `fs`); los componentes de cliente importan de `src/lib/modelo.ts`.
   Rutas: `/` (= `/dia/0/todos`), `/dia/[d]/[tipo]`, `/spot/[id]`, `/acerca`. Filtros de día y tipo son
   enlaces (funcionan sin JS); distancia y mapa (Leaflet, import dinámico) necesitan JS.
-- Workflows: `datos.yml` (cada 3 h y al cambiar el código de notas), `descubrir.yml` (mensual y al cambiar
-  el código de descubrimiento), `pruebas.yml` (pytest + typecheck + build + Playwright).
-  `datos` y `descubrir` comparten grupo de concurrencia y hacen commit de `public/datos` a `main`;
-  Vercel redespliega con cada commit.
+- Workflows: `datos.yml` (2 veces al día y al cambiar el código de notas), `descubrir.yml` (mensual y al
+  cambiar el código de descubrimiento; `descubrir_espana.py`, ~1500 spots de toda España, 4-5 h),
+  `pruebas.yml` (pytest + typecheck + build + Playwright).
+  Los datos (`informe.json`, `spots.geojson`, `spots.csv`) **no van en git**: se suben a la release `datos`
+  (`.github/scripts/publicar_release.sh`) y solo se hace commit de `public/datos/version.json`, que
+  dispara el redespliegue de Vercel. `npm run build` los descarga antes (prebuild; `SIN_DESCARGA=1` usa
+  los locales).
 
 ## Probar
 - `python -m pytest -q` (sin red: respuestas reales guardadas en `tests/fixtures`; astronomía
@@ -36,4 +39,6 @@ explicable. Todo gratuito y **sin IA/LLM por decisión del usuario**. El encargo
 - Respetar límites de las APIs: caché en `cache/`, `Retry-After` y `maxlag` en Commons, User-Agent
   descriptivo, espejos de Overpass. Desde el contenedor de desarrollo Commons limita mucho (429):
   el descubrimiento real corre en GitHub Actions.
-- No hacer commit de `public/datos` a mano si Actions está publicando (conflictos): `git pull` primero.
+- `git pull` antes de hacer push: Actions hace commits de `public/datos/version.json`.
+- Comunidad autónoma siempre con `comun.ccaa_de` (código INE de provincia); los spots en países vecinos
+  se descartan con `datos_base/vecinos.geojson`.

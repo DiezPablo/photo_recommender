@@ -12,3 +12,8 @@ playwright-report/
 *.tsbuildinfo
 next-env.d.ts
 capturas/
+
+# Datos generados: se publican en la release «datos» y se descargan al construir (scripts/descargar-datos.mjs)
+public/datos/informe.json
+public/datos/spots.geojson
+public/datos/spots.csv
