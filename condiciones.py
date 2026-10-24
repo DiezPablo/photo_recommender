@@ -39,7 +39,7 @@ import pandas as pd
 import requests
 
 import astro
-from comun import USER_AGENT, escribir_json, id_spot
+from comun import USER_AGENT, ccaa_de, escribir_json, id_spot
 from contaminacion import contaminacion, cupula
 import horizonte as hzmod
 from puntuacion import KM_CAMINO, _v, capa_nubosa, nota_astro, nota_luna, nota_luz, nota_niebla
@@ -108,7 +108,7 @@ def cargar_spots(geojson: Path | None, csv: Path | None) -> list[dict]:
                           "lat": lat, "lon": lon, "tipo": p.get("tipo_osm"),
                           "origen": p.get("origen") or "commons",
                           "contaminacion": p.get("contaminacion"), "relieve": p.get("horizonte"),
-                          "provincia": p.get("provincia"), "ccaa": p.get("ccaa")})
+                          "provincia": p.get("provincia"), "ccaa": ccaa_de(p.get("provincia"), p.get("ccaa"))})
     if csv and csv.exists():
         df = pd.read_csv(csv, comment="#", skip_blank_lines=True)
         for r in df.itertuples():

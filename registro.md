@@ -305,3 +305,18 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
   ejecuciones gracias a la caché).
 - Cayó en la última fase (galerías, ~1450/1500) por `int(NaN or 0)`: en Python NaN es «verdadero».
   Corregido con `_entero()` y prueba. La caché se guardó, así que el reintento reutiliza Commons y el DEM.
+
+## 2026-10-24 · Primer descubrimiento nacional publicado (1500 spots) y correcciones
+- Terminó bien (run 40021211378): 1500 spots en las 52 provincias, todos con horizonte y contaminación
+  lumínica, 1193 con fotos. Pero al revisarlos por comunidad:
+  - **Comunidades cruzadas**: `datos_base/provincias.geojson` traía un código de comunidad con otra numeración
+    y se le puso el nombre según el INE (Asturias → «Ceuta», A Coruña → «Comunitat Valenciana»). Ahora la
+    comunidad sale del código INE de provincia (`comun.CCAA_POR_PROVINCIA`, `ccaa_de`), también en
+    `condiciones.py`, así que el informe se corrige sin esperar al descubrimiento.
+  - **Spots en Portugal** (Marvão, São Mamede, Poço do Inferno) por los polígonos simplificados en la raya:
+    se descartan los puntos dentro de un país vecino (Natural Earth 10m, `datos_base/vecinos.geojson`,
+    con 200 m de margen; los del mar se mantienen, que son cabos y faros).
+  - **Sesgo urbano**: contar fotos de Commons a 500 m premia los centros de ciudad («Mural», «calle de los
+    cuchilleros», Madrid centro). Se resta según el cielo del atlas (−1,6 bajo 18,5 mag/″², −0,9 bajo 19,5,
+    −0,3 bajo 20,5, +0,3 desde 21,3): los iconos urbanos con cientos de fotos siguen entrando.
+  - **Nombres genéricos** de OSM fuera («Mural», «Picnic», «Spotting», «Begiratokia»…).

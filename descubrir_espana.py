@@ -38,7 +38,7 @@ from shapely.strtree import STRtree
 
 import descubrir_spots as D
 import horizonte
-from comun import USER_AGENT, escribir_json, id_spot
+from comun import USER_AGENT, ccaa_de, escribir_json, id_spot
 from contaminacion import contaminacion
 
 WIKIDATA = "https://query.wikidata.org/sparql"
@@ -61,6 +61,36 @@ FILTROS_OSM = [
     ('node["natural"="cape"]["name"]', "cabo"),
     ('way["natural"="cliff"]["name"]', "acantilado"),
 ]
+VECINOS = Path(__file__).parent / "datos_base" / "vecinos.geojson"
+
+# Nombres que no identifican un lugar (OSM): «Mirador», «Mural», «Picnic», «Begiratokia» (mirador en euskera)…
+NOMBRE_GENERICO = re.compile(
+    r"^(?:(?:el|la|los|las)\s+)?(?:mirador(?:\s+(?:del?\s+)?(?:r[ií]o|valle|mar|pueblo|lago|embalse))?|miradoiro|miranda|"
+    r"begiratoki(?:a)?|talaia|viewpoint|view\s*point|vista|vistas|panor[aá]mica|panorama|mural|picnic|merendero|"
+    r"spotting|bandera|cascada|salto|playa|cala|faro|cumbre|pico|caseta|balc[oó]n(?:\s+mirador)?|"
+    r"paisaje(?:\s+din[aá]mico)?|torre|cruz|ermita|fuente|puente)$", re.I)
+# Calles, aparcamientos, terrazas de bar…: no son spots de paisaje
+NOMBRE_EXCLUIR = re.compile(r"\b(?:calle|avenida|avda|parking|aparcamiento|terraza|bar|restaurante|hotel)\b", re.I)
+
+
+def nombre_valido(nombre: str) -> bool:
+    n = re.sub(r"\s+", " ", str(nombre)).strip(" .,-")
+    return len(n) >= 4 and not NOMBRE_GENERICO.match(n) and not NOMBRE_EXCLUIR.search(n)
+
+
+def ajuste_cielo(lat: float, lon: float) -> float:
+    """Penalización por cielo urbano (atlas de Lorenz): el recuento de fotos premia los centros de ciudad,
+    que son malos sitios para paisaje y nocturna. Un icono urbano con cientos de fotos sigue entrando."""
+    try:
+        lp = contaminacion(lat, lon)
+    except requests.RequestException:
+        return 0.0
+    if not lp:
+        return 0.0
+    sqm = lp["sqm"]
+    return -1.6 if sqm < 18.5 else -0.9 if sqm < 19.5 else -0.3 if sqm < 20.5 else 0.3 if sqm >= 21.3 else 0.0
+
+
 PESO_TIPO = {"mirador": 1.0, "cabo": 0.8, "faro": 0.6, "acantilado": 0.6, "cumbre": 0.5, "lago": 0.6,
              "cascada": 0.4, "cañón": 0.6, "playa": 0.3, "embalse": 0.3}
 SESION = requests.Session()
@@ -69,14 +99,19 @@ SESION.headers["User-Agent"] = USER_AGENT
 
 # ------------------------------------------------------------ provincias ----
 class Provincias:
-    def __init__(self, ruta: Path = PROVINCIAS):
+    def __init__(self, ruta: Path = PROVINCIAS, vecinos: Path = VECINOS):
         fs = json.loads(ruta.read_text())["features"]
         self.geoms = [shape(f["geometry"]) for f in fs]
         self.props = [f["properties"] for f in fs]
         self.arbol = STRtree(self.geoms)
+        # Los polígonos de provincias están simplificados y en la raya se meten en Portugal (Marvão salía
+        # en Cáceres): fuera lo que cae dentro de un país vecino a más de ~200 m de su borde.
+        self.fuera = [shape(f["geometry"]).buffer(-0.002) for f in json.loads(vecinos.read_text())["features"]]
 
     def de(self, lat: float, lon: float) -> dict | None:
         p = Point(lon, lat)
+        if any(g.contains(p) for g in self.fuera):
+            return None
         for i in self.arbol.query(p):
             if self.geoms[i].contains(p):
                 return self.props[i]
@@ -282,8 +317,10 @@ def main():
     prov = Provincias()
     info = [prov.de(r.lat, r.lon) for r in cand.itertuples()]
     cand["provincia"] = [i["provincia"] if i else None for i in info]
-    cand["ccaa"] = [i["ccaa"] if i else None for i in info]
-    cand = cand[cand.provincia.notna() & cand.nombre.notna()].reset_index(drop=True)
+    cand["ccaa"] = [ccaa_de(i["provincia"], i["ccaa"]) if i else None for i in info]
+    cand = cand[cand.provincia.notna() & cand.nombre.notna()]
+    cand = cand[[nombre_valido(D.limpiar_nombre(n) if f == "osm" else n) for n, f in zip(cand.nombre, cand.fuente)]]
+    cand = cand.reset_index(drop=True)
     print(f"      {len(cand)} candidatos en España", flush=True)
 
     print("[2/5] Popularidad: fotos de Commons a menos de 500 m…", flush=True)
@@ -304,8 +341,9 @@ def main():
     cand["sitelinks"] = pd.to_numeric(cand["sitelinks"], errors="coerce").fillna(0).astype(float)
     if cortado:
         print("      Tiempo agotado: los candidatos sin contar usan solo Wikidata; la próxima ejecución sigue.")
+    cand["cielo"] = [ajuste_cielo(la, lo) for la, lo in zip(cand.lat, cand.lon)]
     cand["puntuacion"] = (np.log1p(cand.fotos_cerca.fillna(0)) + 0.6 * np.log1p(cand.sitelinks.fillna(0))
-                          + cand.tipo.map(PESO_TIPO).fillna(0.3) + 0.3 * cand.imagen.notna())
+                          + cand.tipo.map(PESO_TIPO).fillna(0.3) + 0.3 * cand.imagen.notna() + cand.cielo)
 
     print("[3/5] Selección por provincia y nacional…", flush=True)
     cand = cand.sort_values("puntuacion", ascending=False)

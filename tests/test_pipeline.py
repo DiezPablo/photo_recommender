@@ -263,3 +263,30 @@ def test_entero_tolera_nan():
     import numpy as np
     from descubrir_espana import _entero
     assert _entero(np.nan) == 0 and _entero(None) == 0 and _entero(4.0) == 4 and _entero("x") == 0
+
+
+def test_comunidad_por_codigo_ine():
+    """El fichero de provincias de origen numeraba las comunidades de otra forma (Asturias salía «Ceuta»)."""
+    import json
+    from pathlib import Path
+    from comun import CCAA_POR_PROVINCIA, ccaa_de
+    assert len(CCAA_POR_PROVINCIA) == 52
+    assert ccaa_de("Asturias") == "Principado de Asturias" and ccaa_de("A Coruña") == "Galicia"
+    assert ccaa_de("Madrid") == "Comunidad de Madrid" and ccaa_de("Bizkaia/Vizcaya") == "País Vasco"
+    g = json.loads((Path(__file__).parent.parent / "datos_base" / "provincias.geojson").read_text())
+    for f in g["features"]:
+        assert f["properties"]["ccaa"] == CCAA_POR_PROVINCIA[f["properties"]["cod_prov"]]
+
+
+def test_spots_fuera_de_espana_y_nombres_genericos():
+    from descubrir_espana import Provincias, nombre_valido
+    p = Provincias()
+    assert p.de(39.39693, -7.37997) is None          # Marvão (Portugal) caía en Cáceres
+    assert p.de(40.37254, -7.51653) is None          # Poço do Inferno, Serra da Estrela
+    assert p.de(39.413, -7.244)["provincia"] == "Cáceres"   # Valencia de Alcántara, junto a la raya
+    assert p.de(42.882, -9.272)["provincia"] == "A Coruña"  # Fisterra: en la costa sigue dentro
+    assert p.de(42.047, -8.645)["provincia"] == "Pontevedra"  # Tui, en el Miño
+    for n in ("Mural", "Picnic", "Begiratokia", "Mirador Rio", "calle de los cuchilleros", "Balcón Mirador"):
+        assert not nombre_valido(n), n
+    for n in ("Mirador de San Nicolás", "Torre de Hércules", "Playa de La Caleta", "Mirador del Ebro"):
+        assert nombre_valido(n), n
