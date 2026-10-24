@@ -441,6 +441,43 @@ def completar(r: dict, provincias) -> dict | None:
     }
 
 
+SOLO_CODIGO = re.compile(r"^(?:(?:[A-Z]{0,4}[- ]?)?\d+(?:[.,]\d+)?[A-Z]?|\d+[- ]?[A-Z]{1,3})$", re.I)
+
+
+def nombrar(rutas: list[dict]) -> None:
+    """Nombres que se entiendan en una lista:
+    - rutas de OSM que solo tienen número o código («19», «R6») → «Sendero 19: Desde – Hasta» o
+      «Sendero 19 (provincia)»;
+    - tramos de un mismo camino con el mismo nombre (los Caminos Naturales se publican troceados: 69
+      «Camino Natural del Ebro») → «…, tramo 3 de 12 en Zaragoza», numerados de oeste a este (o de sur a
+      norte si el camino va en esa dirección)."""
+    for r in rutas:
+        n = r["nombre"] or ""
+        if SOLO_CODIGO.match(n.strip()):
+            base = n if re.match(r"^[A-Z]", n) else f"Sendero {n}"
+            if r.get("desde") and r.get("hasta"):
+                r["nombre"] = f"{base}: {r['desde']} – {r['hasta']}"
+            else:
+                r["nombre"] = f"{base} ({r['provincia']})"
+    grupos: dict[str, list[dict]] = {}
+    for r in rutas:
+        grupos.setdefault(r["nombre"], []).append(r)
+    for nombre, rs in grupos.items():
+        if len(rs) < 2:
+            continue
+        por_prov: dict[str, list[dict]] = {}
+        for r in rs:
+            por_prov.setdefault(r["provincia"], []).append(r)
+        for prov, xs in por_prov.items():
+            lats = [x["inicio"][0] for x in xs]
+            lons = [x["inicio"][1] for x in xs]
+            eje = 1 if (max(lons) - min(lons)) >= (max(lats) - min(lats)) else 0
+            xs.sort(key=lambda x: x["inicio"][eje])
+            for k, x in enumerate(xs, 1):
+                sufijo = f"tramo {k} de {len(xs)}" if len(xs) > 1 else ""
+                x["nombre"] = f"{nombre} ({', '.join(t for t in (sufijo, prov) if t)})"
+
+
 def main():
     a = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     a.add_argument("--pbf", required=True, help="extracto de OpenStreetMap de España (.osm.pbf)")
@@ -476,6 +513,7 @@ def main():
         if r["id"] not in vistos:
             vistos.add(r["id"])
             unicas.append(r)
+    nombrar(unicas)
     print("[4/4] Guardando…", flush=True)
     destino = Path(args.salida) / "rutas.json"
     escribir_json(destino, {

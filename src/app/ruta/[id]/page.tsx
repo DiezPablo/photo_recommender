@@ -5,13 +5,15 @@ import BotonGpx from "@/components/BotonGpx";
 import { Marca } from "@/components/ExploradorRutas";
 import MapaRutas from "@/components/MapaRutas";
 import PerfilRuta from "@/components/PerfilRuta";
-import { cargarRutas, duracion, getRuta, slug } from "@/lib/rutas";
+import { duracion, getRuta, slug } from "@/lib/rutas";
 
-export const dynamicParams = false;
+// 8500 fichas prerenderizadas ocupan ~700 MB y no caben en el límite de subida de Vercel: se generan la
+// primera vez que alguien las visita y quedan en caché hasta el siguiente despliegue (ISR).
+export const dynamicParams = true;
+export const revalidate = false;
 
 export function generateStaticParams() {
-  const ids = cargarRutas().rutas.map((r) => ({ id: r.id }));
-  return ids.length ? ids : [{ id: "sin-datos" }];
+  return [];
 }
 
 type Props = { params: Promise<{ id: string }> };

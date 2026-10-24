@@ -67,7 +67,7 @@ _CCAA_POR_NOMBRE = {
     "Girona": "Cataluña",
     "Las Palmas": "Canarias",
     "Pontevedra": "Galicia",
-    "Santa Cruz De Tenerife": "Canarias",
+    "Santa Cruz de Tenerife": "Canarias",
     "Cantabria": "Cantabria",
     "Málaga": "Andalucía",
     "Almería": "Andalucía",

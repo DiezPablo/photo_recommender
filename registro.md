@@ -347,3 +347,12 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
 - Web: `/rutas` (filtros en el navegador sobre un índice compacto; mapa con el inicio de cada ruta y los
   trazados por celdas de 1° al acercarse), `/rutas/[ccaa]` (listado completo, sin JS) y `/ruta/[id]` (ficha,
   mapa, perfil SVG, GPX generado en el navegador). Colores de la señalización: rojo GR, amarillo PR, verde SL.
+- Primera ejecución completa (local, 40 min, la mayor parte bajando teselas del DEM): 8500 rutas, 23,6 MB.
+  1555 en Cataluña, 1319 en Andalucía, 1061 en Aragón… 18 comunidades. 4490 solo de OSM, 1628 OSM con nombre
+  FEDME, 1680 solo FEDME, 702 de Caminos Naturales. Comprobadas Anillo de Picos, Carros de Foc, Caminito del Rey.
+- Nombres: rutas con solo número («19», «02 SE») → «Sendero 19: Es Pujols – Ses Illetes» o «SL 8 (Málaga)»;
+  tramos con el mismo nombre (69 «Camino Natural del Ebro») → «…(tramo 9 de 22, Zaragoza)».
+- Las 8500 fichas prerenderizadas ocupaban ~720 MB (HTML + 4 RSC por página): con los spots se pasa del
+  límite de 1 GB de ficheros estáticos de Vercel. Las fichas se generan al visitarlas (ISR, `revalidate = false`)
+  y `rutas.json` va en la función (`outputFileTracingIncludes`). La salida del build sigue en ~860 MB.
+- Orden por defecto «Destacadas»: senderos oficiales y señalizados primero (el alfabético empezaba por «02 SE»).

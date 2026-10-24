@@ -52,6 +52,8 @@ export interface FilaRuta {
   ccaa: string;
   lat: number;
   lon: number;
+  /** relevancia para el orden por defecto: senderos oficiales y señalizados primero */
+  rel: number;
 }
 
 export function filaRuta(r: Ruta): FilaRuta {
@@ -59,6 +61,8 @@ export function filaRuta(r: Ruta): FilaRuta {
     id: r.id, nombre: r.nombre, ref: r.ref, tipo: r.tipo, km: r.km, subida: r.subida, horas: r.horas,
     dificultad: r.dificultad, circular: r.circular, provincia: r.provincia, ccaa: r.ccaa,
     lat: r.inicio[0], lon: r.inicio[1],
+    rel: (/fedme|mapa/.test(r.fuente) ? 2 : 0) + (r.ref ? 1 : 0) + (["GR", "PR", "SL"].includes(r.tipo) ? 1 : 0)
+      + (r.wikidata ? 1 : 0) + (r.web || r.oficial ? 0.5 : 0) + (r.descripcion ? 0.5 : 0),
   };
 }
 

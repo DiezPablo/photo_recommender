@@ -28,7 +28,7 @@ export default function ExploradorRutas({ comunidades }: { comunidades: string[]
   const [rango, setRango] = useState("");
   const [dif, setDif] = useState("");
   const [circular, setCircular] = useState(false);
-  const [orden, setOrden] = useState<"cerca" | "km" | "subida" | "nombre">("nombre");
+  const [orden, setOrden] = useState<"destacadas" | "cerca" | "km" | "subida" | "nombre">("destacadas");
   const [ubic, setUbic] = useState<Ubicacion | null>(null);
   const [radio, setRadio] = useState(0);
   const [limite, setLimite] = useState(POR_PAGINA);
@@ -76,11 +76,12 @@ export default function ExploradorRutas({ comunidades }: { comunidades: string[]
         (!r || (f.km >= r.min && f.km < r.max)) && (!dif || f.dificultad === dif) && (!circular || f.circular) &&
         (!radio || f.dist === null || f.dist <= radio));
     const cmp = {
+      destacadas: (a: typeof lista[0], b: typeof lista[0]) => b.rel - a.rel || a.nombre.localeCompare(b.nombre, "es"),
       cerca: (a: typeof lista[0], b: typeof lista[0]) => (a.dist ?? 0) - (b.dist ?? 0),
       km: (a: typeof lista[0], b: typeof lista[0]) => a.km - b.km,
       subida: (a: typeof lista[0], b: typeof lista[0]) => b.subida - a.subida,
       nombre: (a: typeof lista[0], b: typeof lista[0]) => a.nombre.localeCompare(b.nombre, "es"),
-    }[orden === "cerca" && !ubic ? "nombre" : orden];
+    }[orden === "cerca" && !ubic ? "destacadas" : orden];
     return lista.sort(cmp);
   }, [todas, texto, ccaa, tipos, rango, dif, circular, radio, ubic, orden]);
 
@@ -128,6 +129,7 @@ export default function ExploradorRutas({ comunidades }: { comunidades: string[]
             <label className="campo">
               <span className="rotulo">Ordenar</span>
               <select value={orden} onChange={(e) => setOrden(e.target.value as typeof orden)}>
+                <option value="destacadas">Destacadas</option>
                 {ubic && <option value="cerca">Más cerca</option>}
                 <option value="nombre">Nombre</option>
                 <option value="km">Más cortas</option>
