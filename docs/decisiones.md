@@ -418,3 +418,11 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
 - Herramientas: ruff (lint + formato) y pytest para Python; ESLint (config de Next), Prettier y `tsc` para
   la web; todo en CI (`pruebas.yml`). `Makefile` con las órdenes habituales. Documentación en `docs/`.
 - Spots propios (`mis_spots.csv`): ahora con provincia, comunidad y horizonte del terreno.
+
+## 2026-10-25 · Filtro de desnivel en rutas
+
+- Petición del usuario: filtrar rutas por desnivel. Rangos de desnivel positivo acumulado según la
+  distribución real de las 8500 rutas (mediana ~300 m, percentil 90 ~950 m): hasta 300 m, 300-600,
+  600-1000, 1000-1500 y más de 1500 m. Va en la URL (`?desnivel=`) como el resto de filtros.
+- Con cinco desplegables el texto se cortaba en escritorio; «Ordenar» pasa a la cabecera de la lista
+  (ordena resultados, no los filtra) y los cuatro filtros quedan en 2×2 en móvil y 4 columnas en escritorio.

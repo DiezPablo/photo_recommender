@@ -117,6 +117,30 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
+.cabecera-lista {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 4px 0;
+}
+.cabecera-lista h2 {
+  margin: 0;
+}
+.orden select {
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--texto);
+  background: transparent;
+  border: 0;
+  padding: 4px 2px;
+  cursor: pointer;
+  text-align: right;
+}
+.orden select:focus-visible {
+  outline: 2px solid var(--acento);
+  border-radius: 6px;
+}
 .tipos {
   display: flex;
   flex-wrap: wrap;

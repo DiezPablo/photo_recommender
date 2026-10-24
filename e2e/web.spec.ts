@@ -185,6 +185,17 @@ test("rutas: buscar, filtrar, ficha con mapa, perfil y GPX", async ({ page }, in
   await page.getByLabel("Solo circulares").check();
   await expect(page.locator(".bloque-ranking h2")).toContainText("rutas");
   expect(await filas.count()).toBeLessThanOrEqual(total);
+  // desnivel: todas las rutas de la lista suben entre 600 y 1000 m, y el filtro queda en la URL
+  const desnivel = page
+    .locator(".campo", { has: page.locator(".rotulo", { hasText: /^Desnivel$/ }) })
+    .locator("select");
+  await desnivel.selectOption("exigente");
+  await expect(page).toHaveURL(/desnivel=exigente/);
+  const subidas = await page.locator(".fila-ruta .meta span", { hasText: /^\+\d+ m$/ }).allTextContents();
+  expect(subidas.length).toBeGreaterThan(0);
+  for (const t of subidas) expect(Number(t.slice(1, -2))).toBeGreaterThanOrEqual(600);
+  for (const t of subidas) expect(Number(t.slice(1, -2))).toBeLessThan(1000);
+  await desnivel.selectOption("");
   // búsqueda
   await page.getByLabel("Solo circulares").uncheck();
   await page.getByRole("button", { name: "PR", exact: true }).click();

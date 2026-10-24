@@ -158,3 +158,12 @@ export const RANGOS_KM: { id: string; texto: string; min: number; max: number }[
   { id: "muy-larga", texto: "25-50 km", min: 25, max: 50 },
   { id: "etapas", texto: "Más de 50 km", min: 50, max: Infinity },
 ];
+
+/** Desnivel positivo acumulado (mediana de las rutas: ~300 m; 1 de cada 10 pasa de 950 m). */
+export const RANGOS_SUBIDA: { id: string; texto: string; min: number; max: number }[] = [
+  { id: "suave", texto: "Hasta 300 m", min: 0, max: 300 },
+  { id: "moderado", texto: "300-600 m", min: 300, max: 600 },
+  { id: "exigente", texto: "600-1000 m", min: 600, max: 1000 },
+  { id: "muy-exigente", texto: "1000-1500 m", min: 1000, max: 1500 },
+  { id: "alta-montana", texto: "Más de 1500 m", min: 1500, max: Infinity },
+];

@@ -1,13 +1,21 @@
 "use client";
 // Buscador de rutas: descarga el índice compacto (JSON estático) y filtra en el navegador por texto,
-// comunidad, tipo, distancia, dificultad, circular y cercanía. Los filtros viven en la URL
-// (?q=&ccaa=&tipo=&km=&dif=&circular=1&orden=): al volver desde una ruta siguen ahí y una búsqueda se
+// comunidad, tipo, distancia, desnivel, dificultad, circular y cercanía. Los filtros viven en la URL
+// (?q=&ccaa=&tipo=&km=&desnivel=&dif=&circular=1&orden=): al volver desde una ruta siguen ahí y una búsqueda se
 // puede compartir. Sin JavaScript, la página enlaza a los listados por comunidad.
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import MapaRutas from "@/features/rutas/componentes/MapaRutas";
 import MarcaSendero from "@/features/rutas/componentes/MarcaSendero";
-import { DIFICULTADES, duracion, type FilaRuta, RANGOS_KM, TIPOS_RUTA, type TipoRuta } from "@/features/rutas/modelo";
+import {
+  DIFICULTADES,
+  duracion,
+  type FilaRuta,
+  RANGOS_KM,
+  RANGOS_SUBIDA,
+  TIPOS_RUTA,
+  type TipoRuta,
+} from "@/features/rutas/modelo";
 import { leerAlmacen, useParametrosUrl, usePreferenciaNumero } from "@/lib/almacen";
 import { distanciaKm, pedirUbicacion, useUbicacion } from "@/lib/ubicacion";
 
@@ -33,6 +41,7 @@ export default function ExploradorRutas({ comunidades }: { comunidades: string[]
   const texto = parametros.get("q") ?? "";
   const ccaa = parametros.get("ccaa") ?? "";
   const rango = parametros.get("km") ?? "";
+  const desnivel = parametros.get("desnivel") ?? "";
   const dif = parametros.get("dif") ?? "";
   const circular = parametros.get("circular") === "1";
   const tipos = useMemo(
@@ -87,6 +96,7 @@ export default function ExploradorRutas({ comunidades }: { comunidades: string[]
     if (!todas) return [];
     const q = normal(texto.trim());
     const r = RANGOS_KM.find((x) => x.id === rango);
+    const s = RANGOS_SUBIDA.find((x) => x.id === desnivel);
     const lista = todas
       .map((f) => ({ ...f, dist: ubic ? distanciaKm(ubic, f) : null }))
       .filter(
@@ -95,6 +105,7 @@ export default function ExploradorRutas({ comunidades }: { comunidades: string[]
           (!ccaa || f.ccaa === ccaa) &&
           (!tipos.size || tipos.has(f.tipo)) &&
           (!r || (f.km >= r.min && f.km < r.max)) &&
+          (!s || (f.subida >= s.min && f.subida < s.max)) &&
           (!dif || f.dificultad === dif) &&
           (!circular || f.circular) &&
           (!radio || f.dist === null || f.dist <= radio),
@@ -108,7 +119,7 @@ export default function ExploradorRutas({ comunidades }: { comunidades: string[]
       nombre: (a, b) => a.nombre.localeCompare(b.nombre, "es"),
     };
     return lista.sort(comparar[orden === "cerca" && !ubic ? "destacadas" : orden]);
-  }, [todas, texto, ccaa, tipos, rango, dif, circular, radio, ubic, orden]);
+  }, [todas, texto, ccaa, tipos, rango, desnivel, dif, circular, radio, ubic, orden]);
 
   return (
     <div className="explorador">
@@ -145,22 +156,23 @@ export default function ExploradorRutas({ comunidades }: { comunidades: string[]
               </select>
             </label>
             <label className="campo">
+              <span className="rotulo">Desnivel</span>
+              <select value={desnivel} onChange={(e) => actualizar({ desnivel: e.target.value })}>
+                <option value="">Cualquiera</option>
+                {RANGOS_SUBIDA.map((r) => (
+                  <option key={r.id} value={r.id}>
+                    {r.texto}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="campo">
               <span className="rotulo">Dificultad</span>
               <select value={dif} onChange={(e) => actualizar({ dif: e.target.value })}>
                 <option value="">Cualquiera</option>
                 {DIFICULTADES.map((d) => (
                   <option key={d}>{d}</option>
                 ))}
-              </select>
-            </label>
-            <label className="campo">
-              <span className="rotulo">Ordenar</span>
-              <select value={orden} onChange={(e) => actualizar({ orden: e.target.value })}>
-                <option value="destacadas">Destacadas</option>
-                {ubic && <option value="cerca">Más cerca</option>}
-                <option value="nombre">Nombre</option>
-                <option value="km">Más cortas</option>
-                <option value="subida">Más desnivel</option>
               </select>
             </label>
           </div>
@@ -205,13 +217,25 @@ export default function ExploradorRutas({ comunidades }: { comunidades: string[]
         </div>
 
         <section className="bloque-ranking" aria-label="Rutas">
-          <h2 className="rotulo" aria-live="polite">
-            {todas
-              ? `${filtradas.length.toLocaleString("es-ES")} rutas`
-              : error
-                ? "No se pudieron cargar las rutas"
-                : "Cargando rutas…"}
-          </h2>
+          <div className="cabecera-lista">
+            <h2 className="rotulo" aria-live="polite">
+              {todas
+                ? `${filtradas.length.toLocaleString("es-ES")} rutas`
+                : error
+                  ? "No se pudieron cargar las rutas"
+                  : "Cargando rutas…"}
+            </h2>
+            <label className="orden">
+              <span className="sr">Ordenar</span>
+              <select value={orden} onChange={(e) => actualizar({ orden: e.target.value })}>
+                <option value="destacadas">Destacadas</option>
+                {ubic && <option value="cerca">Más cerca</option>}
+                <option value="nombre">Por nombre</option>
+                <option value="km">Más cortas</option>
+                <option value="subida">Más desnivel</option>
+              </select>
+            </label>
+          </div>
           <ol className="lista-rutas">
             {filtradas.slice(0, limite).map((f) => (
               <li key={f.id}>
