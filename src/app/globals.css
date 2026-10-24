@@ -32,6 +32,13 @@
   --cielo-azul: #4f6b99;
   --cielo-dorada: #e9a64a;
   --cielo-dia: #d9e3e8;
+  --t-gr: #d22d1e;
+  --t-pr: #e9b10c;
+  --t-sl: #2f8a3c;
+  --t-santiago: #2a5bb0;
+  --t-natural: #8a5a2b;
+  --t-otro: #7d7a73;
+  --t-blanco: #fff;
   --f-cuerpo: var(--f-ui), "Helvetica Neue", Arial, sans-serif;
   --f-datos: var(--f-mono), ui-monospace, "SF Mono", Menlo, monospace;
   --ancho: 1440px;
@@ -102,6 +109,13 @@
 
 /* Modo noche: solo rojos, sin blancos ni azules, brillo mínimo */
 :root[data-tema="noche"] {
+  --t-gr: #ff3b30;
+  --t-pr: #c9251e;
+  --t-sl: #8a0f0b;
+  --t-santiago: #b0201b;
+  --t-natural: #861612;
+  --t-otro: #5c0a07;
+  --t-blanco: #3a0606;
   --fondo: #000;
   --superficie: #070000;
   --superficie-2: #140000;
@@ -474,3 +488,101 @@ dl.datos dd { margin: 0; text-align: right; font: 500 0.8rem/1.6 var(--f-datos);
 /* En modo noche ningún bloque grande puede brillar: las casillas excelentes se marcan con borde */
 :root[data-tema="noche"] .alm-celda.n-top { background: #2a0303; color: var(--acento); box-shadow: inset 0 0 0 1px var(--acento); }
 :root[data-tema="noche"] .alm-celda.n-top.actual { box-shadow: inset 0 0 0 2px var(--acento); }
+
+/* ------------------------------------------------------------------ rutas */
+.marca-sendero {
+  display: inline-block; flex: none; width: 18px; height: 12px; vertical-align: -1px;
+  background: linear-gradient(var(--t-blanco) 0 50%, var(--c-marca, var(--t-otro)) 50% 100%);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--texto) 25%, transparent);
+}
+.t-gr, .t-europeo { --c-marca: var(--t-gr); }
+.t-pr { --c-marca: var(--t-pr); }
+.t-sl, .t-via-verde { --c-marca: var(--t-sl); }
+.t-camino-de-santiago { --c-marca: var(--t-santiago); }
+.t-camino-natural { --c-marca: var(--t-natural); }
+
+.rutas { gap: 28px; }
+.rutas > .titular, .rutas > .explorador, .rutas > .por-comunidad { order: 0; }
+@media (min-width: 1000px) { .rutas { grid-template-columns: 1fr; padding: 0; gap: 0; } .rutas > .titular { padding: 36px 20px 24px; } }
+.explorador { display: grid; gap: 28px; min-width: 0; }
+.explorador > .columna { display: grid; gap: 28px; padding: 0; min-width: 0; }
+.explorador > .mapa-caja { height: 60vh; min-height: 300px; margin: 0 -20px; border-width: 1px 0; }
+@media (max-width: 999px) { .explorador > .columna { display: contents; } .filtros-rutas { order: 1; } .explorador > .mapa-caja { order: 2; } .explorador .bloque-ranking { order: 3; } }
+@media (min-width: 1000px) {
+  .explorador { grid-template-columns: minmax(520px, 640px) 1fr; gap: 0; border-top: 1px solid var(--texto); }
+  .explorador > .columna { padding: 24px 40px 56px 20px; align-content: start; }
+  .explorador > .mapa-caja { position: sticky; top: 53px; height: calc(100vh - 53px); margin: 0; border-width: 0 0 0 1px; }
+}
+.filtros-rutas { display: grid; gap: 14px; }
+.campo { display: grid; gap: 4px; min-width: 0; }
+.campo input, .campo select {
+  font: inherit; font-size: 0.92rem; color: var(--texto); background: var(--superficie); border: 1px solid var(--borde);
+  border-radius: 0; padding: 8px 10px; width: 100%; min-width: 0;
+}
+.campo input:focus, .campo select:focus { outline: 2px solid var(--acento); outline-offset: -1px; }
+.campos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (min-width: 560px) { .campos { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.tipos { display: flex; flex-wrap: wrap; gap: 6px; }
+.tipos button {
+  display: inline-flex; align-items: center; gap: 7px; cursor: pointer; padding: 6px 10px;
+  border: 1px solid var(--borde); background: transparent; color: var(--texto-2); font: 500 0.82rem var(--f-cuerpo);
+}
+.tipos button:hover { border-color: var(--texto); color: var(--texto); }
+.tipos button[aria-pressed="true"] { border-color: var(--texto); color: var(--texto); box-shadow: inset 0 -2px 0 var(--texto); }
+.casilla { display: inline-flex; align-items: center; gap: 6px; font-size: 0.88rem; cursor: pointer; }
+.casilla input { accent-color: var(--acento); }
+
+.lista-rutas { list-style: none; margin: -14px 0 0; padding: 0; }
+.prosa .lista-rutas { margin: 0 0 8px; }
+.fila-ruta {
+  display: grid; grid-template-columns: 18px 1fr; gap: 12px; align-items: start; padding: 12px 0;
+  border-bottom: 1px solid var(--borde); color: inherit; text-decoration: none;
+}
+.fila-ruta .marca-sendero { margin-top: 4px; }
+.fila-ruta h3 { font-size: 1rem; font-weight: 650; letter-spacing: -0.015em; line-height: 1.25; }
+.fila-ruta:hover h3 { text-decoration: underline; text-underline-offset: 3px; }
+.fila-ruta .meta {
+  display: flex; flex-wrap: wrap; gap: 0 10px; margin-top: 3px;
+  font: 400 0.7rem/1.5 var(--f-datos); text-transform: uppercase; letter-spacing: 0.04em; color: var(--texto-2);
+}
+.fila-ruta .dist { color: var(--texto); }
+
+.por-comunidad { padding: 8px 20px 48px; }
+.por-comunidad h2 { padding-bottom: 10px; border-bottom: 1px solid var(--texto); color: var(--texto); margin-bottom: 8px; }
+.por-comunidad ul { list-style: none; margin: 0; padding: 0; columns: 2 220px; column-gap: 32px; }
+.por-comunidad li { padding: 5px 0; border-bottom: 1px dotted var(--borde); break-inside: avoid; display: flex; justify-content: space-between; gap: 8px; }
+.por-comunidad a { color: var(--texto); text-decoration: none; }
+.por-comunidad a:hover { text-decoration: underline; }
+.por-comunidad small { font: 0.7rem var(--f-datos); color: var(--texto-3); }
+.prosa.ancha { max-width: 900px; }
+.prosa.ancha h2 { font-size: 1.1rem; }
+
+.tipo-ruta { display: flex; align-items: center; gap: 8px; color: var(--texto); }
+.enlace-boton {
+  background: none; border: 0; border-bottom: 1px solid var(--texto); padding: 0 0 1px; cursor: pointer;
+  font: inherit; font-weight: 600; color: var(--texto);
+}
+.enlace-boton:hover { color: var(--acento); border-color: var(--acento); }
+.marca-ruta {
+  display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%;
+  font: 600 11px var(--f-datos); color: #fff; border: 2px solid var(--fondo);
+}
+.marca-ruta.salida { background: var(--suma); }
+.marca-ruta.fin { background: var(--texto); color: var(--fondo); }
+.leyenda-mapa .marca-ruta { width: 16px; height: 16px; font-size: 9px; border-width: 1px; margin-right: 5px; vertical-align: -3px; }
+.perfil-ruta { margin: 0; }
+.perfil-ruta svg { width: 100%; height: auto; display: block; }
+.perfil-ruta text { font-family: var(--f-datos); }
+.perfil-ruta figcaption { margin-top: 4px; font: 0.66rem var(--f-datos); color: var(--texto-3); }
+.descripcion { font-size: 0.92rem; color: var(--texto-2); line-height: 1.55; }
+.avisos-ruta { margin: 0; padding-left: 18px; font-size: 0.9rem; color: var(--texto-2); display: grid; gap: 6px; }
+
+.tema-ico { display: none; }
+@media (max-width: 520px) {
+  .cabecera-in { gap: 10px; padding: 0 14px; }
+  .cabecera nav { gap: 12px; }
+  .marca b { font-size: 1.05rem; }
+  .tema-txt { display: none; }
+  .tema-ico { display: inline-grid; place-items: center; }
+  .temas button { padding: 4px 7px; }
+}

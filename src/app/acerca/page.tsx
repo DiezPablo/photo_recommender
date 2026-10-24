@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-export const metadata: Metadata = { title: "Cómo se puntúa" };
+export const metadata: Metadata = { title: "Método" };
 
 export default function Acerca() {
   return (
@@ -74,6 +74,26 @@ export default function Acerca() {
         <li>Amanecer y atardecer: días con fotos de puestas y salidas de sol de Madrid y la Sierra en Wikimedia Commons frente al resto del mismo mes, con el tiempo real de 2016-2025. El modelo nuevo los separa mejor que el anterior (AUC 0,60 frente a 0,56; en amanecer 0,66). Es una señal ruidosa: también se fotografían puestas mediocres.</li>
       </ul>
 
+      <h2>Rutas de senderismo</h2>
+      <ul>
+        <li>
+          <strong>De dónde salen</strong>: rutas de senderismo de OpenStreetMap (GR, PR, SL, senderos locales y de
+          parques, Caminos de Santiago…), senderos homologados de la FEDME y Caminos Naturales del Ministerio de
+          Agricultura. Cuando un sendero oficial coincide con una ruta de OSM se le pone su nombre oficial y el enlace a
+          su ficha. Se actualizan cada mes.
+        </li>
+        <li>
+          <strong>Distancia y desnivel</strong>: con el trazado y el modelo digital del terreno (un punto cada 30 m,
+          suavizado para que el ruido del terreno no infle el desnivel).
+        </li>
+        <li>
+          <strong>Tiempo</strong>: método MIDE, el de las federaciones de montaña: 4 km/h en llano, 400 m/h subiendo y
+          600 m/h bajando, sin paradas. El <strong>esfuerzo</strong> (fácil a muy difícil) es una estimación con el tiempo,
+          el desnivel y la altitud: no sustituye la valoración MIDE oficial, que requiere conocer el terreno.
+        </li>
+        <li>No sabemos el estado de los senderos ni si hay cortes o cupos: consulta siempre la web del espacio natural.</li>
+      </ul>
+
       <h2>Fuentes</h2>
       <table>
         <tbody>
@@ -84,6 +104,7 @@ export default function Acerca() {
           <tr><th>Spots</th><td><a href="https://www.wikidata.org/">Wikidata</a> (CC0) y OpenStreetMap</td></tr>
           <tr><th>Contaminación lumínica</th><td><a href="https://djlorenz.github.io/astronomy/lp/">World Atlas of Artificial Night Sky Brightness 2025</a>, D. Lorenz</td></tr>
           <tr><th>Mapa y nombres</th><td>© <a href="https://www.openstreetmap.org/copyright">colaboradores de OpenStreetMap</a> (ODbL)</td></tr>
+          <tr><th>Rutas</th><td>© colaboradores de <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> (ODbL); <a href="https://misendafedme.es">senderos FEDME</a> (CC BY 4.0) e IGN; Caminos Naturales © Ministerio de Agricultura, Pesca y Alimentación</td></tr>
           <tr><th>Fotos</th><td><a href="https://commons.wikimedia.org/">Wikimedia Commons</a>, con la licencia de cada autor</td></tr>
         </tbody>
       </table>

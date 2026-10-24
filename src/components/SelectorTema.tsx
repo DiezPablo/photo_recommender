@@ -1,12 +1,13 @@
 "use client";
 // Claro / oscuro / noche (rojo). Sin elección guardada se sigue al sistema (claro u oscuro).
 import { useEffect, useState } from "react";
+import { IconoClaro, IconoOjoRojo, IconoOscuro } from "./Iconos";
 
 type Tema = "claro" | "oscuro" | "noche";
-const TEMAS: { id: Tema; titulo: string; corto: string }[] = [
-  { id: "claro", titulo: "Tema claro", corto: "Día" },
-  { id: "oscuro", titulo: "Tema oscuro", corto: "Noche" },
-  { id: "noche", titulo: "Modo noche (rojo, para el campo)", corto: "Rojo" },
+const TEMAS: { id: Tema; titulo: string; corto: string; Icono: typeof IconoClaro }[] = [
+  { id: "claro", titulo: "Tema claro", corto: "Día", Icono: IconoClaro },
+  { id: "oscuro", titulo: "Tema oscuro", corto: "Noche", Icono: IconoOscuro },
+  { id: "noche", titulo: "Modo noche (rojo, para el campo)", corto: "Rojo", Icono: IconoOjoRojo },
 ];
 
 function temaActual(): Tema {
@@ -28,10 +29,11 @@ export default function SelectorTema() {
 
   return (
     <div className="temas" role="group" aria-label="Tema de color">
-      {TEMAS.map(({ id, titulo, corto }) => (
+      {TEMAS.map(({ id, titulo, corto, Icono }) => (
         <button key={id} type="button" title={titulo} aria-label={titulo} aria-pressed={tema === id}
           data-tema-boton={id}>
-          {corto}
+          <span className="tema-txt">{corto}</span>
+          <span className="tema-ico"><Icono size={15} /></span>
         </button>
       ))}
     </div>

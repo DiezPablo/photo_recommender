@@ -9,16 +9,18 @@ explicable. Todo gratuito y **sin IA/LLM por decisión del usuario**. El encargo
 - Pipeline Python (raíz): `descubrir_spots.py` (Commons + OSM → `public/datos/spots.geojson`),
   `condiciones.py` (Open-Meteo + `astro.py` + `contaminacion.py` + `puntuacion.py` → `public/datos/informe.json`),
   `comun.py` (ids de spot, JSON sin NaN), `notificar.py` (Telegram, opcional y desacoplado),
-  `validar.py` (validación histórica: ERA5 + fotos de Commons + METAR; workflow `validar.yml`, artefacto `validacion`).
+  `rutas.py` (rutas de senderismo: extracto PBF de OSM + FEDME/Caminos Naturales del IGN → `rutas.json`;
+  workflow `rutas.yml`, mensual), `validar.py` (validación histórica: ERA5 + fotos de Commons + METAR; workflow `validar.yml`, artefacto `validacion`).
   Antes de cambiar pesos de `puntuacion.py`, mira el informe de validación y no ajustes más allá del ruido.
 - Web Next.js 16 (App Router) en `src/`: páginas estáticas generadas en el build leyendo `public/datos`.
   `src/lib/datos.ts` solo servidor (usa `fs`); los componentes de cliente importan de `src/lib/modelo.ts`.
-  Rutas: `/` (= `/dia/0/todos`), `/dia/[d]/[tipo]`, `/spot/[id]`, `/acerca`. Filtros de día y tipo son
+  Rutas: `/` (= `/dia/0/todos`), `/dia/[d]/[tipo]`, `/spot/[id]`, `/acerca`, `/rutas`, `/rutas/[ccaa]`,
+  `/ruta/[id]` (JSON estáticos: `/datos-rutas/indice` y `/datos-rutas/celda/[c]`, trazados por celdas de 1°). Filtros de día y tipo son
   enlaces (funcionan sin JS); distancia y mapa (Leaflet, import dinámico) necesitan JS.
 - Workflows: `datos.yml` (2 veces al día y al cambiar el código de notas), `descubrir.yml` (mensual y al
   cambiar el código de descubrimiento; `descubrir_espana.py`, ~1500 spots de toda España, 4-5 h),
   `pruebas.yml` (pytest + typecheck + build + Playwright).
-  Los datos (`informe.json`, `spots.geojson`, `spots.csv`) **no van en git**: se suben a la release `datos`
+  Los datos (`informe.json`, `spots.geojson`, `spots.csv`, `rutas.json`) **no van en git**: se suben a la release `datos`
   (`.github/scripts/publicar_release.sh`) y solo se hace commit de `public/datos/version.json`, que
   dispara el redespliegue de Vercel. `npm run build` los descarga antes (prebuild; `SIN_DESCARGA=1` usa
   los locales).

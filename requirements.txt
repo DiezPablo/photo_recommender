@@ -5,3 +5,4 @@ scikit-learn>=1.4
 astral>=3.2
 pillow>=10.0
 shapely>=2.0
+osmium>=4.0

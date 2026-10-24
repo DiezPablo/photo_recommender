@@ -148,3 +148,49 @@ test("cerca de mí: distancia y filtro por radio", async ({ page, context }) => 
   expect(cerca).toBeLessThanOrEqual(total);
   await page.getByLabel("Ordenar por").selectOption("distancia");
 });
+
+test("rutas: buscar, filtrar, ficha con mapa, perfil y GPX", async ({ page }, info) => {
+  const errores = vigilar(page);
+  await page.goto("/rutas");
+  const filas = page.locator(".fila-ruta");
+  await expect(filas.first()).toBeVisible();
+  await expect(page.locator(".mapa-caja[data-listo=si]")).toBeVisible();
+  await esperarTeselas(page);
+  await page.screenshot({ path: `${CAPTURAS}/${info.project.name}-rutas.png` });
+  const total = await filas.count();
+  // filtros: tipo PR y solo circulares reducen la lista
+  await page.getByRole("button", { name: "PR", exact: true }).click();
+  await page.getByLabel("Solo circulares").check();
+  await expect(page.locator(".bloque-ranking h2")).toContainText("rutas");
+  expect(await filas.count()).toBeLessThanOrEqual(total);
+  // búsqueda
+  await page.getByLabel("Solo circulares").uncheck();
+  await page.getByRole("button", { name: "PR", exact: true }).click();
+  await page.getByPlaceholder(/Nombre/).fill("Peñalara");
+  await expect(filas.first()).toContainText(/Peñalara/i);
+  await filas.first().click();
+  await expect(page).toHaveURL(/\/ruta\//);
+  await expect(page.locator("h1")).toContainText(/Peñalara/i);
+  await expect(page.locator(".ficha-datos")).toContainText("km");
+  await expect(page.locator(".perfil-ruta svg")).toBeVisible();
+  await expect(page.locator(".mapa-caja[data-listo=si]")).toBeVisible();
+  await expect(page.locator(".leaflet-overlay-pane path, .leaflet-overlay-pane canvas").first()).toBeVisible();
+  const descarga = page.waitForEvent("download");
+  await page.getByRole("button", { name: /Descargar GPX/ }).click();
+  const d = await descarga;
+  expect(d.suggestedFilename()).toMatch(/\.gpx$/);
+  await esperarTeselas(page);
+  await page.screenshot({ path: `${CAPTURAS}/${info.project.name}-ruta.png`, fullPage: true });
+  expect(errores).toEqual([]);
+});
+
+test("rutas sin JavaScript: listado por comunidad y ficha", async ({ browser, baseURL }) => {
+  const ctx = await browser.newContext({ javaScriptEnabled: false, baseURL });
+  const page = await ctx.newPage();
+  await page.goto("/rutas");
+  await page.locator(".por-comunidad a").first().click();
+  await expect(page).toHaveURL(/\/rutas\/[a-z-]+$/);
+  await page.locator(".fila-ruta").first().click();
+  await expect(page.locator(".perfil-ruta svg")).toBeVisible();
+  await ctx.close();
+});

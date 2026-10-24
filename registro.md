@@ -328,3 +328,22 @@ Diario de trabajo del encargo (`ENCARGO.md`). Lo más reciente, abajo.
 - Niebla: la regla «visibilidad del modelo < 1 km ⇒ ≥ 60 %» (no calibrada con METAR) exige ahora humedad
   ≥ 90 %; en Lagos de Cabdella daba niebla con un 71 % de humedad y salía como mejor plan de España.
 - Mapa de portada: se encuadra la península (Canarias alejaba el encuadre hasta Francia y Marruecos).
+
+## 2026-10-24 · Apartado de rutas de senderismo (independiente de los spots)
+- Fuentes gratuitas: **OSM** (relaciones `route=hiking/foot` de un extracto PBF de España: Geofabrik u
+  openstreetmap.fr; Overpass no aguanta una consulta nacional y desde el contenedor ni responde),
+  **senderos FEDME** del IGN (GR 1492, PR 1648, SL 320 etapas; CC BY 4.0) y **Caminos Naturales** (MAPA, 743).
+  Descartados Wikiloc/AllTrails/Komoot: sus condiciones prohíben robots y descargas masivas.
+- La FEDME tiene huecos (en la Sierra de Madrid solo 3 etapas del GR 300; OSM tiene el GR 10, los PR-M y las
+  rutas de Peñalara). Un sendero oficial que coincide ≥ 70 % con una ruta de OSM le pone el nombre oficial y el
+  enlace; si no, entra como ruta propia (≈ 1950 coinciden, ≈ 2250 nuevas).
+- Fuera: superrutas (relaciones de relaciones; sus etapas ya están), redes de bici/caballo, sin nombre ni ref,
+  < 0,5 km, fuera de España.
+- Sentido de marcha: orden de los miembros de la relación (suele ir de `from` a `to`); si no, desde el extremo
+  más bajo. Sin esto «La Barranca – La Maliciosa» salía con +0/−813 m.
+- Desnivel con el DEM a 30 m, suavizado (5 puntos) e histéresis de 3 m; tiempo por el método MIDE; esfuerzo
+  estimado (no es la valoración MIDE oficial). Comprobado en la Sierra: Circular de la Pedriza 22,8 km,
+  +1306 m, 8 h 30; Cuerda Larga 19,9 km, ~7 h 15.
+- Web: `/rutas` (filtros en el navegador sobre un índice compacto; mapa con el inicio de cada ruta y los
+  trazados por celdas de 1° al acercarse), `/rutas/[ccaa]` (listado completo, sin JS) y `/ruta/[id]` (ficha,
+  mapa, perfil SVG, GPX generado en el navegador). Colores de la señalización: rojo GR, amarillo PR, verde SL.
