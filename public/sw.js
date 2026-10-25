@@ -86,7 +86,7 @@ self.addEventListener("fetch", (e) => {
   if (url.origin === location.origin && url.pathname.startsWith("/_next/static/"))
     return e.respondWith(cachePrimero(ESTATICOS, p));
   if (url.hostname === "tile.openstreetmap.org") return e.respondWith(cachePrimero(TESELAS, p));
-  if (url.hostname === "upload.wikimedia.org") return e.respondWith(cachePrimero(FOTOS, p));
+  if (url.hostname === "upload.wikimedia.org" || url.hostname === "thumb.wikimedia.org") return e.respondWith(cachePrimero(FOTOS, p));
 });
 
 // Desde la página: guardar o quitar una página para usarla sin conexión

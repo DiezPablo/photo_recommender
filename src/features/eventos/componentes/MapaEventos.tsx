@@ -12,6 +12,8 @@ export interface PuntoEvento {
   lon: number;
   radio_km: number;
   categoria: string;
+  /** a dónde lleva su ventana; null, a ninguna (por defecto, `${enlace}/${id}`) */
+  href?: string | null;
 }
 export interface PuntoSimple {
   id: string;
@@ -64,7 +66,8 @@ export default function MapaEventos({
         fillOpacity: 1,
       }).addTo(g);
       if (!solo) {
-        const html = `<strong>${esc(e.nombre)}</strong><br><a href="${enlace}/${encodeURIComponent(e.id)}">Ver →</a>`;
+        const href = e.href === undefined ? `${enlace}/${encodeURIComponent(e.id)}` : e.href;
+        const html = `<strong>${esc(e.nombre)}</strong>${href ? `<br><a href="${href}">Ver →</a>` : ""}`;
         area.bindPopup(html);
         centro.bindPopup(html);
       }

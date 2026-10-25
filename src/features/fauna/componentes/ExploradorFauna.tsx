@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import MapaEventos from "@/features/eventos/componentes/MapaEventos";
 import { MESES } from "@/features/eventos/modelo";
+import type { EspecieBreve } from "@/features/fauna/especies";
 import { type Fauna, mesesBuenos, nombreEspecie } from "@/features/fauna/modelo";
 import { useParametrosUrl } from "@/lib/almacen";
 
@@ -14,7 +15,14 @@ function normal(t: string) {
   return t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 }
 
-export default function ExploradorFauna({ comunidades }: { comunidades: string[] }) {
+export default function ExploradorFauna({
+  comunidades,
+  especies = [],
+}: {
+  comunidades: string[];
+  /** especies con ficha propia: si la búsqueda coincide, se sugiere su página */
+  especies?: EspecieBreve[];
+}) {
   const [datos, setDatos] = useState<Fauna | null>(null);
   const [error, setError] = useState(false);
   const [parametros, actualizar] = useParametrosUrl();
@@ -43,6 +51,11 @@ export default function ExploradorFauna({ comunidades }: { comunidades: string[]
           l.especies.some((e) => normal(`${e.nombre ?? ""} ${e.cientifico ?? ""}`).includes(q))),
     );
   }, [datos, texto, ccaa, mes]);
+
+  const sugeridas = useMemo(() => {
+    const q = normal(texto.trim());
+    return q.length < 3 ? [] : especies.filter((e) => normal(`${e.nombre} ${e.cientifico}`).includes(q));
+  }, [especies, texto]);
 
   const puntos = useMemo(
     () => lista.map((l) => ({ id: l.id, nombre: l.nombre, lat: l.lat, lon: l.lon, radio_km: 2, categoria: "fauna" })),
@@ -84,6 +97,16 @@ export default function ExploradorFauna({ comunidades }: { comunidades: string[]
           </label>
         </div>
       </div>
+
+      {sugeridas.length > 0 && (
+        <p className="sugerencia-especie">
+          {sugeridas.slice(0, 3).map((e) => (
+            <Link key={e.id} href={`/fauna/especies/${e.id}`}>
+              Dónde y cuándo ver: <b>{e.nombre}</b> →
+            </Link>
+          ))}
+        </p>
+      )}
 
       <div className="fauna-grid">
         <section className="seccion">

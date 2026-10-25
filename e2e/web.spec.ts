@@ -453,6 +453,31 @@ test("fauna: buscar por especie, ficha con especies y meses", async ({ page, req
   expect(errores).toEqual([]);
 });
 
+test("especies: dónde y cuándo ver el lince, desde el buscador y desde su evento", async ({ page, request }, info) => {
+  test.skip(!(await request.get("/datos/especies.json")).ok(), "aún no se han publicado las especies");
+  const errores = vigilar(page);
+  await page.goto("/fauna");
+  await page.getByPlaceholder(/Lugar o especie/).fill("lince");
+  await page.locator(".sugerencia-especie a", { hasText: "Lince ibérico" }).click();
+  await expect(page).toHaveURL(/\/fauna\/especies\/lince-iberico$/);
+  await expect(page.locator("h1")).toHaveText("Lince ibérico");
+  await expect(page.locator(".zonas-especie li").first()).toContainText("Jaén");
+  await expect(page.locator(".meses-fauna > div")).toHaveCount(12);
+  await expect(page.locator(".mapa-caja[data-listo=si]")).toBeVisible();
+  await esperarTeselas(page);
+  await page.screenshot({ path: `${CAPTURAS}/especie-${info.project.name}.png`, fullPage: true });
+  // el celo del lince en el calendario
+  await expect(page.locator(".tarjeta-evento", { hasText: "Celo del lince" })).toBeVisible();
+  await page.goto("/evento/lince-andujar");
+  await expect(page.getByRole("link", { name: "lince ibérico" })).toBeVisible();
+  // el catálogo, con las tres pestañas de fauna
+  await page.goto("/fauna/especies");
+  await expect(page.locator(".pestanas a[aria-current=page]")).toHaveText("Especies");
+  expect(await page.locator(".tarjeta-especie").count()).toBeGreaterThanOrEqual(30);
+  await page.screenshot({ path: `${CAPTURAS}/especies-${info.project.name}.png` });
+  expect(errores).toEqual([]);
+});
+
 test("calendario de fauna: eventos de fauna separados del paisaje", async ({ page }) => {
   const errores = vigilar(page);
   await page.goto("/fauna/calendario/octubre");

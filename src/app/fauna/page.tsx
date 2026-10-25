@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ExploradorFauna from "@/features/fauna/componentes/ExploradorFauna";
-import { cargarFauna, nombreEspecie } from "@/features/fauna/datos";
+import PestanasFauna from "@/features/fauna/componentes/PestanasFauna";
+import { cargarEspecies, cargarFauna, nombreEspecie } from "@/features/fauna/datos";
 
 export const metadata: Metadata = {
   title: "Fauna",
@@ -13,26 +14,23 @@ export default function PaginaFauna() {
   const fauna = cargarFauna();
   const lugares = fauna?.lugares ?? [];
   const comunidades = [...new Set(lugares.map((l) => l.ccaa))].sort((a, b) => a.localeCompare(b, "es"));
+  const especies = (cargarEspecies()?.especies ?? []).map(({ id, nombre, cientifico }) => ({ id, nombre, cientifico }));
   return (
     <main className="calendario fauna">
       <header className="titular">
         <p className="rotulo">{lugares.length.toLocaleString("es-ES")} lugares · OpenStreetMap y GBIF</p>
         <h1>Dónde ver fauna</h1>
-        <nav className="pestanas" aria-label="Fauna">
-          <Link href="/fauna" aria-current="page">
-            Lugares
-          </Link>
-          <Link href="/fauna/calendario">Calendario de fauna</Link>
-        </nav>
+        <PestanasFauna actual="/fauna" />
         <p className="entradilla">
           Observatorios de toda España con las especies que más se observan alrededor y en qué meses, según cientos de
-          miles de registros de observadores (eBird, iNaturalist, Observation.org…). Respeta las distancias y no salgas
-          de los caminos.
+          miles de registros de observadores (eBird, iNaturalist, Observation.org…). ¿Buscas una especie concreta, como
+          el lince o el oso? Mira <Link href="/fauna/especies">dónde ver cada especie</Link>. Respeta las distancias y
+          no salgas de los caminos.
         </p>
       </header>
       {lugares.length ? (
         <>
-          <ExploradorFauna comunidades={comunidades} />
+          <ExploradorFauna comunidades={comunidades} especies={especies} />
           <noscript>
             <ul className="lista-cercanos">
               {lugares.slice(0, 40).map((l) => (

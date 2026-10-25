@@ -5,7 +5,14 @@ import EventosCerca from "@/features/eventos/componentes/EventosCerca";
 import MapaEventos from "@/features/eventos/componentes/MapaEventos";
 import { MESES } from "@/features/eventos/modelo";
 import MesesFauna from "@/features/fauna/componentes/MesesFauna";
-import { cargarFauna, getLugar, mesesBuenos, nombreEspecie, POCAS_OBSERVACIONES } from "@/features/fauna/datos";
+import {
+  cargarFauna,
+  especiePorCientifico,
+  getLugar,
+  mesesBuenos,
+  nombreEspecie,
+  POCAS_OBSERVACIONES,
+} from "@/features/fauna/datos";
 import MarcaSendero from "@/features/rutas/componentes/MarcaSendero";
 import { duracion, rutasQuePasan } from "@/features/rutas/datos";
 import { fechaLocal } from "@/lib/sol";
@@ -77,13 +84,19 @@ export default async function PaginaLugarFauna({ params }: Props) {
             <p className="nota-pie">Hay pocas observaciones registradas aquí: la lista es orientativa.</p>
           )}
           <ol className="especies">
-            {l.especies.map((e) => (
-              <li key={`${e.cientifico}-${e.n}`}>
-                <span className="barra-especie" style={{ width: `${(e.n / max) * 100}%` }} aria-hidden />
-                <b>{nombreEspecie(e)}</b> {e.nombre && e.cientifico && <i>{e.cientifico}</i>}
-                {e.clase === "mamifero" && <small> · mamífero</small>}
-              </li>
-            ))}
+            {l.especies.map((e) => {
+              const ficha = especiePorCientifico(e.cientifico);
+              return (
+                <li key={`${e.cientifico}-${e.n}`}>
+                  <span className="barra-especie" style={{ width: `${(e.n / max) * 100}%` }} aria-hidden />
+                  <b>
+                    {ficha ? <Link href={`/fauna/especies/${ficha.id}`}>{nombreEspecie(e)}</Link> : nombreEspecie(e)}
+                  </b>{" "}
+                  {e.nombre && e.cientifico && <i>{e.cientifico}</i>}
+                  {e.clase === "mamifero" && <small> · mamífero</small>}
+                </li>
+              );
+            })}
           </ol>
         </section>
         <section className="seccion">

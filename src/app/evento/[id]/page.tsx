@@ -5,6 +5,7 @@ import BarraAnual from "@/features/eventos/componentes/BarraAnual";
 import MapaEventos from "@/features/eventos/componentes/MapaEventos";
 import ClimaSpot from "@/features/clima/componentes/ClimaSpot";
 import FaunaCerca from "@/features/fauna/componentes/FaunaCerca";
+import { especiesDeEvento } from "@/features/fauna/datos";
 import MarcaSendero from "@/features/rutas/componentes/MarcaSendero";
 import { duracion } from "@/features/rutas/modelo";
 import {
@@ -49,6 +50,7 @@ export default async function PaginaEvento({ params }: Props) {
   );
   const spots = spotsCerca(e);
   const rutas = rutasCerca(e);
+  const especies = especiesDeEvento(e.id);
 
   return (
     <main className={`ficha evento cat-${e.categoria}`}>
@@ -111,6 +113,18 @@ export default async function PaginaEvento({ params }: Props) {
         <section className="seccion">
           <h2 className="rotulo">Para la foto</h2>
           <p>{e.consejo}</p>
+          {especies.length > 0 && (
+            <p>
+              Dónde más se ve en el resto de España:{" "}
+              {especies.map((s, i) => (
+                <span key={s.id}>
+                  {i > 0 && ", "}
+                  <Link href={`/fauna/especies/${s.id}`}>{s.nombre.toLowerCase()}</Link>
+                </span>
+              ))}
+              .
+            </p>
+          )}
           {lunasNuevas.length > 0 && (
             <p>
               Noches más oscuras de la temporada (luna nueva):{" "}

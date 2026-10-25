@@ -853,3 +853,102 @@
 .columnas-temporada h3 a {
   color: var(--texto);
 }
+
+/* Especies emblemáticas: rejilla de tarjetas con foto y ficha con zonas */
+.rejilla-especies {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+}
+.tarjeta-especie {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: var(--superficie);
+  overflow: hidden;
+}
+.tarjeta-especie img,
+.tarjeta-especie .sin-foto {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  background: var(--superficie-2);
+}
+.tarjeta-especie > div {
+  padding: 10px 12px 12px;
+}
+.tarjeta-especie h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+.tarjeta-especie p {
+  margin: 2px 0 0;
+}
+.tarjeta-especie i {
+  color: var(--texto-3);
+  font-size: 0.85rem;
+}
+.tarjeta-especie .meta {
+  color: var(--texto-2);
+  font-size: 0.85rem;
+}
+.cabecera-especie {
+  display: grid;
+  gap: 16px;
+}
+@media (min-width: 800px) {
+  .cabecera-especie {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: start;
+  }
+}
+.cabecera-especie figure {
+  margin: 0;
+}
+.cabecera-especie img {
+  display: block;
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: var(--radio);
+}
+.cabecera-especie figcaption {
+  font-size: 0.75rem;
+  color: var(--texto-3);
+  margin-top: 4px;
+}
+.cabecera-especie .meta {
+  color: var(--texto-2);
+}
+.zonas-especie {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+.zonas-especie li {
+  position: relative;
+  z-index: 0;
+  padding: 6px 10px;
+  border-radius: var(--radio-s);
+  overflow: hidden;
+}
+.sugerencia-especie {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 12px;
+}
+.sugerencia-especie a {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--c-fauna) 16%, var(--superficie));
+  color: var(--texto);
+  text-decoration: none;
+}

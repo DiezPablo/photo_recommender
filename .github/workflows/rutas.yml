@@ -14,6 +14,7 @@ on:
       - rasante/rutas/**
       - rasante/logistica/**
       - rasante/fauna/**
+      - rasante/recursos/especies.csv
       - .github/workflows/rutas.yml
 
 permissions:
@@ -74,10 +75,14 @@ jobs:
       - name: Fauna
         run: python -m rasante fauna --pbf spain.osm.pbf --salida salida/fauna.json
 
+      # Especies emblemáticas (lince, oso, grulla…): dónde y cuándo se ven en España (GBIF)
+      - name: Especies
+        run: python -m rasante especies --salida salida/especies.json
+
       - name: Publicar
         run: |
           .github/scripts/publicar_release.sh "Actualizar rutas ($(date -u +%Y-%m-%d))" \
-            salida/rutas.json salida/logistica.json salida/fauna.json
+            salida/rutas.json salida/logistica.json salida/fauna.json salida/especies.json
 
       - uses: actions/cache/save@v6
         if: always()

@@ -658,3 +658,27 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
     rutas y lugares de fauna). La ficha de un evento enlaza al calendario de su ámbito.
   - Portada: «Esta temporada» en dos columnas. Planificador: la naturaleza del día es el paisaje; los eventos
     de fauna van en la línea «Fauna» junto al observatorio. `.ics`: los de fauna, con «Fauna:».
+
+## 2026-10-25 · Dónde ver cada especie (lince, oso, lobo…)
+
+- Petición del usuario: en fauna solo había observatorios de aves; faltaba poder buscar el lince y otras
+  especies emblemáticas. Nueva orden `python -m rasante especies` → `especies.json` (mensual, en `rutas.yml`,
+  ~4 min sin caché) y páginas `/fauna/especies` y `/fauna/especies/[id]`.
+- Lista curada a mano en `rasante/recursos/especies.csv` (32 especies: mamíferos, cetáceos y aves), con un
+  consejo de dónde y cómo verla y los eventos del calendario que le corresponden. Se añaden cuatro eventos de
+  fauna: osos en Somiedo, lobo en la Culebra, celo de la cabra montés en Gredos y del rebeco en Picos.
+  Fuera especies muy sensibles al molestar (urogallo).
+- Datos de GBIF (2016-2025, solo con coordenadas sin problemas):
+  - Regiones: en tierra, la faceta de provincias GADM (recuento completo); en el mar, diez cajas de costa
+    contadas una a una (Estrecho, Alborán, Canarias…).
+  - Zonas: una página de 300 registros en cada una de las 6 regiones principales, agrupados en celdas de 0,25°
+    y ponderados por el total de la región. Se publica el centro redondeado a 0,05° y en la web se agrupan
+    por provincia con el observatorio más cercano.
+  - Meses: observaciones de la especie / observaciones de su clase ese mes (quita el sesgo de la primavera).
+    La faceta `month` de GBIF devuelve solo 10 valores si no se pide `month.facetLimit=12`.
+  - **Perros como lobos**: más de la mitad de los registros de *Canis lupus* en España son *C. l. familiaris*.
+    Se listan los `acceptedTaxonKey` de la especie y se quitan las formas domésticas.
+  - Las coordenadas de lince, oso o lobo ya llegan generalizadas (~28 km) por los propios conjuntos de datos.
+- Foto de cada especie: imagen (P18) de su elemento de Wikidata, con autor y licencia de Commons.
+- El buscador de lugares sugiere la ficha si la búsqueda coincide con una especie («lince»), los observatorios
+  enlazan las especies que tienen ficha y los eventos de fauna enlazan sus especies.

@@ -8,17 +8,18 @@ modelos, operación y desarrollo, en `docs/`.
 
 ## Piezas
 - Pipeline Python: paquete `rasante/` (`pyproject.toml`), una orden por subpaquete con
-  `python -m rasante {prevision,spots,rutas,eventos,alineaciones,clima,validar,avisos}`:
+  `python -m rasante {prevision,spots,rutas,eventos,alineaciones,clima,fauna,especies,logistica,verificar,validar,avisos}`:
   - `comun` (caché `CacheJson`, sesión HTTP, `escribir_json` sin NaN, `id_spot`, `territorio`),
     `cielo` (astro, contaminación lumínica), `terreno` (DEM, horizonte), `notas` (modelos con desglose),
     `prevision` (Open-Meteo → `public/datos/informe.json`), `spots` (Commons + Wikidata + OSM →
     `spots.geojson`), `rutas` (PBF de OSM + FEDME/Caminos Naturales del IGN → `rutas.json`),
     `eventos` (luna, meteoros, Vía Láctea, eclipses, auroras, Starlight, naturaleza de
     `recursos/eventos_naturaleza.csv` → `eventos.json`; alineaciones → `alineaciones.json`), `clima` (ERA5 por
-    mes → `clima.json`, workflow `clima.yml`, varios días la primera vez), `validacion` (ERA5 + Commons + METAR), `avisos` (Telegram, opcional), `recursos` (geojson de referencia).
+    mes → `clima.json`, workflow `clima.yml`, varios días la primera vez), `fauna` (observatorios de OSM + GBIF →
+    `fauna.json`; especies de `recursos/especies.csv` + GBIF → `especies.json`), `validacion` (ERA5 + Commons + METAR), `avisos` (Telegram, opcional), `recursos` (geojson de referencia).
   - Antes de cambiar pesos de `rasante/notas/`, mira el informe de validación (artefacto `validacion`) y no
     ajustes más allá del ruido.
-- Web Next.js 16 (App Router) en `src/`: `app/` (rutas finas), `features/{spots,rutas,eventos,clima,viaje,alertas,offline}` (componentes, modelo,
+- Web Next.js 16 (App Router) en `src/`: `app/` (rutas finas), `features/{spots,rutas,eventos,clima,fauna,viaje,alertas,offline}` (componentes, modelo,
   `datos.ts` solo servidor con `server-only`), `ui/` (incl. `mapa/useMapaBase.ts` para Leaflet), `lib/`
   (`almacen.ts`: estado del navegador con `useSyncExternalStore`; `ubicacion.ts`), `estilos/` (CSS por áreas).
   Páginas generadas en el build, salvo `/viaje` (dinámica: depende de zona y fechas), `/spot/[id]` (fuera del top 60
