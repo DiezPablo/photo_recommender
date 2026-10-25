@@ -30,7 +30,10 @@ def cargar(ruta: Path = CSV, provincias: Provincias | None = None) -> list[dict]
     provincias = provincias or Provincias()
     eventos = []
     with open(ruta, encoding="utf-8") as f:
-        for fila in csv.DictReader(f):
+        for n, fila in enumerate(csv.DictReader(f), start=2):
+            # una coma sin comillas en un texto desplaza los campos: mejor fallar que publicar datos cruzados
+            if None in fila or any(v is None or v == "" for v in fila.values()):
+                raise ValueError(f"línea {n}: campos de más o vacíos (¿una coma sin comillas?)")
             if fila["categoria"] not in CATEGORIAS:
                 raise ValueError(f"{fila['id']}: categoría desconocida {fila['categoria']}")
             for campo in ("desde", "hasta", "pico"):

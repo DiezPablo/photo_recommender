@@ -611,3 +611,12 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
   cada elección resta un punto de nota por cada 40 km más allá de 15 desde la parada anterior (y el amanecer
   de mañana, desde donde acabó la noche): solo compensa ir lejos si la luz es claramente mejor. En el mismo
   plan de Asturias, 37-48 km al día.
+
+## 2026-10-25 · Más eventos y CSV a prueba de comas
+
+- Siete eventos más con lugar y fechas fiables: lavanda de Tiedra, girasoles de Tierra de Campos, descorche de
+  Los Alcornocales, vendimia en La Rioja, nieblas del valle del Ebro (boira, mar de nubes desde las sierras),
+  nieve en Guadarrama y otoño en la Val d'Aran. Se dejan fuera luciérnagas, orquídeas o tormentas: no tienen
+  un lugar y unas fechas que se puedan sostener.
+- Al añadirlos, unas comas sin comillas desplazaban campos sin que nada fallara. `naturaleza.cargar` rechaza
+  ahora filas con campos de más o vacíos (test).

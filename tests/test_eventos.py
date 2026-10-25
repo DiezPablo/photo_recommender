@@ -67,6 +67,9 @@ def test_naturaleza_rechaza_errores(tmp_path):
     malo.write_text(cabecera + "x,X,volcanes,01-01,02-01,01-15,L,40,-3,5,d,c\n")
     with pytest.raises(ValueError, match="categoría"):
         naturaleza.cargar(malo)
+    malo.write_text(cabecera + "x,X,flora,01-01,02-01,01-15,L,40,-3,5,texto, con coma,c\n")
+    with pytest.raises(ValueError, match="coma"):
+        naturaleza.cargar(malo)
     malo.write_text(cabecera + "x,X,flora,13-01,02-01,01-15,L,40,-3,5,d,c\n")
     with pytest.raises(ValueError, match="MM-DD"):
         naturaleza.cargar(malo)
