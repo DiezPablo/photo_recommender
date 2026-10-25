@@ -1,12 +1,13 @@
 {
- "actualizado": "2026-10-25T09:32:56+00:00",
+ "actualizado": "2026-10-25T10:49:29+00:00",
  "ficheros": {
-  "informe.json": "651b7a8ecd45",
+  "informe.json": "aeb82cf38f75",
   "spots.geojson": "4807e96946b9",
   "spots.csv": "ad8e8d0e9c69",
   "rutas.json": "a5edb5002eb8",
-  "eventos.json": "2da0c472dc2d",
+  "eventos.json": "743b4444215e",
   "logistica.json": "cbaf2f350388",
-  "alineaciones.json": "e63fbadf36c1"
+  "alineaciones.json": "e63fbadf36c1",
+  "verificacion.json": "030d9ec28636"
  }
 }
