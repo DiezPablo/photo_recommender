@@ -18,12 +18,20 @@ from rasante.comun.ficheros import escribir_json
 from rasante.verificacion import marcador, observado, previsto
 
 
+def leer_historial(ruta: Path) -> dict:
+    """El historial anterior; si no existe o está vacío o roto, se empieza de cero (nunca se para por esto)."""
+    try:
+        return json.loads(ruta.read_text())
+    except (OSError, ValueError):
+        return {}
+
+
 def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(prog="rasante verificar", description=__doc__.splitlines()[0])
     ap.add_argument("--historial", type=Path, default=Path("public/datos/verificacion.json"))
     a = ap.parse_args(argv)
     hoy = previsto.hoy_utc()
-    historial = json.loads(a.historial.read_text()) if a.historial.exists() else {}
+    historial = leer_historial(a.historial)
     nuevas, vistas = [], []
     try:
         nuevas = previsto.prevision(hoy)

@@ -86,3 +86,12 @@ def test_fusionar_recorta_y_no_duplica():
     nuevo = [{"emitida": "2026-01-10", "oaci": "LEMD", "fecha": "2026-01-11"}] * 2
     h = marcador.fusionar(viejo, nuevo, [], date(2026, 1, 11))
     assert len(h["previsiones"]) == 1 and h["previsiones"][0]["fecha"] == "2026-01-11"
+
+
+def test_historial_vacio_o_roto(tmp_path):
+    from rasante.verificacion.cli import leer_historial
+
+    vacio = tmp_path / "v.json"
+    vacio.write_text("")
+    assert leer_historial(vacio) == {}
+    assert leer_historial(tmp_path / "no-existe.json") == {}

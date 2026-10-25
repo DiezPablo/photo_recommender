@@ -76,16 +76,26 @@ jobs:
           python -m rasante alineaciones --salida salida/alineaciones.json
 
       # Lo previsto para los aeropuertos frente a lo observado (METAR): el historial vive en la release
+      # nunca bloquea la publicación de la previsión: si falla, esa vez no se publica la verificación
       - name: Verificación
+        continue-on-error: true
         run: |
-          curl -fsSL https://github.com/${{ github.repository }}/releases/download/datos/verificacion.json.gz \
-            | gunzip > salida/verificacion.json || echo "Sin historial: se empieza de cero"
+          if curl -fsSL -o /tmp/verificacion.json.gz \
+              https://github.com/${{ github.repository }}/releases/download/datos/verificacion.json.gz; then
+            gunzip -c /tmp/verificacion.json.gz > salida/verificacion.json
+          else
+            echo "Sin historial: se empieza de cero"
+          fi
           python -m rasante verificar --historial salida/verificacion.json
 
       - name: Publicar
         run: |
-          .github/scripts/publicar_release.sh "Datos $(date -u +%Y-%m-%dT%H:%MZ)" salida/informe.json \
-            salida/eventos.json salida/alineaciones.json salida/verificacion.json
+          # publicar_release.sh no publica nada si falta un fichero: la lista lleva solo los que existen
+          ficheros="salida/informe.json"
+          for f in salida/eventos.json salida/alineaciones.json salida/verificacion.json; do
+            [ -s "$f" ] && ficheros="$ficheros $f"
+          done
+          .github/scripts/publicar_release.sh "Datos $(date -u +%Y-%m-%dT%H:%MZ)" $ficheros
 
       - name: Aviso por Telegram (opcional)
         if: github.event.schedule == '47 12 * * *' || inputs.enviar
