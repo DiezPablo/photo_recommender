@@ -13,6 +13,7 @@ const FICHEROS = [
   "clima.json",
   "alineaciones.json",
   "logistica.json",
+  "verificacion.json",
 ];
 const DIR = path.join(process.cwd(), "public", "datos");
 

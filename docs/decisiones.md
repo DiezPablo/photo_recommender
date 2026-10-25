@@ -562,3 +562,16 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
   refresca cada 10 min mientras está activa.
 - El tinte de los temas pasa de todo el panel de teselas al mapa base, para que el satélite se vea con sus
   colores; en modo noche se tiñe de rojo como las fotos.
+
+## 2026-10-25 · Marcador de aciertos con METAR
+
+- El color de un atardecer no se puede verificar cada día sin fotos; sus ingredientes sí. `rasante.verificacion`
+  guarda en cada ejecución de `datos.yml` lo previsto para 35 aeropuertos (una sola petición multipunto a
+  Open-Meteo) y lo compara al día siguiente con el METAR (Iowa Environmental Mesonet): niebla al amanecer (FG o
+  visibilidad < 1 km), atardecer tapado por nubes bajas o medias (BKN/OVC/VV ≈ ≥ 70 %) y noche con ≥ 3 h
+  seguidas sin BKN/OVC. Mismos criterios y ventanas horarias para lo previsto y lo observado.
+- Marcador de los últimos 30 días con la previsión del día anterior, frente a la persistencia («mañana igual
+  que hoy») para que el porcentaje signifique algo. Historial de 60 días en la release (`verificacion.json`).
+- No se pudo rellenar hacia atrás: la API de ejecuciones anteriores de Open-Meteo guarda humedad y viento del
+  día anterior, pero no las nubes. El marcador empieza el 25-10-2026 y aparece en «Método» con ≥ 100 casos.
+- El METAR apenas informa de nubes altas: no verifica el «lienzo» de cirros, solo si algo lo tapa. Se dice.

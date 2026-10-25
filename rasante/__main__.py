@@ -16,6 +16,7 @@ ORDENES = {
     ),
     "clima": ("rasante.clima.cli", "Climatología fotográfica por mes (ERA5) → clima.json"),
     "logistica": ("rasante.logistica.cli", "Aparcamientos, refugios y fuentes de OSM cerca → logistica.json"),
+    "verificar": ("rasante.verificacion.cli", "Lo previsto frente a lo observado (METAR) → verificacion.json"),
     "validar": ("rasante.validacion.cli", "Validación histórica de las notas"),
     "avisos": ("rasante.avisos.telegram", "Resumen diario por Telegram (opcional)"),
 }

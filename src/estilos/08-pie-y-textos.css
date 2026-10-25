@@ -93,3 +93,25 @@
   background: var(--acento-suave);
   color: var(--acento);
 }
+
+/* Marcador de aciertos en «Método» */
+.marcador-aciertos {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0;
+}
+.marcador-aciertos > div {
+  padding: 12px 14px;
+  border-radius: var(--radio-m);
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+}
+.marcador-aciertos dt {
+  font: 600 0.72rem var(--f-cuerpo);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--texto-3);
+}
+.marcador-aciertos dd {
+  margin: 4px 0 0;
+}

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Marcador from "@/features/verificacion/Marcador";
 
 export const metadata: Metadata = { title: "Método" };
 
@@ -121,6 +122,9 @@ export default function Acerca() {
           mediocres.
         </li>
       </ul>
+
+      <h2>Cuánto acierta, día a día</h2>
+      <Marcador />
 
       <h2>Rutas de senderismo</h2>
       <ul>
