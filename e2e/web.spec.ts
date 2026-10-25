@@ -25,7 +25,7 @@ async function esperarTeselas(page: Page) {
 }
 
 test("los datos publicados responden y son JSON válido sin NaN", async ({ request }) => {
-  for (const f of ["/datos/informe.json", "/datos/spots.geojson"]) {
+  for (const f of ["/datos/informe.json", "/datos/spots.geojson", "/datos/eventos.json"]) {
     const r = await request.get(f);
     expect(r.status(), f).toBe(200);
     const texto = await r.text();
@@ -204,6 +204,8 @@ test("rutas: buscar, filtrar, ficha con mapa, perfil y GPX", async ({ page }, in
   await filas.first().click();
   await expect(page).toHaveURL(/\/ruta\//);
   await expect(page.locator("h1")).toContainText(/Peñalara/i);
+  // qué se puede ver alrededor a lo largo del año
+  await expect(page.locator(".eventos-cerca")).toContainText("Piornos en flor en Guadarrama");
   await expect(page.locator(".ficha-datos")).toContainText("km");
   await expect(page.locator(".perfil-ruta svg")).toBeVisible();
   await expect(page.locator(".mapa-caja[data-listo=si]")).toBeVisible();
@@ -238,4 +240,42 @@ test("rutas: los filtros sobreviven a ir a una ruta y volver", async ({ page }) 
   await page.goBack();
   await expect(page.getByPlaceholder(/Nombre/)).toHaveValue("Peñalara");
   await expect(page.locator(".fila-ruta").first()).toContainText(/Peñalara/i);
+});
+
+test("calendario: el cielo del mes, eventos de naturaleza y ficha de evento", async ({ page }, info) => {
+  const errores = vigilar(page);
+  await page.goto("/calendario");
+  await expect(page.locator("h1")).toContainText("Qué fotografiar este mes");
+  await expect(page.locator(".meses a[aria-current=page]")).toHaveCount(1);
+  await expect(page.locator(".lista-cielo li").first()).toBeVisible();
+  // otro mes por enlace: octubre trae berrea y otoño
+  await page.locator(".meses").getByRole("link", { name: "oct" }).click();
+  await expect(page).toHaveURL(/\/calendario\/octubre$/);
+  await expect(page.locator(".tarjeta-evento", { hasText: "Berrea" }).first()).toBeVisible();
+  await expect(page.locator(".mapa-caja[data-listo=si]")).toBeVisible();
+  await expect(page.locator(".leaflet-overlay-pane path").first()).toBeVisible();
+  await esperarTeselas(page);
+  await page.screenshot({ path: `${CAPTURAS}/${info.project.name}-calendario.png`, fullPage: true });
+  // ficha de un evento: temporada, barra del año, mapa, spots y rutas de la zona
+  await page.getByRole("link", { name: "Otoño en la Selva de Irati" }).click();
+  await expect(page).toHaveURL(/\/evento\/otono-irati$/);
+  await expect(page.locator("h1")).toHaveText("Otoño en la Selva de Irati");
+  await expect(page.locator(".temporada")).toContainText(/temporada|Ahora mismo/);
+  await expect(page.locator(".barra-anual .pico")).toHaveCount(1);
+  await expect(page.locator(".mapa-caja[data-listo=si]")).toBeVisible();
+  await expect(page.locator(".lista-cercanos li").first()).toBeVisible();
+  await esperarTeselas(page);
+  await page.screenshot({ path: `${CAPTURAS}/${info.project.name}-evento.png`, fullPage: true });
+  expect(errores).toEqual([]);
+});
+
+test("calendario sin JavaScript: meses y eventos son enlaces", async ({ browser, baseURL }) => {
+  const ctx = await browser.newContext({ javaScriptEnabled: false, baseURL });
+  const page = await ctx.newPage();
+  await page.goto("/calendario/abril");
+  await expect(page.locator(".tarjeta-evento", { hasText: "Cerezos en flor del Valle del Jerte" })).toBeVisible();
+  await page.getByRole("link", { name: "Cerezos en flor del Valle del Jerte" }).click();
+  await expect(page).toHaveURL(/\/evento\/cerezo-jerte$/);
+  await expect(page.locator(".entradilla")).toBeVisible();
+  await ctx.close();
 });

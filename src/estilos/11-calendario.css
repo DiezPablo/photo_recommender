@@ -1,0 +1,336 @@
+/* Calendario de eventos: meses, cielo del mes, tarjetas de evento, barra anual y página de evento. */
+
+.calendario {
+  max-width: var(--ancho);
+  margin: 0 auto;
+  display: grid;
+  gap: 20px;
+  padding: 24px 16px 48px;
+}
+.calendario > .titular {
+  order: 0; /* en la portada el titular lleva orden propio */
+}
+@media (min-width: 1000px) {
+  .calendario {
+    padding: 24px 24px 48px;
+  }
+}
+
+/* Colores por categoría */
+.cat-flora {
+  --c-cat: var(--c-flora);
+}
+.cat-otono {
+  --c-cat: var(--c-otono);
+}
+.cat-fauna {
+  --c-cat: var(--c-fauna);
+}
+.cat-paisaje {
+  --c-cat: var(--c-paisaje);
+}
+.cat-agua {
+  --c-cat: var(--c-agua);
+}
+.cat-nieve {
+  --c-cat: var(--c-nieve);
+}
+.punto-cat {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--c-cat, var(--texto-3));
+  vertical-align: 1px;
+}
+
+/* Selector de mes: enlaces (funciona sin JavaScript) */
+.meses {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+}
+@media (min-width: 700px) {
+  .meses {
+    grid-template-columns: repeat(12, 1fr);
+  }
+}
+.meses a {
+  text-align: center;
+  padding: 8px 10px;
+  border-radius: 999px;
+  font: 600 0.85rem var(--f-cuerpo);
+  text-transform: capitalize;
+  color: var(--texto-2);
+  text-decoration: none;
+  border: 1px solid transparent;
+}
+.meses a:hover {
+  background: var(--superficie-2);
+}
+.meses a.hoy {
+  border-color: var(--borde);
+}
+.meses a[aria-current="page"] {
+  background: var(--texto);
+  color: var(--fondo);
+}
+
+.calendario-grid {
+  display: grid;
+  gap: 20px;
+}
+@media (min-width: 900px) {
+  .calendario-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    align-items: start;
+  }
+}
+.mapa-mes {
+  padding: 0;
+  overflow: hidden;
+}
+.mapa-mes .mapa-caja {
+  height: 420px;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* El cielo del mes */
+.lista-cielo {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+.lista-cielo li {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 12px;
+  align-items: start;
+  line-height: 1.4;
+}
+.lista-cielo li::first-letter {
+  text-transform: uppercase;
+}
+.lista-cielo small {
+  display: block;
+  color: var(--texto-2);
+  font-size: 0.85rem;
+  margin-top: 2px;
+}
+.lista-cielo [class^="icono-"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  border-radius: 50%;
+}
+.icono-luna.llena {
+  background: var(--luna);
+}
+.icono-luna.nueva {
+  border: 2px solid var(--luna);
+}
+.icono-vl {
+  background: linear-gradient(135deg, transparent 30%, var(--vl) 30% 70%, transparent 70%);
+  box-shadow: inset 0 0 0 2px var(--vl);
+}
+.icono-vl.apagado {
+  opacity: 0.35;
+}
+.icono-meteoro {
+  border-radius: 2px !important;
+  background:
+    linear-gradient(225deg, var(--texto-2) 0 18%, transparent 18%),
+    linear-gradient(225deg, transparent 40%, var(--texto-2) 40% 46%, transparent 46%);
+}
+.icono-meteoro.buena {
+  outline: 2px solid var(--suma);
+  outline-offset: 1px;
+}
+.icono-meteoro.mala {
+  opacity: 0.45;
+}
+.icono-eclipse {
+  background: radial-gradient(circle, var(--texto) 55%, var(--sol) 58% 70%, transparent 72%);
+}
+
+/* Tarjetas de evento */
+.naturaleza-mes {
+  display: grid;
+  gap: 16px;
+}
+.naturaleza-mes > h2 {
+  padding: 0 4px;
+}
+.grupo-categoria {
+  display: grid;
+  gap: 10px;
+}
+.titulo-categoria {
+  font: 650 1rem var(--f-cuerpo);
+  padding: 4px 4px 0;
+}
+.rejilla-eventos {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+}
+.tarjeta-evento {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  padding: 16px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-left: 4px solid var(--c-cat);
+  border-radius: var(--radio-m);
+}
+.tarjeta-evento .rotulo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.en-pico {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--c-cat) 16%, var(--superficie));
+  color: var(--texto);
+  letter-spacing: 0.04em;
+}
+.tarjeta-evento h3 {
+  font: 680 1.08rem/1.25 var(--f-cuerpo);
+  letter-spacing: -0.01em;
+}
+.tarjeta-evento h3 a {
+  color: var(--texto);
+  text-decoration: none;
+}
+.tarjeta-evento h3 a::after {
+  /* toda la tarjeta es clicable sin anidar enlaces */
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.tarjeta-evento {
+  position: relative;
+}
+.tarjeta-evento:hover {
+  box-shadow: var(--sombra);
+}
+.tarjeta-evento .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  font: 500 0.82rem var(--f-cuerpo);
+  color: var(--texto-2);
+}
+.tarjeta-evento .descripcion {
+  font-size: 0.9rem;
+  color: var(--texto-2);
+  line-height: 1.45;
+}
+
+/* Barra de los doce meses */
+.barra-anual {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 3px;
+  max-width: 520px;
+}
+.barra-anual span {
+  height: 22px;
+  border-radius: 4px;
+  background: var(--superficie-2);
+  font: 600 0.68rem/22px var(--f-cuerpo);
+  text-align: center;
+  color: var(--texto-3);
+}
+.barra-anual .activo {
+  background: color-mix(in srgb, var(--c-cat) 35%, var(--superficie));
+  color: var(--texto);
+}
+.barra-anual .pico {
+  background: var(--c-cat);
+  color: var(--superficie);
+}
+.barra-anual .actual {
+  box-shadow: inset 0 -3px 0 var(--texto);
+}
+.barra-anual.compacta span {
+  height: 6px;
+  border-radius: 3px;
+}
+.barra-anual.compacta .actual {
+  box-shadow: 0 0 0 1px var(--texto);
+}
+
+/* Página de un evento */
+.evento .ficha-cab .rotulo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.entradilla {
+  font-size: 1.12rem;
+  line-height: 1.45;
+  color: var(--texto-2);
+  max-width: 60ch;
+}
+.temporada {
+  display: grid;
+  gap: 10px;
+}
+.temporada p::first-letter {
+  text-transform: uppercase;
+}
+.leyenda-mapa .leyenda-area {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--c-cat, var(--acento));
+}
+.leyenda-mapa .leyenda-spot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--n-top);
+}
+.leyenda-mapa i.salida-ruta {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+.salida-ruta {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--t-gr);
+  border: 1.5px solid var(--superficie);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--texto) 25%, transparent);
+}
+.lista-cercanos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+}
+.lista-cercanos li {
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--borde);
+}
+.lista-cercanos a {
+  font-weight: 600;
+  color: var(--texto);
+}
+.lista-cercanos small {
+  display: block;
+  color: var(--texto-2);
+  margin-top: 2px;
+}

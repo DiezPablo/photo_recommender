@@ -3,7 +3,8 @@
 **¿Merece la pena salir a fotografiar?** Previsión para fotografía de paisaje y nocturna en toda España: cada
 día, para unos 1500 spots, una nota de 0 a 10 de amanecer, atardecer, noche y Vía Láctea, niebla o mar de
 nubes y salida o puesta de la luna, con el desglose de qué suma y qué resta. Además, unas 8400 rutas de
-senderismo con distancia, desnivel, tiempo estimado, perfil y GPX.
+senderismo con distancia, desnivel, tiempo estimado, perfil y GPX, y un calendario de qué fotografiar en cada
+época: floraciones, otoño, berrea, aves, nieve, lunas, lluvias de meteoros, Vía Láctea y eclipses.
 
 **Web:** https://photo-recommender.vercel.app · Proyecto personal, sin fines comerciales. Solo datos
 abiertos y gratuitos, sin claves de API, y sin IA ni LLM.
@@ -51,6 +52,7 @@ python -m rasante --help
 python -m rasante prevision --mis-spots mis_spots.csv      # → public/datos/informe.json
 python -m rasante spots --total 300 --por-provincia 4      # descubrimiento (horas: mejor en Actions)
 python -m rasante rutas --pbf spain-latest.osm.pbf         # extracto de OSM de Geofabrik
+python -m rasante eventos                                  # → public/datos/eventos.json
 python -m rasante validar                                  # validación histórica de las notas
 python -m rasante avisos --prueba                          # resumen de Telegram sin enviarlo
 ```
@@ -61,6 +63,7 @@ python -m rasante avisos --prueba                          # resumen de Telegram
 - [Modelos de puntuación](docs/modelos.md): cómo se calcula cada nota y cómo se ha validado.
 - [Operación](docs/operacion.md): workflows, calendario, lanzamientos manuales, secretos y qué hacer si algo falla.
 - [Desarrollo](docs/desarrollo.md): entorno, órdenes, convenciones y pruebas.
+- [Hoja de ruta](docs/hoja-de-ruta.md): hacia un planificador de viajes de fotografía y senderismo.
 - [Registro de decisiones](docs/decisiones.md) y [encargo original](docs/encargo.md).
 
 ## Fuentes y licencias

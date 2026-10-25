@@ -5,7 +5,7 @@
 Rasante tiene dos piezas desacopladas que se comunican solo por ficheros JSON:
 
 1. **Pipeline de datos** (`rasante/`, Python): corre en GitHub Actions, consulta servicios abiertos y genera
-   `informe.json` (previsión y notas), `spots.geojson` (spots) y `rutas.json` (rutas).
+   `informe.json` (previsión y notas), `spots.geojson` (spots), `rutas.json` (rutas) y `eventos.json` (calendario).
 2. **Web** (`src/`, Next.js 16, App Router): se construye en Vercel leyendo esos JSON y publica páginas
    estáticas o generadas bajo demanda.
 
@@ -31,6 +31,7 @@ servicios abiertos ──► rasante (Actions) ──► release «datos» ─�
 | `spots` | Descubrimiento nacional: candidatos (Wikidata, OSM), Commons (popularidad, galería), nombres, selección, CLI |
 | `rutas` | Rutas: OSM (PBF), FEDME y Caminos Naturales (IGN), geometría, métricas (MIDE), fusión y duplicados, CLI |
 | `validacion` | Validación histórica (ERA5, Commons, METAR) frente a los modelos v1 |
+| `eventos` | Calendario: fases de la luna, lluvias de meteoros con la luna de esa noche, ventanas de Vía Láctea, eclipses y eventos de naturaleza con lugar y fechas habituales (`recursos/eventos_naturaleza.csv`, revisado a mano) |
 | `avisos` | Resumen diario por Telegram (opcional) |
 | `recursos` | Datos de referencia: provincias (IGN), países vecinos (Natural Earth), positivos de validación |
 
@@ -44,6 +45,7 @@ prevision ──► notas, cielo, terreno, comun
 spots ──────► cielo, terreno, comun
 rutas ──────► terreno, comun
 validacion ─► notas, cielo, comun
+eventos ────► cielo, comun
 avisos ─────► (solo lee informe.json)
 ```
 
@@ -56,6 +58,7 @@ permite probar los modelos con casos sintéticos (`tests/test_puntuacion.py`).
 |---|---|
 | `app/` | Rutas de Next.js, finas: obtienen datos y componen funcionalidades |
 | `features/spots/` | Portada (almanaque, destacado, ranking, mapa), ficha del spot, modelo de datos, lectura del informe (`datos.ts`, solo servidor) |
+| `features/eventos/` | Calendario por meses, ficha de evento, barra del año, mapa de áreas y eventos cercanos a un spot o ruta |
 | `features/rutas/` | Buscador, mapa, ficha, perfil, GPX, modelo y lectura de `rutas.json` (solo servidor) |
 | `ui/` | Piezas compartidas: `Cifra`, iconos, selector de tema, `useMapaBase` (Leaflet) |
 | `lib/` | Estado del navegador con `useSyncExternalStore` (`almacen`: localStorage, URL) y ubicación |
@@ -74,6 +77,7 @@ build fallaría en lugar de meter `fs` en el paquete del navegador.
 | `/rutas`, `/rutas/[ccaa]` | Estática | Buscador (cliente) y listados sin JavaScript |
 | `/datos-rutas/indice`, `/datos-rutas/celda/[c]` | JSON estático | Índice compacto y trazados por celdas de 1° |
 | `/ruta/[id]` | Bajo demanda (ISR) | 8400 fichas eran ~720 MB |
+| `/calendario`, `/calendario/[mes]`, `/evento/[id]` | Estática | 12 meses y ~45 eventos |
 
 Las páginas bajo demanda leen los JSON en la función del servidor (`outputFileTracingIncludes` en
 `next.config.ts`) y quedan en caché hasta el siguiente despliegue, que llega con cada actualización de datos.

@@ -5,6 +5,7 @@ import BotonGpx from "@/features/rutas/componentes/BotonGpx";
 import MarcaSendero from "@/features/rutas/componentes/MarcaSendero";
 import MapaRutas from "@/features/rutas/componentes/MapaRutas";
 import PerfilRuta from "@/features/rutas/componentes/PerfilRuta";
+import EventosCerca from "@/features/eventos/componentes/EventosCerca";
 import { duracion, getRuta, slug } from "@/features/rutas/datos";
 
 // 8500 fichas prerenderizadas ocupan ~700 MB y no caben en el límite de subida de Vercel: se generan la
@@ -168,6 +169,8 @@ export default async function PaginaRuta({ params }: Props) {
           {r.descripcion && <p className="descripcion">{r.descripcion}</p>}
         </section>
       </div>
+
+      <EventosCerca lat={r.inicio[0]} lon={r.inicio[1]} />
 
       <section className="seccion">
         <h2 className="rotulo">Antes de salir</h2>

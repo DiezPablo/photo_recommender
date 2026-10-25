@@ -6,7 +6,7 @@ Todo se ejecuta en GitHub Actions. No hace falta ningún secreto salvo para el a
 
 | Workflow | Cuándo | Qué hace | Duración |
 |---|---|---|---|
-| [`datos.yml`](../.github/workflows/datos.yml) | 03:47 y 12:47 UTC, y al cambiar `rasante/{prevision,notas,cielo,terreno,comun}` o `mis_spots.csv` | Descarga los spots publicados, calcula la previsión y publica `informe.json`. A mediodía, aviso por Telegram | ~40 min |
+| [`datos.yml`](../.github/workflows/datos.yml) | 03:47 y 12:47 UTC, y al cambiar `rasante/{prevision,notas,cielo,terreno,comun}` o `mis_spots.csv` | Descarga los spots publicados, calcula la previsión y el calendario y publica `informe.json` y `eventos.json`. A mediodía, aviso por Telegram | ~40 min |
 | [`descubrir.yml`](../.github/workflows/descubrir.yml) | Día 1 de cada mes (02:41 UTC) y al cambiar `rasante/spots` o el territorio | Descubre ~1500 spots, recalcula la previsión y publica `spots.geojson`, `spots.csv` e `informe.json` | 4-5 h |
 | [`rutas.yml`](../.github/workflows/rutas.yml) | Día 8 de cada mes (04:23 UTC) y al cambiar `rasante/rutas` | Descarga el extracto de OSM de España, lee FEDME y Caminos Naturales, publica `rutas.json` | ~25 min |
 | [`validar.yml`](../.github/workflows/validar.yml) | A mano y al cambiar `rasante/notas` o `rasante/validacion` | Validación histórica; informe en el resumen y en el artefacto `validacion` | ~1-2 h |

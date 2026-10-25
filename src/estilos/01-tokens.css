@@ -47,6 +47,12 @@
   --t-natural: #8a5a2b;
   --t-otro: #7d7a73;
   --t-blanco: #fff;
+  --c-flora: #c4568a;
+  --c-otono: #c8611c;
+  --c-fauna: #6f7a2e;
+  --c-paisaje: #2f7f86;
+  --c-agua: #2f6fb0;
+  --c-nieve: #7d8fa8;
   --f-cuerpo: var(--f-ui), "Helvetica Neue", Arial, sans-serif;
   --f-datos: var(--f-mono), ui-monospace, "SF Mono", Menlo, monospace;
   --ancho: 1440px;
@@ -136,6 +142,12 @@
   --t-natural: #861612;
   --t-otro: #5c0a07;
   --t-blanco: #3a0606;
+  --c-flora: #e0302a;
+  --c-otono: #c9251e;
+  --c-fauna: #a01a14;
+  --c-paisaje: #861612;
+  --c-agua: #b0201b;
+  --c-nieve: #6a0c08;
   --fondo: #000;
   --superficie: #070000;
   --superficie-2: #140000;

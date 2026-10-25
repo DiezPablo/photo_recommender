@@ -426,3 +426,22 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
   600-1000, 1000-1500 y más de 1500 m. Va en la URL (`?desnivel=`) como el resto de filtros.
 - Con cinco desplegables el texto se cortaba en escritorio; «Ordenar» pasa a la cabecera de la lista
   (ordena resultados, no los filtra) y los cuatro filtros quedan en 2×2 en móvil y 4 columnas en escritorio.
+
+## 2026-10-25 · Calendario de eventos
+
+- Petición del usuario: qué se puede fotografiar en cada época y en cada sitio, como primer paso hacia un
+  planificador de viajes (ver `hoja-de-ruta.md`).
+- **Cielo, calculado**: lunas nuevas y llenas (extremos de la iluminación de `astro`; contrastadas con
+  astropy: error < 1 h, fechas exactas), máximos de las lluvias de meteoros (fechas IMO) con la luna que habrá
+  a la hora de observar, temporada del núcleo de la Vía Láctea (horas por noche a mitad de cada mes en el centro
+  peninsular) y ventanas sin luna alrededor de cada luna nueva. Eclipses: lista fija con los del IGN/OAN
+  (2 ago 2027 total en el Estrecho; 26 ene 2028 anular al atardecer); se muestran todos los futuros.
+- **Naturaleza, revisada a mano**: `rasante/recursos/eventos_naturaleza.csv` (44 eventos: floraciones, otoño,
+  berrea, aves, nieve, agua) con fechas *habituales* MM-DD, punto y radio. No hay fuente abierta y gratuita de
+  fenología por lugar; las fechas cambian cada año y la web lo dice. Provincia y comunidad con `Provincias`
+  (el Hayedo de Montejo caía en Guadalajara por el polígono simplificado: punto movido 1 km al oeste).
+- Se genera en `datos.yml` (segundos) y se publica en la release como el resto. Web: `/calendario` (mes en
+  curso), `/calendario/[mes]`, `/evento/[id]` (spots y rutas de la zona, noches sin luna de la temporada) y
+  «A lo largo del año» en las fichas de spot y de ruta (eventos cuyo radio + 15 km incluye el punto).
+- Cabecera: con «Calendario» no cabía en 375 px; por debajo de 430 px queda solo el logo.
+

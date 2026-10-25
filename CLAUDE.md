@@ -8,15 +8,16 @@ modelos, operación y desarrollo, en `docs/`.
 
 ## Piezas
 - Pipeline Python: paquete `rasante/` (`pyproject.toml`), una orden por subpaquete con
-  `python -m rasante {prevision,spots,rutas,validar,avisos}`:
+  `python -m rasante {prevision,spots,rutas,eventos,validar,avisos}`:
   - `comun` (caché `CacheJson`, sesión HTTP, `escribir_json` sin NaN, `id_spot`, `territorio`),
     `cielo` (astro, contaminación lumínica), `terreno` (DEM, horizonte), `notas` (modelos con desglose),
     `prevision` (Open-Meteo → `public/datos/informe.json`), `spots` (Commons + Wikidata + OSM →
     `spots.geojson`), `rutas` (PBF de OSM + FEDME/Caminos Naturales del IGN → `rutas.json`),
-    `validacion` (ERA5 + Commons + METAR), `avisos` (Telegram, opcional), `recursos` (geojson de referencia).
+    `eventos` (luna, meteoros, Vía Láctea, eclipses y naturaleza de `recursos/eventos_naturaleza.csv`
+    → `eventos.json`), `validacion` (ERA5 + Commons + METAR), `avisos` (Telegram, opcional), `recursos` (geojson de referencia).
   - Antes de cambiar pesos de `rasante/notas/`, mira el informe de validación (artefacto `validacion`) y no
     ajustes más allá del ruido.
-- Web Next.js 16 (App Router) en `src/`: `app/` (rutas finas), `features/{spots,rutas}` (componentes, modelo,
+- Web Next.js 16 (App Router) en `src/`: `app/` (rutas finas), `features/{spots,rutas,eventos}` (componentes, modelo,
   `datos.ts` solo servidor con `server-only`), `ui/` (incl. `mapa/useMapaBase.ts` para Leaflet), `lib/`
   (`almacen.ts`: estado del navegador con `useSyncExternalStore`; `ubicacion.ts`), `estilos/` (CSS por áreas).
   Páginas generadas en el build, salvo `/spot/[id]` (fuera del top 60 del día) y `/ruta/[id]`, que se generan al
@@ -24,7 +25,7 @@ modelos, operación y desarrollo, en `docs/`.
   `outputFileTracingIncludes` (`next.config.ts`).
 - Workflows: `datos.yml` (2 veces al día), `descubrir.yml` (mensual, ~1500 spots, 4-5 h), `rutas.yml` (mensual),
   `validar.yml`, `pruebas.yml` (ruff + pytest; tsc + ESLint + Prettier + build + Playwright).
-  Los datos (`informe.json`, `spots.geojson`, `spots.csv`, `rutas.json`) **no van en git**: se suben a la release
+  Los datos (`informe.json`, `spots.geojson`, `spots.csv`, `rutas.json`, `eventos.json`) **no van en git**: se suben a la release
   `datos` (`.github/scripts/publicar_release.sh`) y solo se hace commit de `public/datos/version.json`, que
   dispara el redespliegue de Vercel. `npm run build` los descarga antes (prebuild; `SIN_DESCARGA=1` usa los locales).
 

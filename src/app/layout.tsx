@@ -52,6 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <nav>
               <Link href="/">Spots</Link>
               <Link href="/rutas">Rutas</Link>
+              <Link href="/calendario">Calendario</Link>
               <Link href="/acerca" className="solo-ancho">
                 Método
               </Link>

@@ -9,6 +9,7 @@ ORDENES = {
     "prevision": ("rasante.prevision.cli", "Previsión y notas de cada spot → informe.json"),
     "spots": ("rasante.spots.cli", "Descubrir spots en toda España → spots.geojson"),
     "rutas": ("rasante.rutas.cli", "Rutas de senderismo → rutas.json"),
+    "eventos": ("rasante.eventos.cli", "Calendario del cielo y de naturaleza → eventos.json"),
     "validar": ("rasante.validacion.cli", "Validación histórica de las notas"),
     "avisos": ("rasante.avisos.telegram", "Resumen diario por Telegram (opcional)"),
 }
