@@ -496,3 +496,18 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
   Reservas y los Destinos con límites claros (islas, parques), con centro y radio aproximados (Sierra Morena
   en seis círculos) o provincia entera (Soria). La ficha del spot muestra «Cielo certificado» advirtiendo que
   la zona es aproximada. Faltan Destinos municipales pequeños.
+
+## 2026-10-25 · Climatología: qué esperar cada mes (más allá de los 5 días de previsión)
+
+- El hueco que no cubre nadie: las apps de previsión llegan a 3-5 días y las de planificación no saben del
+  tiempo. `rasante.clima` usa ERA5 (archivo de Open-Meteo, 2021-2025) en una rejilla de 0,5° (302 puntos:
+  tierra y franja costera, con Canarias y Baleares) y los **mismos modelos de nota** que la previsión:
+  frecuencia por mes de amaneceres y atardeceres ≥ 7 (con el camino del sol interpolado entre puntos
+  vecinos), noches con ≥ 3 h seguidas despejadas (nubosidad total < 20 %) y madrugadas con niebla (media de
+  la probabilidad calibrada con METAR).
+- Coste: Open-Meteo cuenta ~130 llamadas por punto (5 años, 7 variables). Para no competir con la previsión
+  (~5400 llamadas por ejecución), `clima.yml` corre a las 08:17 y 20:17 UTC con 4000 llamadas como máximo y
+  100 s entre puntos (< 5000/hora); guarda en caché un resumen diario compacto por punto y publica
+  `clima.json` cuando la rejilla está completa (~5 días). Luego solo recalcula si cambia el código.
+- Limitaciones: ERA5 es de ~30 km, así que no ve nieblas de valle pequeño ni nubes de relieve fino; la
+  niebla está calibrada en el llano de Madrid. Se presenta como «lo habitual», no como previsión.

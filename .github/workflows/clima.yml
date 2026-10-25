@@ -1,0 +1,66 @@
+# Climatología fotográfica (ERA5 2021-2025 en una rejilla de 0,5°): probabilidad por mes de amaneceres y
+# atardeceres buenos, noches despejadas y nieblas. La primera vez tarda varios días: cada ejecución descarga
+# los puntos que caben en ~4000 llamadas de Open-Meteo (lejos de las horas de la previsión) y guarda el
+# progreso en la caché. Con la rejilla completa publica clima.json; después solo recalcula si cambia el código.
+name: Climatología
+
+on:
+  schedule:
+    - cron: "17 8 * * *"
+    - cron: "17 20 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - rasante/clima/**
+      - rasante/notas/**
+      - .github/workflows/clima.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: clima
+  cancel-in-progress: false
+
+jobs:
+  clima:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - run: pip install -e .
+
+      # Resúmenes por punto de la rejilla: se guardan aunque el trabajo falle, para no repetir descargas
+      - uses: actions/cache/restore@v6
+        with:
+          path: cache/clima
+          key: clima-v1-${{ github.run_id }}
+          restore-keys: clima-v1-
+
+      - name: Descargar y agregar
+        run: python -m rasante clima --presupuesto 4000 --salida salida/clima.json
+
+      - uses: actions/cache/save@v6
+        if: always()
+        with:
+          path: cache/clima
+          key: clima-v1-${{ github.run_id }}
+
+      # Con la rejilla completa: se publica la primera vez y cuando cambia el código (push o a mano)
+      - name: Publicar
+        run: |
+          if [ ! -f salida/clima.json ]; then echo "Rejilla incompleta: nada que publicar"; exit 0; fi
+          if grep -q '"clima.json"' public/datos/version.json && [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "clima.json ya publicada y sin cambios de código"; exit 0
+          fi
+          .github/scripts/publicar_release.sh "Climatología $(date -u +%Y-%m-%d)" salida/clima.json
