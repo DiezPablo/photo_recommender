@@ -55,10 +55,46 @@ export interface DiaPlan {
   amanecer?: Propuesta;
   atardecer?: Propuesta;
   noche?: Propuesta;
-  ruta?: { id: string; nombre: string; km: number; subida: number; horas: number; dificultad: string; cerca: string };
+  ruta?: {
+    id: string;
+    nombre: string;
+    km: number;
+    subida: number;
+    horas: number;
+    dificultad: string;
+    cerca: string;
+    lat: number;
+    lon: number;
+  };
+  /** el orden del día: amanecer, salida de la ruta, atardecer y noche */
+  paradas: Parada[];
+  /** suma de distancias en línea recta entre paradas */
+  kmRecta: number;
   naturaleza: EventoNaturaleza[];
   alineaciones: { spot: SpotPlan; a: Alineacion }[];
   cielo: string[];
+}
+
+export interface Parada {
+  tipo: "amanecer" | "ruta" | "atardecer" | "noche" | "luna";
+  nombre: string;
+  lat: number;
+  lon: number;
+}
+
+/** Paradas del día en orden y lo que hay que moverse entre ellas (en línea recta). */
+function paradasDelDia(d: DiaPlan): { paradas: Parada[]; kmRecta: number } {
+  const paradas: Parada[] = [];
+  const poner = (tipo: Parada["tipo"], p?: { nombre: string; lat: number; lon: number }) => {
+    if (p) paradas.push({ tipo, nombre: p.nombre, lat: p.lat, lon: p.lon });
+  };
+  poner("amanecer", d.amanecer?.spot);
+  poner("ruta", d.ruta);
+  poner("atardecer", d.atardecer?.spot);
+  if (d.noche) poner(d.noche.momento === "luna" ? "luna" : "noche", d.noche.spot);
+  let km = 0;
+  for (let i = 1; i < paradas.length; i++) km += distanciaKm(paradas[i - 1], paradas[i]);
+  return { paradas, kmRecta: Math.round(km) };
 }
 
 export function comunidades(): { slug: string; nombre: string }[] {
@@ -90,12 +126,21 @@ function siguiente(f: string, n = 1): string {
 }
 
 /** El mejor spot para un momento: por nota prevista o, sin previsión, por climatología. Se evita repetir. */
+/** Un punto de nota por cada 40 km más allá de los primeros 15: solo compensa ir lejos si la luz es mejor. */
+const KM_POR_PUNTO = 40;
+const KM_LIBRES = 15;
+function penalizacion(desde: { lat: number; lon: number } | undefined, s: Spot): number {
+  return desde ? Math.max(0, distanciaKm(desde, s) - KM_LIBRES) / KM_POR_PUNTO : 0;
+}
+
 function elegir(
   spots: Spot[],
   fecha: string,
   momento: Momento,
   usados: Set<string>,
   clima: (s: Spot) => PuntoClima | null,
+  /** última parada: cuanto más lejos, peor (para no cruzar la comunidad tres veces al día) */
+  desde?: { lat: number; lon: number },
 ): { s: Spot; nota?: number; pct?: number } | null {
   const mes = Number(fecha.slice(5, 7)) - 1;
   const serie = momento === "astro" ? "noche" : momento === "amanecer" ? "amanecer" : "atardecer";
@@ -111,6 +156,7 @@ function elegir(
       return { s, valor: (c / 10) * (0.4 + 0.6 * oscuridad) + (s.descubierto?.fotos ?? 0) / 1e4, pct: c };
     })
     .filter((x): x is NonNullable<typeof x> => x !== null)
+    .map((x) => ({ ...x, valor: x.valor - penalizacion(desde, x.s) }))
     .sort((a, b) => b.valor - a.valor);
   // variedad: el mejor que no se haya usado, salvo que el repetido sea claramente mejor (≥ 1 punto)
   const nuevo = candidatos.find((c) => !usados.has(c.s.id));
@@ -164,31 +210,43 @@ export function planificar(z: Zona, desde: string, dias: number): { dias: DiaPla
   const porId = new Map(spots.map((s) => [s.id, s]));
   const rutas = cargarRutas().rutas.filter((r) => enZona(z, { lat: r.inicio[0], lon: r.inicio[1], ccaa: r.ccaa }));
   const usados = new Set<string>();
+  let ultima: { lat: number; lon: number } | undefined = z.cerca;
   const rutasUsadas = new Set<string>();
   const resultado: DiaPlan[] = [];
 
   for (let i = 0; i < Math.min(dias, MAX_DIAS); i++) {
     const fecha = siguiente(desde, i);
     const previsto = spots.some((s) => s.dias.some((d) => d.fecha === fecha));
-    const dia: DiaPlan = { fecha, previsto, luna: lunaDeLaNoche(fecha), naturaleza: [], alineaciones: [], cielo: [] };
+    const dia: DiaPlan = {
+      fecha,
+      previsto,
+      luna: lunaDeLaNoche(fecha),
+      paradas: [],
+      kmRecta: 0,
+      naturaleza: [],
+      alineaciones: [],
+      cielo: [],
+    };
     for (const [momento, clave] of [
       ["amanecer", "amanecer"],
       ["atardecer", "atardecer"],
     ] as const) {
-      const e = elegir(spots, fecha, clave, usados, climaSpot);
+      const e = elegir(spots, fecha, clave, usados, climaSpot, ultima);
       if (!e) continue;
       usados.add(e.s.id);
+      ultima = e.s;
       dia[momento] = propuesta(momento, fecha, e);
     }
     // de noche: con luna grande la Vía Láctea no sale; si la luna saliendo o poniéndose tiene mejor nota, manda
-    const astro = elegir(spots, fecha, "astro", usados, climaSpot);
-    const luna = previsto ? elegir(spots, fecha, "luna", usados, climaSpot) : null;
+    const astro = elegir(spots, fecha, "astro", usados, climaSpot, ultima);
+    const luna = previsto ? elegir(spots, fecha, "luna", usados, climaSpot, ultima) : null;
     const noche =
       luna?.nota !== undefined && (astro?.nota ?? 0) < luna.nota
         ? { e: luna, m: "luna" as const }
         : astro && { e: astro, m: "noche" as const };
     if (noche) {
       usados.add(noche.e.s.id);
+      ultima = noche.e.s;
       // sin previsión y con la luna por encima del 60 %, la Vía Láctea no se verá: noche de paisaje con luna
       const m = !previsto && dia.luna > 0.6 ? "luna" : noche.m;
       dia.noche = propuesta(m, fecha, noche.e);
@@ -214,6 +272,8 @@ export function planificar(z: Zona, desde: string, dias: number): { dias: DiaPla
           horas: elegida.horas,
           dificultad: elegida.dificultad,
           cerca: centro.nombre,
+          lat: elegida.inicio[0],
+          lon: elegida.inicio[1],
         };
       }
     }
@@ -241,6 +301,7 @@ export function planificar(z: Zona, desde: string, dias: number): { dias: DiaPla
     const au = eventos?.aurora;
     if (au?.noche === fecha && au.nivel !== "ninguno")
       dia.cielo.push(`Posible aurora (Kp ${au.kp_max.toLocaleString("es-ES")})`);
+    Object.assign(dia, paradasDelDia(dia));
     resultado.push(dia);
   }
   return { dias: resultado, spots: spots.length };

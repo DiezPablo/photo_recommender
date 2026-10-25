@@ -414,6 +414,9 @@ test("planificador de viaje: zona y fechas, días con propuesta y calendario", a
   await page.getByRole("button", { name: "Planificar" }).click();
   await expect(page).toHaveURL(/zona=comunidad-de-madrid/);
   await expect(page.locator(".tarjeta-dia-viaje")).toHaveCount(3);
+  // el mapa con las paradas numeradas por día
+  await expect(page.locator(".mapa-viaje[data-listo=si]")).toBeVisible();
+  await expect(page.locator(".parada-viaje").first()).toBeVisible();
   await expect(page.locator(".tarjeta-dia-viaje").first().locator(".plan-momento").first()).toBeVisible();
   const ics = page.getByRole("link", { name: /Añadir el plan a tu calendario/ });
   const r = await request.get((await ics.getAttribute("href"))!);

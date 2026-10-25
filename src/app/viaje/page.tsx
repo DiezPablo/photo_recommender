@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import BotonCercaViaje from "@/features/viaje/componentes/BotonCercaViaje";
 import TarjetaDia from "@/features/viaje/componentes/TarjetaDia";
+import MapaViaje from "@/features/viaje/componentes/MapaViaje";
 import { comunidades, MAX_DIAS, planificar, zonaDesdeParametros } from "@/features/viaje/plan";
 import { fechaLocal } from "@/lib/sol";
 
@@ -96,6 +97,7 @@ export default async function PaginaViaje({ searchParams }: Props) {
             <p>No hay spots en esa zona.</p>
           ) : (
             <div className="dias-viaje">
+              <MapaViaje dias={plan.dias.map((d) => ({ fecha: d.fecha, paradas: d.paradas }))} />
               {plan.dias.map((d) => (
                 <TarjetaDia key={d.fecha} d={d} />
               ))}

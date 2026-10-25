@@ -601,3 +601,13 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
   del spot (rutas que pasan a < 300 m, de la que llega antes a la que más tarda; fuera las de < 10 min) con la
   hora de salida para el amanecer y el atardecer; «Spots en el camino» en la ficha de la ruta, en orden y con
   la nota de hoy. El planificador usa la misma función. De 12 a 26 de los 60 spots del día con ruta a pie.
+
+## 2026-10-25 · Planificador con mapa y viajes coherentes
+
+- Mapa del viaje con las paradas de cada día (amanecer, salida de la ruta, atardecer, noche) numeradas por
+  día y unidas en orden, y los km entre paradas en línea recta. No se calculan rutas por carretera: los
+  servidores públicos gratuitos de OSRM no admiten uso sistemático; se dice «en línea recta».
+- El primer plan saltaba de punta a punta de la comunidad (131 km entre paradas en un día de Asturias). Ahora
+  cada elección resta un punto de nota por cada 40 km más allá de 15 desde la parada anterior (y el amanecer
+  de mañana, desde donde acabó la noche): solo compensa ir lejos si la luz es claramente mejor. En el mismo
+  plan de Asturias, 37-48 km al día.

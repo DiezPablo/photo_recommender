@@ -707,3 +707,17 @@
   color: var(--texto);
   font-weight: 600;
 }
+.mapa-viaje {
+  height: 380px;
+}
+.parada-viaje {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font: 700 0.75rem var(--f-cuerpo);
+  color: #fff;
+  border: 2px solid var(--superficie);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 30%);
+}

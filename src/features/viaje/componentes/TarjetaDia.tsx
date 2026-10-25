@@ -66,7 +66,10 @@ export default function TarjetaDia({ d }: { d: DiaPlan }) {
         <span className={`etiqueta-fuente ${d.previsto ? "previsto" : "habitual"}`}>
           {d.previsto ? "Con previsión" : "Lo habitual (sin previsión aún)"}
         </span>
-        <span className="luna-dia">Luna al {Math.round(d.luna * 100)} %</span>
+        <span className="luna-dia">
+          Luna al {Math.round(d.luna * 100)} %
+          {d.kmRecta > 0 && ` · ${d.kmRecta.toLocaleString("es-ES")} km entre paradas en línea recta`}
+        </span>
       </header>
       <div className="plan-momentos">
         <Momento p={d.amanecer} />
