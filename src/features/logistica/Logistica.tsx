@@ -40,8 +40,9 @@ export default function Logistica({ tipo, id }: { tipo: "spots" | "rutas"; id: s
                       href={`https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lon}`}
                       target="_blank"
                       rel="noopener"
+                      aria-label={`Ruta en coche hasta ${p.nombre ?? "el aparcamiento"}`}
                     >
-                      cómo llegar ↗
+                      en coche ↗
                     </a>
                   </>
                 )}

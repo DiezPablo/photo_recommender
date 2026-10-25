@@ -105,7 +105,10 @@ test("ficha de un spot: notas con desglose, sol, luna, Vía Láctea, fotos y có
     "Contaminación lumínica",
   ])
     await expect(hoy.getByText(t, { exact: true }).first()).toBeVisible();
-  await expect(page.getByRole("link", { name: "Cómo llegar" })).toHaveAttribute("href", /google\.com\/maps\/dir/);
+  await expect(page.locator(".ficha-cab .enlaces").getByRole("link", { name: "Cómo llegar" })).toHaveAttribute(
+    "href",
+    /google\.com\/maps\/dir/,
+  );
   await expect(page.locator(".mapa-caja[data-listo=si]")).toBeVisible();
   await expect(page.locator(".leaflet-overlay-pane path").first()).toBeVisible(); // líneas de azimut
   const fotos = page.locator(".galeria figure");
