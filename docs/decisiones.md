@@ -620,3 +620,9 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
   un lugar y unas fechas que se puedan sostener.
 - Al añadirlos, unas comas sin comillas desplazaban campos sin que nada fallara. `naturaleza.cargar` rechaza
   ahora filas con campos de más o vacíos (test).
+
+## 2026-10-25 · «Esta temporada» en la portada
+
+- Las funciones nuevas no se veían desde la portada, que es donde entra todo el mundo. Bloque «Esta temporada»
+  con los eventos más cerca de su mejor momento (como mucho dos por categoría, para que no salga solo otoño) y
+  accesos a «Planifica un viaje» y al calendario.

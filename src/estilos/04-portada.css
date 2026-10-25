@@ -290,3 +290,40 @@
   content: "máx ";
   font-size: 0.6rem;
 }
+
+/* «Esta temporada»: eventos en su mejor momento y accesos al planificador */
+.temporada-portada {
+  order: 6;
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+}
+.temporada-portada ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.temporada-portada li {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+}
+.temporada-portada li a {
+  font-weight: 650;
+  color: var(--texto);
+}
+.temporada-portada small {
+  color: var(--texto-3);
+}
+.acciones-temporada {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

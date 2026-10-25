@@ -1,5 +1,6 @@
 // Portada: titular del día, tabla de los próximos días (que hace de filtro), ranking y mapa.
 import AvisoAurora from "@/features/eventos/componentes/AvisoAurora";
+import Temporada from "@/features/eventos/componentes/Temporada";
 import { avisoAurora, cargarEventos } from "@/features/eventos/datos";
 import { cargar, etiquetaDia, FILTROS, type Filtro, miniatura, NOMBRE_MOMENTO, notaDe } from "@/features/spots/datos";
 import { filasRanking, TOP_HTML, urlRanking } from "@/features/spots/ranking";
@@ -74,6 +75,7 @@ export default function VistaDia({ d, filtro }: { d: number; filtro: Filtro }) {
             comunidades={[...new Set(filas.map((f) => f.ccaa).filter((c): c is string => !!c))].sort()}
           />
         </section>
+        <Temporada hoy={informe.fechas[0]} />
       </div>
       <Mapa
         puntos={top.map((f) => ({

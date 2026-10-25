@@ -87,6 +87,12 @@ test("portada: ranking, mapa con marcadores y filtros", async ({ page }, info) =
   await satelite.click();
   await expect(page.locator(".capa-satelite")).toHaveCount(0);
 
+  // «Esta temporada» lleva al planificador
+  await expect(page.locator(".temporada-portada").getByRole("link", { name: /Planifica un viaje/ })).toHaveAttribute(
+    "href",
+    "/viaje",
+  );
+
   // filtro de tipo: atardecer
   await page.getByRole("link", { name: "Atardecer" }).first().click();
   await expect(page).toHaveURL(/\/dia\/0\/atardecer$/);
