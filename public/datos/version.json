@@ -1,9 +1,10 @@
 {
- "actualizado": "2026-10-24T22:34:55+00:00",
+ "actualizado": "2026-10-25T08:22:37+00:00",
  "ficheros": {
-  "informe.json": "22044f1d5b86",
+  "informe.json": "64d8f8e91e00",
   "spots.geojson": "4807e96946b9",
   "spots.csv": "ad8e8d0e9c69",
-  "rutas.json": "197146a0a020"
+  "rutas.json": "197146a0a020",
+  "eventos.json": "af3ac5b2cf10"
  }
 }
