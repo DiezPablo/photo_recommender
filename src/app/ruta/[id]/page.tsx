@@ -8,6 +8,7 @@ import MarcaSendero from "@/features/rutas/componentes/MarcaSendero";
 import MapaRutas from "@/features/rutas/componentes/MapaRutas";
 import PerfilRuta from "@/features/rutas/componentes/PerfilRuta";
 import EventosCerca from "@/features/eventos/componentes/EventosCerca";
+import FaunaCerca from "@/features/fauna/componentes/FaunaCerca";
 import { cimaDeRuta, duracion, getRuta, slug } from "@/features/rutas/datos";
 import PlanLuz, { type NotaLuz } from "@/features/rutas/componentes/PlanLuz";
 import SpotsEnRuta from "@/features/rutas/componentes/SpotsEnRuta";
@@ -206,6 +207,8 @@ export default async function PaginaRuta({ params }: Props) {
       <Logistica tipo="rutas" id={r.id} />
 
       <EventosCerca lat={r.inicio[0]} lon={r.inicio[1]} />
+      <FaunaCerca lat={r.inicio[0]} lon={r.inicio[1]} />
+      <EventosCerca lat={r.inicio[0]} lon={r.inicio[1]} ambito="fauna" max={3} />
 
       <section className="seccion">
         <h2 className="rotulo">Antes de salir</h2>

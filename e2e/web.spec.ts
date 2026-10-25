@@ -299,7 +299,10 @@ test("calendario: el cielo del mes, eventos de naturaleza y ficha de evento", as
   // otro mes por enlace: octubre trae berrea y otoño
   await page.locator(".meses").getByRole("link", { name: "oct" }).click();
   await expect(page).toHaveURL(/\/calendario\/octubre$/);
-  await expect(page.locator(".tarjeta-evento", { hasText: "Berrea" }).first()).toBeVisible();
+  // paisaje y fauna van separados: la berrea no está en el calendario del paisaje, que enlaza al de fauna
+  await expect(page.locator(".tarjeta-evento", { hasText: "Otoño en Ordesa" })).toBeVisible();
+  await expect(page.locator(".tarjeta-evento", { hasText: "Berrea" })).toHaveCount(0);
+  await expect(page.locator(".aviso-fauna")).toContainText("Fauna en octubre");
   // sol y luna llena por los picos del horizonte de los spots (si ya se han publicado las alineaciones)
   if ((await page.request.get("/datos/alineaciones.json")).ok())
     await expect(page.locator(".alineaciones-mes li").first()).toBeVisible();
@@ -447,5 +450,20 @@ test("fauna: buscar por especie, ficha con especies y meses", async ({ page, req
   await expect(page.locator(".especies li").first()).toBeVisible();
   await expect(page.locator(".meses-fauna > div")).toHaveCount(12);
   await expect(page.locator(".mapa-caja[data-listo=si]")).toBeVisible();
+  expect(errores).toEqual([]);
+});
+
+test("calendario de fauna: eventos de fauna separados del paisaje", async ({ page }) => {
+  const errores = vigilar(page);
+  await page.goto("/fauna/calendario/octubre");
+  await expect(page.locator("h1")).toHaveText("Qué fauna ver en octubre");
+  await expect(page.locator(".tarjeta-evento", { hasText: "Berrea" }).first()).toBeVisible();
+  await expect(page.locator(".tarjeta-evento", { hasText: "Otoño en Ordesa" })).toHaveCount(0);
+  // pestañas entre los dos calendarios, en el mismo mes
+  await page.locator(".pestanas").getByRole("link", { name: "Paisaje y cielo" }).click();
+  await expect(page).toHaveURL(/\/calendario\/octubre$/);
+  // la ficha de un evento de fauna enlaza a su calendario
+  await page.goto("/evento/berrea-monfrague");
+  await expect(page.locator(".migas")).toContainText("Fauna");
   expect(errores).toEqual([]);
 });

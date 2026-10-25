@@ -13,7 +13,7 @@ const SECCIONES = [
     href: "/calendario",
     texto: "Calendario",
     Icono: IconoCalendario,
-    activa: (p: string) => /^\/(calendario|evento|alertas)/.test(p),
+    activa: (p: string) => /^\/(calendario|evento|alertas)/.test(p) && !p.startsWith("/fauna"),
   },
 ];
 

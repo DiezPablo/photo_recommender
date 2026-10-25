@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import VistaMes from "@/features/eventos/componentes/VistaMes";
+import { PestanasCalendario } from "@/features/eventos/componentes/NavMeses";
 import { cargarEventos, MESES } from "@/features/eventos/datos";
 
 export const metadata: Metadata = {
@@ -18,6 +19,7 @@ export default function PaginaCalendario() {
       <header className="titular">
         <p className="rotulo">Calendario · {MESES[mes]}</p>
         <h1>Qué fotografiar este mes</h1>
+        <PestanasCalendario ambito="paisaje" />
         <p className="aviso-suscripcion">
           <Link href="/alertas">Recíbelo en tu calendario →</Link> con los mejores momentos previstos en tu zona.
         </p>

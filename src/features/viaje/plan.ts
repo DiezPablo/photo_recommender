@@ -5,6 +5,7 @@ import "server-only";
 import { cargarClima, climaDe, type PuntoClima } from "@/features/clima/datos";
 import {
   activoEn,
+  ambito,
   type Alineacion,
   cargarAlineaciones,
   cargarEventos,
@@ -73,6 +74,8 @@ export interface DiaPlan {
   kmRecta: number;
   /** un lugar de observación de fauna cerca, si ese mes es bueno allí */
   fauna?: { id: string; nombre: string; km: number; especies: string[] };
+  /** eventos de fauna en marcha en la zona (berrea, grullas…) */
+  faunaEventos: EventoNaturaleza[];
   naturaleza: EventoNaturaleza[];
   alineaciones: { spot: SpotPlan; a: Alineacion }[];
   cielo: string[];
@@ -227,6 +230,7 @@ export function planificar(z: Zona, desde: string, dias: number): { dias: DiaPla
       paradas: [],
       kmRecta: 0,
       naturaleza: [],
+      faunaEventos: [],
       alineaciones: [],
       cielo: [],
     };
@@ -281,9 +285,11 @@ export function planificar(z: Zona, desde: string, dias: number): { dias: DiaPla
       }
     }
     // naturaleza en marcha en la zona
-    dia.naturaleza = (eventos?.naturaleza ?? []).filter(
+    const enMarcha = (eventos?.naturaleza ?? []).filter(
       (e) => activoEn(e, fecha) && (z.cerca ? distanciaKm(z.cerca, e) <= z.cerca.km + e.radio_km : enZona(z, e)),
     );
+    dia.naturaleza = enMarcha.filter((e) => ambito(e) === "paisaje");
+    dia.faunaEventos = enMarcha.filter((e) => ambito(e) === "fauna");
     // alineaciones de ese día en spots de la zona
     for (const [id, lista] of Object.entries(alineaciones?.spots ?? {})) {
       const s = porId.get(id);

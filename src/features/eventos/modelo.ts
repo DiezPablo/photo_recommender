@@ -20,6 +20,19 @@ export interface EventoNaturaleza {
   consejo: string;
 }
 
+/** Dos mundos: el paisaje (y el cielo) para fotografiar y la fauna para observar. */
+export type Ambito = "paisaje" | "fauna";
+
+export function ambito(e: Pick<EventoNaturaleza, "categoria">): Ambito {
+  return e.categoria === "fauna" ? "fauna" : "paisaje";
+}
+
+/** Calendario de cada ámbito (la ficha de un evento enlaza al suyo). */
+export function rutaCalendario(a: Ambito, mes?: number): string {
+  const base = a === "fauna" ? "/fauna/calendario" : "/calendario";
+  return mes === undefined ? base : `${base}/${MESES[mes]}`;
+}
+
 export interface FaseLuna {
   fecha: string;
   hora: string;

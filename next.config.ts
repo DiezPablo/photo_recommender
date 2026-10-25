@@ -17,6 +17,7 @@ const config: NextConfig = {
       "./public/datos/informe.json",
       "./public/datos/spots.geojson",
       "./public/datos/logistica.json",
+      "./public/datos/fauna.json",
     ],
     "/spot/[id]": [
       "./public/datos/informe.json",

@@ -8,7 +8,9 @@ import FaunaCerca from "@/features/fauna/componentes/FaunaCerca";
 import MarcaSendero from "@/features/rutas/componentes/MarcaSendero";
 import { duracion } from "@/features/rutas/modelo";
 import {
+  ambito,
   cargarEventos,
+  rutaCalendario,
   fechaCorta,
   fechaLarga,
   getEvento,
@@ -51,8 +53,9 @@ export default async function PaginaEvento({ params }: Props) {
   return (
     <main className={`ficha evento cat-${e.categoria}`}>
       <nav className="migas rotulo" aria-label="Migas">
-        <Link href="/calendario">Calendario</Link>
-        <Link href={`/calendario/${MESES[mesDe(e.pico)]}`}>{MESES[mesDe(e.pico)]}</Link>
+        {ambito(e) === "fauna" && <Link href="/fauna">Fauna</Link>}
+        <Link href={rutaCalendario(ambito(e))}>Calendario</Link>
+        <Link href={rutaCalendario(ambito(e), mesDe(e.pico))}>{MESES[mesDe(e.pico)]}</Link>
       </nav>
       <header className="ficha-cab">
         <p className={`rotulo cat-${e.categoria}`}>

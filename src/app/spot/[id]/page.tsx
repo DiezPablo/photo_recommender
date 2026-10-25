@@ -643,6 +643,7 @@ export default async function PaginaSpot({ params }: Props) {
       <RutasAlSpot lat={spot.lat} lon={spot.lon} />
       <Logistica tipo="spots" id={spot.id} />
       <FaunaCerca lat={spot.lat} lon={spot.lon} />
+      <EventosCerca lat={spot.lat} lon={spot.lon} ambito="fauna" max={3} />
       <EventosCerca lat={spot.lat} lon={spot.lon} />
     </main>
   );

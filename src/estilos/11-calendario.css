@@ -804,3 +804,52 @@
   font-size: 0.7rem;
   color: var(--texto-3);
 }
+
+/* Pestañas entre los dos calendarios (paisaje y fauna) y entre lugares y calendario de fauna */
+.pestanas {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--superficie-2);
+  width: fit-content;
+}
+.pestanas a {
+  padding: 7px 14px;
+  border-radius: 999px;
+  font: 600 0.88rem var(--f-cuerpo);
+  color: var(--texto-2);
+  text-decoration: none;
+}
+.pestanas a[aria-current="page"] {
+  background: var(--superficie);
+  color: var(--texto);
+  box-shadow: var(--sombra);
+}
+.aviso-fauna {
+  display: block;
+  padding: 12px 16px;
+  border-radius: var(--radio-m);
+  border-left: 4px solid var(--c-fauna);
+  background: var(--superficie);
+  color: var(--texto-2);
+  text-decoration: none;
+}
+.aviso-fauna b {
+  color: var(--texto);
+}
+.rejilla-eventos.una-columna {
+  grid-template-columns: 1fr;
+}
+.columnas-temporada {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+}
+.columnas-temporada h3 {
+  font: 650 0.95rem var(--f-cuerpo);
+  margin-bottom: 6px;
+}
+.columnas-temporada h3 a {
+  color: var(--texto);
+}

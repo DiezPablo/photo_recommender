@@ -311,10 +311,13 @@
   gap: 8px;
 }
 .temporada-portada li {
-  display: flex;
+  display: grid;
+  grid-template-columns: 9px 1fr;
+  column-gap: 8px;
   align-items: baseline;
-  flex-wrap: wrap;
-  gap: 4px 8px;
+}
+.temporada-portada li small {
+  grid-column: 2;
 }
 .temporada-portada li a {
   font-weight: 650;

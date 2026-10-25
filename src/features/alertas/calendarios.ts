@@ -2,7 +2,7 @@
 // la naturaleza. Solo servidor: lee el informe y los eventos del build, que se rehace dos veces al día.
 import "server-only";
 import { calendario, type EventoIcs, utcDesdeLocal } from "@/lib/ics";
-import { anoDelMes, cargarEventos, fechaCorta } from "@/features/eventos/datos";
+import { ambito, anoDelMes, cargarEventos, fechaCorta } from "@/features/eventos/datos";
 import { cargar } from "@/features/spots/datos";
 import { type Dia, type Momento, MOMENTOS, motivos, NOMBRE_MOMENTO, type Spot } from "@/features/spots/modelo";
 import { slug } from "@/features/rutas/modelo";
@@ -178,7 +178,7 @@ function eventosDelCielo(zona: Zona): EventoIcs[] {
     if (pico < ev.desde) continue;
     lista.push({
       uid: `${n.id}-${pico.slice(0, 4)}@rasante`,
-      titulo: `${n.nombre}: en su mejor momento`,
+      titulo: `${ambito(n) === "fauna" ? "Fauna: " : ""}${n.nombre}: en su mejor momento`,
       descripcion: `${n.descripcion} Habitualmente del ${fechaCorta(n.desde)} al ${fechaCorta(n.hasta)}. ${n.consejo}`,
       lugar: [n.lugar, n.provincia].filter(Boolean).join(", "),
       geo: { lat: n.lat, lon: n.lon },

@@ -4,7 +4,14 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { cargar } from "@/features/spots/datos";
 import { cargarRutas, filaRuta, type FilaRuta } from "@/features/rutas/datos";
-import { type Alineaciones, distanciaKm, type EventoNaturaleza, type Eventos } from "@/features/eventos/modelo";
+import {
+  type Alineaciones,
+  type Ambito,
+  ambito,
+  distanciaKm,
+  type EventoNaturaleza,
+  type Eventos,
+} from "@/features/eventos/modelo";
 
 export * from "@/features/eventos/modelo";
 
@@ -22,8 +29,14 @@ export function getEvento(id: string): EventoNaturaleza | undefined {
 }
 
 /** Eventos de naturaleza cuyo entorno incluye el punto (su radio más un margen para acercarse). */
-export function eventosCerca(lat: number, lon: number, margenKm = 15): (EventoNaturaleza & { km: number })[] {
+export function eventosCerca(
+  lat: number,
+  lon: number,
+  margenKm = 15,
+  solo?: Ambito,
+): (EventoNaturaleza & { km: number })[] {
   return (cargarEventos()?.naturaleza ?? [])
+    .filter((e) => !solo || ambito(e) === solo)
     .map((e) => ({ ...e, km: distanciaKm(e, { lat, lon }) }))
     .filter((e) => e.km <= e.radio_km + margenKm)
     .sort((a, b) => a.km - b.km);

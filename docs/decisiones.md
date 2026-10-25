@@ -645,3 +645,16 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
   < 8 km («Observatorio junto a Villafáfila»), leído en la misma pasada por el extracto.
 - El mapa de eventos y fauna ajusta la vista sin animación: si se desmonta a mitad de zoom (cambio de filtro o
   de página), Leaflet fallaba con `_leaflet_pos`. GBIF limita la faceta de especies a 300: se dice «más de 300».
+
+## 2026-10-25 · Paisaje y fauna, separados
+
+- Petición del usuario: la berrea es fauna; las Perseidas, paisaje. Dos ámbitos con un único criterio
+  (`ambito(e)`: la categoría «fauna» es fauna; el resto, paisaje y cielo) aplicado en toda la web:
+  - `/calendario` es el del **paisaje y el cielo** (floraciones, otoño, nieve, agua, paisaje + luna,
+    meteoros, Vía Láctea, eclipses, auroras) con un aviso enlazado «Fauna en {mes}: …».
+  - `/fauna/calendario` y `/fauna/calendario/[mes]`: eventos de fauna y los observatorios en su mejor momento
+    ese mes. Pestañas «Paisaje y cielo / Fauna» que mantienen el mes; en Fauna, «Lugares / Calendario».
+  - Fichas: «A lo largo del año» solo paisaje; «Fauna cerca» + «Fauna a lo largo del año» aparte (spots,
+    rutas y lugares de fauna). La ficha de un evento enlaza al calendario de su ámbito.
+  - Portada: «Esta temporada» en dos columnas. Planificador: la naturaleza del día es el paisaje; los eventos
+    de fauna van en la línea «Fauna» junto al observatorio. `.ics`: los de fauna, con «Fauna:».

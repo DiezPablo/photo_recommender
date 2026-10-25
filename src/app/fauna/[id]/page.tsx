@@ -115,7 +115,7 @@ export default async function PaginaLugarFauna({ params }: Props) {
         </section>
       )}
 
-      <EventosCerca lat={l.lat} lon={l.lon} />
+      <EventosCerca lat={l.lat} lon={l.lon} ambito="fauna" />
 
       <p className="nota-pie">
         Lugares: {fuentes.lugares}. Observaciones: {fuentes.observaciones}. Las especies sensibles llegan con la

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import VistaMes from "@/features/eventos/componentes/VistaMes";
+import { PestanasCalendario } from "@/features/eventos/componentes/NavMeses";
 import { cargarEventos, MESES } from "@/features/eventos/datos";
 
 type Props = { params: Promise<{ mes: string }> };
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { mes } = await params;
   return {
     title: `Calendario de ${mes}`,
-    description: `Qué fotografiar en ${mes} en España: naturaleza, luna, meteoros y Vía Láctea.`,
+    description: `Qué fotografiar en ${mes} en España: paisaje, luna, meteoros y Vía Láctea.`,
   };
 }
 
@@ -30,6 +31,7 @@ export default async function PaginaMes({ params }: Props) {
       <header className="titular">
         <p className="rotulo">Calendario</p>
         <h1>Qué fotografiar en {MESES[mes]}</h1>
+        <PestanasCalendario ambito="paisaje" mes={mes} />
         <p className="aviso-suscripcion">
           <Link href="/alertas">Recíbelo en tu calendario →</Link> con los mejores momentos previstos en tu zona.
         </p>

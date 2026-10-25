@@ -18,6 +18,12 @@ export default function PaginaFauna() {
       <header className="titular">
         <p className="rotulo">{lugares.length.toLocaleString("es-ES")} lugares · OpenStreetMap y GBIF</p>
         <h1>Dónde ver fauna</h1>
+        <nav className="pestanas" aria-label="Fauna">
+          <Link href="/fauna" aria-current="page">
+            Lugares
+          </Link>
+          <Link href="/fauna/calendario">Calendario de fauna</Link>
+        </nav>
         <p className="entradilla">
           Observatorios de toda España con las especies que más se observan alrededor y en qué meses, según cientos de
           miles de registros de observadores (eBird, iNaturalist, Observation.org…). Respeta las distancias y no salgas

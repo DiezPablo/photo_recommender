@@ -1,4 +1,5 @@
-// Un mes del calendario: el cielo (luna, meteoros, Vía Láctea, eclipses) y la naturaleza en marcha. Sin JS
+// Un mes del calendario del paisaje: el cielo (luna, meteoros, Vía Láctea, eclipses) y el paisaje en marcha
+// (floraciones, otoño, nieve, agua). La fauna tiene su propio calendario. Sin JS
 // salvo el mapa.
 import Link from "next/link";
 import AvisoAurora from "@/features/eventos/componentes/AvisoAurora";
@@ -6,8 +7,11 @@ import MapaEventos from "@/features/eventos/componentes/MapaEventos";
 import MejoresZonasMes from "@/features/clima/componentes/MejoresZonasMes";
 import AlineacionesMes from "@/features/eventos/componentes/AlineacionesMes";
 import TarjetaEvento from "@/features/eventos/componentes/TarjetaEvento";
+import NavMeses from "@/features/eventos/componentes/NavMeses";
 import {
   activoEnMes,
+  ambito,
+  rutaCalendario,
   anoDelMes,
   avisoAurora,
   type Categoria,
@@ -20,7 +24,7 @@ import {
   TEXTO_CALIDAD,
 } from "@/features/eventos/modelo";
 
-const ORDEN_CATEGORIAS: Categoria[] = ["flora", "otono", "fauna", "paisaje", "agua", "nieve"];
+const ORDEN_CATEGORIAS: Categoria[] = ["flora", "otono", "paisaje", "agua", "nieve"];
 
 export default function VistaMes({ eventos, mes, mesHoy }: { eventos: Eventos; mes: number; mesHoy: number }) {
   const ano = anoDelMes(eventos, mes);
@@ -34,27 +38,20 @@ export default function VistaMes({ eventos, mes, mesHoy }: { eventos: Eventos; m
   const proximoEclipse = eventos.eclipses.find((e) => e.fecha > finMes);
 
   const activos = eventos.naturaleza
-    .filter((e) => activoEnMes(e, mes))
+    .filter((e) => ambito(e) === "paisaje" && activoEnMes(e, mes))
     // primero los que están en su mejor momento este mes
     .sort((a, b) => Number(mesDe(b.pico) === mes) - Number(mesDe(a.pico) === mes) || a.nombre.localeCompare(b.nombre));
+  // primero los de fauna que están en su mejor momento este mes
+  const fauna = eventos.naturaleza
+    .filter((e) => ambito(e) === "fauna" && activoEnMes(e, mes))
+    .sort((a, b) => Number(mesDe(b.pico) === mes) - Number(mesDe(a.pico) === mes));
   const porCategoria = ORDEN_CATEGORIAS.map((c) => ({ c, lista: activos.filter((e) => e.categoria === c) })).filter(
     (g) => g.lista.length,
   );
 
   return (
     <>
-      <nav className="meses" aria-label="Meses">
-        {MESES.map((m, i) => (
-          <Link
-            key={m}
-            href={`/calendario/${m}`}
-            aria-current={i === mes ? "page" : undefined}
-            className={i === mesHoy ? "hoy" : undefined}
-          >
-            {m.slice(0, 3)}
-          </Link>
-        ))}
-      </nav>
+      <NavMeses mes={mes} mesHoy={mesHoy} ambito="paisaje" />
 
       {mes === mesHoy && <AvisoAurora aurora={avisoAurora(eventos.aurora, eventos.desde)} />}
 
@@ -163,9 +160,20 @@ export default function VistaMes({ eventos, mes, mesHoy }: { eventos: Eventos; m
       <MejoresZonasMes mes={mes} />
       <AlineacionesMes eventos={eventos} mes={mes} />
 
+      {fauna.length > 0 && (
+        <Link href={rutaCalendario("fauna", mes)} className="aviso-fauna">
+          <b>Fauna en {MESES[mes]}</b>:{" "}
+          {fauna
+            .map((e) => e.nombre)
+            .slice(0, 3)
+            .join(", ")}
+          {fauna.length > 3 && ` y ${fauna.length - 3} más`} → calendario de fauna
+        </Link>
+      )}
+
       <section className="naturaleza-mes" aria-labelledby="naturaleza">
         <h2 className="rotulo" id="naturaleza">
-          En la naturaleza · {activos.length} {activos.length === 1 ? "evento" : "eventos"}
+          En el paisaje · {activos.length} {activos.length === 1 ? "evento" : "eventos"}
         </h2>
         {porCategoria.map(({ c, lista }) => (
           <div key={c} className="grupo-categoria">

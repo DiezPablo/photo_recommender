@@ -18,7 +18,7 @@ export default function PaginaAlertas() {
         <p className="entradilla">
           Suscríbete al calendario de tu zona desde el móvil o el ordenador. Aparecerán los momentos con nota de{" "}
           {NOTA_ALERTA} o más en los próximos días (con la hora y el porqué), las lunas, las lluvias de meteoros, las
-          noches de Vía Láctea y los eventos de naturaleza. Se actualiza solo, dos veces al día.
+          noches de Vía Láctea y los eventos del paisaje y de la fauna. Se actualiza solo, dos veces al día.
         </p>
       </header>
 
