@@ -1,11 +1,11 @@
 {
- "actualizado": "2026-10-25T17:11:59+00:00",
+ "actualizado": "2026-10-25T17:40:29+00:00",
  "ficheros": {
-  "informe.json": "45277412ee8a",
+  "informe.json": "060ac0bc78e5",
   "spots.geojson": "4807e96946b9",
   "spots.csv": "ad8e8d0e9c69",
   "rutas.json": "cb17c72b8c50",
-  "eventos.json": "05005080f99b",
+  "eventos.json": "ef66af0dea7a",
   "logistica.json": "cbaf2f350388",
   "alineaciones.json": "e63fbadf36c1",
   "verificacion.json": "b5ce8e0fa942",
