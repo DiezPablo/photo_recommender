@@ -5,7 +5,15 @@ import { gunzipSync } from "node:zlib";
 import path from "node:path";
 
 const REPO = process.env.DATOS_REPO ?? "DiezPablo/photo_recommender";
-const FICHEROS = ["informe.json", "spots.geojson", "rutas.json", "eventos.json", "clima.json", "alineaciones.json"];
+const FICHEROS = [
+  "informe.json",
+  "spots.geojson",
+  "rutas.json",
+  "eventos.json",
+  "clima.json",
+  "alineaciones.json",
+  "logistica.json",
+];
 const DIR = path.join(process.cwd(), "public", "datos");
 
 async function existe(f) {

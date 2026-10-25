@@ -682,3 +682,28 @@
   font-size: 0.88rem;
   color: var(--texto-2);
 }
+
+/* Logística: aparcamientos, agua, refugios… */
+.lista-logistica {
+  margin: 0;
+  display: grid;
+  gap: 10px 24px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+}
+.lista-logistica dt {
+  font: 600 0.7rem var(--f-cuerpo);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--texto-3);
+  margin-bottom: 2px;
+}
+.lista-logistica dd {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--texto-2);
+  line-height: 1.45;
+}
+.lista-logistica a {
+  color: var(--texto);
+  font-weight: 600;
+}

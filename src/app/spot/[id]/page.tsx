@@ -13,6 +13,7 @@ import { cargarEventos, starlightDe } from "@/features/eventos/datos";
 import RutasAlSpot from "@/features/rutas/componentes/RutasAlSpot";
 import ClimaSpot from "@/features/clima/componentes/ClimaSpot";
 import BotonGuardar from "@/features/offline/BotonGuardar";
+import Logistica from "@/features/logistica/Logistica";
 import type { LineaMapa } from "@/features/spots/componentes/MapaSpots";
 import {
   calificacion,
@@ -639,6 +640,7 @@ export default async function PaginaSpot({ params }: Props) {
       </section>
       <ClimaSpot lat={spot.lat} lon={spot.lon} mes={Number(spot.dias[0]?.fecha.slice(5, 7) ?? 1) - 1} />
       <RutasAlSpot lat={spot.lat} lon={spot.lon} />
+      <Logistica tipo="spots" id={spot.id} />
       <EventosCerca lat={spot.lat} lon={spot.lon} />
     </main>
   );

@@ -1,6 +1,7 @@
 # Rutas de senderismo de toda España: OpenStreetMap (extracto PBF de España, sin Overpass), senderos
 # homologados FEDME y Caminos Naturales (IGN). Calcula desnivel, perfil y tiempo y publica rutas.json
-# en la release "datos". Mensual: los senderos cambian poco.
+# en la release "datos". Con el mismo extracto, la logística (aparcamientos, refugios, fuentes) cerca de
+# spots y rutas. Mensual: los senderos cambian poco.
 name: Rutas
 
 on:
@@ -11,6 +12,7 @@ on:
     branches: [main]
     paths:
       - rasante/rutas/**
+      - rasante/logistica/**
       - .github/workflows/rutas.yml
 
 permissions:
@@ -59,8 +61,18 @@ jobs:
           mkdir -p salida
           python -m rasante rutas --pbf spain.osm.pbf --salida salida
 
+      # Aparcamientos, refugios, fuentes y campings cerca de cada spot y de la salida de cada ruta
+      - name: Logística
+        run: |
+          curl -fsSL https://github.com/${{ github.repository }}/releases/download/datos/spots.geojson.gz \
+            | gunzip > spots.geojson
+          python -m rasante logistica --pbf spain.osm.pbf --spots spots.geojson --rutas salida/rutas.json \
+            --salida salida/logistica.json
+
       - name: Publicar
-        run: .github/scripts/publicar_release.sh "Actualizar rutas ($(date -u +%Y-%m-%d))" salida/rutas.json
+        run: |
+          .github/scripts/publicar_release.sh "Actualizar rutas ($(date -u +%Y-%m-%d))" \
+            salida/rutas.json salida/logistica.json
 
       - uses: actions/cache/save@v6
         if: always()

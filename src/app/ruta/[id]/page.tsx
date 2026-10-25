@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import BotonGpx from "@/features/rutas/componentes/BotonGpx";
 import BotonGuardar from "@/features/offline/BotonGuardar";
+import Logistica from "@/features/logistica/Logistica";
 import MarcaSendero from "@/features/rutas/componentes/MarcaSendero";
 import MapaRutas from "@/features/rutas/componentes/MapaRutas";
 import PerfilRuta from "@/features/rutas/componentes/PerfilRuta";
@@ -198,6 +199,8 @@ export default async function PaginaRuta({ params }: Props) {
           spot={spot ? { id: spot.s.id, nombre: spot.s.nombre, km: spot.km } : undefined}
         />
       )}
+
+      <Logistica tipo="rutas" id={r.id} />
 
       <EventosCerca lat={r.inicio[0]} lon={r.inicio[1]} />
 

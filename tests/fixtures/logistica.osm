@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="a mano para los tests">
+  <node id="1" lat="40.8000" lon="-3.9500"><tag k="amenity" v="parking"/><tag k="name" v="Aparcamiento de Cotos"/></node>
+  <node id="2" lat="40.8005" lon="-3.9500"><tag k="amenity" v="parking"/><tag k="access" v="private"/></node>
+  <node id="3" lat="40.8100" lon="-3.9600"><tag k="amenity" v="drinking_water"/></node>
+  <node id="4" lat="40.8200" lon="-3.9700"><tag k="natural" v="spring"/><tag k="drinking_water" v="yes"/><tag k="name" v="Fuente de los Geólogos"/></node>
+  <node id="5" lat="40.8300" lon="-3.9800"><tag k="natural" v="spring"/></node>
+  <node id="6" lat="40.8400" lon="-3.9400"><tag k="tourism" v="alpine_hut"/><tag k="name" v="Refugio Zabala"/></node>
+  <node id="7" lat="40.8100" lon="-3.9000"><tag k="amenity" v="shelter"/><tag k="shelter_type" v="picnic_shelter"/></node>
+  <node id="8" lat="40.8000" lon="-3.9300"><tag k="amenity" v="parking"/><tag k="parking" v="underground"/></node>
+  <node id="20" lat="40.7900" lon="-3.9100"/>
+  <node id="21" lat="40.7900" lon="-3.9080"/>
+  <node id="22" lat="40.7920" lon="-3.9080"/>
+  <node id="23" lat="40.7920" lon="-3.9100"/>
+  <way id="100"><nd ref="20"/><nd ref="21"/><nd ref="22"/><nd ref="23"/><nd ref="20"/><tag k="tourism" v="camp_site"/><tag k="name" v="Camping El Valle"/></way>
+  <node id="9" lat="42.0000" lon="-1.0000"><tag k="amenity" v="parking"/></node>
+</osm>

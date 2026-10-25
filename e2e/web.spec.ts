@@ -218,6 +218,9 @@ test("rutas: buscar, filtrar, ficha con mapa, perfil y GPX", async ({ page }, in
   await expect(page.locator("h1")).toContainText(/Peñalara/i);
   // qué se puede ver alrededor a lo largo del año
   await expect(page.locator(".eventos-cerca")).toContainText("Piornos en flor en Guadarrama");
+  // aparcamiento, agua y refugios cerca de la salida (si ya se ha publicado la logística)
+  if ((await page.request.get("/datos/logistica.json")).ok())
+    await expect(page.locator(".logistica")).toContainText("Aparcamiento");
   // a qué hora salir para tener arriba el amanecer y el atardecer
   await expect(page.locator(".plan-luz tbody tr")).toHaveCount(3);
   await expect(page.locator(".plan-luz .hora-salida").first()).toHaveText(/^Sal a las \d\d:\d\d$/);

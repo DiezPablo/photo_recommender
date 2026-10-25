@@ -542,3 +542,14 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
   los JSON con `outputFileTracingIncludes` y responde en ~50 ms en caliente. El plan se exporta a `.ics`.
 - Con cuatro secciones la cabecera no cabía en el móvil: por debajo de 820 px las secciones van en una barra
   inferior con iconos (a mano del pulgar) y la cabecera recupera el nombre.
+
+## 2026-10-25 · Logística de OpenStreetMap: aparcamientos, agua, refugios, campings
+
+- `rasante.logistica`: una pasada por el extracto PBF de España (el mismo de las rutas, en `rutas.yml`) con
+  filtro por claves y posiciones de nodos (áreas en su centro): aparcamientos (sin privados ni subterráneos),
+  agua potable (fuentes y manantiales con `drinking_water=yes`; un manantial sin etiqueta no cuenta),
+  refugios guardados y libres y abrigos de montaña, áreas de autocaravanas y campings. ~145 000 puntos en
+  2,5 min y 4,4 GB de memoria.
+- Los más cercanos a cada spot y a la salida de cada ruta con un índice de celdas de 0,1°, sin repetir el
+  mismo sitio mapeado dos veces: aparcamiento ≤ 1,5 km, agua ≤ 2, refugio ≤ 6, autocaravanas y camping ≤ 15.
+- Web: «Para ir» en las fichas, con enlace a OSM y «cómo llegar» al aparcamiento. Tests con un OSM XML.
