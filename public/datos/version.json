@@ -1,14 +1,14 @@
 {
- "actualizado": "2026-10-25T15:31:33+00:00",
+ "actualizado": "2026-10-25T15:33:36+00:00",
  "ficheros": {
-  "informe.json": "8ffbf2a4c147",
+  "informe.json": "824cc453ef23",
   "spots.geojson": "4807e96946b9",
   "spots.csv": "ad8e8d0e9c69",
   "rutas.json": "db9c3aee0e3e",
-  "eventos.json": "8287efbfb952",
+  "eventos.json": "3deab5ee770e",
   "logistica.json": "cbaf2f350388",
   "alineaciones.json": "e63fbadf36c1",
-  "verificacion.json": "db019eb98984",
+  "verificacion.json": "0e12cab1bce7",
   "fauna.json": "6dd41d9f2632"
  }
 }
