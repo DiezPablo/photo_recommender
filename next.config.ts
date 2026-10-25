@@ -8,8 +8,18 @@ const config: NextConfig = {
   // Las fichas de ruta se generan al visitarlas (ISR) y leen rutas.json en la función del servidor
   // (y las de spot fuera del top, que leen el informe y los spots); las dos muestran los eventos cercanos
   outputFileTracingIncludes: {
-    "/ruta/[id]": ["./public/datos/rutas.json", "./public/datos/eventos.json"],
-    "/spot/[id]": ["./public/datos/informe.json", "./public/datos/spots.geojson", "./public/datos/eventos.json"],
+    "/ruta/[id]": [
+      "./public/datos/rutas.json",
+      "./public/datos/eventos.json",
+      "./public/datos/informe.json",
+      "./public/datos/spots.geojson",
+    ],
+    "/spot/[id]": [
+      "./public/datos/informe.json",
+      "./public/datos/spots.geojson",
+      "./public/datos/eventos.json",
+      "./public/datos/rutas.json",
+    ],
   },
 };
 

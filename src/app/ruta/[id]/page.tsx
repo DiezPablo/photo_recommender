@@ -6,7 +6,11 @@ import MarcaSendero from "@/features/rutas/componentes/MarcaSendero";
 import MapaRutas from "@/features/rutas/componentes/MapaRutas";
 import PerfilRuta from "@/features/rutas/componentes/PerfilRuta";
 import EventosCerca from "@/features/eventos/componentes/EventosCerca";
-import { duracion, getRuta, slug } from "@/features/rutas/datos";
+import { cimaDeRuta, duracion, getRuta, slug } from "@/features/rutas/datos";
+import PlanLuz, { type NotaLuz } from "@/features/rutas/componentes/PlanLuz";
+import { cargar } from "@/features/spots/datos";
+import { distanciaKm } from "@/features/eventos/modelo";
+import { fechaLocal } from "@/lib/sol";
 
 // 8500 fichas prerenderizadas ocupan ~700 MB y no caben en el límite de subida de Vercel: se generan la
 // primera vez que alguien las visita y quedan en caché hasta el siguiente despliegue (ISR).
@@ -52,6 +56,20 @@ export default async function PaginaRuta({ params }: Props) {
     .filter(Boolean)
     .join(" · ");
   const llegar = `https://www.google.com/maps/dir/?api=1&destination=${r.inicio[0]},${r.inicio[1]}`;
+  const cima = cimaDeRuta(r);
+  const ahora = new Date();
+  const fechas = [0, 1, 2].map((d) => fechaLocal(ahora, d, r.inicio[1]));
+  // la nota prevista del spot más cercano a la cima (si hay uno a menos de 3 km)
+  const spot = cima
+    ? cargar()
+        .spots.map((s) => ({ s, km: distanciaKm(cima, s) }))
+        .filter((x) => x.km <= 3)
+        .sort((a, b) => a.km - b.km)[0]
+    : undefined;
+  const notas: Record<string, NotaLuz> = {};
+  for (const d of spot?.s.dias ?? []) {
+    notas[d.fecha] = { amanecer: d.notas.amanecer?.nota, atardecer: d.notas.atardecer?.nota };
+  }
   return (
     <main className="ficha">
       <nav className="migas rotulo" aria-label="Migas">
@@ -169,6 +187,15 @@ export default async function PaginaRuta({ params }: Props) {
           {r.descripcion && <p className="descripcion">{r.descripcion}</p>}
         </section>
       </div>
+
+      {cima && (
+        <PlanLuz
+          cima={cima}
+          fechas={fechas}
+          notas={spot ? notas : undefined}
+          spot={spot ? { id: spot.s.id, nombre: spot.s.nombre, km: spot.km } : undefined}
+        />
+      )}
 
       <EventosCerca lat={r.inicio[0]} lon={r.inicio[1]} />
 

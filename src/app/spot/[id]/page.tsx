@@ -8,6 +8,7 @@ import MapaSpot from "@/features/spots/componentes/MapaSpot";
 import { filasRanking, TOP_HTML } from "@/features/spots/ranking";
 import Panorama from "@/features/spots/componentes/Panorama";
 import EventosCerca from "@/features/eventos/componentes/EventosCerca";
+import RutasAlSpot from "@/features/rutas/componentes/RutasAlSpot";
 import type { LineaMapa } from "@/features/spots/componentes/MapaSpots";
 import {
   calificacion,
@@ -621,6 +622,7 @@ export default async function PaginaSpot({ params }: Props) {
           <BloqueDia key={d.fecha} dia={d} indice={i} spot={spot} />
         ))}
       </section>
+      <RutasAlSpot lat={spot.lat} lon={spot.lon} />
       <EventosCerca lat={spot.lat} lon={spot.lon} />
     </main>
   );

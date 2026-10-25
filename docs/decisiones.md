@@ -445,3 +445,15 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
   «A lo largo del año» en las fichas de spot y de ruta (eventos cuyo radio + 15 km incluye el punto).
 - Cabecera: con «Calendario» no cabía en 375 px; por debajo de 430 px queda solo el logo.
 
+
+## 2026-10-25 · «Sal a las…»: rutas y luz juntas
+
+- Primer paso de la hoja de ruta (ver `hoja-de-ruta.md`). En la ficha de una ruta, la hora de salida para estar
+  en el punto más alto 30 min antes de que salga el sol o al empezar la hora dorada (sol a 6°), para hoy y los
+  dos días siguientes, con la nota prevista del spot más cercano a la cima (< 3 km) y los minutos de marcha sin
+  luz (antes del alba o después del crepúsculo civil, bajando 20 min después de la puesta).
+- Cima: punto más alto del perfil (si la ruta sube ≥ 100 m y se llega en ≤ 8 h); tiempo MIDE del tramo con la
+  misma histéresis de 3 m que el pipeline, +15 % de margen. Vuelta por el mismo camino si no es circular.
+- Sol en TypeScript (`src/lib/sol.ts`, NOAA): coincide con `rasante.cielo.astro` en ±1 min; Canarias en su hora.
+- En la ficha de un spot, «Subir andando»: rutas cuya cima está a < 1 km, con las horas de hoy y mañana.
+- Las funciones de spot y ruta (ISR) llevan ahora los cuatro JSON (`outputFileTracingIncludes`).
