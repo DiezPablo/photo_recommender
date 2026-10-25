@@ -68,6 +68,25 @@ test("portada: ranking, mapa con marcadores y filtros", async ({ page }, info) =
   await esperarTeselas(page);
   await page.screenshot({ path: `${CAPTURAS}/${info.project.name}-portada-claro.png`, fullPage: false });
 
+  // «Nubes ahora»: la última imagen del satélite sobre el mapa
+  const satelite = page.getByRole("button", { name: "Nubes ahora" });
+  await satelite.click();
+  await expect(satelite).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator(".capa-satelite img").first()).toHaveAttribute("src", /view\.eumetsat\.int/);
+  await page
+    .waitForFunction(
+      () =>
+        [...document.querySelectorAll<HTMLImageElement>(".capa-satelite img")].some(
+          (i) => i.complete && i.naturalWidth > 0,
+        ),
+      null,
+      { timeout: 20_000 },
+    )
+    .catch(() => {});
+  await page.screenshot({ path: `${CAPTURAS}/${info.project.name}-satelite.png`, fullPage: false });
+  await satelite.click();
+  await expect(page.locator(".capa-satelite")).toHaveCount(0);
+
   // filtro de tipo: atardecer
   await page.getByRole("link", { name: "Atardecer" }).first().click();
   await expect(page).toHaveURL(/\/dia\/0\/atardecer$/);

@@ -3,6 +3,7 @@
 // contenido se usa sin esperar al mapa ni descargar Leaflet si no hay JavaScript.
 import type { LayerGroup, Map as LMap, MapOptions } from "leaflet";
 import { useEffect, useRef, useState } from "react";
+import { controlSatelite } from "@/ui/mapa/satelite";
 
 export type Leaflet = typeof import("leaflet");
 
@@ -39,11 +40,13 @@ export function useMapaBase(opciones: MapOptions = {}): MapaBase {
       // Teselas estándar de OSM (CARTO ya pide clave); en los temas oscuros se tiñen con CSS
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
+        className: "capa-base",
         attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       }).addTo(m);
       // sin la bandera de colores del prefijo (rompería el modo noche)
       m.attributionControl.setPrefix('<a href="https://leafletjs.com">Leaflet</a>');
       m.on("moveend", () => setVista((v) => v + 1));
+      controlSatelite(L, m);
       leaflet.current = L;
       mapa.current = m;
       setListo(true);

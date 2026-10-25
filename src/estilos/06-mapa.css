@@ -9,7 +9,7 @@
   box-shadow: var(--sombra);
   isolation: isolate;
 }
-.mapa-caja .leaflet-tile-pane {
+.mapa-caja .capa-base {
   filter: var(--mapa-filtro);
 }
 .mapa-vacio {
@@ -82,4 +82,24 @@
 .marcador.pequeno {
   box-shadow: 0 1px 2px rgb(0 0 0 / 25%);
   border-width: 1.5px;
+}
+
+/* «Nubes ahora»: capa del satélite */
+.boton-satelite {
+  font: 600 0.8rem var(--f-cuerpo);
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--borde);
+  background: var(--superficie);
+  color: var(--texto);
+  box-shadow: var(--sombra);
+  cursor: pointer;
+}
+.boton-satelite[aria-pressed="true"] {
+  background: var(--texto);
+  color: var(--fondo);
+}
+/* el satélite con sus colores reales (el tinte del tema es solo del mapa base); en modo noche, en rojo */
+.capa-satelite {
+  filter: var(--foto-filtro);
 }

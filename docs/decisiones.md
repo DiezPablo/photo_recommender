@@ -553,3 +553,12 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
 - Los más cercanos a cada spot y a la salida de cada ruta con un índice de celdas de 0,1°, sin repetir el
   mismo sitio mapeado dos veces: aparcamiento ≤ 1,5 km, agua ≤ 2, refugio ≤ 6, autocaravanas y camping ≤ 15.
 - Web: «Para ir» en las fichas, con enlace a OSM y «cómo llegar» al aparcamiento. Tests con un OSM XML.
+
+## 2026-10-25 · «Nubes ahora»: satélite en tiempo real en los mapas
+
+- Para decidir «¿salgo ya?» a las seis de la tarde manda lo que se ve, no el modelo. EUMETSAT publica por WMS,
+  sin clave ni restricciones (`AccessConstraints: none`, `Fees: none`), el GeoColour RGB del satélite MTG
+  (color real de día, infrarrojo de noche) cada 10 min. Botón «Nubes ahora» en todos los mapas; la capa se
+  refresca cada 10 min mientras está activa.
+- El tinte de los temas pasa de todo el panel de teselas al mapa base, para que el satélite se vea con sus
+  colores; en modo noche se tiñe de rojo como las fotos.
