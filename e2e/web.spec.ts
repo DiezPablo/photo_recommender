@@ -499,6 +499,33 @@ test("spot de costa: mareas, oleaje y si se puede volar un dron", async ({ page,
   expect(errores).toEqual([]);
 });
 
+test("safaris: buscar por mes y especie, ficha de parque y especie", async ({ page, request }, info) => {
+  test.skip(!(await request.get("/datos/safaris.json")).ok(), "aún no se han publicado los safaris");
+  const errores = vigilar(page);
+  await page.goto("/safaris");
+  await expect(page.locator("h1")).toHaveText("Safaris por el mundo");
+  await expect(page.locator(".rejilla-safaris li").first()).toBeVisible();
+  // en agosto, el Masái Mara (la migración) está en temporada
+  await page.getByLabel("Cuándo vas").selectOption("7");
+  await page.getByLabel("Continente").selectOption("África");
+  const mara = page.locator(".rejilla-safaris li", { hasText: "Masái Mara" });
+  await expect(mara).toContainText("Buena época en agosto");
+  await page.screenshot({ path: `${CAPTURAS}/safaris-${info.project.name}.png` });
+  await mara.getByRole("link").click();
+  await expect(page).toHaveURL(/\/safaris\/masai-mara$/);
+  await expect(page.locator(".ano-safari")).toBeVisible();
+  await expect(page.locator(".visto-ahora")).toBeVisible();
+  await expect(page.locator(".mapa-caja[data-listo=si]").first()).toBeVisible();
+  await page.screenshot({ path: `${CAPTURAS}/safari-parque-${info.project.name}.png`, fullPage: true });
+  // de una especie estrella a su página con los parques donde se ve
+  await page.locator(".tarjeta-especie h3 a", { hasText: "León" }).first().click();
+  await expect(page).toHaveURL(/\/safaris\/especie\/panthera-leo$/);
+  await expect(page.locator(".zonas-especie li").first()).toBeVisible();
+  await page.goto("/safaris/guia");
+  await expect(page.locator("#operador")).toBeVisible();
+  expect(errores).toEqual([]);
+});
+
 test("calendario de fauna: eventos de fauna separados del paisaje", async ({ page }) => {
   const errores = vigilar(page);
   await page.goto("/fauna/calendario/octubre");

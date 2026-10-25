@@ -30,6 +30,7 @@ export default function MapaEventos({
   rutas = NADA,
   etiqueta = "Mapa de eventos",
   enlace = "/evento",
+  mundo = false,
 }: {
   eventos: PuntoEvento[];
   spots?: PuntoSimple[];
@@ -37,6 +38,8 @@ export default function MapaEventos({
   etiqueta?: string;
   /** a dónde lleva cada área («/evento», «/fauna») */
   enlace?: string;
+  /** puntos de todo el mundo: se encuadran todos (sin el recorte a la península) */
+  mundo?: boolean;
 }) {
   const { caja, mapa, leaflet, listo, tema, nuevaCapa } = useMapaBase({ scrollWheelZoom: false });
   const capa = useRef<LayerGroup | null>(null);
@@ -97,14 +100,14 @@ export default function MapaEventos({
     }
     // con Canarias el encuadre se aleja hasta Marruecos: en el mapa general se encuadra la península
     const peninsula = limites.filter(([la]) => la > 34);
-    const encuadre = !solo && peninsula.length ? peninsula : limites;
+    const encuadre = !solo && !mundo && peninsula.length ? peninsula : limites;
     if (encuadre.length)
       // sin animación: si el usuario sale de la página o cambia el filtro a mitad de zoom, Leaflet falla
       // al desmontar el mapa animándose (`_leaflet_pos`)
       mapa.current.fitBounds(L.latLngBounds(encuadre), { padding: [24, 24], maxZoom: 11, animate: false });
     else mapa.current.setView([40.2, -3.7], 5, { animate: false });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [listo, eventos, spots, rutas, tema, enlace]);
+  }, [listo, eventos, spots, rutas, tema, enlace, mundo]);
 
   return (
     <div ref={caja} className="mapa-caja" role="region" aria-label={etiqueta} data-listo={listo ? "si" : "no"}>

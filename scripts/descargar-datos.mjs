@@ -17,6 +17,8 @@ const FICHEROS = [
   "fauna.json",
   "especies.json",
   "dron.json",
+  "safaris.json",
+  "safaris_recientes.json",
 ];
 const DIR = path.join(process.cwd(), "public", "datos");
 

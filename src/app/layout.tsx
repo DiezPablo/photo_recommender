@@ -61,6 +61,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/fauna" className="solo-ancho">
                 Fauna
               </Link>
+              <Link href="/safaris" className="solo-ancho">
+                Safaris
+              </Link>
               <Link href="/viaje" className="solo-ancho">
                 Viaje
               </Link>

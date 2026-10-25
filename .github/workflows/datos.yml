@@ -88,11 +88,16 @@ jobs:
           fi
           python -m rasante verificar --historial salida/verificacion.json
 
+      # Safaris: lo que se ha visto en cada parque en los últimos 30 días (iNaturalist). Opcional.
+      - name: Safaris recientes
+        continue-on-error: true
+        run: python -m rasante safaris --recientes --salida salida/safaris_recientes.json
+
       - name: Publicar
         run: |
           # publicar_release.sh no publica nada si falta un fichero: la lista lleva solo los que existen
           ficheros="salida/informe.json"
-          for f in salida/eventos.json salida/alineaciones.json salida/verificacion.json; do
+          for f in salida/eventos.json salida/alineaciones.json salida/verificacion.json salida/safaris_recientes.json; do
             [ -s "$f" ] && ficheros="$ficheros $f"
           done
           .github/scripts/publicar_release.sh "Datos $(date -u +%Y-%m-%dT%H:%MZ)" $ficheros

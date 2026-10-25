@@ -714,3 +714,36 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
 - Informativo: no entra en la nota (los pesos están validados y no hay datos para validar un factor de marea).
 - Las provincias simplificadas dejan rendijas entre ellas: sin un margen al unirlas, la «costa» incluía
   fronteras interiores (Navacerrada salía en la costa).
+
+## 2026-10-25 · Safaris por el mundo
+
+- Petición del usuario (aficionado a los safaris): un sitio centralizado con parques de todo el mundo,
+  especies, tarifas, rutas, organizadores, alojamientos, reseñas, precios y consejos, que cambie según lo que
+  mejor se ve. Se pausa la revisión de mejoras gratuitas (anotada en `hoja-de-ruta.md`).
+- **Qué se puede hacer gratis y sin IA, y qué no**:
+  - Sí: catálogo curado (65 parques en `recursos/safaris.csv`: país, coordenadas de la zona de safari, radio,
+    tipos de safari, mejores meses, especies estrella, tasa cuando es conocida con su año, consejo), Wikidata
+    (foto, web oficial, Wikipedia), iNaturalist (especies, observaciones por mes y **lo visto en los últimos 30
+    días**, con fotos Creative Commons y nombres en español), ERA5 (lluvia y temperatura por mes) y
+    OpenStreetMap (lodges, campamentos y hoteles con web y teléfono).
+  - No: reservas, precios de lodges y reseñas propias. No hay APIs abiertas de precios ni de reseñas
+    (TripAdvisor o Google no permiten reutilizarlas) y gestionar reservas exige un backend, contratos y
+    pagos, fuera de un proyecto personal sin servidor. Se enlaza a las webs oficiales y de cada lodge para
+    reservar directamente (sin comisiones) y a Google Maps para las reseñas. La guía explica cómo elegir
+    operador (licencia, asociaciones KATO/TATO/AUTO/SATSA, qué pedir por escrito).
+- «Que cambie según lo que mejor se ve»: el orden de los parques pone primero los que están en temporada en el
+  mes elegido y, dentro de ellos, los que más especies estrella han tenido en iNaturalist en los últimos 30
+  días (`safaris_recientes.json`, en cada ejecución de *Datos*). La ficha pide además a iNaturalist en directo
+  desde el navegador (su API admite CORS) y, si falla, enseña la última copia.
+- Meses de mamíferos: observaciones brutas por mes. Dividir entre todas las observaciones (como en la fauna
+  de España) daba el invierno como mejor época en Yellowstone solo porque en invierno no hay flores ni
+  insectos que fotografiar.
+- iNaturalist usa sinónimos (Bison bison es Bos bison): se acepta el `matched_term`. Las subespecies cuentan
+  para su especie (`ancestor_ids`). Peticiones a ≤ 1 por segundo, como pide iNaturalist.
+- Clima: dos años de ERA5 por parque (~52 llamadas a Open-Meteo cada uno) con pausa entre parques. Desde el
+  contenedor Open-Meteo devuelve 429 por el límite horario: se prueba con `--sin-clima` y el clima se calcula
+  en Actions.
+- OSM: fuera los códigos de acampada de travesía de los parques de EE. UU. («4R1 - Ribbon Lake West»).
+- Web: `/safaris` (mejor ahora, buscador por mes, continente, especie y tipo, mapa mundial), `/safaris/[id]`,
+  `/safaris/especie` y `/safaris/especie/[slug]`, `/safaris/guia`. «Safaris» en la cabecera y en la barra
+  inferior del móvil.

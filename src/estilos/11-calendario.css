@@ -1012,3 +1012,165 @@
 .dron {
   scroll-margin-top: 90px; /* que la cabecera fija no tape el título al llegar desde el sello */
 }
+
+/* Safaris: tarjetas, chips, el año del parque, avistamientos recientes y alojamientos */
+.en-temporada {
+  color: var(--c-fauna);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.fuera-temporada {
+  color: var(--texto-3);
+  font-size: 0.85rem;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.chip {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--superficie-2);
+  font-size: 0.85rem;
+}
+.enlaces-especies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+}
+.ano-safari {
+  display: grid;
+  gap: 4px;
+  font-size: 0.8rem;
+}
+.fila-ano {
+  display: grid;
+  grid-template-columns: 7.5em repeat(12, 1fr);
+  gap: 3px;
+  align-items: end;
+}
+.fila-ano > span:first-child {
+  color: var(--texto-2);
+  align-self: center;
+}
+.cabecera-ano span {
+  text-align: center;
+  color: var(--texto-3);
+}
+.cabecera-ano .actual {
+  color: var(--texto);
+  font-weight: 700;
+}
+.temporada-si,
+.temporada-no {
+  height: 14px;
+  border-radius: 4px;
+}
+.temporada-si {
+  background: var(--c-fauna);
+}
+.temporada-no {
+  background: var(--superficie-2);
+}
+.barra-ano {
+  height: 40px;
+  display: flex;
+  align-items: flex-end;
+}
+.barra-ano i {
+  display: block;
+  width: 100%;
+  border-radius: 3px 3px 0 0;
+  background: color-mix(in srgb, var(--c-fauna) 70%, transparent);
+}
+.barra-ano.lluvia i {
+  background: color-mix(in srgb, #3b82c4 70%, transparent);
+}
+.fila-ano.numeros span:not(:first-child) {
+  text-align: center;
+  color: var(--texto-2);
+}
+.lista-visto {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+.lista-visto li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.lista-visto img,
+.lista-visto .sin-foto {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--superficie-2);
+  flex: none;
+}
+.lista-visto small,
+.lista-especies-safari small,
+.lista-alojamientos small {
+  color: var(--texto-3);
+}
+.grupos-safari {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+}
+.grupos-safari h3 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+.lista-especies-safari {
+  margin: 0;
+  padding-left: 1.4em;
+  display: grid;
+  gap: 3px;
+}
+.lista-alojamientos {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+}
+.lista-alojamientos li {
+  padding: 10px 12px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-m);
+  display: grid;
+  gap: 4px;
+}
+.lista-alojamientos .enlaces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  font-size: 0.9rem;
+}
+.lista-reservar {
+  padding-left: 1.2em;
+  display: grid;
+  gap: 6px;
+}
+.guia-safari .seccion h2 {
+  margin-top: 0;
+}
+.tipos-safari dt {
+  font-weight: 700;
+  margin-top: 10px;
+}
+.tipos-safari dd {
+  margin: 2px 0 0;
+}
+.rejilla-estrella {
+  grid-template-columns: repeat(auto-fill, minmax(min(46%, 180px), 1fr));
+}
+.rejilla-estrella .tarjeta-especie h3 {
+  font-size: 0.95rem;
+}

@@ -100,6 +100,13 @@ export const IconoPajaro = (p: P) => (
     <circle cx="16" cy="8.5" r=".6" fill="currentColor" />
   </Svg>
 );
+export const IconoPrismaticos = (p: P) => (
+  <Svg {...p}>
+    <circle cx="7" cy="15" r="3.5" />
+    <circle cx="17" cy="15" r="3.5" />
+    <path d="M10.5 15h3M5 12l1.5-6h3l1 6M19 12l-1.5-6h-3l-1 6" />
+  </Svg>
+);
 export const IconoMochila = (p: P) => (
   <Svg {...p}>
     <path d="M7 8a5 5 0 0 1 10 0v12H7z" />

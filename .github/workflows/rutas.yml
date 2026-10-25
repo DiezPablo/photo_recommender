@@ -16,6 +16,8 @@ on:
       - rasante/fauna/**
       - rasante/recursos/especies.csv
       - rasante/dron/**
+      - rasante/safaris/**
+      - rasante/recursos/safaris.csv
       - .github/workflows/rutas.yml
 
 permissions:
@@ -86,9 +88,15 @@ jobs:
         continue-on-error: true
         run: python -m rasante dron --spots spots.geojson --salida salida/dron.json
 
+      # Parques de safari del mundo: especies (iNaturalist), clima (ERA5), alojamientos (OSM). ~1 h.
+      - name: Safaris
+        continue-on-error: true
+        run: python -m rasante safaris --salida salida/safaris.json
+
       - name: Publicar
         run: |
           dron=""; [ -f salida/dron.json ] && dron=salida/dron.json
+          [ -f salida/safaris.json ] && dron="$dron salida/safaris.json"
           .github/scripts/publicar_release.sh "Actualizar rutas ($(date -u +%Y-%m-%d))" \
             salida/rutas.json salida/logistica.json salida/fauna.json salida/especies.json $dron
 
