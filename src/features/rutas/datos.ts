@@ -2,8 +2,7 @@
 import "server-only";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
-import { type Cima, cimaDe } from "@/features/rutas/cima";
-import { distanciaKm } from "@/features/eventos/modelo";
+import { type Cima, cimaDe, type Paso, pasoPor } from "@/features/rutas/cima";
 import { type Ruta, slug } from "@/features/rutas/modelo";
 
 export * from "@/features/rutas/modelo";
@@ -38,18 +37,16 @@ export function cimaDeRuta(r: Ruta): Cima | null {
   return cimas.get(r.id) ?? null;
 }
 
-/** Rutas cuyo punto más alto queda a menos de `radioKm` del punto: las que suben a un spot. */
-export function rutasQueSuben(lat: number, lon: number, radioKm = 1): { ruta: Ruta; cima: Cima; km: number }[] {
-  const cerca = [];
+/** Rutas que pasan a menos de `maxKm` de un lugar (un spot): por dónde, a cuántos km de la salida y en
+ * cuánto tiempo; primero las que llegan antes. Se descartan las que tardan más de una jornada en llegar. */
+export function rutasQuePasan(lat: number, lon: number, maxKm = 0.3): { ruta: Ruta; paso: Paso }[] {
+  const margen = maxKm / 100;
+  const lista = [];
   for (const r of cargarRutas().rutas) {
-    // descarte rápido por la caja de la ruta antes de calcular la cima
     const [oeste, sur, este, norte] = r.bbox;
-    const margen = radioKm / 100;
     if (lat < sur - margen || lat > norte + margen || lon < oeste - margen || lon > este + margen) continue;
-    const cima = cimaDeRuta(r);
-    if (!cima) continue;
-    const km = distanciaKm(cima, { lat, lon });
-    if (km <= radioKm) cerca.push({ ruta: r, cima, km });
+    const paso = pasoPor(r, lat, lon, maxKm);
+    if (paso && paso.horasIda <= 8) lista.push({ ruta: r, paso });
   }
-  return cerca.sort((a, b) => a.cima.horasSubida - b.cima.horasSubida);
+  return lista.sort((a, b) => a.paso.horasIda - b.paso.horasIda);
 }

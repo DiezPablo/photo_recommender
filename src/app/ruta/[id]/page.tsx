@@ -10,6 +10,7 @@ import PerfilRuta from "@/features/rutas/componentes/PerfilRuta";
 import EventosCerca from "@/features/eventos/componentes/EventosCerca";
 import { cimaDeRuta, duracion, getRuta, slug } from "@/features/rutas/datos";
 import PlanLuz, { type NotaLuz } from "@/features/rutas/componentes/PlanLuz";
+import SpotsEnRuta from "@/features/rutas/componentes/SpotsEnRuta";
 import { cargar } from "@/features/spots/datos";
 import { distanciaKm } from "@/features/eventos/modelo";
 import { fechaLocal } from "@/lib/sol";
@@ -199,6 +200,8 @@ export default async function PaginaRuta({ params }: Props) {
           spot={spot ? { id: spot.s.id, nombre: spot.s.nombre, km: spot.km } : undefined}
         />
       )}
+
+      <SpotsEnRuta ruta={r} />
 
       <Logistica tipo="rutas" id={r.id} />
 

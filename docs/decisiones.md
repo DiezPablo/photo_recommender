@@ -592,3 +592,12 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
   (`zona_horaria`). Las series de Open-Meteo siguen pidiéndose en hora peninsular: `series` pasa cada instante
   con zona a la de las series antes de buscar, para no desfasar una hora (test con un caso de Tenerife).
 - Los calendarios `.ics` convierten con la zona de cada spot.
+
+## 2026-10-25 · Spots y rutas cruzados
+
+- Antes solo se relacionaba una ruta con un spot si su punto más alto estaba a < 1 km. Ahora `pasoPor`
+  busca el punto del trazado más cercano al spot (proyección sobre cada segmento en un plano local), los km
+  desde la salida y el tiempo MIDE hasta allí (ida y vuelta por el mismo camino). «Llegar andando» en la ficha
+  del spot (rutas que pasan a < 300 m, de la que llega antes a la que más tarda; fuera las de < 10 min) con la
+  hora de salida para el amanecer y el atardecer; «Spots en el camino» en la ficha de la ruta, en orden y con
+  la nota de hoy. El planificador usa la misma función. De 12 a 26 de los 60 spots del día con ruta a pie.

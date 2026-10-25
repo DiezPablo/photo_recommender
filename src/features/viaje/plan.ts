@@ -11,7 +11,7 @@ import {
   distanciaKm,
   type EventoNaturaleza,
 } from "@/features/eventos/datos";
-import { cargarRutas, filaRuta, rutasQueSuben, slug } from "@/features/rutas/datos";
+import { cargarRutas, filaRuta, rutasQuePasan, slug } from "@/features/rutas/datos";
 import { planDia } from "@/features/rutas/planLuz";
 import { cargar, type Momento, type Spot } from "@/features/spots/datos";
 import { lunaDeLaNoche } from "@/lib/luna";
@@ -134,17 +134,13 @@ function propuesta(
       : fmt(horaSol(fecha, s.lat, s.lon, -0.833, momento === "amanecer"), s.lon);
   const p: Propuesta = { momento, spot: plano(s), nota: e.nota, pct: e.pct, hora };
   if (momento === "amanecer" || momento === "atardecer") {
-    const r = rutasQueSuben(s.lat, s.lon)[0];
+    // la ruta que llega antes al spot (y que no sea un paseo de 10 minutos desde el aparcamiento)
+    const r = rutasQuePasan(s.lat, s.lon).find((x) => x.paso.horasIda >= 1 / 6);
     if (r) {
-      const pl = planDia(fecha, r.cima.lat, r.cima.lon, r.cima.horasSubida, r.cima.horasBajada);
+      const pl = planDia(fecha, r.paso.lat, r.paso.lon, r.paso.horasIda, r.paso.horasVuelta);
       const m = momento === "amanecer" ? pl.amanecer : pl.atardecer;
       if (m)
-        p.ruta = {
-          id: r.ruta.id,
-          nombre: r.ruta.nombre,
-          salida: horaLocal(m.salida, s.lon),
-          horas: r.cima.horasSubida,
-        };
+        p.ruta = { id: r.ruta.id, nombre: r.ruta.nombre, salida: horaLocal(m.salida, s.lon), horas: r.paso.horasIda };
     }
   }
   return p;

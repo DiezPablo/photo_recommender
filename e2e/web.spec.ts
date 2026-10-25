@@ -243,6 +243,8 @@ test("rutas: buscar, filtrar, ficha con mapa, perfil y GPX", async ({ page }, in
   // aparcamiento, agua y refugios cerca de la salida (si ya se ha publicado la logística)
   if ((await page.request.get("/datos/logistica.json")).ok())
     await expect(page.locator(".logistica")).toContainText("Aparcamiento");
+  // los spots por los que pasa la ruta (la de la Laguna de Peñalara pasa por la laguna)
+  await expect(page.locator("section", { hasText: "Spots en el camino" }).locator("li").first()).toBeVisible();
   // a qué hora salir para tener arriba el amanecer y el atardecer
   await expect(page.locator(".plan-luz tbody tr")).toHaveCount(3);
   await expect(page.locator(".plan-luz .hora-salida").first()).toHaveText(/^Sal a las \d\d:\d\d$/);

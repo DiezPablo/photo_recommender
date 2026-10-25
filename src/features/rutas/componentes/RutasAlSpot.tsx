@@ -1,8 +1,8 @@
-// En la ficha de un spot: rutas cuyo punto más alto es el spot, con la hora de salida para el amanecer y el
-// atardecer de hoy y mañana.
+// En la ficha de un spot: rutas que pasan por él (o acaban en él), con cuánto se tarda en llegar y la hora de
+// salida para tenerlo con la luz del amanecer y del atardecer de hoy y mañana.
 import Link from "next/link";
 import MarcaSendero from "@/features/rutas/componentes/MarcaSendero";
-import { duracion, rutasQueSuben } from "@/features/rutas/datos";
+import { duracion, rutasQuePasan } from "@/features/rutas/datos";
 import { planDia } from "@/features/rutas/planLuz";
 import { fechaLocal, horaLocal } from "@/lib/sol";
 
@@ -14,23 +14,27 @@ function diaCorto(fecha: string) {
   });
 }
 
-export default function RutasAlSpot({ lat, lon, max = 4 }: { lat: number; lon: number; max?: number }) {
-  const rutas = rutasQueSuben(lat, lon).slice(0, max);
+export default function RutasAlSpot({ lat, lon, max = 5 }: { lat: number; lon: number; max?: number }) {
+  // los que salen casi del mismo spot (menos de 10 min) no son «llegar andando»
+  const rutas = rutasQuePasan(lat, lon)
+    .filter((x) => x.paso.horasIda >= 1 / 6)
+    .slice(0, max);
   if (!rutas.length) return null;
   const ahora = new Date();
   const fechas = [0, 1].map((d) => fechaLocal(ahora, d, lon));
   return (
     <section className="seccion rutas-al-spot">
-      <h2 className="rotulo">Subir andando</h2>
+      <h2 className="rotulo">Llegar andando</h2>
       <ul className="lista-cercanos">
-        {rutas.map(({ ruta: r, cima }) => (
+        {rutas.map(({ ruta: r, paso }) => (
           <li key={r.id}>
             <MarcaSendero tipo={r.tipo} /> <Link href={`/ruta/${r.id}`}>{r.nombre}</Link>
             <small>
-              {cima.km.toLocaleString("es-ES")} km y {duracion(cima.horasSubida)} hasta aquí · {r.dificultad}
+              Pasa por aquí en el km {paso.km.toLocaleString("es-ES")}: {duracion(paso.horasIda)} desde la salida ·{" "}
+              {r.dificultad}
             </small>
             {fechas.map((f) => {
-              const p = planDia(f, cima.lat, cima.lon, cima.horasSubida, cima.horasBajada);
+              const p = planDia(f, paso.lat, paso.lon, paso.horasIda, paso.horasVuelta);
               return (
                 <small key={f} className="salidas">
                   {diaCorto(f)}: amanecer, sal a las {p.amanecer ? horaLocal(p.amanecer.salida, lon) : "—"} · atardecer,

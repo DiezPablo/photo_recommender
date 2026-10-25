@@ -84,3 +84,51 @@ export function cimaDe(r: Ruta): Cima | null {
   const [lat, lon] = puntoA(r, km);
   return { lat, lon, alt, km, horasSubida, horasBajada, vuelta };
 }
+
+export interface Paso {
+  /** km desde la salida hasta el punto del trazado más cercano */
+  km: number;
+  /** distancia (km) del lugar al trazado */
+  distancia: number;
+  lat: number;
+  lon: number;
+  horasIda: number;
+  /** vuelta por el mismo camino */
+  horasVuelta: number;
+}
+
+/** Si la ruta pasa a menos de `maxKm` del lugar: dónde, a cuántos km de la salida y cuánto se tarda. */
+export function pasoPor(r: Ruta, lat: number, lon: number, maxKm = 0.3): Paso | null {
+  const k = Math.cos((lat * Math.PI) / 180);
+  let mejor: { d: number; km: number; p: [number, number] } | null = null;
+  let acumulado = 0;
+  for (const trozo of trozos(r.linea)) {
+    for (let i = 1; i < trozo.length; i++) {
+      const [a, b] = [trozo[i - 1], trozo[i]];
+      // proyección sobre el segmento en un plano local (a estas distancias basta)
+      const ax = (a[1] - lon) * k;
+      const ay = a[0] - lat;
+      const bx = (b[1] - lon) * k;
+      const by = b[0] - lat;
+      const dx = bx - ax;
+      const dy = by - ay;
+      const t = dx || dy ? Math.max(0, Math.min(1, -(ax * dx + ay * dy) / (dx * dx + dy * dy))) : 0;
+      const d = Math.hypot(ax + t * dx, ay + t * dy) * 111.2;
+      const largo = distanciaKm({ lat: a[0], lon: a[1] }, { lat: b[0], lon: b[1] });
+      if (!mejor || d < mejor.d)
+        mejor = { d, km: acumulado + t * largo, p: [a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])] };
+      acumulado += largo;
+    }
+  }
+  if (!mejor || mejor.d > maxKm) return null;
+  const tramo = r.perfil.filter(([x]) => x <= mejor.km);
+  const ida = desnivel(tramo.length ? tramo : r.perfil.slice(0, 1));
+  return {
+    km: Math.round(mejor.km * 10) / 10,
+    distancia: mejor.d,
+    lat: mejor.p[0],
+    lon: mejor.p[1],
+    horasIda: horasMide(mejor.km, ida.subida, ida.bajada),
+    horasVuelta: horasMide(mejor.km, ida.bajada, ida.subida),
+  };
+}
