@@ -63,6 +63,7 @@ export default function VistaDia({ d, filtro }: { d: number; filtro: Filtro }) {
         <AvisoAurora aurora={avisoAurora(cargarEventos()?.aurora, informe.fechas[0])} />
         {primero && <Destacado f={primero} foto={miniatura(credito?.url, 960)} credito={credito} />}
         <Almanaque fechas={informe.fechas} mejores={mejores} d={d} filtro={filtro} ruta={rutaDia} />
+        <Temporada hoy={informe.fechas[0]} />
         <section aria-label="Ranking" className="bloque-ranking">
           <h2 className="rotulo">
             Ranking · {NOMBRE_MOMENTO[filtro].toLowerCase()} · {cuando}
@@ -75,7 +76,6 @@ export default function VistaDia({ d, filtro }: { d: number; filtro: Filtro }) {
             comunidades={[...new Set(filas.map((f) => f.ccaa).filter((c): c is string => !!c))].sort()}
           />
         </section>
-        <Temporada hoy={informe.fechas[0]} />
       </div>
       <Mapa
         puntos={top.map((f) => ({

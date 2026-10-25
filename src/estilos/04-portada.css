@@ -293,7 +293,8 @@
 
 /* «Esta temporada»: eventos en su mejor momento y accesos al planificador */
 .temporada-portada {
-  order: 6;
+  /* en el móvil, justo después del almanaque (mismo orden; va después en el HTML) y antes del mapa */
+  order: 3;
   display: grid;
   gap: 12px;
   padding: 18px;
