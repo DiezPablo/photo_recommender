@@ -8,6 +8,9 @@ const config: NextConfig = {
   // Las fichas de ruta se generan al visitarlas (ISR) y leen rutas.json en la función del servidor
   // (y las de spot fuera del top, que leen el informe y los spots); las dos muestran los eventos cercanos
   outputFileTracingIncludes: {
+    // el planificador se genera en cada petición con todos los datos
+    "/viaje": ["./public/datos/*.json", "./public/datos/spots.geojson"],
+    "/viaje/calendario.ics": ["./public/datos/*.json", "./public/datos/spots.geojson"],
     "/ruta/[id]": [
       "./public/datos/rutas.json",
       "./public/datos/eventos.json",

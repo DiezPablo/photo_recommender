@@ -552,3 +552,133 @@
     display: inline;
   }
 }
+
+/* Planificador de viaje */
+.form-viaje {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+}
+.form-viaje .campo {
+  flex: 1 1 160px;
+}
+.form-viaje input[type="date"] {
+  width: 100%;
+  font: inherit;
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-m);
+  background: var(--superficie);
+  color: var(--texto);
+}
+.acciones-viaje {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.boton-principal {
+  background: var(--texto) !important;
+  color: var(--fondo) !important;
+  border-color: var(--texto) !important;
+}
+.resumen-viaje {
+  padding: 0 4px;
+  color: var(--texto-2);
+}
+.resumen-viaje a {
+  color: var(--acento);
+  font-weight: 600;
+}
+.dias-viaje {
+  display: grid;
+  gap: 14px;
+}
+.tarjeta-dia-viaje {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+}
+.tarjeta-dia-viaje header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 12px;
+}
+.tarjeta-dia-viaje h2 {
+  font: 700 1.25rem var(--f-cuerpo);
+  letter-spacing: -0.02em;
+}
+.tarjeta-dia-viaje h2::first-letter {
+  text-transform: uppercase;
+}
+.etiqueta-fuente {
+  padding: 2px 9px;
+  border-radius: 999px;
+  font: 600 0.72rem var(--f-cuerpo);
+  background: var(--superficie-2);
+  color: var(--texto-2);
+}
+.etiqueta-fuente.previsto {
+  background: var(--acento-suave);
+  color: var(--acento);
+}
+.luna-dia {
+  margin-left: auto;
+  font-size: 0.82rem;
+  color: var(--texto-3);
+}
+.plan-momentos {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+}
+.plan-momento {
+  display: grid;
+  gap: 4px;
+  align-content: start;
+  padding: 12px 14px;
+  border-radius: var(--radio-m);
+  background: var(--superficie-2);
+  border-top: 3px solid var(--c-momento, var(--borde));
+}
+.plan-amanecer {
+  --c-momento: var(--n-buena);
+}
+.plan-atardecer {
+  --c-momento: var(--n-top);
+}
+.plan-noche {
+  --c-momento: var(--vl);
+}
+.plan-spot {
+  font: 650 1rem var(--f-cuerpo);
+  color: var(--texto);
+}
+.plan-momento small {
+  color: var(--texto-2);
+  line-height: 1.4;
+}
+.plan-ruta a,
+.plan-ruta-dia a,
+.plan-extras a {
+  color: var(--texto);
+  font-weight: 600;
+}
+.plan-ruta-dia {
+  font-size: 0.92rem;
+}
+.plan-extras {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 4px;
+  font-size: 0.88rem;
+  color: var(--texto-2);
+}

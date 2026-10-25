@@ -3,8 +3,9 @@
 **¿Merece la pena salir a fotografiar?** Previsión para fotografía de paisaje y nocturna en toda España: cada
 día, para unos 1500 spots, una nota de 0 a 10 de amanecer, atardecer, noche y Vía Láctea, niebla o mar de
 nubes y salida o puesta de la luna, con el desglose de qué suma y qué resta. Además, unas 8400 rutas de
-senderismo con distancia, desnivel, tiempo estimado, perfil y GPX, y un calendario de qué fotografiar en cada
-época: floraciones, otoño, berrea, aves, nieve, lunas, lluvias de meteoros, Vía Láctea y eclipses.
+senderismo con distancia, desnivel, tiempo estimado, perfil y GPX, un calendario de qué fotografiar en cada
+época (floraciones, otoño, berrea, aves, nieve, lunas, meteoros, Vía Láctea, eclipses, auroras), la climatología de
+cada zona, alineaciones de sol y luna con el relieve y un planificador de viajes día a día.
 
 **Web:** https://photo-recommender.vercel.app · Proyecto personal, sin fines comerciales. Solo datos
 abiertos y gratuitos, sin claves de API, y sin IA ni LLM.

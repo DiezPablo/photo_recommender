@@ -46,10 +46,3 @@
     font-size: 4.2rem;
   }
 }
-
-/* Con tres secciones no cabe el nombre en los móviles más estrechos: queda el logo (que lo lleva en aria-label) */
-@media (max-width: 430px) {
-  .marca b {
-    display: none;
-  }
-}

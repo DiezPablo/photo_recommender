@@ -87,6 +87,18 @@ export const IconoRuta = (p: P) => (
     <path d="M8 17h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7" />
   </Svg>
 );
+export const IconoCalendario = (p: P) => (
+  <Svg {...p}>
+    <rect x="4" y="5" width="16" height="15" rx="2" />
+    <path d="M4 10h16M9 3v4M15 3v4" />
+  </Svg>
+);
+export const IconoMochila = (p: P) => (
+  <Svg {...p}>
+    <path d="M7 8a5 5 0 0 1 10 0v12H7z" />
+    <path d="M10 4.5V3h4v1.5M9 13h6v4H9z" />
+  </Svg>
+);
 export const IconoCamara = (p: P) => (
   <Svg {...p}>
     <path d="M4 8h3l2-3h6l2 3h3v11H4z" />

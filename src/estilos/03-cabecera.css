@@ -103,3 +103,46 @@
 .tema-ico {
   display: none;
 }
+
+/* Barra inferior del móvil (debajo de 820 px, cuando la cabecera ya no lleva las secciones) */
+.barra-inferior {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+  background: var(--cristal);
+  backdrop-filter: saturate(1.6) blur(14px);
+  -webkit-backdrop-filter: saturate(1.6) blur(14px);
+  border-top: 1px solid color-mix(in srgb, var(--borde) 70%, transparent);
+}
+.barra-inferior a {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  padding: 4px 0;
+  border-radius: var(--radio-m);
+  font: 600 0.7rem var(--f-cuerpo);
+  color: var(--texto-3);
+  text-decoration: none;
+}
+.barra-inferior a[aria-current="page"] {
+  color: var(--texto);
+}
+.barra-inferior a[aria-current="page"] svg {
+  color: var(--acento);
+}
+body {
+  padding-bottom: calc(70px + env(safe-area-inset-bottom));
+}
+@media (min-width: 820px) {
+  .barra-inferior {
+    display: none;
+  }
+  body {
+    padding-bottom: 0;
+  }
+}

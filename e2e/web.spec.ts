@@ -374,3 +374,19 @@ test("sin conexión: instalable, ficha guardada y página sin cobertura", async 
     apagar();
   }
 });
+
+test("planificador de viaje: zona y fechas, días con propuesta y calendario", async ({ page, request }) => {
+  const errores = vigilar(page);
+  await page.goto("/viaje");
+  await page.getByLabel("Zona").selectOption({ label: "Comunidad de Madrid" });
+  await page.getByLabel("Días").selectOption("3");
+  await page.getByRole("button", { name: "Planificar" }).click();
+  await expect(page).toHaveURL(/zona=comunidad-de-madrid/);
+  await expect(page.locator(".tarjeta-dia-viaje")).toHaveCount(3);
+  await expect(page.locator(".tarjeta-dia-viaje").first().locator(".plan-momento").first()).toBeVisible();
+  const ics = page.getByRole("link", { name: /Añadir el plan a tu calendario/ });
+  const r = await request.get((await ics.getAttribute("href"))!);
+  expect(r.headers()["content-type"]).toContain("text/calendar");
+  expect(await r.text()).toContain("BEGIN:VEVENT");
+  expect(errores).toEqual([]);
+});

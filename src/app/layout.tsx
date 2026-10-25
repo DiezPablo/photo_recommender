@@ -3,6 +3,7 @@ import { Archivo, IBM_Plex_Mono } from "next/font/google";
 import Link from "next/link";
 import SelectorTema from "@/ui/SelectorTema";
 import RegistroSw from "@/features/offline/RegistroSw";
+import BarraInferior from "@/ui/BarraInferior";
 import { Logo } from "@/ui/Iconos";
 import { cargar } from "@/features/spots/datos";
 import "./globals.css";
@@ -51,9 +52,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <small className="solo-ancho">Previsión para fotografía de paisaje · España</small>
             </Link>
             <nav>
-              <Link href="/">Spots</Link>
-              <Link href="/rutas">Rutas</Link>
-              <Link href="/calendario">Calendario</Link>
+              <Link href="/" className="solo-ancho">
+                Spots
+              </Link>
+              <Link href="/rutas" className="solo-ancho">
+                Rutas
+              </Link>
+              <Link href="/viaje" className="solo-ancho">
+                Viaje
+              </Link>
+              <Link href="/calendario" className="solo-ancho">
+                Calendario
+              </Link>
               <Link href="/acerca" className="solo-ancho">
                 Método
               </Link>
@@ -97,6 +107,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             )}
           </div>
         </footer>
+        <BarraInferior />
         <RegistroSw />
       </body>
     </html>

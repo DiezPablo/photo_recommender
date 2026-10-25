@@ -528,3 +528,17 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
   < 0,07° en la luna. Test con un pico sintético: los días coinciden con astropy (26-29 oct, 12-15 feb).
 - Se calcula en `datos.yml` (`python -m rasante alineaciones`) y se publica `alineaciones.json`. Web: lista
   en «Horizonte y orientación» de cada spot y «Sol y luna por los picos» en cada mes del calendario.
+
+## 2026-10-25 · Planificador de viaje (`/viaje`) y barra inferior en el móvil
+
+- El núcleo de la hoja de ruta: zona (comunidad, toda España o «cerca de mí» con radio) y fechas (hasta 7
+  días) → cada día amanecer, atardecer y noche con su spot, una ruta de un día (≤ 6 h; la que sube al spot si
+  existe, con «sal a las…»), naturaleza en marcha, alineaciones, luna, meteoros, eclipses y auroras.
+- Dentro de los 5 días de previsión manda la nota prevista (de noche, la Vía Láctea o la luna sobre el
+  paisaje, la que tenga mejor nota); después, la climatología del mes (de noche, ponderada por la oscuridad
+  del cielo) y, con la luna por encima del 60 %, noche de paisaje con luna. Se evita repetir spot salvo que
+  el repetido sea claramente mejor. Las horas se calculan en hora local (Canarias incluida).
+- Página dinámica (depende de los parámetros): formulario GET que funciona sin JavaScript; la función lleva
+  los JSON con `outputFileTracingIncludes` y responde en ~50 ms en caliente. El plan se exporta a `.ics`.
+- Con cuatro secciones la cabecera no cabía en el móvil: por debajo de 820 px las secciones van en una barra
+  inferior con iconos (a mano del pulgar) y la cabecera recupera el nombre.
