@@ -500,7 +500,10 @@ test("spot de costa: mareas, oleaje y si se puede volar un dron", async ({ page,
 });
 
 test("safaris: buscar por mes y especie, ficha de parque y especie", async ({ page, request }, info) => {
-  test.skip(!(await request.get("/datos/safaris.json")).ok(), "aún no se han publicado los safaris");
+  test.skip(
+    !(await request.get("/datos/safaris.json")).ok() || !(await request.get("/datos/safaris_indice.json")).ok(),
+    "aún no se han publicado los safaris",
+  );
   const errores = vigilar(page);
   await page.goto("/safaris");
   await expect(page.locator("h1")).toHaveText("Safaris por el mundo");
