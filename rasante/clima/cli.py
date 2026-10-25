@@ -27,12 +27,15 @@ def descargar_pendientes(presupuesto: float, dir: Path) -> tuple[int, int]:
     pendientes = [p for p in puntos if not era5.fichero(*p, dir=dir).exists()]
     gastado = 0.0
     hechos = 0
+    inicio = time.monotonic()
     for i, (lat, lon) in enumerate(pendientes):
         coste = era5.coste()
         if gastado + coste > presupuesto:
             break
+        # ritmo: un punto cada PAUSA_S como mínimo (< 5000 llamadas a la hora), contando lo que tardó la descarga
         if i:
-            time.sleep(era5.PAUSA_S)
+            time.sleep(max(0.0, era5.PAUSA_S - (time.monotonic() - inicio)))
+        inicio = time.monotonic()
         try:
             df = era5.descargar(lat, lon)
         except (requests.RequestException, RuntimeError) as e:

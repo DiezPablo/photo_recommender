@@ -59,7 +59,9 @@ def descargar(lat: float, lon: float, desde: date = DESDE, hasta: date = HASTA) 
     s = sesion()
     for intento in range(6):
         try:
-            r = s.get(ARCHIVO, params=params, timeout=300)
+            # la primera petición a veces se queda colgada mientras el servidor prepara los datos y la segunda
+            # llega en segundos: mejor reintentar pronto que esperar 5 min
+            r = s.get(ARCHIVO, params=params, timeout=75)
         except (requests.ConnectionError, requests.Timeout) as e:
             # cortes de conexión y esperas agotadas sueltos (proxies, TLS): se reintenta con espera creciente
             print(f"  conexión cortada ({e.__class__.__name__}): reintento", flush=True)
