@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import VistaMes from "@/features/eventos/componentes/VistaMes";
 import { cargarEventos, MESES } from "@/features/eventos/datos";
@@ -29,6 +30,9 @@ export default async function PaginaMes({ params }: Props) {
       <header className="titular">
         <p className="rotulo">Calendario</p>
         <h1>Qué fotografiar en {MESES[mes]}</h1>
+        <p className="aviso-suscripcion">
+          <Link href="/alertas">Recíbelo en tu calendario →</Link> con los mejores momentos previstos en tu zona.
+        </p>
       </header>
       {eventos ? (
         <VistaMes eventos={eventos} mes={mes} mesHoy={mesHoy} />

@@ -457,3 +457,15 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
 - Sol en TypeScript (`src/lib/sol.ts`, NOAA): coincide con `rasante.cielo.astro` en ±1 min; Canarias en su hora.
 - En la ficha de un spot, «Subir andando»: rutas cuya cima está a < 1 km, con las horas de hoy y mañana.
 - Las funciones de spot y ruta (ISR) llevan ahora los cuatro JSON (`outputFileTracingIncludes`).
+
+## 2026-10-25 · Avisos en el calendario (.ics), gratis y sin cuenta
+
+- Los competidores cobran las alertas (Alpenglow Pro, Sunsethue Alerts). Aquí: un calendario iCalendar por
+  zona (`/alertas/espana.ics` y uno por comunidad), estático y rehecho con cada build (dos veces al día), sin
+  servidor ni cuentas. Página `/alertas` con «Suscribirse» (`webcal://`) y cómo añadirlo en Google y Outlook.
+- Contenido: momentos con nota ≥ 8 (hasta 5 por día en España, 3 por comunidad, un momento por spot) en su
+  franja (hora azul → fin de la dorada; noche sin luna; madrugada para la niebla), con el porqué y el enlace;
+  lunas, máximos de meteoros, ventanas de Vía Láctea, eclipses y eventos de naturaleza en su mejor momento.
+- UID estable por spot, día y momento: al refrescar, el calendario corrige o quita lo que cambió.
+- Horas del informe en `zona_horaria` (Europe/Madrid también para Canarias: pendiente de pasar a hora local
+  en el pipeline). Validado con la librería `icalendar` y en el e2e (líneas ≤ 75 octetos, CRLF).

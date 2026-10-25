@@ -64,7 +64,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <footer className="pie">
           <div>
             <span>
-              <b>Rasante</b> · <Link href="/acerca">Método</Link> · Previsión:{" "}
+              <b>Rasante</b> · <Link href="/acerca">Método</Link> · <Link href="/alertas">Avisos en tu calendario</Link>{" "}
+              · Previsión:{" "}
               <a href="https://open-meteo.com/" rel="noopener">
                 Open-Meteo
               </a>{" "}

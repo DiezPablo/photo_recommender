@@ -282,3 +282,21 @@ test("calendario sin JavaScript: meses y eventos son enlaces", async ({ browser,
   await expect(page.locator(".entradilla")).toBeVisible();
   await ctx.close();
 });
+
+test("avisos: zonas para suscribirse y calendario .ics válido", async ({ page, request }) => {
+  await page.goto("/alertas");
+  await expect(page.locator(".lista-zonas li")).not.toHaveCount(0);
+  await expect(page.locator(".lista-zonas a.boton").first()).toHaveAttribute(
+    "href",
+    /^webcal:\/\/.+\/alertas\/espana\.ics$/,
+  );
+  const r = await request.get("/alertas/espana.ics");
+  expect(r.status()).toBe(200);
+  expect(r.headers()["content-type"]).toContain("text/calendar");
+  const ics = await r.text();
+  expect(ics.startsWith("BEGIN:VCALENDAR\r\n")).toBe(true);
+  expect(ics.trimEnd().endsWith("END:VCALENDAR")).toBe(true);
+  expect(ics).toContain("BEGIN:VEVENT");
+  // ninguna línea pasa de 75 octetos (RFC 5545)
+  for (const l of ics.split("\r\n")) expect(new TextEncoder().encode(l).length).toBeLessThanOrEqual(75);
+});
