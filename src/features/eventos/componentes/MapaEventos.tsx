@@ -27,11 +27,14 @@ export default function MapaEventos({
   spots = NADA,
   rutas = NADA,
   etiqueta = "Mapa de eventos",
+  enlace = "/evento",
 }: {
   eventos: PuntoEvento[];
   spots?: PuntoSimple[];
   rutas?: PuntoSimple[];
   etiqueta?: string;
+  /** a dónde lleva cada área («/evento», «/fauna») */
+  enlace?: string;
 }) {
   const { caja, mapa, leaflet, listo, tema, nuevaCapa } = useMapaBase({ scrollWheelZoom: false });
   const capa = useRef<LayerGroup | null>(null);
@@ -61,7 +64,7 @@ export default function MapaEventos({
         fillOpacity: 1,
       }).addTo(g);
       if (!solo) {
-        const html = `<strong>${esc(e.nombre)}</strong><br><a href="/evento/${encodeURIComponent(e.id)}">Ver →</a>`;
+        const html = `<strong>${esc(e.nombre)}</strong><br><a href="${enlace}/${encodeURIComponent(e.id)}">Ver →</a>`;
         area.bindPopup(html);
         centro.bindPopup(html);
       }
@@ -92,10 +95,13 @@ export default function MapaEventos({
     // con Canarias el encuadre se aleja hasta Marruecos: en el mapa general se encuadra la península
     const peninsula = limites.filter(([la]) => la > 34);
     const encuadre = !solo && peninsula.length ? peninsula : limites;
-    if (encuadre.length) mapa.current.fitBounds(L.latLngBounds(encuadre), { padding: [24, 24], maxZoom: 11 });
-    else mapa.current.setView([40.2, -3.7], 5);
+    if (encuadre.length)
+      // sin animación: si el usuario sale de la página o cambia el filtro a mitad de zoom, Leaflet falla
+      // al desmontar el mapa animándose (`_leaflet_pos`)
+      mapa.current.fitBounds(L.latLngBounds(encuadre), { padding: [24, 24], maxZoom: 11, animate: false });
+    else mapa.current.setView([40.2, -3.7], 5, { animate: false });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [listo, eventos, spots, rutas, tema]);
+  }, [listo, eventos, spots, rutas, tema, enlace]);
 
   return (
     <div ref={caja} className="mapa-caja" role="region" aria-label={etiqueta} data-listo={listo ? "si" : "no"}>

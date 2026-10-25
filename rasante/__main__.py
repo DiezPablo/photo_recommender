@@ -15,6 +15,7 @@ ORDENES = {
         "Sol y luna llena por los picos del horizonte → alineaciones.json",
     ),
     "clima": ("rasante.clima.cli", "Climatología fotográfica por mes (ERA5) → clima.json"),
+    "fauna": ("rasante.fauna.cli", "Observatorios de fauna (OSM) con especies y meses (GBIF) → fauna.json"),
     "logistica": ("rasante.logistica.cli", "Aparcamientos, refugios y fuentes de OSM cerca → logistica.json"),
     "verificar": ("rasante.verificacion.cli", "Lo previsto frente a lo observado (METAR) → verificacion.json"),
     "validar": ("rasante.validacion.cli", "Validación histórica de las notas"),

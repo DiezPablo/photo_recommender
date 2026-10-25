@@ -430,3 +430,22 @@ test("planificador de viaje: zona y fechas, días con propuesta y calendario", a
   expect(await r.text()).toContain("BEGIN:VEVENT");
   expect(errores).toEqual([]);
 });
+
+test("fauna: buscar por especie, ficha con especies y meses", async ({ page, request }) => {
+  test.skip(!(await request.get("/datos/fauna.json")).ok(), "aún no se han publicado los lugares de fauna");
+  const errores = vigilar(page);
+  await page.goto("/fauna");
+  await expect(page.locator("h1")).toHaveText("Dónde ver fauna");
+  await expect(page.locator(".lista-fauna li").first()).toBeVisible();
+  const total = await page.locator(".lista-fauna li").count();
+  await page.getByPlaceholder(/Lugar o especie/).fill("grulla");
+  await expect(page).toHaveURL(/q=grulla/);
+  await expect(page.locator(".lista-fauna li").first()).toBeVisible();
+  expect(await page.locator(".lista-fauna li").count()).toBeLessThanOrEqual(total);
+  await page.locator(".lista-fauna li a").first().click();
+  await expect(page).toHaveURL(/\/fauna\//);
+  await expect(page.locator(".especies li").first()).toBeVisible();
+  await expect(page.locator(".meses-fauna > div")).toHaveCount(12);
+  await expect(page.locator(".mapa-caja[data-listo=si]")).toBeVisible();
+  expect(errores).toEqual([]);
+});

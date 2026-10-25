@@ -14,6 +14,7 @@ import RutasAlSpot from "@/features/rutas/componentes/RutasAlSpot";
 import ClimaSpot from "@/features/clima/componentes/ClimaSpot";
 import BotonGuardar from "@/features/offline/BotonGuardar";
 import Logistica from "@/features/logistica/Logistica";
+import FaunaCerca from "@/features/fauna/componentes/FaunaCerca";
 import type { LineaMapa } from "@/features/spots/componentes/MapaSpots";
 import {
   calificacion,
@@ -641,6 +642,7 @@ export default async function PaginaSpot({ params }: Props) {
       <ClimaSpot lat={spot.lat} lon={spot.lon} mes={Number(spot.dias[0]?.fecha.slice(5, 7) ?? 1) - 1} />
       <RutasAlSpot lat={spot.lat} lon={spot.lon} />
       <Logistica tipo="spots" id={spot.id} />
+      <FaunaCerca lat={spot.lat} lon={spot.lon} />
       <EventosCerca lat={spot.lat} lon={spot.lon} />
     </main>
   );

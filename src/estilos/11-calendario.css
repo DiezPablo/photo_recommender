@@ -721,3 +721,86 @@
   border: 2px solid var(--superficie);
   box-shadow: 0 1px 4px rgb(0 0 0 / 30%);
 }
+
+/* Fauna: buscador, lista de especies y observaciones por mes */
+.explorador-fauna {
+  display: grid;
+  gap: 16px;
+}
+.filtros-fauna {
+  display: grid;
+  gap: 12px;
+}
+.filtros-fauna input[type="search"] {
+  width: 100%;
+}
+.fauna-grid {
+  display: grid;
+  gap: 16px;
+}
+@media (min-width: 1000px) {
+  .fauna-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    align-items: start;
+  }
+  .fauna-grid .mapa-mes {
+    position: sticky;
+    top: 84px;
+  }
+}
+.lista-fauna {
+  grid-template-columns: 1fr;
+}
+.especies {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+.especies li {
+  position: relative;
+  padding: 6px 10px;
+  border-radius: var(--radio-s);
+  overflow: hidden;
+}
+.barra-especie {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: color-mix(in srgb, var(--c-fauna) 18%, transparent);
+  z-index: -1;
+}
+.especies li {
+  z-index: 0;
+}
+.especies i {
+  color: var(--texto-3);
+  font-size: 0.85rem;
+}
+.meses-fauna {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 4px;
+  height: 120px;
+  align-items: end;
+}
+.meses-fauna > div {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  height: 100%;
+  text-align: center;
+}
+.meses-fauna span {
+  align-self: end;
+  background: var(--c-fauna);
+  border-radius: 4px 4px 0 0;
+  opacity: 0.8;
+}
+.meses-fauna .actual span {
+  opacity: 1;
+  box-shadow: 0 0 0 2px var(--texto);
+}
+.meses-fauna small {
+  font-size: 0.7rem;
+  color: var(--texto-3);
+}

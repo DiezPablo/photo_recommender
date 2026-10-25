@@ -11,6 +11,7 @@ import {
   distanciaKm,
   type EventoNaturaleza,
 } from "@/features/eventos/datos";
+import { faunaCerca, mesesBuenos, nombreEspecie, POCAS_OBSERVACIONES } from "@/features/fauna/datos";
 import { cargarRutas, filaRuta, rutasQuePasan, slug } from "@/features/rutas/datos";
 import { planDia } from "@/features/rutas/planLuz";
 import { cargar, type Momento, type Spot } from "@/features/spots/datos";
@@ -70,6 +71,8 @@ export interface DiaPlan {
   paradas: Parada[];
   /** suma de distancias en línea recta entre paradas */
   kmRecta: number;
+  /** un lugar de observación de fauna cerca, si ese mes es bueno allí */
+  fauna?: { id: string; nombre: string; km: number; especies: string[] };
   naturaleza: EventoNaturaleza[];
   alineaciones: { spot: SpotPlan; a: Alineacion }[];
   cielo: string[];
@@ -301,6 +304,20 @@ export function planificar(z: Zona, desde: string, dias: number): { dias: DiaPla
     const au = eventos?.aurora;
     if (au?.noche === fecha && au.nivel !== "ninguno")
       dia.cielo.push(`Posible aurora (Kp ${au.kp_max.toLocaleString("es-ES")})`);
+    // fauna: el lugar de observación más cerca del centro del día con ese mes entre los buenos
+    if (centro) {
+      const mes = Number(fecha.slice(5, 7)) - 1;
+      const f = faunaCerca(centro.lat, centro.lon, 30).find(
+        (l) => mesesBuenos(l).includes(mes) && l.observaciones >= POCAS_OBSERVACIONES,
+      );
+      if (f)
+        dia.fauna = {
+          id: f.id,
+          nombre: f.nombre,
+          km: Math.round(f.km),
+          especies: f.especies.slice(0, 3).map(nombreEspecie),
+        };
+    }
     Object.assign(dia, paradasDelDia(dia));
     resultado.push(dia);
   }

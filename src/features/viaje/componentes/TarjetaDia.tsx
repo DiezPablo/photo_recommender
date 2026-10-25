@@ -82,6 +82,12 @@ export default function TarjetaDia({ d }: { d: DiaPlan }) {
           km, +{d.ruta.subida} m, {duracion(d.ruta.horas)}, {d.ruta.dificultad} · cerca de {d.ruta.cerca}
         </p>
       )}
+      {d.fauna && (
+        <p className="plan-ruta-dia">
+          <b>Fauna:</b> <Link href={`/fauna/${d.fauna.id}`}>{d.fauna.nombre}</Link> · a {d.fauna.km} km ·{" "}
+          {d.fauna.especies.join(", ")}
+        </p>
+      )}
       {(d.naturaleza.length > 0 || d.alineaciones.length > 0 || d.cielo.length > 0) && (
         <ul className="plan-extras">
           {d.cielo.map((c) => (

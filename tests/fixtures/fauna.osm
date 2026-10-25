@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="a mano para los tests">
+  <node id="1" lat="40.9800" lon="-1.5100"><tag k="leisure" v="bird_hide"/><tag k="name" v="Observatorio de Los Aguanares"/></node>
+  <node id="2" lat="40.9830" lon="-1.5120"><tag k="leisure" v="bird_hide"/></node>
+  <node id="3" lat="40.9810" lon="-1.5090"><tag k="leisure" v="wildlife_hide"/><tag k="wheelchair" v="yes"/></node>
+  <node id="4" lat="41.0500" lon="-1.4000"><tag k="leisure" v="bird_hide"/></node>
+  <node id="5" lat="41.0600" lon="-1.4100"><tag k="leisure" v="bird_hide"/><tag k="access" v="private"/></node>
+  <node id="6" lat="41.0700" lon="-1.4200"><tag k="leisure" v="park"/></node>
+  <node id="7" lat="41.0400" lon="-1.4300"><tag k="place" v="village"/><tag k="name" v="Bello"/></node>
+  <node id="8" lat="41.5000" lon="-1.0000"><tag k="place" v="town"/><tag k="name" v="Lejos"/></node>
+</osm>

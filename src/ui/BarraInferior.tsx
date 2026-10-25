@@ -1,12 +1,13 @@
 "use client";
-// Navegación del móvil: barra inferior con las cuatro secciones (a mano del pulgar). En pantallas anchas no se ve.
+// Navegación del móvil: barra inferior con las secciones (a mano del pulgar). En pantallas anchas no se ve.
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { IconoCalendario, IconoCamara, IconoMochila, IconoRuta } from "@/ui/Iconos";
+import { IconoCalendario, IconoCamara, IconoMochila, IconoPajaro, IconoRuta } from "@/ui/Iconos";
 
 const SECCIONES = [
   { href: "/", texto: "Spots", Icono: IconoCamara, activa: (p: string) => p === "/" || /^\/(dia|spot)\//.test(p) },
   { href: "/rutas", texto: "Rutas", Icono: IconoRuta, activa: (p: string) => /^\/rutas?(\/|$)/.test(p) },
+  { href: "/fauna", texto: "Fauna", Icono: IconoPajaro, activa: (p: string) => p.startsWith("/fauna") },
   { href: "/viaje", texto: "Viaje", Icono: IconoMochila, activa: (p: string) => p.startsWith("/viaje") },
   {
     href: "/calendario",

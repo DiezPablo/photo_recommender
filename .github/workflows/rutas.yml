@@ -13,6 +13,7 @@ on:
     paths:
       - rasante/rutas/**
       - rasante/logistica/**
+      - rasante/fauna/**
       - .github/workflows/rutas.yml
 
 permissions:
@@ -69,10 +70,14 @@ jobs:
           python -m rasante logistica --pbf spain.osm.pbf --spots spots.geojson --rutas salida/rutas.json \
             --salida salida/logistica.json
 
+      # Observatorios de fauna (OSM) con lo que se ve en cada uno y cuándo (GBIF)
+      - name: Fauna
+        run: python -m rasante fauna --pbf spain.osm.pbf --salida salida/fauna.json
+
       - name: Publicar
         run: |
           .github/scripts/publicar_release.sh "Actualizar rutas ($(date -u +%Y-%m-%d))" \
-            salida/rutas.json salida/logistica.json
+            salida/rutas.json salida/logistica.json salida/fauna.json
 
       - uses: actions/cache/save@v6
         if: always()

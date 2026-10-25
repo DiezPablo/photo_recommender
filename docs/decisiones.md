@@ -626,3 +626,22 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
 - Las funciones nuevas no se veían desde la portada, que es donde entra todo el mundo. Bloque «Esta temporada»
   con los eventos más cerca de su mejor momento (como mucho dos por categoría, para que no salga solo otoño) y
   accesos a «Planifica un viaje» y al calendario.
+
+## 2026-10-25 · Spots de observación de fauna
+
+- Petición del usuario. Fuentes abiertas y sin clave: los **observatorios** de OpenStreetMap
+  (`leisure=bird_hide` / `wildlife_hide`, 574 en España; fuera los privados), agrupados a < 700 m (en un
+  humedal suele haber varios: 386 zonas), y **GBIF** (agrega eBird, iNaturalist, Observation.org…): por cada
+  zona, facetas de especies y meses de aves y mamíferos a ~2 km en 2016-2025 (una petición; no se descargan
+  registros) y el nombre común en español más repetido de cada especie. Las especies sensibles ya llegan con la
+  ubicación generalizada por los conjuntos de datos.
+- `python -m rasante fauna` en `rutas.yml` (mensual, usa el mismo extracto PBF); caché de GBIF de 25 días.
+- Web: sección **Fauna** (buscador por lugar o especie, comunidad y «buen mes», con mapa), ficha de cada lugar
+  (especies con barra relativa, observaciones por mes, rutas que pasan, eventos cerca), «Fauna cerca» en las
+  fichas de spot, «Observatorios de fauna en la zona» en los eventos (más en los de fauna) y, en el
+  planificador, el lugar más cercano al día con ese mes entre los buenos. Quinta sección en la navegación.
+- Las observaciones por mes miden también cuándo va la gente a mirar; se dice en la ficha.
+- Los observatorios sin nombre en OSM (más de la mitad) se nombran por el núcleo de población más cercano a
+  < 8 km («Observatorio junto a Villafáfila»), leído en la misma pasada por el extracto.
+- El mapa de eventos y fauna ajusta la vista sin animación: si se desmonta a mitad de zoom (cambio de filtro o
+  de página), Leaflet fallaba con `_leaflet_pos`. GBIF limita la faceta de especies a 300: se dice «más de 300».
