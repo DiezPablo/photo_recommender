@@ -72,3 +72,30 @@ def test_cargar_mis_spots_ignora_comentarios(tmp_path, monkeypatch):
     spots = cargar_spots(None, csv)
     assert len(spots) == 1 and spots[0]["tipo"] == "embalse" and spots[0]["origen"] == "propio"
     assert spots[0]["provincia"] == "Madrid" and spots[0]["ccaa"] == "Comunidad de Madrid"
+
+
+def test_canarias_en_su_hora_y_series_sin_desfase():
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+
+    import pandas as pd
+
+    from rasante.prevision import series
+    from rasante.prevision.evaluacion import zona_de
+
+    madrid, canarias = ZoneInfo("Europe/Madrid"), ZoneInfo("Atlantic/Canary")
+    assert zona_de(-16.3, madrid) == canarias
+    assert zona_de(-3.7, madrid) == madrid
+    # serie horaria en hora peninsular (como se pide a Open-Meteo): 19:00 en Tenerife son las 20:00 peninsulares
+    df = pd.DataFrame({"x": [0.0, 10.0, 20.0]}, index=pd.date_range("2026-01-10 19:00", periods=3, freq="h"))
+    series.ZONA_SERIES = madrid
+    assert series.en(df, datetime(2026, 1, 10, 19, 0, tzinfo=canarias))["x"] == 10.0
+    assert series.en(df, datetime(2026, 1, 10, 20, 0, tzinfo=madrid))["x"] == 10.0
+    assert (
+        len(
+            series.filas_entre(
+                df, datetime(2026, 1, 10, 19, tzinfo=canarias), datetime(2026, 1, 10, 20, tzinfo=canarias)
+            )
+        )
+        == 2
+    )

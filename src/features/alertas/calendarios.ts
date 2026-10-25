@@ -93,7 +93,7 @@ function momentosBuenos(spots: Spot[], zona: Zona, tz: string): EventoIcs[] {
     const vistos = new Set<string>();
     for (const c of candidatos) {
       if (vistos.has(c.s.id) || vistos.size >= zona.porDia) continue;
-      const f = franja(c.d, c.m, tz);
+      const f = franja(c.d, c.m, c.s.zona_horaria ?? tz);
       if (!f) continue;
       vistos.add(c.s.id);
       const n = c.d.notas[c.m]!;

@@ -125,7 +125,7 @@ function propuesta(
   e: { s: Spot; nota?: number; pct?: number },
 ): Propuesta {
   const { s } = e;
-  // horas con el cálculo propio (hora local también en Canarias; el informe va en hora peninsular)
+  // horas con el cálculo propio, en la hora local de cada spot (también en días sin previsión)
   const evLuna = momento === "luna" ? s.dias.find((x) => x.fecha === fecha)?.noche.luna.evento : null;
   const hora = evLuna
     ? evLuna.hora

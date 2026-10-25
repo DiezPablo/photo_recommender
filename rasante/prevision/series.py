@@ -3,10 +3,21 @@
 from __future__ import annotations
 
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 
 from .openmeteo import NIVELES_HPA
+
+# Zona de las series de Open-Meteo (se piden con `timezone=`): la fija `evaluar`. Los instantes con zona de
+# otro sitio (Canarias) se pasan a esta antes de buscar, para no desfasar una hora.
+ZONA_SERIES = ZoneInfo("Europe/Madrid")
+
+
+def _local(t: datetime) -> pd.Timestamp:
+    if t.tzinfo is not None:
+        t = t.astimezone(ZONA_SERIES)
+    return pd.Timestamp(t.replace(tzinfo=None))
 
 
 def en(df: pd.DataFrame | None, t: datetime) -> dict:
@@ -14,7 +25,7 @@ def en(df: pd.DataFrame | None, t: datetime) -> dict:
     cae en punto)."""
     if df is None or df.empty:
         return {}
-    t = pd.Timestamp(t.replace(tzinfo=None))
+    t = _local(t)
     i = df.index.searchsorted(t)
     if i <= 0:
         return df.iloc[0].to_dict()
@@ -27,7 +38,7 @@ def en(df: pd.DataFrame | None, t: datetime) -> dict:
 
 
 def filas_entre(df: pd.DataFrame, ini: datetime, fin: datetime) -> pd.DataFrame:
-    return df.loc[pd.Timestamp(ini.replace(tzinfo=None)) : pd.Timestamp(fin.replace(tzinfo=None))]
+    return df.loc[_local(ini) : _local(fin)]
 
 
 def suma_entre(df: pd.DataFrame, col: str, ini: datetime, fin: datetime) -> float:

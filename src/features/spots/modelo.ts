@@ -142,6 +142,8 @@ export interface SpotInforme {
   horizonte: { amanecer?: [number, number]; atardecer?: [number, number] };
   provincia?: string | null;
   ccaa?: string | null;
+  /** zona de sus horas (Canarias: Atlantic/Canary); los informes antiguos no la traen */
+  zona_horaria?: string;
   dias: Dia[];
 }
 

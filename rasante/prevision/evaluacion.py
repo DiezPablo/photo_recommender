@@ -14,7 +14,7 @@ from rasante.cielo.contaminacion import contaminacion, cupula
 from rasante.notas import KM_CAMINO, capa_nubosa, nota_astro, nota_luna, nota_luz, nota_niebla, valor
 from rasante.terreno import horizonte
 
-from . import openmeteo
+from . import openmeteo, series
 from .openmeteo import AIRE_URL, MODELO_ALT, VARS_ALT, VARS_CAMINO, VARS_PERFIL, VARS_SPOT, pedir
 from .series import en, filas_entre, perfil_en, suma_entre
 
@@ -97,6 +97,11 @@ def _aire_en(aq: pd.DataFrame | None, t: datetime) -> dict:
         "aod": None if aod is None or pd.isna(aod) else round(float(aod), 2),
         "polvo": None if polvo is None or pd.isna(polvo) else round(float(polvo)),
     }
+
+
+def zona_de(lon: float, defecto: ZoneInfo) -> ZoneInfo:
+    """Canarias va una hora por detrás de la península: sus horas se dan en su hora local."""
+    return ZoneInfo("Atlantic/Canary") if lon < -12 else defecto
 
 
 def evaluar_spot_dia(spot: dict, dia: date, indice: int, tz: ZoneInfo, datos: dict) -> dict:
@@ -359,6 +364,7 @@ def evaluar(
     """previsiones (para tests): {"spot": [...], "camino": [...], "perfil": [...], "alt": [...],
     "aire": [...]} con el formato de pedir(), en el orden de planificar()."""
     tz = ZoneInfo(tz_nombre)
+    series.ZONA_SERIES = tz
     hoy = hoy or datetime.now(tz).date()
     fechas = [hoy + timedelta(days=i) for i in range(dias)]
 
@@ -393,7 +399,8 @@ def evaluar(
             "alt": horas(previsiones.get("alt"), plan["alt"]),
             "aire": horas(previsiones.get("aire"), plan["spot"]),
         }
-        dias_spot = [evaluar_spot_dia(s, d, i, tz, datos) for i, d in enumerate(fechas)]
+        tz_spot = zona_de(s["lon"], tz)
+        dias_spot = [evaluar_spot_dia(s, d, i, tz_spot, datos) for i, d in enumerate(fechas)]
         salida.append(
             {
                 "id": s["id"],
@@ -407,6 +414,7 @@ def evaluar(
                 "ccaa": s.get("ccaa"),
                 "contaminacion": s.get("contaminacion"),
                 "horizonte": plan["horizonte"],
+                "zona_horaria": tz_spot.key,
                 "dias": dias_spot,
             }
         )

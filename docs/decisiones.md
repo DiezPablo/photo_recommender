@@ -584,3 +584,11 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
   que lista las fichas guardadas modificaba el HTML antes de que React hidratase (error #418 y luego
   `removeChild`). Ahora espera 1,5 s y solo actúa si React no ha cargado; si carga, la lista la pinta
   `ListaGuardadas`. La prueba visita antes `/sin-conexion` con red para cubrir el caso con React.
+
+## 2026-10-25 · Canarias en su hora en toda la previsión
+
+- El informe daba todas las horas en hora peninsular, también en Canarias (una hora más que la local). Ahora
+  cada spot se evalúa en su zona (`Atlantic/Canary` si la longitud es < −12°) y el informe lo dice por spot
+  (`zona_horaria`). Las series de Open-Meteo siguen pidiéndose en hora peninsular: `series` pasa cada instante
+  con zona a la de las series antes de buscar, para no desfasar una hora (test con un caso de Tenerife).
+- Los calendarios `.ics` convierten con la zona de cada spot.
