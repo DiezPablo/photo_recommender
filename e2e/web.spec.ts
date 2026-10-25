@@ -526,6 +526,24 @@ test("safaris: buscar por mes y especie, ficha de parque y especie", async ({ pa
   expect(errores).toEqual([]);
 });
 
+test("safaris del mundo: ficha de un parque fuera del catálogo con cómo llegar", async ({ page, request }, info) => {
+  const r = await request.get("/datos/safaris_indice.json");
+  test.skip(!r.ok(), "aún no se ha publicado el índice mundial");
+  const { parques } = await r.json();
+  const otro = parques.find((p: { d: boolean }) => !p.d);
+  const errores = vigilar(page);
+  await page.goto(`/safaris/${otro.id}`);
+  await expect(page.locator("h1")).toHaveText(otro.n);
+  await expect(page.locator("#organiza")).toContainText("Cómo llegar");
+  await expect(page.locator("#organiza")).toContainText(/km en línea recta/);
+  await expect(page.locator(".ano-safari")).toBeVisible();
+  await page.screenshot({ path: `${CAPTURAS}/safari-mundo-${info.project.name}.png`, fullPage: true });
+  // y el buscador encuentra parques fuera del catálogo
+  await page.goto(`/safaris?q=${encodeURIComponent(otro.n.slice(0, 12))}`);
+  await expect(page.locator(".rejilla-safaris li").first()).toBeVisible();
+  expect(errores).toEqual([]);
+});
+
 test("calendario de fauna: eventos de fauna separados del paisaje", async ({ page }) => {
   const errores = vigilar(page);
   await page.goto("/fauna/calendario/octubre");

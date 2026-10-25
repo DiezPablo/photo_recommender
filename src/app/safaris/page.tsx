@@ -3,9 +3,11 @@ import Link from "next/link";
 import { MESES } from "@/features/eventos/modelo";
 import ExploradorSafaris from "@/features/safaris/componentes/ExploradorSafaris";
 import {
+  cargarMundo,
   cargarRecientes,
   cargarSafaris,
   enTemporada,
+  nombreEspecieMundo,
   nombreTaxon,
   puntuacionAhora,
   slugEspecie,
@@ -27,29 +29,18 @@ export default function PaginaSafaris() {
     .filter((p) => enTemporada(p, mesHoy))
     .sort((a, b) => puntuacionAhora(b, mesHoy, recientes) - puntuacionAhora(a, mesHoy, recientes))
     .slice(0, 6);
-  const breves = parques.map((p) => ({
-    id: p.id,
-    nombre: p.nombre,
-    pais: p.pais,
-    continente: p.continente,
-    lat: p.lat,
-    lon: p.lon,
-    radio_km: p.radio_km,
-    tipos: p.tipos,
-    meses: p.meses,
-    estrella: p.estrella,
-    conteo_estrella: p.conteo_estrella,
-    foto: p.foto?.url ?? null,
-  }));
-  const especies = (datos?.especies ?? [])
-    .map((e) => ({ taxon: e.taxon, nombre: nombreTaxon(e) }))
+  const mundo = cargarMundo();
+  const total = mundo?.parques.length ?? parques.length;
+  const paisesMundo = new Set((mundo?.parques ?? []).map((p) => p.pais)).size;
+  const especies = Object.keys(mundo?.estrella ?? {})
+    .map((k) => ({ clave: Number(k), nombre: nombreEspecieMundo(mundo!, k) }))
     .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
   return (
     <main className="calendario fauna safaris">
       <header className="titular">
         <p className="rotulo">
-          {parques.length} parques · {new Set(parques.map((p) => p.pais)).size} países · iNaturalist, Wikidata y
-          OpenStreetMap
+          {total.toLocaleString("es-ES")} parques y reservas · {paisesMundo || new Set(parques.map((p) => p.pais)).size}{" "}
+          países · Wikidata, GBIF, iNaturalist y OpenStreetMap
         </p>
         <h1>Safaris por el mundo</h1>
         <nav className="pestanas" aria-label="Safaris">
@@ -60,15 +51,16 @@ export default function PaginaSafaris() {
           <Link href="/safaris/guia">Cómo organizarlo</Link>
         </nav>
         <p className="entradilla">
-          Dónde y cuándo ir para ver cada animal, con lo que han visto los observadores de iNaturalist en el último mes,
-          el clima de cada época, alojamientos y enlaces oficiales para reservar. Sin intermediarios ni comisiones: las
-          reservas se hacen directamente con el parque, el lodge o el operador.
+          Todos los parques nacionales y reservas del mundo con fauna registrada: qué se ve y cuándo, lo que han visto
+          los observadores en el último mes, cómo llegar (aeropuertos y pistas de aterrizaje), puertas, operadores
+          locales y alojamientos con su web. Sin intermediarios ni comisiones: reservas directamente con el parque, el
+          lodge o el operador.
         </p>
       </header>
 
       {ahora.length > 0 && (
         <section className="seccion">
-          <h2 className="rotulo">Mejor ahora, en {MESES[mesHoy]}</h2>
+          <h2 className="rotulo">Destacados en buena época ahora, en {MESES[mesHoy]}</h2>
           <ul className="lista-cercanos">
             {ahora.map((p) => {
               const r = recientes?.parques[p.id];
@@ -89,7 +81,11 @@ export default function PaginaSafaris() {
 
       {parques.length ? (
         <>
-          <ExploradorSafaris parques={breves} especies={especies} recientes={recientes} mesHoy={mesHoy} />
+          <ExploradorSafaris
+            especies={especies}
+            mesHoy={mesHoy}
+            fotos={Object.fromEntries(parques.filter((p) => p.foto).map((p) => [p.id, p.foto!.url]))}
+          />
           <noscript>
             <ul className="lista-cercanos">
               {parques.map((p) => (

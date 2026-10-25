@@ -127,3 +127,120 @@ export function puntuacionAhora(p: Parque, mes: number, recientes?: Recientes | 
 export function enlaceResenas(a: Pick<Alojamiento, "nombre" | "lat" | "lon">): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${a.nombre} ${a.lat},${a.lon}`)}`;
 }
+
+// ---- Todos los parques del mundo (Wikidata + GBIF + OurAirports + NASA + OSM)
+
+export interface LugarOsm {
+  nombre: string;
+  lat: number;
+  lon: number;
+  km: number;
+  web?: string | null;
+  telefono?: string | null;
+  email?: string | null;
+  osm?: string;
+  tipo?: string;
+  poblacion?: string | null;
+}
+
+export interface Llegar {
+  aeropuertos: { nombre: string; iata: string; ciudad: string | null; km: number; internacional: boolean }[];
+  pistas: { nombre: string; km: number }[];
+  n_pistas: number;
+}
+
+export interface ParqueMundo {
+  id: string;
+  qid: string | null;
+  nombre: string;
+  clase: string;
+  pais: string | null;
+  lat: number;
+  lon: number;
+  radio_km: number;
+  area_km2: number | null;
+  iucn: string | null;
+  unesco: boolean;
+  wdpa: string | null;
+  web: string | null;
+  wiki: string | null;
+  foto: FotoSafari | null;
+  destacado: boolean;
+  obs: number;
+  n_mamiferos: number;
+  /** [clave de GBIF, observaciones] */
+  mamiferos: [number, number][];
+  aves: [number, number][];
+  estrella: Record<string, number>;
+  /** observaciones de mamíferos por mes (GBIF) */
+  meses: number[];
+  lluvia_mm: number[] | null;
+  meses_secos: number[];
+  puntuacion: number;
+  /** país y continente del catálogo curado, si Wikidata no los da */
+  pais_nombre?: string;
+  continente?: string;
+  llegar: Llegar;
+  osm?: { alojamientos: LugarOsm[]; operadores: LugarOsm[]; puertas: LugarOsm[]; pueblos: LugarOsm[] };
+}
+
+export interface Pais {
+  nombre: string | null;
+  continente: string | null;
+  moneda: string | null;
+  idiomas: string[];
+}
+
+export interface Mundo {
+  generado: string;
+  fuentes: Record<string, string>;
+  paises: Record<string, Pais>;
+  /** clave de GBIF → nombre científico y común */
+  especies: Record<string, { c: string | null; n: string | null }>;
+  /** clave de GBIF de las especies estrella → nombre científico del catálogo */
+  estrella: Record<string, string>;
+  parques: ParqueMundo[];
+}
+
+/** Fila del índice ligero que carga el buscador en el navegador. */
+export interface FilaIndice {
+  id: string;
+  n: string;
+  p: string | null;
+  c: string | null;
+  la: number;
+  lo: number;
+  r: number;
+  s: number;
+  m: number;
+  e: number[];
+  sec: number[];
+  d: boolean;
+  f: string | null;
+  /** temporada recomendada (solo los destacados), meses 1-12 */
+  t?: number[];
+}
+
+export const CLASE: Record<string, string> = {
+  "parque nacional": "Parque nacional",
+  "reserva de caza": "Reserva de caza",
+  "refugio de fauna": "Refugio de fauna",
+  "reserva de fauna": "Reserva de fauna",
+  "área de gestión de fauna": "Área de gestión de fauna",
+  "área de conservación": "Área de conservación",
+  "reserva de la biosfera": "Reserva de la biosfera",
+  "área protegida": "Área protegida",
+  "reserva natural": "Reserva natural",
+};
+
+/** Buena época: la temporada escrita a mano si la hay; en los trópicos, los meses secos; si no, sin dato. */
+export function buenaEpoca(f: Pick<FilaIndice, "t" | "sec" | "la">): number[] | null {
+  if (f.t?.length) return f.t;
+  if (Math.abs(f.la) <= 23.5 && f.sec.length > 0 && f.sec.length < 12) return f.sec;
+  return null;
+}
+
+export function nombreEspecieMundo(m: Pick<Mundo, "especies">, clave: number | string): string {
+  const e = m.especies[String(clave)];
+  return e?.n ?? e?.c ?? `Especie ${clave}`;
+}

@@ -33,3 +33,5 @@ public/datos/especies.json
 public/datos/dron.json
 public/datos/safaris.json
 public/datos/safaris_recientes.json
+public/datos/safaris_mundo.json
+public/datos/safaris_indice.json

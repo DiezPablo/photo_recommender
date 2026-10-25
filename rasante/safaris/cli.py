@@ -124,10 +124,22 @@ def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(prog="rasante safaris", description=__doc__.splitlines()[0])
     ap.add_argument("--salida", type=Path, default=Path("public/datos/safaris.json"))
     ap.add_argument("--recientes", action="store_true", help="solo los avistamientos de los últimos 30 días")
+    ap.add_argument("--mundo", action="store_true", help="todos los parques del mundo (horas la primera vez)")
+    ap.add_argument("--indice", type=Path, default=Path("public/datos/safaris_indice.json"))
+    ap.add_argument("--hilos", type=int, default=4)
+    ap.add_argument(
+        "--osm-max", type=int, default=1500, help="parques nuevos que se piden a Overpass en esta ejecución"
+    )
+    ap.add_argument("--limite-candidatos", type=int, help="solo los N primeros candidatos del mundo (pruebas)")
     ap.add_argument("--solo", help="ids de parques separados por comas (pruebas)")
     ap.add_argument("--sin-clima", action="store_true", help="sin climatología (desde el contenedor Open-Meteo limita)")
     ap.add_argument("--sin-alojamientos", action="store_true", help="sin OSM (desde el contenedor Overpass limita)")
     a = ap.parse_args(argv)
+    if a.mundo:
+        from rasante.safaris import mundo_cli
+
+        mundo_cli.main(a.salida, a.indice, a.hilos, a.osm_max, a.limite_candidatos)
+        return
     t0 = time.time()
     parques = cargar()
     if a.solo:

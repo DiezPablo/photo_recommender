@@ -1,0 +1,10 @@
+"id","ident","type","name","latitude_deg","longitude_deg","elevation_ft","continent","iso_country","iso_region","municipality","scheduled_service","icao_code","iata_code","gps_code","local_code","home_link","wikipedia_link","keywords"
+2795,"FAKN","large_airport","Kruger Mpumalanga International Airport",-25.383327,31.105325,2829,"AF","ZA","ZA-MP","Mbombela","yes","FAKN","MQP","FAKN",,"https://kmiairport.co.za","https://en.wikipedia.org/wiki/Kruger_Mpumalanga_International_Airport",
+2800,"FALA","large_airport","Lanseria International Airport",-25.938964,27.926642,4517,"AF","ZA","ZA-GT","Johannesburg","yes","FALA","HLA","FALA",,"https://landseria.co.za","https://en.wikipedia.org/wiki/Lanseria_Airport",
+2807,"FAMB","small_airport","Middelburg Airport",-25.684799,29.440201,4886,"AF","ZA","ZA-MP","Middelburg","no","FAMB",,"FAMB",,,,
+30164,"FAMO","small_airport","Mossel Bay Airport",-34.158746,22.055676,531,"AF","ZA","ZA-WC","Mossel Bay","no","FAMO","MZY","FAMO",,"http://www.mosselbayaero.com/wmenu.php",,
+31055,"FAOR","large_airport","O.R. Tambo International Airport",-26.140081,28.246801,5558,"AF","ZA","ZA-GT","Johannesburg","yes","FAOR","JNB","FAOR",,"https://ortambo-airport.com/","https://en.wikipedia.org/wiki/O._R._Tambo_International_Airport","Johannesburg International Airport, FAJS"
+2822,"FAPH","medium_airport","Hendrik Van Eck Airport",-23.937200546299998,31.1553993225,1432,"AF","ZA","ZA-LP","Phalaborwa","yes","FAPH","PHW","FAPH",,,"https://en.wikipedia.org/wiki/Hendrik_Van_Eck_Airport",
+314230,"MWR","small_airport","Motswari Airport",-24.1903,31.3864,1160,"AF","ZA","ZA-MP","Motswari Private Game Reserve","no",,"MWR",,,,,
+41272,"ZA-0073","small_airport","Nederland Airport",-24.299759,31.288934,1298,"AF","ZA","ZA-MP","Nederland","no",,,,,,,
+323206,"ZA-0155","small_airport","Letaba Rest Camp Airstrip",-23.833534,31.570522,,"AF","ZA","ZA-LP",,"no",,,,,,,

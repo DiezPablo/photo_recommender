@@ -4,13 +4,17 @@ import { notFound } from "next/navigation";
 import MapaEventos from "@/features/eventos/componentes/MapaEventos";
 import { MESES } from "@/features/eventos/modelo";
 import AnoSafari from "@/features/safaris/componentes/AnoSafari";
+import FichaMundo from "@/features/safaris/componentes/FichaMundo";
+import OrganizaViaje from "@/features/safaris/componentes/OrganizaViaje";
 import VistoAhora from "@/features/safaris/componentes/VistoAhora";
 import {
+  cargarMundo,
   cargarRecientes,
   cargarSafaris,
   enlaceResenas,
   especiePorTaxon,
   getParque,
+  getParqueMundo,
   nombreTaxon,
   slugEspecie,
   TEXTO_TIPO,
@@ -19,15 +23,33 @@ import { fechaLocal } from "@/lib/sol";
 
 type Props = { params: Promise<{ id: string }> };
 
-export const dynamicParams = false;
+// Los del catálogo y los 150 más importantes del mundo se generan al compilar; el resto (miles), al visitarlos
+// (ISR), para no pasar el límite de tamaño de Vercel. safaris_mundo.json va en la función (next.config.ts).
+export const dynamicParams = true;
+const ESTATICOS_MUNDO = 150;
 
 export function generateStaticParams() {
-  return (cargarSafaris()?.parques ?? []).map((p) => ({ id: p.id }));
+  const curados = (cargarSafaris()?.parques ?? []).map((p) => p.id);
+  const mundo = (cargarMundo()?.parques ?? [])
+    .filter((p) => !p.destacado)
+    .sort((a, b) => b.puntuacion - a.puntuacion)
+    .slice(0, ESTATICOS_MUNDO)
+    .map((p) => p.id);
+  return [...curados, ...mundo].map((id) => ({ id }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const p = getParque((await params).id);
-  if (!p) return {};
+  const id = (await params).id;
+  const p = getParque(id);
+  if (!p) {
+    const m = getParqueMundo(id);
+    if (!m) return {};
+    const pais = m.pais ? cargarMundo()?.paises[m.pais]?.nombre : null;
+    return {
+      title: `Safari en ${m.nombre}`,
+      description: `${m.nombre}${pais ? ` (${pais})` : ""}: qué fauna se ve, cuándo ir, cómo llegar, alojamientos y operadores.`,
+    };
+  }
   return {
     title: `Safari en ${p.nombre}`,
     description: `${p.nombre} (${p.pais}): cuándo ir, qué se ve, tipos de safari, tasas y alojamientos. ${p.consejo}`,
@@ -41,11 +63,18 @@ const GRUPOS: [string, string, number][] = [
 ];
 
 export default async function PaginaParque({ params }: Props) {
-  const p = getParque((await params).id);
-  if (!p) notFound();
+  const id = (await params).id;
+  const p = getParque(id);
+  const mundo = cargarMundo();
+  const enMundo = getParqueMundo(id);
+  const mesHoy = Number(fechaLocal(new Date()).slice(5, 7)) - 1;
+  if (!p) {
+    if (!enMundo || !mundo) notFound();
+    const conFicha = Object.fromEntries((cargarSafaris()?.especies ?? []).map((e) => [e.cientifico, slugEspecie(e)]));
+    return <FichaMundo p={enMundo} mundo={mundo} mesHoy={mesHoy} conFicha={conFicha} />;
+  }
   const datos = cargarSafaris()!;
   const recientes = cargarRecientes()?.parques[p.id];
-  const mesHoy = Number(fechaLocal(new Date()).slice(5, 7)) - 1;
   const estrella = p.estrella.map(especiePorTaxon).filter((e) => e !== undefined);
   const conFicha = datos.especies.map((e) => e.taxon);
   const respaldo = (recientes?.mamiferos ?? []).map((m) => ({ ...m, foto: null }));
@@ -233,6 +262,22 @@ export default async function PaginaParque({ params }: Props) {
           <MapaEventos eventos={puntos} etiqueta={`Mapa de ${p.nombre}`} mundo />
         </section>
       </div>
+
+      {enMundo && mundo && (
+        <OrganizaViaje
+          p={enMundo}
+          pais={
+            (enMundo.pais ? mundo.paises[enMundo.pais] : undefined) ?? {
+              nombre: p.pais,
+              continente: p.continente,
+              moneda: null,
+              idiomas: [],
+            }
+          }
+          nombre={p.nombre}
+          conAlojamientos={alojamientos.length === 0}
+        />
+      )}
 
       {alojamientos.length > 0 && (
         <section className="seccion">

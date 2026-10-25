@@ -1174,3 +1174,40 @@
 .rejilla-estrella .tarjeta-especie h3 {
   font-size: 0.95rem;
 }
+.campo-casilla {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  align-self: end;
+  padding-bottom: 10px;
+}
+.organiza-grid {
+  display: grid;
+  gap: 8px 24px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+}
+.organiza h3 {
+  font-size: 1rem;
+  margin: 14px 0 6px;
+}
+.lista-organiza {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+.lista-organiza li {
+  display: grid;
+  gap: 2px;
+}
+.lista-organiza small {
+  color: var(--texto-3);
+}
+.lista-organiza .enlaces,
+.organiza .lista-alojamientos .enlaces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  font-size: 0.9rem;
+}

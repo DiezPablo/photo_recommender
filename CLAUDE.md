@@ -16,8 +16,9 @@ modelos, operación y desarrollo, en `docs/`.
     `eventos` (luna, meteoros, Vía Láctea, eclipses, auroras, Starlight, naturaleza de
     `recursos/eventos_naturaleza.csv` → `eventos.json`; alineaciones → `alineaciones.json`), `clima` (ERA5 por
     mes → `clima.json`, workflow `clima.yml`, varios días la primera vez), `fauna` (observatorios de OSM + GBIF →
-    `fauna.json`; especies de `recursos/especies.csv` + GBIF → `especies.json`), `safaris` (parques del mundo de `recursos/safaris.csv` + iNaturalist + ERA5 + OSM → `safaris.json`;
-    `--recientes` a diario → `safaris_recientes.json`), `dron` (zonas UAS de ENAIRE + espacios protegidos de la AEMA → `dron.json`), `validacion` (ERA5 + Commons + METAR), `avisos` (Telegram, opcional), `recursos` (geojson de referencia).
+    `fauna.json`; especies de `recursos/especies.csv` + GBIF → `especies.json`), `safaris` (65 destacados de `recursos/safaris.csv` + iNaturalist + ERA5 + OSM → `safaris.json`;
+    `--mundo`: todos los parques con fauna de Wikidata cribados con GBIF + NASA + OurAirports + OSM →
+    `safaris_mundo.json` e índice; workflow `safaris.yml`; `--recientes` a diario → `safaris_recientes.json`), `dron` (zonas UAS de ENAIRE + espacios protegidos de la AEMA → `dron.json`), `validacion` (ERA5 + Commons + METAR), `avisos` (Telegram, opcional), `recursos` (geojson de referencia).
   - Antes de cambiar pesos de `rasante/notas/`, mira el informe de validación (artefacto `validacion`) y no
     ajustes más allá del ruido.
 - Web Next.js 16 (App Router) en `src/`: `app/` (rutas finas), `features/{spots,rutas,eventos,clima,fauna,safaris,dron,viaje,alertas,offline}` (componentes, modelo,
@@ -26,7 +27,7 @@ modelos, operación y desarrollo, en `docs/`.
   Páginas generadas en el build, salvo `/viaje` (dinámica: depende de zona y fechas), `/spot/[id]` (fuera del top 60
   del día) y `/ruta/[id]`, que se generan al visitarlas (ISR) para no pasar el límite de 1 GB de Vercel; sus JSON van en la función con
   `outputFileTracingIncludes` (`next.config.ts`).
-- Workflows: `datos.yml` (2 veces al día), `descubrir.yml` (mensual, ~1500 spots, 4-5 h), `rutas.yml` (mensual),
+- Workflows: `datos.yml` (2 veces al día), `safaris.yml` (semanal, horas la primera vez), `descubrir.yml` (mensual, ~1500 spots, 4-5 h), `rutas.yml` (mensual),
   `validar.yml`, `pruebas.yml` (ruff + pytest; tsc + ESLint + Prettier + build + Playwright).
   Los datos (`informe.json`, `spots.geojson`, `spots.csv`, `rutas.json`, `eventos.json`) **no van en git**: se suben a la release
   `datos` (`.github/scripts/publicar_release.sh`) y solo se hace commit de `public/datos/version.json`, que

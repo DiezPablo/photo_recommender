@@ -747,3 +747,33 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
 - Web: `/safaris` (mejor ahora, buscador por mes, continente, especie y tipo, mapa mundial), `/safaris/[id]`,
   `/safaris/especie` y `/safaris/especie/[slug]`, `/safaris/guia`. «Safaris» en la cabecera y en la barra
   inferior del móvil.
+
+## 2026-10-25 · Safaris: todos los parques del mundo e información práctica real
+
+- El usuario: 65 parques son pocos para todo el mundo, y la guía era genérica, sin información real de cada
+  parque. Se hace un descubrimiento completo, caro la primera vez y luego incremental con caché.
+- **Candidatos (Wikidata, ~9250)**: parques nacionales y sus subclases (3456), reservas de caza, refugios y
+  reservas de fauna, áreas de gestión de fauna, áreas de conservación, reservas de la biosfera y, si miden
+  ≥ 100 km², «área protegida» y «reserva natural» genéricas (ahí están las conservancies de Kenia, Ol Pejeta,
+  Lewa…; sin el umbral entrarían 57 000 reservas pequeñas). La WDPA (Protected Planet) tiene más, pero su
+  descarga exige cuenta y aceptar condiciones: se enlaza su ficha (P809) en lugar de usarla.
+- **Cribado (GBIF, una petición por candidato)**: mamíferos observados desde 2010 en el círculo de la superficie
+  del parque (4-80 km). Entra con ≥ 10 especies y ≥ 50 observaciones. La misma respuesta da las especies y los
+  meses. Se usa GBIF y no iNaturalist porque iNaturalist pide no pasar de ~10 000 peticiones al día.
+- **Información práctica de cada parque** (la «información real» que faltaba):
+  - Cómo llegar: aeropuerto con vuelos regulares más cercano y gran aeropuerto internacional más cercano
+    (OurAirports, dominio público), y pistas de aterrizaje en el parque (safari en avioneta).
+  - OpenStreetMap: alojamientos con web/teléfono/correo, operadores y agencias de la zona, puertas de entrada
+    con enlace para llegar, y pueblos cercanos. Overpass es lento: por tandas (`--osm-max`), de los más
+    importantes a los menos, con la caché guardada entre ejecuciones del workflow `safaris.yml` (semanal).
+  - Lluvia mensual de la NASA (POWER, una petición por punto) y meses secos (< 50 mm): en los trópicos, la
+    estación seca es la mejor para ver fauna. La temperatura de POWER se descarta: en el Masái Mara daba 34 °C
+    de máxima (la real ronda 28 °C).
+  - País (Wikidata): moneda e idiomas; visado, salud y seguridad, en Exteriores.
+  - Enlaces: web oficial, Protected Planet, Wikipedia, iNaturalist.
+- **Web**: el buscador carga `safaris_indice.json` (una fila ligera por parque) y ordena por buena época del mes
+  elegido (temporada escrita a mano en los destacados; meses secos en los trópicos), destacados y fauna. Las
+  fichas de los 65 destacados y de los 150 parques con más fauna se generan al compilar; el resto, al
+  visitarlas (ISR, con `safaris_mundo.json` en la función). Las páginas de especie suman los parques del mundo
+  donde GBIF la registra.
+- El catálogo curado y el mundial se calculan en `safaris.yml`; los avistamientos de 30 días siguen en *Datos*.

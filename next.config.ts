@@ -19,6 +19,11 @@ const config: NextConfig = {
       "./public/datos/logistica.json",
       "./public/datos/fauna.json",
     ],
+    "/safaris/[id]": [
+      "./public/datos/safaris.json",
+      "./public/datos/safaris_mundo.json",
+      "./public/datos/safaris_recientes.json",
+    ],
     "/spot/[id]": [
       "./public/datos/informe.json",
       "./public/datos/spots.geojson",

@@ -7,8 +7,10 @@ import {
   cargarRecientes,
   cargarSafaris,
   getEspecieSafari,
+  cargarMundo,
   getParque,
   nombreTaxon,
+  parquesMundoDe,
   slugEspecie,
 } from "@/features/safaris/datos";
 import { fechaLocal } from "@/lib/sol";
@@ -39,6 +41,9 @@ export default async function PaginaEspecieSafari({ params }: Props) {
     .map((x) => ({ ...x, p: getParque(x.id)!, mes: recientes?.parques[x.id]?.estrella[String(e.taxon)] ?? 0 }))
     .filter((x) => x.p);
   const max = Math.max(1, ...parques.map((x) => x.n));
+  const destacados = new Set(parques.map((x) => x.id));
+  const mundo = parquesMundoDe(e.cientifico).filter((x) => !destacados.has(x.p.id));
+  const paises = cargarMundo()?.paises ?? {};
   return (
     <main className="ficha evento cat-fauna especie">
       <nav className="migas rotulo" aria-label="Migas">
@@ -101,6 +106,21 @@ export default async function PaginaEspecieSafari({ params }: Props) {
           />
         </section>
       </div>
+      {mundo.length > 0 && (
+        <section className="seccion">
+          <h2 className="rotulo">Más parques del mundo donde se ve</h2>
+          <ul className="lista-cercanos">
+            {mundo.map(({ p, n }) => (
+              <li key={p.id}>
+                <Link href={`/safaris/${p.id}`}>{p.nombre}</Link>
+                <small>
+                  {(p.pais && paises[p.pais]?.nombre) ?? "—"} · {n.toLocaleString("es-ES")} observaciones en GBIF
+                </small>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
       <p className="nota-pie">
         Observaciones verificables de iNaturalist alrededor de cada parque: dependen también de cuánta gente va y sube
         fotos. Foto: {e.foto?.licencia}.
