@@ -218,3 +218,35 @@ export const TEXTO_AURORA: Record<Aurora["nivel"], string> = {
 export function avisoAurora(a: Aurora | null | undefined, hoy: string): Aurora | null {
   return a && a.nivel !== "ninguno" && a.noche && a.noche >= hoy ? a : null;
 }
+
+export interface Alineacion {
+  cuerpo: "sol" | "luna";
+  evento: "sale" | "se pone";
+  fecha: string;
+  hora: string;
+  /** sol: días seguidos por el mismo pico */
+  desde?: string;
+  hasta?: string;
+  iluminacion?: number;
+  azimut: number;
+  altura: number;
+}
+
+export interface Alineaciones {
+  desde: string;
+  dias: number;
+  tolerancia: number;
+  spots: Record<string, Alineacion[]>;
+}
+
+const RUMBOS = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSO", "SO", "OSO", "O", "ONO", "NO", "NNO"];
+
+/** 250 → "OSO". */
+export function rumbo(azimut: number): string {
+  return RUMBOS[Math.round((((azimut % 360) + 360) % 360) / 22.5) % 16];
+}
+
+export function textoAlineacion(a: Alineacion): string {
+  const quien = a.cuerpo === "sol" ? "El sol" : `La luna llena (${a.iluminacion} %)`;
+  return `${quien} ${a.evento} por el pico del ${rumbo(a.azimut)} (${Math.round(a.azimut)}°, ${a.altura.toLocaleString("es-ES")}° sobre el horizonte)`;
+}

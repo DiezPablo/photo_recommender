@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import BarraAnual from "@/features/eventos/componentes/BarraAnual";
 import MapaEventos from "@/features/eventos/componentes/MapaEventos";
+import ClimaSpot from "@/features/clima/componentes/ClimaSpot";
 import MarcaSendero from "@/features/rutas/componentes/MarcaSendero";
 import { duracion } from "@/features/rutas/modelo";
 import {
@@ -118,6 +119,8 @@ export default async function PaginaEvento({ params }: Props) {
           </p>
         </section>
       </div>
+
+      <ClimaSpot lat={e.lat} lon={e.lon} mes={mesDe(e.pico)} titulo="El tiempo habitual en la zona" />
 
       {spots.length > 0 && (
         <section className="seccion">

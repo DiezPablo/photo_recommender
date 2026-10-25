@@ -4,7 +4,7 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { cargar } from "@/features/spots/datos";
 import { cargarRutas, filaRuta, type FilaRuta } from "@/features/rutas/datos";
-import { distanciaKm, type EventoNaturaleza, type Eventos } from "@/features/eventos/modelo";
+import { type Alineaciones, distanciaKm, type EventoNaturaleza, type Eventos } from "@/features/eventos/modelo";
 
 export * from "@/features/eventos/modelo";
 
@@ -57,4 +57,13 @@ export function rutasCerca(e: EventoNaturaleza, n = 8): (FilaRuta & { kmEvento: 
     .filter((r) => r.kmEvento <= e.radio_km + 10)
     .sort((a, b) => b.rel - a.rel || a.kmEvento - b.kmEvento)
     .slice(0, n);
+}
+
+let cacheAlineaciones: Alineaciones | null | undefined;
+
+export function cargarAlineaciones(): Alineaciones | null {
+  if (cacheAlineaciones !== undefined) return cacheAlineaciones;
+  const f = path.join(process.cwd(), "public", "datos", "alineaciones.json");
+  cacheAlineaciones = existsSync(f) ? (JSON.parse(readFileSync(f, "utf8")) as Alineaciones) : null;
+  return cacheAlineaciones;
 }

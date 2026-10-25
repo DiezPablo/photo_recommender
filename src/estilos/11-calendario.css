@@ -406,3 +406,149 @@
 .icono-aurora.espana {
   opacity: 1;
 }
+
+/* Climatología: doce meses teñidos según la frecuencia (relativa al mejor mes de cada fila) */
+.tabla-clima {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 3px;
+  font: 600 0.78rem var(--f-datos);
+}
+.tabla-clima thead th {
+  font: 600 0.7rem var(--f-cuerpo);
+  color: var(--texto-3);
+  text-align: center;
+}
+.tabla-clima tbody th {
+  font: 600 0.8rem var(--f-cuerpo);
+  text-align: left;
+  white-space: nowrap;
+  padding-right: 8px;
+  color: var(--texto-2);
+}
+.tabla-clima td {
+  text-align: center;
+  padding: 7px 0;
+  min-width: 28px;
+  border-radius: 6px;
+  color: var(--texto);
+  background: color-mix(in srgb, var(--c-serie) calc(var(--f) * 70%), var(--superficie-2));
+}
+.tabla-clima .actual {
+  outline: 2px solid var(--texto);
+  outline-offset: -1px;
+}
+.tabla-clima thead .actual {
+  outline: none;
+  color: var(--texto);
+}
+.serie-atardecer {
+  --c-serie: var(--n-top);
+}
+.serie-amanecer {
+  --c-serie: var(--n-buena);
+}
+.serie-noche {
+  --c-serie: var(--vl);
+}
+.serie-niebla {
+  --c-serie: var(--luna);
+}
+.mejores-meses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  font-size: 0.88rem;
+  color: var(--texto-2);
+}
+.rejilla-zonas {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+}
+.rejilla-zonas h3 {
+  font: 650 0.95rem var(--f-cuerpo);
+  margin-bottom: 6px;
+}
+.rejilla-zonas ol {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 6px;
+}
+.rejilla-zonas a {
+  font-weight: 600;
+  color: var(--texto);
+}
+.rejilla-zonas small {
+  display: block;
+  color: var(--texto-2);
+}
+
+/* Alineaciones de sol y luna con los picos del horizonte */
+.alineaciones h3 {
+  font: 650 0.95rem var(--f-cuerpo);
+  margin: 6px 0;
+}
+.alineaciones ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.alineaciones li {
+  padding-left: 22px;
+  position: relative;
+  line-height: 1.45;
+}
+.alineaciones li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 5px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.alineacion-sol::before {
+  background: var(--sol);
+}
+.alineacion-luna::before {
+  background: var(--luna);
+}
+.alineaciones li span {
+  display: block;
+  color: var(--texto-2);
+  font-size: 0.9rem;
+}
+.tabla-clima .corto {
+  display: none;
+}
+@media (max-width: 520px) {
+  .tabla-clima {
+    border-spacing: 2px;
+    font-size: 0.7rem;
+  }
+  .tabla-clima td {
+    min-width: 0;
+    padding: 6px 0;
+    border-radius: 4px;
+  }
+  .tabla-clima tbody th {
+    font-size: 0.72rem;
+    padding-right: 4px;
+  }
+  /* el nombre largo sigue ahí para los lectores de pantalla */
+  .tabla-clima .largo {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .tabla-clima .corto {
+    display: inline;
+  }
+}

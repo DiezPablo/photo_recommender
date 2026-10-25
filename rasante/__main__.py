@@ -10,6 +10,10 @@ ORDENES = {
     "spots": ("rasante.spots.cli", "Descubrir spots en toda España → spots.geojson"),
     "rutas": ("rasante.rutas.cli", "Rutas de senderismo → rutas.json"),
     "eventos": ("rasante.eventos.cli", "Calendario del cielo y de naturaleza → eventos.json"),
+    "alineaciones": (
+        "rasante.eventos.cli_alineaciones",
+        "Sol y luna llena por los picos del horizonte → alineaciones.json",
+    ),
     "clima": ("rasante.clima.cli", "Climatología fotográfica por mes (ERA5) → clima.json"),
     "validar": ("rasante.validacion.cli", "Validación histórica de las notas"),
     "avisos": ("rasante.avisos.telegram", "Resumen diario por Telegram (opcional)"),

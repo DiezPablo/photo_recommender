@@ -69,11 +69,13 @@ jobs:
           mkdir -p salida
           python -m rasante prevision --salida salida/informe.json
 
-      - name: Calendario de eventos
-        run: python -m rasante eventos --salida salida/eventos.json
+      - name: Calendario de eventos y alineaciones
+        run: |
+          python -m rasante eventos --salida salida/eventos.json
+          python -m rasante alineaciones --salida salida/alineaciones.json
 
       - name: Publicar
-        run: .github/scripts/publicar_release.sh "Datos $(date -u +%Y-%m-%dT%H:%MZ)" salida/informe.json salida/eventos.json
+        run: .github/scripts/publicar_release.sh "Datos $(date -u +%Y-%m-%dT%H:%MZ)" salida/informe.json salida/eventos.json salida/alineaciones.json
 
       - name: Aviso por Telegram (opcional)
         if: github.event.schedule == '47 12 * * *' || inputs.enviar

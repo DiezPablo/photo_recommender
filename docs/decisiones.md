@@ -511,3 +511,20 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
   `clima.json` cuando la rejilla está completa (~5 días). Luego solo recalcula si cambia el código.
 - Limitaciones: ERA5 es de ~30 km, así que no ve nieblas de valle pequeño ni nubes de relieve fino; la
   niebla está calibrada en el llano de Madrid. Se presenta como «lo habitual», no como previsión.
+- Web: «Qué esperar cada mes» en la ficha de cada spot y de cada evento (tabla de 12 meses teñida respecto al
+  mejor mes de cada fila, «1 de cada N» en el mes en curso) y «Dónde suele ir mejor» en cada mes del
+  calendario (con el spot con más fotos de cada zona como referencia). Solo aparece con `clima.json`.
+- Primera ejecución en Actions: un punto se cortó por tiempo de espera y paró todo. Ahora se reintentan
+  también los timeouts y un punto que falla queda para la siguiente ejecución.
+
+## 2026-10-25 · Alineaciones de sol y luna con los picos del horizonte
+
+- La función estrella de PhotoPills o The Photographer's Ephemeris, pero automática para cada spot:
+  `rasante.eventos.alineaciones` busca los picos del perfil del horizonte (cada 2°, prominencia ≥ 1°,
+  altura ≤ 15°: más alto es la pared de un cañón) y los días en que el sol o la luna casi llena (≥ 85 %, con
+  el sol entre −8° y +3°) salen o se ponen justo por ellos (±1° de azimut) en los próximos 12 meses.
+- Sol y luna en una rejilla de 10 min común a todos los spots y numpy por spot (~30 s para 1500 spots). Luna
+  de astral con paralaje (0,95° · cos h) y refracción de Sæmundsson: frente a astropy, < 0,01° en el sol y
+  < 0,07° en la luna. Test con un pico sintético: los días coinciden con astropy (26-29 oct, 12-15 feb).
+- Se calcula en `datos.yml` (`python -m rasante alineaciones`) y se publica `alineaciones.json`. Web: lista
+  en «Horizonte y orientación» de cada spot y «Sol y luna por los picos» en cada mes del calendario.

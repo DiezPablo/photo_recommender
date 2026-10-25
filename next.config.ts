@@ -19,6 +19,8 @@ const config: NextConfig = {
       "./public/datos/spots.geojson",
       "./public/datos/eventos.json",
       "./public/datos/rutas.json",
+      "./public/datos/clima.json",
+      "./public/datos/alineaciones.json",
     ],
   },
 };

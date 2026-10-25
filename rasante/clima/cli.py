@@ -16,6 +16,8 @@ import time
 from datetime import datetime
 from pathlib import Path
 
+import requests
+
 from rasante.clima import agregar, era5, rejilla
 from rasante.comun.ficheros import escribir_json
 
@@ -31,7 +33,16 @@ def descargar_pendientes(presupuesto: float, dir: Path) -> tuple[int, int]:
             break
         if i:
             time.sleep(era5.PAUSA_S)
-        df = era5.descargar(lat, lon)
+        try:
+            df = era5.descargar(lat, lon)
+        except (requests.RequestException, RuntimeError) as e:
+            # un punto que no sale no para la ejecución: se intentará en la siguiente
+            print(
+                f"  {lat:.2f}, {lon:.2f}: no se pudo descargar ({e.__class__.__name__}); queda para otra vez",
+                flush=True,
+            )
+            gastado += coste
+            continue
         era5.guardar(era5.resumir(df, lat, lon), era5.fichero(lat, lon, dir=dir))
         gastado += coste
         hechos += 1

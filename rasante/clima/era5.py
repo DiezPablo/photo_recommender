@@ -60,8 +60,8 @@ def descargar(lat: float, lon: float, desde: date = DESDE, hasta: date = HASTA) 
     for intento in range(6):
         try:
             r = s.get(ARCHIVO, params=params, timeout=300)
-        except requests.ConnectionError as e:
-            # cortes de conexión sueltos (proxies, TLS): se reintenta con espera creciente
+        except (requests.ConnectionError, requests.Timeout) as e:
+            # cortes de conexión y esperas agotadas sueltos (proxies, TLS): se reintenta con espera creciente
             print(f"  conexión cortada ({e.__class__.__name__}): reintento", flush=True)
             time.sleep(10 * (intento + 1))
             continue

@@ -3,6 +3,8 @@
 import Link from "next/link";
 import AvisoAurora from "@/features/eventos/componentes/AvisoAurora";
 import MapaEventos from "@/features/eventos/componentes/MapaEventos";
+import MejoresZonasMes from "@/features/clima/componentes/MejoresZonasMes";
+import AlineacionesMes from "@/features/eventos/componentes/AlineacionesMes";
 import TarjetaEvento from "@/features/eventos/componentes/TarjetaEvento";
 import {
   activoEnMes,
@@ -157,6 +159,9 @@ export default function VistaMes({ eventos, mes, mesHoy }: { eventos: Eventos; m
           />
         </section>
       </div>
+
+      <MejoresZonasMes mes={mes} />
+      <AlineacionesMes eventos={eventos} mes={mes} />
 
       <section className="naturaleza-mes" aria-labelledby="naturaleza">
         <h2 className="rotulo" id="naturaleza">

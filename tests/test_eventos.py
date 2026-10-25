@@ -6,7 +6,7 @@ from datetime import UTC, date, datetime
 import pytest
 from conftest import FIX, sin_nan
 
-from rasante.eventos import aurora, cielo, naturaleza, starlight
+from rasante.eventos import alineaciones, aurora, cielo, naturaleza, starlight
 from rasante.eventos.cli import generar
 
 # Lunas nuevas y llenas calculadas con astropy (elongación mínima/máxima), en UTC
@@ -105,3 +105,49 @@ def test_starlight():
     assert sum(z["tipo"] == "reserva" for z in zonas) >= 22
     soria = next(z for z in zonas if z["id"] == "soria")
     assert soria["provincia"] == "Soria" and soria["radio_km"] is None
+
+
+def _horizonte_con_pico(az: float, altura: float) -> list[int]:
+    """Horizonte plano (0°) cada 2° con un pico aislado en `az`."""
+    angulos = [0] * 180
+    i = round(az / 2)
+    for k, v in ((-2, 0.4), (-1, 0.7), (0, 1.0), (1, 0.7), (2, 0.4)):
+        angulos[(i + k) % 180] = round(altura * v * 10)
+    return angulos
+
+
+def test_picos_del_horizonte():
+    p = alineaciones.picos(_horizonte_con_pico(250, 3))
+    assert len(p) == 1
+    assert p[0][0] == 250 and p[0][1] == 3.0
+    assert alineaciones.picos([5] * 180) == []  # horizonte llano: sin picos
+    assert alineaciones.picos(_horizonte_con_pico(250, 30)) == []  # pared de cañón: no es un pico
+
+
+@pytest.fixture(scope="module")
+def ef():
+    """Un año de efemérides (cuesta unos segundos: una vez para todas las pruebas)."""
+    return alineaciones.Efemerides(date(2026, 10, 25), 365)
+
+
+def test_sol_se_pone_por_el_pico_como_astropy(ef):
+    # Madrid, pico a 250° y 3°: astropy (con refracción) da del 26 al 29 de octubre y del 12 al 15 de febrero
+    a = alineaciones.alineaciones_spot(ef, 40.4, -3.7, _horizonte_con_pico(250, 3))
+    sol = [x for x in a if x["cuerpo"] == "sol"]
+    assert [x["evento"] for x in sol] == ["se pone", "se pone"]
+    otono, invierno = sol
+    assert "2026-10-26" <= otono["fecha"] <= "2026-10-29"
+    assert otono["desde"] <= "2026-10-27" <= otono["hasta"]
+    assert "2027-02-12" <= invierno["fecha"] <= "2027-02-15"
+    assert otono["hora"].startswith("17")  # hora peninsular de invierno (ya sin horario de verano)
+
+
+def test_luna_llena_en_el_crepusculo(ef):
+    # pico bajo hacia el este: alguna luna llena saldrá por él al atardecer
+    lunas = []
+    for az in range(60, 122, 2):
+        a = alineaciones.alineaciones_spot(ef, 40.4, -3.7, _horizonte_con_pico(az, 2))
+        lunas += [x for x in a if x["cuerpo"] == "luna"]
+    assert lunas
+    assert all(x["iluminacion"] >= 85 for x in lunas)
+    assert all(x["evento"] == "sale" for x in lunas)  # al este solo sale

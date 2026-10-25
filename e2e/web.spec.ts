@@ -267,6 +267,8 @@ test("calendario: el cielo del mes, eventos de naturaleza y ficha de evento", as
   await page.locator(".meses").getByRole("link", { name: "oct" }).click();
   await expect(page).toHaveURL(/\/calendario\/octubre$/);
   await expect(page.locator(".tarjeta-evento", { hasText: "Berrea" }).first()).toBeVisible();
+  // sol y luna llena por los picos del horizonte de los spots
+  await expect(page.locator(".alineaciones-mes li").first()).toBeVisible();
   await expect(page.locator(".mapa-caja[data-listo=si]")).toBeVisible();
   await expect(page.locator(".leaflet-overlay-pane path").first()).toBeVisible();
   await esperarTeselas(page);
@@ -337,16 +339,7 @@ test("sin conexión: instalable, ficha guardada y página sin cobertura", async 
     } catch {}
   };
   try {
-    await expect
-      .poll(
-        () =>
-          fetch(`http://localhost:${puerto}/sin-conexion`).then(
-            (r) => r.status,
-            () => 0,
-          ),
-        { timeout: 30_000 },
-      )
-      .toBe(200);
+    await expect.poll(() => estado(puerto), { timeout: 30_000 }).toBe(200);
     const proxy = process.env.HTTPS_PROXY;
     const context = await browser.newContext({
       baseURL: `http://localhost:${puerto}`,
@@ -366,15 +359,8 @@ test("sin conexión: instalable, ficha guardada y página sin cobertura", async 
     await page.getByRole("button", { name: "Guardar para sin conexión" }).click();
     await expect(page.getByRole("button", { name: /Guardada sin conexión/ })).toBeVisible();
 
-    servidor.kill();
-    await expect
-      .poll(() =>
-        fetch(`http://localhost:${puerto}/`).then(
-          () => "arriba",
-          () => "caído",
-        ),
-      )
-      .toBe("caído");
+    apagar();
+    await expect.poll(() => estado(puerto)).toBe(0);
     // una página que no se ha visitado: aviso y lista de guardadas
     await page.goto("/calendario/marzo");
     await expect(page.locator("h1")).toHaveText("No hay cobertura");
