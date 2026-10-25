@@ -292,8 +292,9 @@ test("calendario: el cielo del mes, eventos de naturaleza y ficha de evento", as
   await page.locator(".meses").getByRole("link", { name: "oct" }).click();
   await expect(page).toHaveURL(/\/calendario\/octubre$/);
   await expect(page.locator(".tarjeta-evento", { hasText: "Berrea" }).first()).toBeVisible();
-  // sol y luna llena por los picos del horizonte de los spots
-  await expect(page.locator(".alineaciones-mes li").first()).toBeVisible();
+  // sol y luna llena por los picos del horizonte de los spots (si ya se han publicado las alineaciones)
+  if ((await page.request.get("/datos/alineaciones.json")).ok())
+    await expect(page.locator(".alineaciones-mes li").first()).toBeVisible();
   await expect(page.locator(".mapa-caja[data-listo=si]")).toBeVisible();
   await expect(page.locator(".leaflet-overlay-pane path").first()).toBeVisible();
   await esperarTeselas(page);
