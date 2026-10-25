@@ -8,15 +8,15 @@ modelos, operación y desarrollo, en `docs/`.
 
 ## Piezas
 - Pipeline Python: paquete `rasante/` (`pyproject.toml`), una orden por subpaquete con
-  `python -m rasante {prevision,spots,rutas,eventos,alineaciones,clima,fauna,especies,logistica,verificar,validar,avisos}`:
+  `python -m rasante {prevision,spots,rutas,eventos,alineaciones,clima,fauna,especies,dron,logistica,verificar,validar,avisos}`:
   - `comun` (caché `CacheJson`, sesión HTTP, `escribir_json` sin NaN, `id_spot`, `territorio`),
     `cielo` (astro, contaminación lumínica), `terreno` (DEM, horizonte), `notas` (modelos con desglose),
-    `prevision` (Open-Meteo → `public/datos/informe.json`), `spots` (Commons + Wikidata + OSM →
+    `prevision` (Open-Meteo, y Marine para mareas y oleaje en la costa → `public/datos/informe.json`), `spots` (Commons + Wikidata + OSM →
     `spots.geojson`), `rutas` (PBF de OSM + FEDME/Caminos Naturales del IGN → `rutas.json`),
     `eventos` (luna, meteoros, Vía Láctea, eclipses, auroras, Starlight, naturaleza de
     `recursos/eventos_naturaleza.csv` → `eventos.json`; alineaciones → `alineaciones.json`), `clima` (ERA5 por
     mes → `clima.json`, workflow `clima.yml`, varios días la primera vez), `fauna` (observatorios de OSM + GBIF →
-    `fauna.json`; especies de `recursos/especies.csv` + GBIF → `especies.json`), `validacion` (ERA5 + Commons + METAR), `avisos` (Telegram, opcional), `recursos` (geojson de referencia).
+    `fauna.json`; especies de `recursos/especies.csv` + GBIF → `especies.json`), `dron` (zonas UAS de ENAIRE + espacios protegidos de la AEMA → `dron.json`), `validacion` (ERA5 + Commons + METAR), `avisos` (Telegram, opcional), `recursos` (geojson de referencia).
   - Antes de cambiar pesos de `rasante/notas/`, mira el informe de validación (artefacto `validacion`) y no
     ajustes más allá del ruido.
 - Web Next.js 16 (App Router) en `src/`: `app/` (rutas finas), `features/{spots,rutas,eventos,clima,fauna,viaje,alertas,offline}` (componentes, modelo,

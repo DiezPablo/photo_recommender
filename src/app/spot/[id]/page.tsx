@@ -14,6 +14,8 @@ import RutasAlSpot from "@/features/rutas/componentes/RutasAlSpot";
 import ClimaSpot from "@/features/clima/componentes/ClimaSpot";
 import BotonGuardar from "@/features/offline/BotonGuardar";
 import Logistica from "@/features/logistica/Logistica";
+import Dron, { SelloDron } from "@/features/dron/Dron";
+import { textoMarea, textoOlas } from "@/features/spots/mar";
 import FaunaCerca from "@/features/fauna/componentes/FaunaCerca";
 import type { LineaMapa } from "@/features/spots/componentes/MapaSpots";
 import {
@@ -117,6 +119,7 @@ function Nubes({ m }: { m: NonNullable<Dia["meteo"]["amanecer"]> }) {
 
 function BloqueLuz({ dia, momento }: { dia: Dia; momento: "amanecer" | "atardecer" }) {
   const m = dia.meteo[momento];
+  const mar = dia.mar?.[momento];
   const s = dia.sol;
   const am = momento === "amanecer";
   return (
@@ -140,6 +143,18 @@ function BloqueLuz({ dia, momento }: { dia: Dia; momento: "amanecer" | "atardece
         <dd>{tramoTexto(am ? s.dorada_manana : s.dorada_tarde)}</dd>
         <dt>Azimut del sol</dt>
         <dd>{rumbo(am ? s.az_amanecer : s.az_atardecer)}</dd>
+        {mar && textoMarea(mar) && (
+          <>
+            <dt>Marea</dt>
+            <dd>{textoMarea(mar)}</dd>
+          </>
+        )}
+        {mar && textoOlas(mar) && (
+          <>
+            <dt>Olas</dt>
+            <dd>{textoOlas(mar)}</dd>
+          </>
+        )}
         {m && (
           <>
             <dt>Visibilidad</dt>
@@ -318,6 +333,15 @@ function BloqueDia({ dia, indice, spot }: { dia: Dia; indice: number; spot: Spot
           <BloqueLuz dia={dia} momento="atardecer" />
           <BloqueNoche dia={dia} spot={spot} />
         </div>
+        {dia.mar && dia.mar.mareas.length > 0 && (
+          <p className="mareas">
+            <b>Mareas</b>{" "}
+            {dia.mar.rango_m < 0.4
+              ? `apenas se notan (${Math.round(dia.mar.rango_m * 100)} cm)`
+              : dia.mar.mareas.map((x) => `${x.tipo === "alta" ? "pleamar" : "bajamar"} ${x.t}`).join(" · ")}
+            {dia.mar.rango_m >= 0.4 && <small> · {dia.mar.rango_m.toLocaleString("es-ES")} m de diferencia</small>}
+          </p>
+        )}
         <p className="nota-pie">
           * Horizonte: máximo de nubes bajas en el camino del sol (a 15, 40, 80 y 150 km en su dirección). Si hay un
           banco de nubes allí, el sol no llega a iluminar el cielo desde abajo.
@@ -414,6 +438,7 @@ export default async function PaginaSpot({ params }: Props) {
               </dd>
             </div>
           )}
+          <SelloDron id={spot.id} />
           {vista !== null && (
             <div>
               <dt>Vista</dt>
@@ -642,6 +667,7 @@ export default async function PaginaSpot({ params }: Props) {
       <ClimaSpot lat={spot.lat} lon={spot.lon} mes={Number(spot.dias[0]?.fecha.slice(5, 7) ?? 1) - 1} />
       <RutasAlSpot lat={spot.lat} lon={spot.lon} />
       <Logistica tipo="spots" id={spot.id} />
+      <Dron id={spot.id} />
       <FaunaCerca lat={spot.lat} lon={spot.lon} />
       <EventosCerca lat={spot.lat} lon={spot.lon} ambito="fauna" max={3} />
       <EventosCerca lat={spot.lat} lon={spot.lon} />

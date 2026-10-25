@@ -1,4 +1,5 @@
 // Tipos del informe y utilidades puras: se pueden usar tanto en el servidor como en el navegador.
+import type { Mar } from "@/features/spots/mar";
 
 export type Momento = "amanecer" | "atardecer" | "astro" | "niebla" | "luna";
 export const MOMENTOS: Momento[] = ["amanecer", "atardecer", "astro", "niebla", "luna"];
@@ -68,6 +69,8 @@ export interface MeteoNoche {
 
 export interface Dia {
   fecha: string;
+  /** solo en los spots de costa */
+  mar?: Mar;
   fiabilidad: "alta" | "media" | "baja";
   sol: {
     amanecer: string | null;

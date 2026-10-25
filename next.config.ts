@@ -28,6 +28,7 @@ const config: NextConfig = {
       "./public/datos/alineaciones.json",
       "./public/datos/logistica.json",
       "./public/datos/fauna.json",
+      "./public/datos/dron.json",
     ],
   },
 };

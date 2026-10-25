@@ -478,6 +478,27 @@ test("especies: dónde y cuándo ver el lince, desde el buscador y desde su even
   expect(errores).toEqual([]);
 });
 
+test("spot de costa: mareas, oleaje y si se puede volar un dron", async ({ page, request }, info) => {
+  const informe = await (await request.get("/datos/informe.json")).json();
+  const costa = informe.spots.find((s: { dias: { mar?: { mareas: unknown[] } }[] }) =>
+    s.dias.some((d) => d.mar && d.mar.mareas.length > 0),
+  );
+  test.skip(!costa, "el informe publicado aún no trae el mar");
+  const errores = vigilar(page);
+  await page.goto(`/spot/${costa.id}`);
+  await expect(page.locator(".mareas").first()).toContainText("Mareas");
+  if ((await request.get("/datos/dron.json")).ok()) {
+    await page.locator(".sello-dron").first().click();
+    await expect(page).toHaveURL(/#dron$/);
+    await expect(page.locator("#dron")).toContainText("ENAIRE");
+  }
+  await page
+    .locator("#dron")
+    .screenshot({ path: `${CAPTURAS}/dron-${info.project.name}.png` })
+    .catch(() => {});
+  expect(errores).toEqual([]);
+});
+
 test("calendario de fauna: eventos de fauna separados del paisaje", async ({ page }) => {
   const errores = vigilar(page);
   await page.goto("/fauna/calendario/octubre");

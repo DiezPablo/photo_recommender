@@ -15,6 +15,7 @@ on:
       - rasante/logistica/**
       - rasante/fauna/**
       - rasante/recursos/especies.csv
+      - rasante/dron/**
       - .github/workflows/rutas.yml
 
 permissions:
@@ -79,10 +80,17 @@ jobs:
       - name: Especies
         run: python -m rasante especies --salida salida/especies.json
 
+      # ¿Se puede volar un dron en cada spot? (zonas UAS de ENAIRE y espacios protegidos). Si ENAIRE o la
+      # Agencia Europea de Medio Ambiente no responden, se publica el resto y queda el dron.json anterior.
+      - name: Dron
+        continue-on-error: true
+        run: python -m rasante dron --spots spots.geojson --salida salida/dron.json
+
       - name: Publicar
         run: |
+          dron=""; [ -f salida/dron.json ] && dron=salida/dron.json
           .github/scripts/publicar_release.sh "Actualizar rutas ($(date -u +%Y-%m-%d))" \
-            salida/rutas.json salida/logistica.json salida/fauna.json salida/especies.json
+            salida/rutas.json salida/logistica.json salida/fauna.json salida/especies.json $dron
 
       - uses: actions/cache/save@v6
         if: always()

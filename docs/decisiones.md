@@ -682,3 +682,35 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
 - Foto de cada especie: imagen (P18) de su elemento de Wikidata, con autor y licencia de Commons.
 - El buscador de lugares sugiere la ficha si la búsqueda coincide con una especie («lince»), los observatorios
   enlazan las especies que tienen ficha y los eventos de fauna enlazan sus especies.
+
+## 2026-10-25 · Dron sí/no en cada spot
+
+- Nueva orden `python -m rasante dron` → `dron.json` (mensual, en `rutas.yml`, ~1,5 min). Para cada spot: el
+  nivel más restrictivo de las zonas que lo cubren («no» sin autorización expresa, «permiso», «condiciones» o
+  «libre») y la explicación de cada zona.
+- Fuentes (sin clave, ArcGIS REST): zonas geográficas UAS de **ENAIRE** (RD 517/2024: aeronáuticas e
+  infraestructuras) y espacios protegidos de la **Agencia Europea de Medio Ambiente** (NatDA y Red Natura 2000).
+  El servidor de mapas del MITECO no respondía desde el contenedor; el de la AEMA tiene los mismos espacios.
+- Descubierto al probar:
+  - La capa «urbana» de ENAIRE son cuatro regiones policiales que cubren toda España: no dice si un punto
+    está en un núcleo urbano. Se descarta y la web lo recuerda como norma general.
+  - Las TMA empiezan a 305 m sobre el suelo: con la categoría abierta (120 m) no afectan. Se descartan las
+    zonas que empiezan por encima de 120 m AGL; si empiezan más abajo, «sin coordinar por debajo de X m».
+  - Las zonas «restringidas al vuelo fotográfico» (Defensa, motivo PRIVACY) permiten volar pidiendo
+    condiciones al CECAF: «permiso», no «no».
+  - En los parques nacionales el vuelo está prohibido salvo autorización (Ley 30/2014): «no».
+- Resultado: 357 spots sin zonas, 350 con condiciones, 424 con permiso, 369 «no». Es orientativo y la ficha
+  enlaza a ENAIRE Drones.
+
+## 2026-10-25 · Mareas y oleaje en los spots de costa
+
+- Open-Meteo Marine (sin clave): `sea_level_height_msl` (con la marea) y oleaje en la celda de mar más cercana
+  (`cell_selection=sea`, ~8 km). Se pide en cada previsión para los ~700 spots de costa (borde de las provincias
+  que no es frontera, a ≤ 2 km, o ≤ 5 km si es playa, cabo, faro o acantilado) agrupados en celdas de 0,1°:
+  ~300 llamadas más por ejecución (un 6 %).
+- Pleamares y bajamares: extremos de la serie horaria afinados con una parábola. En el pico de luz, posición
+  entre bajamar y pleamar, si sube o baja, altura y periodo de las olas. En el Mediterráneo (rango < 0,4 m) solo
+  se dice que la marea apenas se nota.
+- Informativo: no entra en la nota (los pesos están validados y no hay datos para validar un factor de marea).
+- Las provincias simplificadas dejan rendijas entre ellas: sin un margen al unirlas, la «costa» incluía
+  fronteras interiores (Navacerrada salía en la costa).

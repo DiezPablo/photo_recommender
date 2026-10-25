@@ -14,7 +14,7 @@ from rasante.cielo.contaminacion import contaminacion, cupula
 from rasante.notas import KM_CAMINO, capa_nubosa, nota_astro, nota_luna, nota_luz, nota_niebla, valor
 from rasante.terreno import horizonte
 
-from . import openmeteo, series
+from . import mar, openmeteo, series
 from .openmeteo import AIRE_URL, MODELO_ALT, VARS_ALT, VARS_CAMINO, VARS_PERFIL, VARS_SPOT, pedir
 from .series import en, filas_entre, perfil_en, suma_entre
 
@@ -358,6 +358,21 @@ def pedir_todo(puntos: dict, dias: int, tz_nombre: str) -> dict:
     return prev
 
 
+def pedir_mar(spots: list[dict], dias: int, tz_nombre: str) -> dict:
+    """Serie del mar (mareas y oleaje) de los spots de costa, por id. Opcional: si falla, sin mar."""
+    costa = mar.Costa()
+    costeros = [s for s in spots if costa.es_costero(s)]
+    celdas = sorted({_redondear((s["lat"], s["lon"]), mar.REDONDEO) for s in costeros})
+    print(f"  Open-Meteo Marine: {len(costeros)} spots de costa en {len(celdas)} celdas")
+    por_celda = dict(zip(celdas, mar.pedir_mar(celdas, dias, tz_nombre), strict=True))
+    salida = {}
+    for s in costeros:
+        x = por_celda.get(_redondear((s["lat"], s["lon"]), mar.REDONDEO))
+        if x is not None:
+            salida[s["id"]] = x["horas"]
+    return salida
+
+
 def evaluar(
     spots: list[dict], dias: int, tz_nombre: str, hoy: date | None = None, previsiones: dict | None = None
 ) -> dict:
@@ -378,6 +393,7 @@ def evaluar(
     puntos, planes = planificar(spots, fechas[0], tz)
     if previsiones is None:
         previsiones = pedir_todo(puntos, dias, tz_nombre)
+        previsiones["mar"] = pedir_mar(spots, dias, tz_nombre)
 
     def horas(lista, i):
         x = lista[i] if lista and i < len(lista) else None
@@ -401,6 +417,15 @@ def evaluar(
         }
         tz_spot = zona_de(s["lon"], tz)
         dias_spot = [evaluar_spot_dia(s, d, i, tz_spot, datos) for i, d in enumerate(fechas)]
+        if (serie_mar := (previsiones.get("mar") or {}).get(s["id"])) is not None:
+            for d, dia_spot in zip(fechas, dias_spot, strict=True):
+                sol = astro.calcular_sol(s["lat"], s["lon"], d, tz_spot)
+                momentos = {
+                    "amanecer": sol.amanecer and sol.amanecer - timedelta(minutes=MIN_PICO),
+                    "atardecer": sol.atardecer and sol.atardecer + timedelta(minutes=MIN_PICO),
+                }
+                if (m := mar.dia(serie_mar, d, tz_spot, momentos)) is not None:
+                    dia_spot["mar"] = m
         salida.append(
             {
                 "id": s["id"],
