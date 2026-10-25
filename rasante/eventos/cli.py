@@ -12,10 +12,10 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 
 from rasante.comun.ficheros import escribir_json
-from rasante.eventos import cielo, naturaleza
+from rasante.eventos import aurora, cielo, naturaleza, starlight
 
 
-def generar(hoy: date, meses: int) -> dict:
+def generar(hoy: date, meses: int, con_red: bool = True) -> dict:
     hasta = hoy + timedelta(days=round(meses * 30.5))
     return {
         "generado": datetime.now(cielo.TZ).isoformat(timespec="minutes"),
@@ -25,6 +25,8 @@ def generar(hoy: date, meses: int) -> dict:
         "meteoros": cielo.lluvias_meteoros(hoy, hasta),
         "eclipses": cielo.eclipses(hoy),
         "via_lactea": cielo.via_lactea(hoy, hasta),
+        "aurora": aurora.aurora() if con_red else None,
+        "starlight": {"zonas": starlight.cargar(), "fuente": starlight.FUENTE},
         "naturaleza": naturaleza.cargar(),
         "categorias": naturaleza.CATEGORIAS,
     }

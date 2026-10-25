@@ -150,6 +150,18 @@ function eventosDelCielo(zona: Zona): EventoIcs[] {
       url: `${SITIO}/calendario`,
     });
   }
+  const a = ev.aurora;
+  if (a?.noche && a.nivel !== "ninguno") {
+    lista.push({
+      uid: `aurora-${a.noche}@rasante`,
+      titulo: `Posible aurora${a.nivel === "norte" ? " en el norte" : ""} · Kp ${a.kp_max.toLocaleString("es-ES")}`,
+      descripcion:
+        "Tormenta geomagnética fuerte prevista por NOAA. Busca un sitio oscuro con el horizonte norte despejado; " +
+        "la cámara la capta antes que el ojo.",
+      dia: a.noche,
+      url: a.fuente,
+    });
+  }
   for (const e of ev.eclipses) {
     lista.push({
       uid: `${e.id}@rasante`,

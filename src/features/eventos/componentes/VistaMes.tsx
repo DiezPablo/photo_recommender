@@ -1,17 +1,20 @@
 // Un mes del calendario: el cielo (luna, meteoros, Vía Láctea, eclipses) y la naturaleza en marcha. Sin JS
 // salvo el mapa.
 import Link from "next/link";
+import AvisoAurora from "@/features/eventos/componentes/AvisoAurora";
 import MapaEventos from "@/features/eventos/componentes/MapaEventos";
 import TarjetaEvento from "@/features/eventos/componentes/TarjetaEvento";
 import {
   activoEnMes,
   anoDelMes,
+  avisoAurora,
   type Categoria,
   type Eventos,
   fechaCorta,
   fechaLarga,
   MESES,
   mesDe,
+  TEXTO_AURORA,
   TEXTO_CALIDAD,
 } from "@/features/eventos/modelo";
 
@@ -50,6 +53,8 @@ export default function VistaMes({ eventos, mes, mesHoy }: { eventos: Eventos; m
           </Link>
         ))}
       </nav>
+
+      {mes === mesHoy && <AvisoAurora aurora={avisoAurora(eventos.aurora, eventos.desde)} />}
 
       <div className="calendario-grid">
         <section className="seccion cielo-mes" aria-labelledby="cielo">
@@ -104,6 +109,18 @@ export default function VistaMes({ eventos, mes, mesHoy }: { eventos: Eventos; m
                 </div>
               </li>
             ))}
+            {mes === mesHoy && eventos.aurora && (
+              <li>
+                <span className={`icono-aurora ${eventos.aurora.nivel}`} aria-hidden />
+                <div>
+                  <b>Auroras</b> · próximas tres noches
+                  <small>
+                    {TEXTO_AURORA[eventos.aurora.nivel]}: índice Kp máximo previsto{" "}
+                    {eventos.aurora.kp_max.toLocaleString("es-ES")} (hacen falta 7 en el norte y 8 en el resto).
+                  </small>
+                </div>
+              </li>
+            )}
             {eclipses.map((e) => (
               <li key={e.id} className="eclipse">
                 <span className="icono-eclipse" aria-hidden />

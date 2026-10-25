@@ -54,6 +54,27 @@ export interface VentanaViaLactea {
   horas_max: number;
 }
 
+export interface Aurora {
+  actualizado: string;
+  noches: { noche: string; kp: number }[];
+  /** «norte»: Kp ≥ 7, visible en fotos en el norte peninsular; «espana»: Kp ≥ 8 */
+  nivel: "ninguno" | "norte" | "espana";
+  noche: string | null;
+  kp_max: number;
+  fuente: string;
+}
+
+export interface ZonaStarlight {
+  id: string;
+  nombre: string;
+  tipo: "reserva" | "destino";
+  lat: number | null;
+  lon: number | null;
+  radio_km: number | null;
+  /** la provincia entera (Soria) */
+  provincia: string | null;
+}
+
 export interface Eventos {
   generado: string;
   desde: string;
@@ -62,6 +83,8 @@ export interface Eventos {
   meteoros: LluviaMeteoros[];
   eclipses: Eclipse[];
   via_lactea: { horas_por_mes: number[]; ventanas: VentanaViaLactea[] };
+  aurora?: Aurora | null;
+  starlight?: { zonas: ZonaStarlight[]; fuente: string };
   naturaleza: EventoNaturaleza[];
   categorias: Record<Categoria, string>;
 }
@@ -168,3 +191,30 @@ export const TEXTO_CALIDAD: Record<LluviaMeteoros["calidad"], string> = {
   regular: "Luna grande, pero bajo el horizonte en el máximo",
   mala: "La luna estorba",
 };
+
+/** Zona Starlight (aproximada) que contiene el punto; primero las Reservas. */
+export function starlightDe(
+  zonas: ZonaStarlight[],
+  p: { lat: number; lon: number; provincia?: string | null },
+): ZonaStarlight | null {
+  const dentro = zonas.filter((z) =>
+    z.provincia
+      ? z.provincia === p.provincia
+      : z.lat !== null &&
+        z.lon !== null &&
+        z.radio_km !== null &&
+        distanciaKm({ lat: z.lat, lon: z.lon }, p) <= z.radio_km,
+  );
+  return dentro.find((z) => z.tipo === "reserva") ?? dentro[0] ?? null;
+}
+
+export const TEXTO_AURORA: Record<Aurora["nivel"], string> = {
+  ninguno: "No se verán desde España",
+  norte: "Posible aurora en el norte peninsular",
+  espana: "Posible aurora en casi toda España",
+};
+
+/** Aviso vigente de aurora: la noche con tormenta todavía no ha pasado. */
+export function avisoAurora(a: Aurora | null | undefined, hoy: string): Aurora | null {
+  return a && a.nivel !== "ninguno" && a.noche && a.noche >= hoy ? a : null;
+}

@@ -1,11 +1,12 @@
 """Calendario de eventos: fases de la luna contra astropy, lluvias de meteoros, Vía Láctea y naturaleza."""
 
-from datetime import date, datetime
+import json
+from datetime import UTC, date, datetime
 
 import pytest
-from conftest import sin_nan
+from conftest import FIX, sin_nan
 
-from rasante.eventos import cielo, naturaleza
+from rasante.eventos import aurora, cielo, naturaleza, starlight
 from rasante.eventos.cli import generar
 
 # Lunas nuevas y llenas calculadas con astropy (elongación mínima/máxima), en UTC
@@ -72,6 +73,35 @@ def test_naturaleza_rechaza_errores(tmp_path):
 
 
 def test_generar_sin_nan():
-    datos = generar(date(2026, 10, 24), 13)
+    datos = generar(date(2026, 10, 24), 13, con_red=False)
     sin_nan(datos)
     assert datos["luna"] and datos["meteoros"] and datos["naturaleza"]
+
+
+def test_aurora_con_pronostico_real():
+    datos = json.loads((FIX / "noaa_kp.json").read_text())
+    r = aurora.resumen(datos, datetime(2026, 10, 25, 8, tzinfo=UTC))
+    assert r["noches"][0]["noche"] == "2026-10-25"  # lo observado ya no cuenta
+    assert all(n["kp"] < 7 for n in r["noches"])
+    assert r["nivel"] == "ninguno" and r["noche"] is None
+
+
+def test_aurora_tormenta_fuerte_y_formato_antiguo():
+    # formato antiguo de NOAA: lista de listas con cabecera; Kp 8 de madrugada → aviso para toda España
+    datos = [
+        ["time_tag", "kp", "observed", "noaa_scale"],
+        ["2024-05-10 21:00:00", "7.67", "predicted", "G3"],
+        ["2024-05-11 00:00:00", "8.67", "predicted", "G4"],
+        ["2024-05-11 12:00:00", "9.00", "predicted", "G5"],  # de día: no cuenta
+    ]
+    r = aurora.resumen(datos, datetime(2024, 5, 10, 12, tzinfo=UTC))
+    assert r["nivel"] == "espana"
+    assert r["noche"] == "2024-05-10"
+    assert r["kp_max"] == 8.67
+
+
+def test_starlight():
+    zonas = starlight.cargar()
+    assert sum(z["tipo"] == "reserva" for z in zonas) >= 22
+    soria = next(z for z in zonas if z["id"] == "soria")
+    assert soria["provincia"] == "Soria" and soria["radio_km"] is None

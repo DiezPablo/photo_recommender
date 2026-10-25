@@ -376,3 +376,33 @@
   font-weight: 600;
   color: var(--acento);
 }
+
+/* Aviso de aurora: solo con tormenta geomagnética fuerte */
+.aviso-aurora {
+  padding: 14px 16px;
+  border-radius: var(--radio-m);
+  border: 1px solid color-mix(in srgb, var(--c-fauna) 50%, var(--borde));
+  background: color-mix(in srgb, var(--c-fauna) 12%, var(--superficie));
+  line-height: 1.5;
+}
+.aviso-aurora a {
+  color: var(--texto);
+  font-weight: 600;
+}
+.sello-starlight {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.sello-starlight::before {
+  content: "✦";
+  color: var(--vl);
+}
+.icono-aurora {
+  background: linear-gradient(0deg, var(--c-fauna), transparent);
+  opacity: 0.35;
+}
+.icono-aurora.norte,
+.icono-aurora.espana {
+  opacity: 1;
+}

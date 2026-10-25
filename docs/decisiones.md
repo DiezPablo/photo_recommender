@@ -484,3 +484,15 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
 - `/sw.js` con `Cache-Control: no-cache` (vercel.json) para que las versiones nuevas lleguen enseguida.
 - Prueba e2e real: levanta su propio servidor en localhost (el service worker exige origen seguro y
   `setOffline` no corta la red del service worker), guarda una ruta, apaga el servidor y la abre.
+
+## 2026-10-25 · Auroras y cielos Starlight
+
+- **Auroras**: pronóstico Kp a 3 días de NOAA SWPC (JSON público, sin clave; se admite también su formato
+  antiguo). Kp máximo de las horas de noche de cada noche; aviso «norte» con Kp ≥ 7 y «casi toda España» con
+  Kp ≥ 8 (como en mayo y octubre de 2024, vistas sobre todo en fotos). El aviso aparece en la portada y el
+  calendario solo cuando hay algo que ver, y entra en los `.ics`; el calendario dice siempre el Kp previsto.
+  Si NOAA no responde, el calendario se publica igual sin ese dato.
+- **Starlight**: la Fundación Starlight publica nombres, no límites. `recursos/starlight.csv`: las 22
+  Reservas y los Destinos con límites claros (islas, parques), con centro y radio aproximados (Sierra Morena
+  en seis círculos) o provincia entera (Soria). La ficha del spot muestra «Cielo certificado» advirtiendo que
+  la zona es aproximada. Faltan Destinos municipales pequeños.

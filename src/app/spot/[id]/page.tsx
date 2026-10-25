@@ -8,6 +8,7 @@ import MapaSpot from "@/features/spots/componentes/MapaSpot";
 import { filasRanking, TOP_HTML } from "@/features/spots/ranking";
 import Panorama from "@/features/spots/componentes/Panorama";
 import EventosCerca from "@/features/eventos/componentes/EventosCerca";
+import { cargarEventos, starlightDe } from "@/features/eventos/datos";
 import RutasAlSpot from "@/features/rutas/componentes/RutasAlSpot";
 import BotonGuardar from "@/features/offline/BotonGuardar";
 import type { LineaMapa } from "@/features/spots/componentes/MapaSpots";
@@ -328,6 +329,7 @@ export default async function PaginaSpot({ params }: Props) {
   const desc = spot.descubierto;
   const hoy = spot.dias[0];
   const vista = azimutVista(desc?.direccion_vista);
+  const starlight = starlightDe(cargarEventos()?.starlight?.zonas ?? [], spot);
   const lineas: LineaMapa[] = [];
   if (hoy?.sol.az_amanecer != null)
     lineas.push({
@@ -397,6 +399,14 @@ export default async function PaginaSpot({ params }: Props) {
               <dt>Cielo</dt>
               <dd>
                 Bortle ≈{spot.contaminacion.bortle} · {spot.contaminacion.sqm.toFixed(2)}
+              </dd>
+            </div>
+          )}
+          {starlight && (
+            <div title="Zona aproximada: la Fundación Starlight publica el nombre, no los límites">
+              <dt>Cielo certificado</dt>
+              <dd className="sello-starlight">
+                {starlight.tipo === "reserva" ? "Reserva" : "Destino"} Starlight · {starlight.nombre}
               </dd>
             </div>
           )}

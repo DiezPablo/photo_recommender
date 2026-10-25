@@ -1,4 +1,6 @@
 // Portada: titular del día, tabla de los próximos días (que hace de filtro), ranking y mapa.
+import AvisoAurora from "@/features/eventos/componentes/AvisoAurora";
+import { avisoAurora, cargarEventos } from "@/features/eventos/datos";
 import { cargar, etiquetaDia, FILTROS, type Filtro, miniatura, NOMBRE_MOMENTO, notaDe } from "@/features/spots/datos";
 import { filasRanking, TOP_HTML, urlRanking } from "@/features/spots/ranking";
 import Almanaque, { type Mejor } from "@/features/spots/componentes/Almanaque";
@@ -57,6 +59,7 @@ export default function VistaDia({ d, filtro }: { d: number; filtro: Filtro }) {
           </p>
           <h1>{filtro === "todos" ? `Lo mejor de ${cuando}` : `${NOMBRE_MOMENTO[filtro]}, ${cuando}`}</h1>
         </header>
+        <AvisoAurora aurora={avisoAurora(cargarEventos()?.aurora, informe.fechas[0])} />
         {primero && <Destacado f={primero} foto={miniatura(credito?.url, 960)} credito={credito} />}
         <Almanaque fechas={informe.fechas} mejores={mejores} d={d} filtro={filtro} ruta={rutaDia} />
         <section aria-label="Ranking" className="bloque-ranking">
