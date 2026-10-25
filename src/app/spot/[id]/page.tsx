@@ -9,6 +9,7 @@ import { filasRanking, TOP_HTML } from "@/features/spots/ranking";
 import Panorama from "@/features/spots/componentes/Panorama";
 import EventosCerca from "@/features/eventos/componentes/EventosCerca";
 import RutasAlSpot from "@/features/rutas/componentes/RutasAlSpot";
+import BotonGuardar from "@/features/offline/BotonGuardar";
 import type { LineaMapa } from "@/features/spots/componentes/MapaSpots";
 import {
   calificacion,
@@ -436,6 +437,7 @@ export default async function PaginaSpot({ params }: Props) {
           <a href={osmRuta} target="_blank" rel="noopener">
             Ruta en OpenStreetMap ↗
           </a>
+          <BotonGuardar />
         </p>
       </header>
 

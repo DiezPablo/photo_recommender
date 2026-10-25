@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Archivo, IBM_Plex_Mono } from "next/font/google";
 import Link from "next/link";
 import SelectorTema from "@/ui/SelectorTema";
+import RegistroSw from "@/features/offline/RegistroSw";
 import { Logo } from "@/ui/Iconos";
 import { cargar } from "@/features/spots/datos";
 import "./globals.css";
@@ -96,6 +97,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             )}
           </div>
         </footer>
+        <RegistroSw />
       </body>
     </html>
   );

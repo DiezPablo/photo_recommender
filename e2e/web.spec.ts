@@ -1,3 +1,5 @@
+import { spawn } from "node:child_process";
+import { get } from "node:http";
 import { expect, type Page, test } from "@playwright/test";
 
 const CAPTURAS = process.env.CAPTURAS ?? "capturas";
@@ -15,6 +17,16 @@ function vigilar(page: Page) {
       errores.push(`HTTP ${r.status()} ${u}`);
   });
   return errores;
+}
+
+/** Código HTTP del servidor local (0 si no responde), sin pasar por el proxy que `fetch` pueda usar. */
+function estado(puerto: number): Promise<number> {
+  return new Promise((ok) => {
+    get({ host: "127.0.0.1", port: puerto, path: "/sin-conexion", timeout: 2000 }, (r) => {
+      r.resume();
+      ok(r.statusCode ?? 0);
+    }).on("error", () => ok(0));
+  });
 }
 
 /** Espera (sin fallar) a que el mapa tenga teselas, para que las capturas lo muestren. */
@@ -299,4 +311,80 @@ test("avisos: zonas para suscribirse y calendario .ics válido", async ({ page, 
   expect(ics).toContain("BEGIN:VEVENT");
   // ninguna línea pasa de 75 octetos (RFC 5545)
   for (const l of ics.split("\r\n")) expect(new TextEncoder().encode(l).length).toBeLessThanOrEqual(75);
+});
+
+test("sin conexión: instalable, ficha guardada y página sin cobertura", async ({ browser, baseURL, request }) => {
+  const manifiesto = await (await request.get("/manifest.webmanifest")).json();
+  expect(manifiesto.display).toBe("standalone");
+  expect((await request.get(manifiesto.icons[0].src)).status()).toBe(200);
+
+  // Para cortar la red de verdad (setOffline no afecta al service worker) esta prueba levanta su propio servidor
+  // y lo apaga. Además el service worker exige origen seguro: localhost (fuera del proxy, si lo hay).
+  test.skip(!baseURL?.startsWith("http://"), "solo con la build local");
+  const puerto = 3190 + test.info().parallelIndex;
+  // el binario de next directamente y en su propio grupo de procesos, para poder apagarlo entero
+  const servidor = spawn(
+    process.execPath,
+    ["node_modules/next/dist/bin/next", "start", "-H", "127.0.0.1", "-p", String(puerto)],
+    {
+      stdio: "ignore",
+      detached: true,
+    },
+  );
+  const apagar = () => {
+    try {
+      process.kill(-servidor.pid!, "SIGKILL");
+    } catch {}
+  };
+  try {
+    await expect
+      .poll(
+        () =>
+          fetch(`http://localhost:${puerto}/sin-conexion`).then(
+            (r) => r.status,
+            () => 0,
+          ),
+        { timeout: 30_000 },
+      )
+      .toBe(200);
+    const proxy = process.env.HTTPS_PROXY;
+    const context = await browser.newContext({
+      baseURL: `http://localhost:${puerto}`,
+      ...(proxy ? { proxy: { server: proxy, bypass: "localhost" } } : {}),
+    });
+    const page = await context.newPage();
+
+    await page.goto("/rutas");
+    await page.getByPlaceholder(/Nombre/).fill("Peñalara");
+    await page.locator(".fila-ruta").first().click();
+    await expect(page).toHaveURL(/\/ruta\//);
+    const ficha = new URL(page.url()).pathname;
+    // la primera visita instala el service worker; la página queda controlada al recargar
+    await page.evaluate(() => navigator.serviceWorker.ready);
+    await page.reload();
+    await expect.poll(() => page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(true);
+    await page.getByRole("button", { name: "Guardar para sin conexión" }).click();
+    await expect(page.getByRole("button", { name: /Guardada sin conexión/ })).toBeVisible();
+
+    servidor.kill();
+    await expect
+      .poll(() =>
+        fetch(`http://localhost:${puerto}/`).then(
+          () => "arriba",
+          () => "caído",
+        ),
+      )
+      .toBe("caído");
+    // una página que no se ha visitado: aviso y lista de guardadas
+    await page.goto("/calendario/marzo");
+    await expect(page.locator("h1")).toHaveText("No hay cobertura");
+    await expect(page.locator(".lista-cercanos")).toContainText(/Peñalara/);
+    // la guardada se abre sin red, con su GPX
+    await page.goto(ficha);
+    await expect(page.locator("h1")).toContainText(/Peñalara/i);
+    await expect(page.getByRole("button", { name: /Descargar GPX/ })).toBeVisible();
+    await context.close();
+  } finally {
+    apagar();
+  }
 });

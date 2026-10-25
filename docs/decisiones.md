@@ -469,3 +469,18 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
 - UID estable por spot, día y momento: al refrescar, el calendario corrige o quita lo que cambió.
 - Horas del informe en `zona_horaria` (Europe/Madrid también para Canarias: pendiente de pasar a hora local
   en el pipeline). Validado con la librería `icalendar` y en el e2e (líneas ≤ 75 octetos, CRLF).
+
+## 2026-10-25 · Web instalable y sin conexión
+
+- En el monte no hay cobertura y Wikiloc, Komoot o PhotoPills funcionan sin red. Ahora Rasante se instala
+  (manifest con iconos generados del logo) y un service worker propio (`public/sw.js`, sin librerías):
+  páginas red primero (5 s) con copia de lo visitado (60 páginas), `/_next/static` caché primero, teselas de
+  OSM (1500) y fotos (150) solo de lo que el usuario ha visto (no se descargan zonas por adelantado: la
+  política de teselas de OSM lo prohíbe).
+- «Guardar para sin conexión» en las fichas de spot y ruta: caché aparte que no se recorta y se refresca al
+  volver a visitarla. El GPX se genera en el navegador, así que también funciona sin red.
+- `/sin-conexion` lista lo guardado con un script en línea: sin red, el JavaScript de esa página puede no
+  estar en el dispositivo y React no hidrataría.
+- `/sw.js` con `Cache-Control: no-cache` (vercel.json) para que las versiones nuevas lleguen enseguida.
+- Prueba e2e real: levanta su propio servidor en localhost (el service worker exige origen seguro y
+  `setOffline` no corta la red del service worker), guarda una ruta, apaga el servidor y la abre.

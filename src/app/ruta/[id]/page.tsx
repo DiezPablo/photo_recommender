@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import BotonGpx from "@/features/rutas/componentes/BotonGpx";
+import BotonGuardar from "@/features/offline/BotonGuardar";
 import MarcaSendero from "@/features/rutas/componentes/MarcaSendero";
 import MapaRutas from "@/features/rutas/componentes/MapaRutas";
 import PerfilRuta from "@/features/rutas/componentes/PerfilRuta";
@@ -123,6 +124,7 @@ export default async function PaginaRuta({ params }: Props) {
             Cómo llegar a la salida ↗
           </a>
           <BotonGpx nombre={r.nombre} linea={r.linea} fichero={slug(r.nombre) || r.id} atribucion={atribucion} />
+          <BotonGuardar />
           {r.oficial && (
             <a href={r.oficial} target="_blank" rel="noopener">
               Ficha oficial ↗
