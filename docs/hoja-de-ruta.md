@@ -26,6 +26,16 @@ Wikiloc, Komoot, AllTrails, Astrospheric, Clear Outside) está en `decisiones.md
 | Dron sí/no por spot (ENAIRE + AEMA) | ¿Puedo volar el dron aquí? | ficha de spot (`dron.json`) |
 | Mareas y oleaje en la costa (Open-Meteo Marine) | ¿Bajamar al atardecer? ¿Mar en calma? | ficha de spot (`informe.json`, `mar`) |
 
+## Safaris (25-10-2026, en producción)
+
+Hecho: 65 parques del mundo (`/safaris`), especies, temporada, visto en 30 días, clima, alojamientos de OSM,
+páginas por especie y guía. Siguientes pasos posibles:
+1. Más parques (Ártico, Mongolia, Australia, Europa: osos en Finlandia, lobos en Polonia) y Destinos marinos.
+2. Límites reales de cada parque (`place_id` de iNaturalist o polígonos de WDPA) en lugar de un círculo.
+3. Seguimiento de la gran migración: posición de los ñus por las observaciones de 30 días en Serengeti-Mara.
+4. Planificador de safari: país y fechas → combinación de parques con traslados y temporada.
+5. Favoritos y lista de deseos en el navegador; aviso cuando un parque entra en temporada.
+
 ## En pausa (25-10-2026): revisión de producto de mejoras gratuitas
 
 El usuario pidió una revisión de mejoras gratuitas; se hicieron las dos primeras (dron y mareas) y se pausó
