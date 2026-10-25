@@ -384,6 +384,9 @@ test("sin conexión: instalable, ficha guardada y página sin cobertura", async 
     await expect.poll(() => page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(true);
     await page.getByRole("button", { name: "Guardar para sin conexión" }).click();
     await expect(page.getByRole("button", { name: /Guardada sin conexión/ })).toBeVisible();
+    // con su JavaScript ya en caché, sin red React hidrata la página «sin conexión»: la lista debe sobrevivir
+    await page.goto("/sin-conexion");
+    await page.goto(ficha);
 
     apagar();
     await expect.poll(() => estado(puerto)).toBe(0);

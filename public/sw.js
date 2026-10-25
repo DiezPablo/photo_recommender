@@ -3,7 +3,7 @@
 // - Ficheros de la web (/_next/static, inmutables): caché primero.
 // - Teselas del mapa y fotos: caché primero, con tope de entradas (solo lo que el usuario ha visto).
 // - «Guardar para sin conexión»: la página va a una caché aparte que no se recorta.
-const VERSION = "v1";
+const VERSION = "v2";
 const PAGINAS = `paginas-${VERSION}`;
 const GUARDADAS = "guardadas";
 const ESTATICOS = `estaticos-${VERSION}`;
@@ -60,11 +60,13 @@ async function pagina(peticion) {
     }
     return r;
   } catch {
-    return (
-      (await caches.match(clave, { cacheName: GUARDADAS })) ||
-      (await caches.match(clave, { cacheName: PAGINAS })) ||
-      (await caches.match(SIN_CONEXION))
-    );
+    const copia =
+      (await caches.match(clave, { cacheName: GUARDADAS })) || (await caches.match(clave, { cacheName: PAGINAS }));
+    if (copia) return copia;
+    // la página «sin conexión» con su propia dirección (no con la pedida): si React hidrata con otra URL, el
+    // enrutador de Next intenta cargar esa ruta sin red y muestra un error
+    if (url.pathname === SIN_CONEXION) return caches.match(SIN_CONEXION);
+    return Response.redirect(SIN_CONEXION, 302);
   }
 }
 

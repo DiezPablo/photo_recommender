@@ -575,3 +575,12 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
 - No se pudo rellenar hacia atrás: la API de ejecuciones anteriores de Open-Meteo guarda humedad y viento del
   día anterior, pero no las nubes. El marcador empieza el 25-10-2026 y aparece en «Método» con ≥ 100 casos.
 - El METAR apenas informa de nubes altas: no verifica el «lienzo» de cirros, solo si algo lo tapa. Se dice.
+
+## 2026-10-25 · Sin conexión: la página de aviso no rompía la hidratación… hasta que la rompía
+
+- En la CI fallaba a ratos la prueba sin conexión. Dos causas: (1) el service worker servía la página «sin
+  conexión» con la URL pedida; si React hidrataba (su JavaScript ya en caché), el enrutador de Next intentaba
+  cargar esa otra ruta sin red y mostraba su error. Ahora redirige a `/sin-conexion`. (2) El script en línea
+  que lista las fichas guardadas modificaba el HTML antes de que React hidratase (error #418 y luego
+  `removeChild`). Ahora espera 1,5 s y solo actúa si React no ha cargado; si carga, la lista la pinta
+  `ListaGuardadas`. La prueba visita antes `/sin-conexion` con red para cubrir el caso con React.
