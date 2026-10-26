@@ -1,18 +1,18 @@
 {
- "actualizado": "2026-10-26T04:50:45+00:00",
+ "actualizado": "2026-10-26T09:57:21+00:00",
  "ficheros": {
-  "informe.json": "bb7cc819db6e",
+  "informe.json": "6db9d5ecd8a3",
   "spots.geojson": "4807e96946b9",
   "spots.csv": "ad8e8d0e9c69",
   "rutas.json": "2159d693f93c",
-  "eventos.json": "55563e919d3b",
+  "eventos.json": "1ffb950d5690",
   "logistica.json": "cbaf2f350388",
-  "alineaciones.json": "e63fbadf36c1",
-  "verificacion.json": "4bd42450efde",
+  "alineaciones.json": "7b6de47f0889",
+  "verificacion.json": "4e63b521cbc0",
   "fauna.json": "6dd41d9f2632",
   "especies.json": "0445ba11c6e4",
   "dron.json": "4c7306173c6d",
-  "safaris_recientes.json": "503583201759",
+  "safaris_recientes.json": "7d85d55677c4",
   "safaris.json": "92f66a789e44"
  }
 }
