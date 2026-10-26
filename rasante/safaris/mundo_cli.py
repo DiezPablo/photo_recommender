@@ -41,7 +41,7 @@ def _en_paralelo(funcion, elementos, hilos: int, etiqueta: str):
     return salida
 
 
-def nombre(clave: int) -> dict | None:
+def nombre_en_cache_o_red(clave: int) -> dict | None:
     """Nombre común en español de GBIF; sin tiempo, solo si ya está en la caché."""
     if mundo.sin_tiempo():
         en_cache = [
@@ -217,7 +217,7 @@ def calcular(hilos: int = 4, osm_max: int = 1500, limite: int | None = None) -> 
     claves = {k for p in parques for k, _ in (p["mamiferos"] + p["aves"])} | set(estrella)
     nombres_lista = sorted(claves)
     print(f"  nombres de {len(nombres_lista)} especies…", flush=True)
-    nombres = _en_paralelo(nombre, nombres_lista, hilos, "nombres")
+    nombres = _en_paralelo(nombre_en_cache_o_red, nombres_lista, hilos, "nombres")
     especies = {
         str(k): {"c": n["cientifico"], "n": n["nombre"]} for k, n in zip(nombres_lista, nombres, strict=True) if n
     }

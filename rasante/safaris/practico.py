@@ -12,6 +12,7 @@ from __future__ import annotations
 import csv
 import io
 import math
+import re
 import time
 
 import requests
@@ -155,27 +156,28 @@ def meses_secos(c: dict | None) -> list[int]:
     return [i + 1 for i, v in enumerate(c["lluvia_mm"]) if v < 50]
 
 
+PUERTA = re.compile(r"gate|entrance|puerta|entrada|porte|portão|portaria|tor\b", re.IGNORECASE)
+
+
 def _nombre_util(nombre: str) -> bool:
     """Fuera los códigos de acampada de travesía («12», «4R1 - Ribbon Lake West»)."""
-    import re
-
     codigo = re.match(r"^([A-Z0-9]{1,4})(\s+-\s+.*)?$", nombre.strip())
     return not (codigo and any(c.isdigit() for c in codigo.group(1)))
 
 
 def osm(lat: float, lon: float, radio_km: float, solo_cache: bool = False) -> dict | None:
     """Alojamientos, operadores, puertas y pueblos cercanos (None si no está en caché y `solo_cache`)."""
-    r_aloj = int((radio_km + 15) * 1000)
-    r_puertas = int((radio_km + 5) * 1000)
-    r_pueblos = int((radio_km + 40) * 1000)
+    # radios acotados: con círculos de 100 km Overpass tardaba más de un minuto por parque
+    r_aloj = int(min(radio_km + 15, 60) * 1000)
+    r_puertas = int(min(radio_km + 5, 60) * 1000)
+    r_pueblos = int(min(radio_km + 40, 80) * 1000)
     tipos = "|".join(TIPOS_ALOJAMIENTO)
     consulta = (
-        "[out:json][timeout:120];"
+        "[out:json][timeout:90];"
         f'nwr["tourism"~"^({tipos})$"]["name"](around:{r_aloj},{lat},{lon});out center tags 60;'
         f'(nwr["office"~"^(travel_agent|guide)$"]["name"](around:{r_pueblos},{lat},{lon});'
         f'nwr["shop"="travel_agency"]["name"](around:{r_pueblos},{lat},{lon}););out center tags 30;'
-        f'(node["barrier"="gate"]["name"~"[Gg]ate|[Pp]uerta|[Ee]ntrance|[Pp]orte|[Pp]ortão"](around:{r_puertas},{lat},{lon});'
-        f'node["entrance"]["name"~"[Gg]ate|[Ee]ntrance"](around:{r_puertas},{lat},{lon}););out tags 20;'
+        f'node["barrier"="gate"]["name"](around:{r_puertas},{lat},{lon});out tags 60;'
         f'node["place"~"^(town|city)$"]["name"](around:{r_pueblos},{lat},{lon});out tags 15;'
     )
     clave = "osm:" + consulta
@@ -187,7 +189,7 @@ def osm(lat: float, lon: float, radio_km: float, solo_cache: bool = False) -> di
         for intento in range(2):
             for url in OVERPASS:
                 try:
-                    r = _SESION.post(url, data={"data": consulta}, timeout=150)
+                    r = _SESION.post(url, data={"data": consulta}, timeout=100)
                     r.raise_for_status()
                     datos = r.json()
                     break
@@ -228,7 +230,7 @@ def clasificar(datos: dict, lat: float, lon: float) -> dict:
             salida["operadores"].append({**base, **contacto})
         elif t.get("place") in ("town", "city"):
             salida["pueblos"].append({**base, "poblacion": t.get("population")})
-        else:
+        elif PUERTA.search(t["name"]):  # las verjas de fincas no interesan: solo las puertas del parque
             salida["puertas"].append(base)
     salida["alojamientos"].sort(key=lambda a: (a["web"] is None, a["km"]))
     salida["operadores"].sort(key=lambda a: (a["web"] is None and a["telefono"] is None, a["km"]))
