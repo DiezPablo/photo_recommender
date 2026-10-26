@@ -18,6 +18,7 @@ import requests
 
 from rasante.comun.cache import CacheJson
 from rasante.comun.red import sesion
+from rasante.safaris.mundo import sin_tiempo
 
 OURAIRPORTS = "https://davidmegginson.github.io/ourairports-data/airports.csv"
 POWER = "https://power.larc.nasa.gov/api/temporal/climatology/point"
@@ -119,6 +120,8 @@ def clima(lat: float, lon: float) -> dict | None:
     }
     clave = "power:" + repr(sorted(params.items()))
     d = CACHE.leer(clave)
+    if d is None and sin_tiempo():
+        return None
     if d is None:
         for intento in range(4):
             try:
@@ -178,7 +181,7 @@ def osm(lat: float, lon: float, radio_km: float, solo_cache: bool = False) -> di
     clave = "osm:" + consulta
     datos = CACHE.leer(clave)
     if datos is None:
-        if solo_cache:
+        if solo_cache or sin_tiempo():
             return None
         time.sleep(2)  # los espejos públicos piden no saturarlos
         for intento in range(2):

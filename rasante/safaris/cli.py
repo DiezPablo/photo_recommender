@@ -130,6 +130,7 @@ def main(argv: list[str] | None = None) -> None:
     ap.add_argument(
         "--osm-max", type=int, default=1500, help="parques nuevos que se piden a Overpass en esta ejecución"
     )
+    ap.add_argument("--minutos", type=float, help="tiempo para peticiones nuevas; después, solo caché (--mundo)")
     ap.add_argument("--limite-candidatos", type=int, help="solo los N primeros candidatos del mundo (pruebas)")
     ap.add_argument("--solo", help="ids de parques separados por comas (pruebas)")
     ap.add_argument("--sin-clima", action="store_true", help="sin climatología (desde el contenedor Open-Meteo limita)")
@@ -138,7 +139,7 @@ def main(argv: list[str] | None = None) -> None:
     if a.mundo:
         from rasante.safaris import mundo_cli
 
-        mundo_cli.main(a.salida, a.indice, a.hilos, a.osm_max, a.limite_candidatos)
+        mundo_cli.main(a.salida, a.indice, a.hilos, a.osm_max, a.limite_candidatos, a.minutos)
         return
     t0 = time.time()
     parques = cargar()

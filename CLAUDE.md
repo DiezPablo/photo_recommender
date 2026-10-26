@@ -27,7 +27,7 @@ modelos, operación y desarrollo, en `docs/`.
   Páginas generadas en el build, salvo `/viaje` (dinámica: depende de zona y fechas), `/spot/[id]` (fuera del top 60
   del día) y `/ruta/[id]`, que se generan al visitarlas (ISR) para no pasar el límite de 1 GB de Vercel; sus JSON van en la función con
   `outputFileTracingIncludes` (`next.config.ts`).
-- Workflows: `datos.yml` (2 veces al día), `safaris.yml` (semanal, horas la primera vez), `descubrir.yml` (mensual, ~1500 spots, 4-5 h), `rutas.yml` (mensual),
+- Workflows: `datos.yml` (2 veces al día), `safaris.yml` (semanal), `safaris_mundo.yml` (diario, incremental), `descubrir.yml` (mensual, ~1500 spots, 4-5 h), `rutas.yml` (mensual),
   `validar.yml`, `pruebas.yml` (ruff + pytest; tsc + ESLint + Prettier + build + Playwright).
   Los datos (`informe.json`, `spots.geojson`, `spots.csv`, `rutas.json`, `eventos.json`) **no van en git**: se suben a la release
   `datos` (`.github/scripts/publicar_release.sh`) y solo se hace commit de `public/datos/version.json`, que

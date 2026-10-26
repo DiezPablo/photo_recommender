@@ -1,6 +1,5 @@
-# Safaris: el catálogo curado (safaris.json) y todos los parques del mundo con fauna (safaris_mundo.json e
-# índice para el buscador). La primera vez tarda horas (miles de parques); la caché guarda el progreso y cada
-# ejecución pide a Overpass una tanda nueva de parques (alojamientos, operadores, puertas). Semanal.
+# Safaris: el catálogo curado (safaris.json, 65 parques escritos a mano). Semanal, ~1 h 15 min.
+# Todos los parques del mundo van aparte, en safaris_mundo.yml.
 name: Safaris
 
 on:
@@ -10,7 +9,10 @@ on:
   push:
     branches: [main]
     paths:
-      - rasante/safaris/**
+      - rasante/safaris/cli.py
+      - rasante/safaris/catalogo.py
+      - rasante/safaris/inat.py
+      - rasante/safaris/entorno.py
       - rasante/recursos/safaris.csv
       - .github/workflows/safaris.yml
 
@@ -24,7 +26,7 @@ concurrency:
 jobs:
   safaris:
     runs-on: ubuntu-latest
-    timeout-minutes: 350
+    timeout-minutes: 150
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -41,31 +43,23 @@ jobs:
       - uses: actions/cache/restore@v6
         with:
           path: cache
-          key: safaris-v1-${{ github.run_id }}
-          restore-keys: safaris-v1-
+          key: safaris-cat-v1-${{ github.run_id }}
+          restore-keys: |
+            safaris-cat-v1-
+            safaris-v1-
 
       # Los 65 parques escritos a mano: especies de iNaturalist, clima ERA5 y alojamientos (~1 h)
       - name: Catálogo
         continue-on-error: true
         run: python -m rasante safaris --salida salida/safaris.json
 
-      # Todos los parques del mundo: Wikidata + GBIF + NASA + OurAirports + una tanda de OSM
-      - name: Mundo
-        continue-on-error: true
-        timeout-minutes: 240
-        run: python -m rasante safaris --mundo --osm-max 1200 --salida salida/safaris_mundo.json --indice salida/safaris_indice.json
-
       - uses: actions/cache/save@v6
         if: always()
         with:
           path: cache
-          key: safaris-v1-${{ github.run_id }}
+          key: safaris-cat-v1-${{ github.run_id }}
 
       - name: Publicar
         run: |
-          ficheros=""
-          for f in salida/safaris.json salida/safaris_mundo.json salida/safaris_indice.json; do
-            [ -s "$f" ] && ficheros="$ficheros $f"
-          done
-          [ -n "$ficheros" ] || { echo "Nada que publicar"; exit 1; }
-          .github/scripts/publicar_release.sh "Safaris ($(date -u +%Y-%m-%d))" $ficheros
+          [ -s salida/safaris.json ] || { echo "Nada que publicar"; exit 1; }
+          .github/scripts/publicar_release.sh "Safaris ($(date -u +%Y-%m-%d))" salida/safaris.json

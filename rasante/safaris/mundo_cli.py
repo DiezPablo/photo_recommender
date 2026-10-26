@@ -6,6 +6,7 @@ Uso:
 
 from __future__ import annotations
 
+import json
 import math
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -38,6 +39,18 @@ def _en_paralelo(funcion, elementos, hilos: int, etiqueta: str):
             if n and n % 500 == 0:
                 print(f"  {etiqueta}: {n}/{len(elementos)} ({time.time() - t0:.0f} s)", flush=True)
     return salida
+
+
+def nombre(clave: int) -> dict | None:
+    """Nombre común en español de GBIF; sin tiempo, solo si ya está en la caché."""
+    if mundo.sin_tiempo():
+        en_cache = [
+            gbif_nombres.CACHE.leer(json.dumps({"ruta": r, "params": p}))
+            for r, p in ((f"species/{clave}", {}), (f"species/{clave}/vernacularNames", {"limit": 500}))
+        ]
+        if any(x is None for x in en_cache):
+            return None
+    return gbif_nombres.nombre_comun(clave)
 
 
 def puntuacion(n_especies: int, obs: int, n_estrella: int = 0) -> float:
@@ -204,7 +217,7 @@ def calcular(hilos: int = 4, osm_max: int = 1500, limite: int | None = None) -> 
     claves = {k for p in parques for k, _ in (p["mamiferos"] + p["aves"])} | set(estrella)
     nombres_lista = sorted(claves)
     print(f"  nombres de {len(nombres_lista)} especies…", flush=True)
-    nombres = _en_paralelo(gbif_nombres.nombre_comun, nombres_lista, hilos, "nombres")
+    nombres = _en_paralelo(nombre, nombres_lista, hilos, "nombres")
     especies = {
         str(k): {"c": n["cientifico"], "n": n["nombre"]} for k, n in zip(nombres_lista, nombres, strict=True) if n
     }
@@ -255,8 +268,12 @@ def indice(datos: dict) -> list[dict]:
     return sorted(salida, key=lambda x: -x["s"])
 
 
-def main(salida: Path, indice_salida: Path, hilos: int, osm_max: int, limite: int | None = None) -> None:
+def main(
+    salida: Path, indice_salida: Path, hilos: int, osm_max: int, limite: int | None = None, minutos: float | None = None
+) -> None:
     t0 = time.time()
+    if minutos:
+        mundo.LIMITE[0] = t0 + minutos * 60
     datos = calcular(hilos, osm_max, limite)
     escribir_json(
         salida,

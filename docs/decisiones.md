@@ -777,3 +777,7 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
   visitarlas (ISR, con `safaris_mundo.json` en la función). Las páginas de especie suman los parques del mundo
   donde GBIF la registra.
 - El catálogo curado y el mundial se calculan en `safaris.yml`; los avistamientos de 30 días siguen en *Datos*.
+- Primera ejecución en Actions: el cribado de GBIF (consultas con facetas, ~5 s cada una) se comió las 4 h
+  del paso (694 fallos por saturación). Se reparte: `--minutos` fija hasta cuándo se hacen peticiones nuevas;
+  después solo se lee la caché y se publica lo que haya. `safaris_mundo.yml` corre a diario con la caché
+  guardada y en pocos días está completo; luego tarda minutos y solo pide a Overpass una tanda nueva.

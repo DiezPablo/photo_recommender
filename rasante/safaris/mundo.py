@@ -28,6 +28,14 @@ WIKIDATA = "https://query.wikidata.org/sparql"
 GBIF = "https://api.gbif.org/v1/occurrence/search"
 CACHE = CacheJson(prefijo="mundo_", max_edad_s=80 * 86400)  # los parques y su fauna cambian despacio
 _SESION = sesion()
+# Hora (time.time()) a partir de la cual ya no se hacen peticiones nuevas, solo se lee la caché: la primera
+# vez son horas de trabajo y se reparte en varias ejecuciones (cada una publica lo que tiene).
+LIMITE: list[float | None] = [None]
+
+
+def sin_tiempo() -> bool:
+    return LIMITE[0] is not None and time.time() > LIMITE[0]
+
 
 CLASES_TODAS = {
     "Q1714375": "reserva de caza",
@@ -163,6 +171,8 @@ def conteo_taxon(lat: float, lon: float, r_km: float, taxon: int) -> int:
     }
     clave = "gbif-n:" + repr(sorted(params.items()))
     n = CACHE.leer(clave)
+    if n is None and sin_tiempo():
+        return 0
     if n is None:
         r = _SESION.get(GBIF, params=params, timeout=60)
         r.raise_for_status()
@@ -171,7 +181,7 @@ def conteo_taxon(lat: float, lon: float, r_km: float, taxon: int) -> int:
     return n
 
 
-def gbif(lat: float, lon: float, r_km: float, clase_gbif: int, n: int = 200) -> dict:
+def gbif(lat: float, lon: float, r_km: float, clase_gbif: int, n: int = 200) -> dict | None:
     """Observaciones, especies (clave, n) y meses de una clase (mamíferos o aves) en la zona."""
     params = {
         **caja(lat, lon, r_km),
@@ -188,8 +198,10 @@ def gbif(lat: float, lon: float, r_km: float, clase_gbif: int, n: int = 200) -> 
     }
     clave = "gbif:" + repr(sorted(params.items()))
     guardado = CACHE.leer(clave)
+    if guardado is None and sin_tiempo():
+        return None
     if guardado is None:
-        for intento in range(6):
+        for intento in range(4):
             try:
                 r = _SESION.get(GBIF, params=params, timeout=60)
             except (requests.ConnectionError, requests.Timeout):
