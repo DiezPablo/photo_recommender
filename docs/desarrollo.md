@@ -25,7 +25,8 @@ dependencias de la web (`npm ci`). Requisitos: Python 3.12+ y Node 20+.
 | `make prevision` | `python -m rasante prevision --mis-spots mis_spots.csv` | Previsión local en `public/datos/informe.json` |
 
 Para construir con datos locales (generados con `python -m rasante …` en `public/datos/`):
-`SIN_DESCARGA=1 npm run build`.
+`SIN_DESCARGA=1 npm run build`. Sin esa variable, el prebuild descarga los publicados a `datos/*.gz` (fuera de
+`public/`), que el servidor lee antes que los locales (`src/lib/datos.ts`).
 
 ## Convenciones
 

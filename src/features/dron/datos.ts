@@ -1,8 +1,7 @@
 // ¿Se puede volar un dron en cada spot? (public/datos/dron.json; solo servidor). Zonas UAS de ENAIRE y espacios
 // protegidos de la Agencia Europea de Medio Ambiente, calculado una vez al mes.
 import "server-only";
-import { existsSync, readFileSync } from "node:fs";
-import path from "node:path";
+import { leerDatos } from "@/lib/datos";
 
 export type NivelDron = "no" | "permiso" | "condiciones" | "libre";
 
@@ -40,8 +39,7 @@ let cache: Dron | null | undefined;
 
 export function cargarDron(): Dron | null {
   if (cache !== undefined) return cache;
-  const f = path.join(process.cwd(), "public", "datos", "dron.json");
-  cache = existsSync(f) ? (JSON.parse(readFileSync(f, "utf8")) as Dron) : null;
+  cache = leerDatos<Dron>("dron.json");
   return cache;
 }
 

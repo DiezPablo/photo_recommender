@@ -799,3 +799,19 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
   avioneta, equipaje y propinas en la guía.
 - Vercel avisaba de exceso de almacenamiento: solo se generan al compilar los 65 destacados (los otros 150
   sumaban ~45 MB) y `/viaje` lleva solo los JSON que usa (con `*.json` arrastraba los de safaris).
+
+## 2026-10-26 · Almacenamiento de despliegues en Vercel (30 GB)
+
+- «Deployment storage» suma todos los despliegues que Vercel guarda (30 días en Hobby). Cada commit de
+  `version.json` es un despliegue (Datos dos veces al día, clima, safaris, rutas…) y cada uno ocupaba ~650 MB:
+  70 MB de JSON estáticos en `public/datos` (el navegador solo pide dos) y cada función ISR con su copia de los
+  JSON sin comprimir (~75 MB × 6).
+- Cambios:
+  - Los datos se descargan comprimidos a `datos/*.gz`, fuera de `public/`; `leerDatos` los descomprime. Solo
+    `fauna.json` y `safaris_indice.json` siguen en `public/datos`, más un `resumen.json` para las pruebas (que
+    también corren contra producción). Cada función pasa de ~75 MB a ~21 MB.
+  - Las 382 fichas de observatorios de fauna y los 150 parques de safari con más fauna se generan al visitarlos
+    (ISR) en lugar de en el build. Páginas generadas: de 217 a 139 MB.
+  - `publicar_release.sh` no hace commit (ni despliegue) si ningún fichero cambió.
+- Despliegue estimado: de ~650 MB a ~270 MB. Además, en Vercel (*Settings → Security → Deployment Retention
+  Policy*) conviene bajar la retención al mínimo; se conservan siempre los 3 últimos despliegues de producción.

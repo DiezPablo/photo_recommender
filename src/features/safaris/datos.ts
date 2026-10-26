@@ -1,15 +1,13 @@
 // Lectura de public/datos/safaris.json y safaris_recientes.json (solo servidor).
 import "server-only";
-import { existsSync, readFileSync } from "node:fs";
-import path from "node:path";
+import { leerDatos } from "@/lib/datos";
 import type { EspecieSafari, Mundo, Parque, ParqueMundo, Recientes, Safaris } from "@/features/safaris/modelo";
 import { slugEspecie } from "@/features/safaris/modelo";
 
 export * from "@/features/safaris/modelo";
 
 function leer<T>(nombre: string): T | null {
-  const f = path.join(process.cwd(), "public", "datos", nombre);
-  return existsSync(f) ? (JSON.parse(readFileSync(f, "utf8")) as T) : null;
+  return leerDatos<T>(nombre);
 }
 
 let cache: Safaris | null | undefined;

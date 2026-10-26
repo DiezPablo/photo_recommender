@@ -2,18 +2,13 @@
 // Vercel reconstruye la web con cada commit de datos, así que las páginas son estáticas.
 // Solo para el servidor: los componentes de cliente importan de "./modelo".
 import "server-only";
-import { existsSync, readFileSync } from "node:fs";
-import path from "node:path";
+import { leerDatos } from "@/lib/datos";
 import type { Informe, Spot, SpotDescubierto } from "@/features/spots/modelo";
 
 export * from "@/features/spots/modelo";
 
-const DIR = path.join(process.cwd(), "public", "datos");
-
 function leer<T>(fichero: string): T | null {
-  const ruta = path.join(DIR, fichero);
-  if (!existsSync(ruta)) return null;
-  return JSON.parse(readFileSync(ruta, "utf8")) as T;
+  return leerDatos<T>(fichero);
 }
 
 let cache: { informe: Informe | null; spots: Spot[] } | null = null;

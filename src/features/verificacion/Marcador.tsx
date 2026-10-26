@@ -1,8 +1,7 @@
 // «Cuánto acierta»: lo previsto el día anterior para ~35 aeropuertos frente a lo que observaron (METAR),
 // últimos 30 días. Solo servidor; sin datos suficientes no se muestra.
 import "server-only";
-import { existsSync, readFileSync } from "node:fs";
-import path from "node:path";
+import { leerDatos } from "@/lib/datos";
 
 interface MarcadorDatos {
   desde: string;
@@ -17,9 +16,7 @@ interface MarcadorDatos {
 const MIN_CASOS = 100;
 
 function cargar(): MarcadorDatos | null {
-  const f = path.join(process.cwd(), "public", "datos", "verificacion.json");
-  if (!existsSync(f)) return null;
-  return (JSON.parse(readFileSync(f, "utf8")) as { marcador?: MarcadorDatos }).marcador ?? null;
+  return leerDatos<{ marcador?: MarcadorDatos }>("verificacion.json")?.marcador ?? null;
 }
 
 export default function Marcador() {

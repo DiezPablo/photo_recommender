@@ -1,7 +1,6 @@
 // Logística de OpenStreetMap cerca de spots y rutas (public/datos/logistica.json; solo servidor).
 import "server-only";
-import { existsSync, readFileSync } from "node:fs";
-import path from "node:path";
+import { leerDatos } from "@/lib/datos";
 
 export type TipoLogistica = "aparcamiento" | "fuente" | "refugio" | "autocaravanas" | "camping";
 
@@ -25,7 +24,6 @@ let cache: Logistica | null | undefined;
 
 export function cargarLogistica(): Logistica | null {
   if (cache !== undefined) return cache;
-  const f = path.join(process.cwd(), "public", "datos", "logistica.json");
-  cache = existsSync(f) ? (JSON.parse(readFileSync(f, "utf8")) as Logistica) : null;
+  cache = leerDatos<Logistica>("logistica.json");
   return cache;
 }

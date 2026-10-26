@@ -6,6 +6,23 @@
 set -euo pipefail
 mensaje="$1"; shift
 for f in "$@"; do [ -f "$f" ] || { echo "No existe $f: nada que publicar"; exit 0; }; done
+# Si ningún fichero ha cambiado no se publica: cada commit de version.json es un despliegue nuevo de Vercel, y
+# Vercel guarda los despliegues 30 días (el almacenamiento de despliegues llegaba a 30 GB)
+git fetch -q origin main
+if python3 - "$@" <<'PY'
+import hashlib, json, subprocess, sys
+try:
+    actual = json.loads(subprocess.run(["git", "show", "origin/main:public/datos/version.json"],
+                                       capture_output=True, text=True, check=True).stdout).get("ficheros", {})
+except Exception:
+    sys.exit(1)
+nuevos = {f.split("/")[-1]: hashlib.sha1(open(f, "rb").read()).hexdigest()[:12] for f in sys.argv[1:]}
+sys.exit(0 if all(actual.get(k) == v for k, v in nuevos.items()) else 1)
+PY
+then
+  echo "Sin cambios en $*: no se publica (ni se despliega)"
+  exit 0
+fi
 gh release view datos >/dev/null 2>&1 || \
   gh release create datos --title "Datos de previsión" --notes "Ficheros que publica GitHub Actions (se sobrescriben en cada actualización)." --prerelease
 gzip -kf9 "$@"

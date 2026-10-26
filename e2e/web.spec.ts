@@ -1,6 +1,6 @@
 import { spawn } from "node:child_process";
 import { get } from "node:http";
-import { expect, type Page, test } from "@playwright/test";
+import { type APIRequestContext, expect, type Page, test } from "@playwright/test";
 
 const CAPTURAS = process.env.CAPTURAS ?? "capturas";
 
@@ -36,14 +36,27 @@ async function esperarTeselas(page: Page) {
     .catch(() => {});
 }
 
-test("los datos publicados responden y son JSON válido sin NaN", async ({ request }) => {
-  for (const f of ["/datos/informe.json", "/datos/spots.geojson", "/datos/eventos.json"]) {
+/** Qué datos hay publicados (resumen que escribe scripts/descargar-datos.mjs: los datos ya no son estáticos). */
+async function resumen(request: APIRequestContext): Promise<{ ficheros: string[]; spot_costa: string | null }> {
+  const r = await request.get("/datos/resumen.json");
+  return r.ok() ? r.json() : { ficheros: [], spot_costa: null };
+}
+async function hay(request: APIRequestContext, fichero: string) {
+  return (await resumen(request)).ficheros.includes(fichero);
+}
+
+test("los datos públicos responden y son JSON válido sin NaN; los demás no se publican", async ({ request }) => {
+  const { ficheros } = await resumen(request);
+  expect(ficheros).toContain("informe.json");
+  for (const f of ["/datos/fauna.json", "/datos/safaris_indice.json"]) {
     const r = await request.get(f);
     expect(r.status(), f).toBe(200);
     const texto = await r.text();
     expect(texto).not.toMatch(/\bNaN\b|Infinity/);
     JSON.parse(texto);
   }
+  // los grandes van comprimidos fuera de public/ (solo los lee el servidor)
+  expect((await request.get("/datos/informe.json")).status()).toBe(404);
   const fav = await request.get("/favicon.ico");
   expect(fav.status()).toBe(200);
 });
@@ -247,8 +260,7 @@ test("rutas: buscar, filtrar, ficha con mapa, perfil y GPX", async ({ page }, in
   // qué se puede ver alrededor a lo largo del año
   await expect(page.locator(".eventos-cerca")).toContainText("Piornos en flor en Guadarrama");
   // aparcamiento, agua y refugios cerca de la salida (si ya se ha publicado la logística)
-  if ((await page.request.get("/datos/logistica.json")).ok())
-    await expect(page.locator(".logistica")).toContainText("Aparcamiento");
+  if (await hay(page.request, "logistica.json")) await expect(page.locator(".logistica")).toContainText("Aparcamiento");
   // los spots por los que pasa la ruta (la de la Laguna de Peñalara pasa por la laguna)
   await expect(page.locator("section", { hasText: "Spots en el camino" }).locator("li").first()).toBeVisible();
   // a qué hora salir para tener arriba el amanecer y el atardecer
@@ -304,7 +316,7 @@ test("calendario: el cielo del mes, eventos de naturaleza y ficha de evento", as
   await expect(page.locator(".tarjeta-evento", { hasText: "Berrea" })).toHaveCount(0);
   await expect(page.locator(".aviso-fauna")).toContainText("Fauna en octubre");
   // sol y luna llena por los picos del horizonte de los spots (si ya se han publicado las alineaciones)
-  if ((await page.request.get("/datos/alineaciones.json")).ok())
+  if (await hay(page.request, "alineaciones.json"))
     await expect(page.locator(".alineaciones-mes li").first()).toBeVisible();
   await expect(page.locator(".mapa-caja[data-listo=si]")).toBeVisible();
   await expect(page.locator(".leaflet-overlay-pane path").first()).toBeVisible();
@@ -435,7 +447,7 @@ test("planificador de viaje: zona y fechas, días con propuesta y calendario", a
 });
 
 test("fauna: buscar por especie, ficha con especies y meses", async ({ page, request }) => {
-  test.skip(!(await request.get("/datos/fauna.json")).ok(), "aún no se han publicado los lugares de fauna");
+  test.skip(!(await hay(request, "fauna.json")), "aún no se han publicado los lugares de fauna");
   const errores = vigilar(page);
   await page.goto("/fauna");
   await expect(page.locator("h1")).toHaveText("Dónde ver fauna");
@@ -454,7 +466,7 @@ test("fauna: buscar por especie, ficha con especies y meses", async ({ page, req
 });
 
 test("especies: dónde y cuándo ver el lince, desde el buscador y desde su evento", async ({ page, request }, info) => {
-  test.skip(!(await request.get("/datos/especies.json")).ok(), "aún no se han publicado las especies");
+  test.skip(!(await hay(request, "especies.json")), "aún no se han publicado las especies");
   const errores = vigilar(page);
   await page.goto("/fauna");
   await page.getByPlaceholder(/Lugar o especie/).fill("lince");
@@ -479,15 +491,12 @@ test("especies: dónde y cuándo ver el lince, desde el buscador y desde su even
 });
 
 test("spot de costa: mareas, oleaje y si se puede volar un dron", async ({ page, request }, info) => {
-  const informe = await (await request.get("/datos/informe.json")).json();
-  const costa = informe.spots.find((s: { dias: { mar?: { mareas: unknown[] } }[] }) =>
-    s.dias.some((d) => d.mar && d.mar.mareas.length > 0),
-  );
+  const { spot_costa: costa, ficheros } = await resumen(request);
   test.skip(!costa, "el informe publicado aún no trae el mar");
   const errores = vigilar(page);
-  await page.goto(`/spot/${costa.id}`);
+  await page.goto(`/spot/${costa}`);
   await expect(page.locator(".mareas").first()).toContainText("Mareas");
-  if ((await request.get("/datos/dron.json")).ok()) {
+  if (ficheros.includes("dron.json")) {
     await page.locator(".sello-dron").first().click();
     await expect(page).toHaveURL(/#dron$/);
     await expect(page.locator("#dron")).toContainText("ENAIRE");
@@ -501,7 +510,7 @@ test("spot de costa: mareas, oleaje y si se puede volar un dron", async ({ page,
 
 test("safaris: buscar por mes y especie, ficha de parque y especie", async ({ page, request }, info) => {
   test.skip(
-    !(await request.get("/datos/safaris.json")).ok() || !(await request.get("/datos/safaris_indice.json")).ok(),
+    !(await hay(request, "safaris.json")) || !(await hay(request, "safaris_indice.json")),
     "aún no se han publicado los safaris",
   );
   const errores = vigilar(page);

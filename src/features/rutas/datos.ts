@@ -1,7 +1,6 @@
 // Lectura de public/datos/rutas.json en el build (solo servidor).
 import "server-only";
-import { existsSync, readFileSync } from "node:fs";
-import path from "node:path";
+import { leerDatos } from "@/lib/datos";
 import { type Cima, cimaDe, type Paso, pasoPor } from "@/features/rutas/cima";
 import { type Ruta, slug } from "@/features/rutas/modelo";
 
@@ -11,8 +10,7 @@ let cache: { generado: string | null; rutas: Ruta[]; porId: Map<string, Ruta> } 
 
 export function cargarRutas() {
   if (cache) return cache;
-  const f = path.join(process.cwd(), "public", "datos", "rutas.json");
-  const datos = existsSync(f) ? (JSON.parse(readFileSync(f, "utf8")) as { generado: string; rutas: Ruta[] }) : null;
+  const datos = leerDatos<{ generado: string; rutas: Ruta[] }>("rutas.json");
   const rutas = datos?.rutas ?? [];
   cache = { generado: datos?.generado ?? null, rutas, porId: new Map(rutas.map((r) => [r.id, r])) };
   return cache;

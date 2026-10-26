@@ -29,6 +29,7 @@ type Props = { params: Promise<{ id: string }> };
 // safaris_mundo.json en la función (next.config.ts). Generar también los 150 con más fauna sumaba ~45 MB al
 // despliegue de Vercel.
 export const dynamicParams = true;
+export const revalidate = false;
 
 export function generateStaticParams() {
   return (cargarSafaris()?.parques ?? []).map((p) => ({ id: p.id }));

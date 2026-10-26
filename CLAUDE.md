@@ -31,7 +31,10 @@ modelos, operación y desarrollo, en `docs/`.
   `validar.yml`, `pruebas.yml` (ruff + pytest; tsc + ESLint + Prettier + build + Playwright).
   Los datos (`informe.json`, `spots.geojson`, `spots.csv`, `rutas.json`, `eventos.json`) **no van en git**: se suben a la release
   `datos` (`.github/scripts/publicar_release.sh`) y solo se hace commit de `public/datos/version.json`, que
-  dispara el redespliegue de Vercel. `npm run build` los descarga antes (prebuild; `SIN_DESCARGA=1` usa los locales).
+  dispara el redespliegue de Vercel (solo si algún fichero cambió). `npm run build` los descarga antes (prebuild) a
+  `datos/*.gz`, fuera de `public/`: el servidor los lee con `src/lib/datos.ts` (`leerDatos`) y solo `fauna.json` y
+  `safaris_indice.json` (los que pide el navegador) van a `public/datos`. `SIN_DESCARGA=1` usa los de `public/datos`
+  (salida local del pipeline). Vercel guarda 30 días de despliegues: cuidado con su tamaño y con cuántos se crean.
 
 ## Probar
 - `make check` (ruff, pytest sin red con respuestas reales en `tests/fixtures`, tsc, ESLint, Prettier).

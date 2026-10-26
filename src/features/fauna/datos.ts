@@ -1,7 +1,6 @@
 // Lectura de public/datos/fauna.json (solo servidor) y cruces con spots y eventos.
 import "server-only";
-import { existsSync, readFileSync } from "node:fs";
-import path from "node:path";
+import { leerDatos } from "@/lib/datos";
 import { distanciaKm } from "@/features/eventos/modelo";
 import type { Especies, FichaEspecie } from "@/features/fauna/especies";
 import type { Fauna, LugarFauna } from "@/features/fauna/modelo";
@@ -13,8 +12,7 @@ let cache: Fauna | null | undefined;
 
 export function cargarFauna(): Fauna | null {
   if (cache !== undefined) return cache;
-  const f = path.join(process.cwd(), "public", "datos", "fauna.json");
-  cache = existsSync(f) ? (JSON.parse(readFileSync(f, "utf8")) as Fauna) : null;
+  cache = leerDatos<Fauna>("fauna.json");
   return cache;
 }
 
@@ -34,8 +32,7 @@ let cacheEspecies: Especies | null | undefined;
 
 export function cargarEspecies(): Especies | null {
   if (cacheEspecies !== undefined) return cacheEspecies;
-  const f = path.join(process.cwd(), "public", "datos", "especies.json");
-  cacheEspecies = existsSync(f) ? (JSON.parse(readFileSync(f, "utf8")) as Especies) : null;
+  cacheEspecies = leerDatos<Especies>("especies.json");
   return cacheEspecies;
 }
 

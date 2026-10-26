@@ -19,10 +19,13 @@ import { fechaLocal } from "@/lib/sol";
 
 type Props = { params: Promise<{ id: string }> };
 
-export const dynamicParams = false;
+// Se generan al visitarlas (ISR), como las rutas: las 382 fichas pesaban ~40 MB en cada despliegue de Vercel,
+// que guarda 30 días de despliegues. Sus datos van en la función (next.config.ts).
+export const dynamicParams = true;
+export const revalidate = false;
 
 export function generateStaticParams() {
-  return (cargarFauna()?.lugares ?? []).map((l) => ({ id: l.id }));
+  return [];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

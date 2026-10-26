@@ -1,7 +1,6 @@
 // Lectura de public/datos/eventos.json en el build (solo servidor) y cruces con spots y rutas.
 import "server-only";
-import { existsSync, readFileSync } from "node:fs";
-import path from "node:path";
+import { leerDatos } from "@/lib/datos";
 import { cargar } from "@/features/spots/datos";
 import { cargarRutas, filaRuta, type FilaRuta } from "@/features/rutas/datos";
 import {
@@ -19,8 +18,7 @@ let cache: Eventos | null | undefined;
 
 export function cargarEventos(): Eventos | null {
   if (cache !== undefined) return cache;
-  const f = path.join(process.cwd(), "public", "datos", "eventos.json");
-  cache = existsSync(f) ? (JSON.parse(readFileSync(f, "utf8")) as Eventos) : null;
+  cache = leerDatos<Eventos>("eventos.json");
   return cache;
 }
 
@@ -76,7 +74,6 @@ let cacheAlineaciones: Alineaciones | null | undefined;
 
 export function cargarAlineaciones(): Alineaciones | null {
   if (cacheAlineaciones !== undefined) return cacheAlineaciones;
-  const f = path.join(process.cwd(), "public", "datos", "alineaciones.json");
-  cacheAlineaciones = existsSync(f) ? (JSON.parse(readFileSync(f, "utf8")) as Alineaciones) : null;
+  cacheAlineaciones = leerDatos<Alineaciones>("alineaciones.json");
   return cacheAlineaciones;
 }
