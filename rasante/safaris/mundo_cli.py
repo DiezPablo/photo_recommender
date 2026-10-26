@@ -6,7 +6,6 @@ Uso:
 
 from __future__ import annotations
 
-import json
 import math
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -39,18 +38,6 @@ def _en_paralelo(funcion, elementos, hilos: int, etiqueta: str):
             if n and n % 500 == 0:
                 print(f"  {etiqueta}: {n}/{len(elementos)} ({time.time() - t0:.0f} s)", flush=True)
     return salida
-
-
-def nombre_en_cache_o_red(clave: int) -> dict | None:
-    """Nombre común en español de GBIF; sin tiempo, solo si ya está en la caché."""
-    if mundo.sin_tiempo():
-        en_cache = [
-            gbif_nombres.CACHE.leer(json.dumps({"ruta": r, "params": p}))
-            for r, p in ((f"species/{clave}", {}), (f"species/{clave}/vernacularNames", {"limit": 500}))
-        ]
-        if any(x is None for x in en_cache):
-            return None
-    return gbif_nombres.nombre_comun(clave)
 
 
 def puntuacion(n_especies: int, obs: int, n_estrella: int = 0) -> float:
@@ -187,6 +174,16 @@ def calcular(hilos: int = 4, osm_max: int = 1500, limite: int | None = None) -> 
     print(f"  {len(parques)} parques tras quitar duplicados; aves, clima y cómo llegar…", flush=True)
 
     aves = _en_paralelo(lambda p: mundo.gbif(p["lat"], p["lon"], p["radio_km"], mundo.AVES, 40), parques, hilos, "aves")
+    # nombres comunes antes que la lluvia y OSM, y sin límite de tiempo (peticiones rápidas): si se quedaban para el
+    # final, al agotarse el tiempo la ficha salía con «Especie 5219461»
+    claves = {k for p in parques for k, _ in p["mamiferos"]}
+    claves |= {k for a in aves if a for k, _ in a["especies"][:10]} | set(estrella)
+    nombres_lista = sorted(claves)
+    print(f"  nombres de {len(nombres_lista)} especies…", flush=True)
+    nombres = _en_paralelo(gbif_nombres.nombre_comun, nombres_lista, hilos, "nombres")
+    especies = {
+        str(k): {"c": n["cientifico"], "n": n["nombre"]} for k, n in zip(nombres_lista, nombres, strict=True) if n
+    }
     climas = _en_paralelo(lambda p: practico.clima(p["lat"], p["lon"]), parques, min(hilos, 3), "clima")
     aeropuertos = practico.Aeropuertos()
     try:
@@ -207,6 +204,7 @@ def calcular(hilos: int = 4, osm_max: int = 1500, limite: int | None = None) -> 
         p["aves"] = (a or {}).get("especies", [])[:10]
         p["lluvia_mm"] = c["lluvia_mm"] if c else None
         p["meses_secos"] = practico.meses_secos(c)
+        p["epoca"] = practico.epoca(p["lat"], p.get("temporada"), p["lluvia_mm"], p["meses"])
         p["llegar"] = aeropuertos.llegar(p["lat"], p["lon"], p["radio_km"])
         p["foto"] = fotos.get(p.pop("img")) if p.get("img") else p.pop("img", None)
         if o is not None:
@@ -214,13 +212,23 @@ def calcular(hilos: int = 4, osm_max: int = 1500, limite: int | None = None) -> 
     con_osm = sum(1 for p in parques if "osm" in p)
     print(f"  OSM: {con_osm}/{len(parques)} parques", flush=True)
 
-    claves = {k for p in parques for k, _ in (p["mamiferos"] + p["aves"])} | set(estrella)
-    nombres_lista = sorted(claves)
-    print(f"  nombres de {len(nombres_lista)} especies…", flush=True)
-    nombres = _en_paralelo(nombre_en_cache_o_red, nombres_lista, hilos, "nombres")
-    especies = {
-        str(k): {"c": n["cientifico"], "n": n["nombre"]} for k, n in zip(nombres_lista, nombres, strict=True) if n
-    }
+    # operadores de la ciudad de acceso (la del aeropuerto regular más cercano), una consulta por aeropuerto
+    ciudades: dict[str, dict] = {}
+    for i in orden:
+        a = (parques[i]["llegar"]["aeropuertos"] or [None])[0]
+        if a and a["iata"] not in ciudades:
+            ciudades[a["iata"]] = a
+    lista_ciudades = list(ciudades.values())
+    ops = _en_paralelo(
+        lambda a: practico.operadores_ciudad(a["lat"], a["lon"], a["ciudad"]), lista_ciudades, 2, "operadores"
+    )
+    por_iata = {a["iata"]: o for a, o in zip(lista_ciudades, ops, strict=True) if o}
+    for p in parques:
+        a = (p["llegar"]["aeropuertos"] or [None])[0]
+        if a and por_iata.get(a["iata"]):
+            p["operadores_ciudad"] = {"ciudad": a["ciudad"] or a["nombre"], "lista": por_iata[a["iata"]]}
+    print(f"  operadores en {len(por_iata)}/{len(lista_ciudades)} ciudades de acceso", flush=True)
+
     # fuera los animales domésticos de las listas
     domesticos = {int(k) for k, e in especies.items() if e["c"] in mundo.DOMESTICOS}
     for p in parques:
@@ -260,6 +268,8 @@ def indice(datos: dict) -> list[dict]:
                 "m": p["n_mamiferos"],
                 "e": [int(k) for k in p["estrella"]],
                 "sec": p["meses_secos"],
+                "ep": p["epoca"]["meses"],
+                "em": p["epoca"]["motivo"],
                 "d": p["destacado"],
                 **({"t": p["temporada"]} if p.get("temporada") else {}),
                 "f": (p.get("foto") or {}).get("url"),

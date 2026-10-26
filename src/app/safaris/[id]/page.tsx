@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import MapaEventos from "@/features/eventos/componentes/MapaEventos";
 import { MESES } from "@/features/eventos/modelo";
 import AnoSafari from "@/features/safaris/componentes/AnoSafari";
+import { CincoGrandes, CombinaCon } from "@/features/safaris/componentes/ComplementosSafari";
 import FichaMundo from "@/features/safaris/componentes/FichaMundo";
 import OrganizaViaje from "@/features/safaris/componentes/OrganizaViaje";
 import VistoAhora from "@/features/safaris/componentes/VistoAhora";
@@ -12,6 +13,7 @@ import {
   cargarRecientes,
   cargarSafaris,
   enlaceResenas,
+  urlWeb,
   especiePorTaxon,
   getParque,
   getParqueMundo,
@@ -23,19 +25,13 @@ import { fechaLocal } from "@/lib/sol";
 
 type Props = { params: Promise<{ id: string }> };
 
-// Los del catálogo y los 150 más importantes del mundo se generan al compilar; el resto (miles), al visitarlos
-// (ISR), para no pasar el límite de tamaño de Vercel. safaris_mundo.json va en la función (next.config.ts).
+// Solo los 65 del catálogo se generan al compilar; los miles del resto, al visitarlos (ISR), con
+// safaris_mundo.json en la función (next.config.ts). Generar también los 150 con más fauna sumaba ~45 MB al
+// despliegue de Vercel.
 export const dynamicParams = true;
-const ESTATICOS_MUNDO = 150;
 
 export function generateStaticParams() {
-  const curados = (cargarSafaris()?.parques ?? []).map((p) => p.id);
-  const mundo = (cargarMundo()?.parques ?? [])
-    .filter((p) => !p.destacado)
-    .sort((a, b) => b.puntuacion - a.puntuacion)
-    .slice(0, ESTATICOS_MUNDO)
-    .map((p) => p.id);
-  return [...curados, ...mundo].map((id) => ({ id }));
+  return (cargarSafaris()?.parques ?? []).map((p) => ({ id: p.id }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -88,7 +84,7 @@ export default async function PaginaParque({ params }: Props) {
       lon: a.lon,
       radio_km: 0.3,
       categoria: "otono",
-      href: a.web ?? `https://www.openstreetmap.org/${a.osm}`,
+      href: urlWeb(a.web) ?? `https://www.openstreetmap.org/${a.osm}`,
     })),
   ];
   return (
@@ -263,6 +259,8 @@ export default async function PaginaParque({ params }: Props) {
         </section>
       </div>
 
+      {enMundo && mundo && <CincoGrandes p={enMundo} mundo={mundo} />}
+
       {enMundo && mundo && (
         <OrganizaViaje
           p={enMundo}
@@ -287,8 +285,8 @@ export default async function PaginaParque({ params }: Props) {
               <li key={a.osm}>
                 <b>{a.nombre}</b> <small>{a.tipo}</small>
                 <span className="enlaces">
-                  {a.web && (
-                    <a href={a.web} target="_blank" rel="noopener">
+                  {urlWeb(a.web) && (
+                    <a href={urlWeb(a.web)!} target="_blank" rel="noopener">
                       Web y reservas ↗
                     </a>
                   )}
@@ -306,6 +304,8 @@ export default async function PaginaParque({ params }: Props) {
           </p>
         </section>
       )}
+
+      {enMundo && mundo && <CombinaCon p={enMundo} mundo={mundo} nombre={p.nombre} />}
 
       <p className="nota-pie">
         Fuentes: {Object.values(datos.fuentes).join(" · ")}. Respeta las distancias, no pidas al guía salirse de las

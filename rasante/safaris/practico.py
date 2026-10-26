@@ -94,6 +94,8 @@ class Aeropuertos:
                         "ciudad": a["ciudad"],
                         "km": round(km(p, (a["lat"], a["lon"]))),
                         "internacional": a["tipo"] == "large_airport",
+                        "lat": round(a["lat"], 4),
+                        "lon": round(a["lon"], 4),
                     }
                 )
         pistas = []
@@ -159,6 +161,101 @@ def meses_secos(c: dict | None) -> list[int]:
 PUERTA = re.compile(r"gate|entrance|puerta|entrada|porte|portão|portaria|tor\b", re.IGNORECASE)
 
 
+def url_web(v: str | None) -> str | None:
+    """En OSM muchas webs van sin esquema («www.lodge.com»): sin él, el enlace de la web no lleva a ningún sitio."""
+    if not v:
+        return None
+    v = v.split(";")[0].strip()
+    if not v or " " in v or "." not in v:
+        return None
+    return v if re.match(r"^https?://", v, re.IGNORECASE) else f"https://{v}"
+
+
+OPERADOR = re.compile(r"safari|tour|travel|expedi|adventure|trek|wildlife|holiday|viaje", re.IGNORECASE)
+
+
+def operadores_ciudad(lat: float, lon: float, nombre_ciudad: str | None = None) -> list[dict] | None:
+    """Agencias y operadores de la ciudad de acceso (la del aeropuerto): Arusha para el Serengeti, Nairobi para
+    el Masái Mara, Kasane para Chobe… Una consulta por ciudad, compartida por todos sus parques."""
+    consulta = (
+        "[out:json][timeout:60];"
+        f'(nwr["office"~"^(travel_agent|guide|tourism)$"]["name"](around:25000,{lat},{lon});'
+        f'nwr["shop"="travel_agency"]["name"](around:25000,{lat},{lon});'
+        f'nwr["tourism"="information"]["information"="office"]["name"](around:25000,{lat},{lon}););'
+        "out center tags 80;"
+    )
+    clave = "osm-ciudad:" + consulta
+    datos = CACHE.leer(clave)
+    if datos is None:
+        if sin_tiempo():
+            return None
+        time.sleep(2)
+        for url in OVERPASS:
+            try:
+                r = _SESION.post(url, data={"data": consulta}, timeout=80)
+                r.raise_for_status()
+                datos = r.json()
+                break
+            except (requests.RequestException, ValueError):
+                continue
+        if datos is None:
+            return None
+        CACHE.guardar(clave, datos)
+    salida = []
+    for e in datos.get("elements", []):
+        t = e.get("tags", {})
+        la = e.get("lat") or e.get("center", {}).get("lat")
+        lo = e.get("lon") or e.get("center", {}).get("lon")
+        if la is None or not t.get("name"):
+            continue
+        web = url_web(t.get("website") or t.get("contact:website") or t.get("url"))
+        telefono = (t.get("phone") or t.get("contact:phone") or "").split(";")[0] or None
+        email = t.get("email") or t.get("contact:email")
+        if not (web or telefono or email):  # sin forma de contactar no sirve de nada
+            continue
+        salida.append(
+            {
+                "nombre": t["name"],
+                "lat": round(la, 5),
+                "lon": round(lo, 5),
+                "km": round(km((lat, lon), (la, lo))),
+                "web": web,
+                "telefono": telefono,
+                "email": email,
+                "osm": f"{e['type']}/{e['id']}",
+                "safari": bool(OPERADOR.search(t["name"])),
+            }
+        )
+    # primero los que se dedican a viajes y safaris por el nombre y los que tienen web
+    salida.sort(key=lambda o: (not o["safari"], o["web"] is None, o["km"]))
+    return salida[:12]
+
+
+def epoca(lat: float, temporada: list[int] | None, lluvia: list[int] | None, avistamientos: list[int]) -> dict:
+    """Mejor época de cada parque (meses 1-12) y de dónde sale, para que ninguno se quede sin ella:
+    1. la temporada escrita a mano (destacados);
+    2. en los trópicos, la estación seca (< 50 mm al mes);
+    3. en los trópicos sin estación seca (selva), los cuatro meses menos lluviosos;
+    4. fuera de los trópicos, los meses con más mamíferos observados (≥ 60 % del mejor), que es cuando hay
+       actividad, crías y buen tiempo para salir; si no hay datos, los meses menos lluviosos."""
+    if temporada:
+        return {"meses": sorted(temporada), "motivo": "recomendada"}
+    tropical = abs(lat) <= 23.5
+    if tropical and lluvia:
+        secos = meses_secos({"lluvia_mm": lluvia})
+        if 0 < len(secos) < 12:
+            return {"meses": secos, "motivo": "estación seca"}
+        orden = sorted(range(12), key=lambda i: lluvia[i])[:4]
+        return {"meses": sorted(i + 1 for i in orden), "motivo": "menos lluvia"}
+    if sum(avistamientos) >= 100:
+        tope = max(avistamientos)
+        return {"meses": [i + 1 for i, v in enumerate(avistamientos) if v >= 0.6 * tope], "motivo": "más avistamientos"}
+    if lluvia:
+        orden = sorted(range(12), key=lambda i: lluvia[i])[:5]
+        return {"meses": sorted(i + 1 for i in orden), "motivo": "menos lluvia"}
+    return {"meses": [], "motivo": None}
+
+
 def _nombre_util(nombre: str) -> bool:
     """Fuera los códigos de acampada de travesía («12», «4R1 - Ribbon Lake West»)."""
     codigo = re.match(r"^([A-Z0-9]{1,4})(\s+-\s+.*)?$", nombre.strip())
@@ -219,7 +316,7 @@ def clasificar(datos: dict, lat: float, lon: float) -> dict:
             "km": round(km((lat, lon), (la, lo))),
         }
         contacto = {
-            "web": t.get("website") or t.get("contact:website") or t.get("url"),
+            "web": url_web(t.get("website") or t.get("contact:website") or t.get("url")),
             "telefono": (t.get("phone") or t.get("contact:phone") or "").split(";")[0] or None,
             "email": t.get("email") or t.get("contact:email"),
             "osm": f"{e['type']}/{e['id']}",

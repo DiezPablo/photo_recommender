@@ -13,6 +13,7 @@ import requests
 
 from rasante.comun.cache import CacheJson
 from rasante.comun.red import sesion
+from rasante.safaris.practico import url_web
 from rasante.spots.commons import consultar, texto_plano
 
 CACHE = CacheJson(prefijo="safaris_", max_edad_s=25 * 86400)
@@ -191,7 +192,7 @@ def alojamientos(lat: float, lon: float, radio_km: float, maximo: int = 30) -> l
                 "tipo": ALOJAMIENTO.get(t.get("tourism"), "alojamiento"),
                 "lat": round(la, 5),
                 "lon": round(lo, 5),
-                "web": t.get("website") or t.get("contact:website") or t.get("url"),
+                "web": url_web(t.get("website") or t.get("contact:website") or t.get("url")),
                 "telefono": t.get("phone") or t.get("contact:phone"),
                 "estrellas": t.get("stars"),
                 "osm": f"{e['type']}/{e['id']}",

@@ -51,7 +51,7 @@ def test_osm_se_clasifica():
                 "id": 3,
                 "lat": -24.3,
                 "lon": 31.2,
-                "tags": {"office": "travel_agent", "name": "Safaris SA", "website": "https://x"},
+                "tags": {"office": "travel_agent", "name": "Safaris SA", "website": "www.safaris-sa.co.za"},
             },
             {"type": "node", "id": 4, "lat": -24.4, "lon": 31.7, "tags": {"barrier": "gate", "name": "Orpen Gate"}},
             {"type": "node", "id": 5, "lat": -24.6, "lon": 31.0, "tags": {"place": "town", "name": "Hoedspruit"}},
@@ -59,12 +59,20 @@ def test_osm_se_clasifica():
     }
     o = practico.clasificar(datos, -24.0, 31.5)
     assert [a["nombre"] for a in o["alojamientos"]] == ["Satara"]  # fuera el código de acampada
-    assert o["operadores"][0]["web"] == "https://x"
+    assert o["operadores"][0]["web"] == "https://www.safaris-sa.co.za"  # con esquema, para que el enlace funcione
     assert o["puertas"][0]["nombre"] == "Orpen Gate" and o["pueblos"][0]["nombre"] == "Hoedspruit"
 
 
 def test_duplicados_e_indice():
-    base = {"lat": -24.0, "lon": 31.5, "estrella": {}, "meses_secos": [], "destacado": False, "foto": None}
+    base = {
+        "lat": -24.0,
+        "lon": 31.5,
+        "estrella": {},
+        "meses_secos": [],
+        "epoca": {"meses": [6], "motivo": "estación seca"},
+        "destacado": False,
+        "foto": None,
+    }
     ps = [
         {**base, "id": "a", "nombre": "Kruger", "puntuacion": 10, "pais": "Q258", "radio_km": 79, "n_mamiferos": 90},
         {**base, "id": "b", "nombre": "Kruger", "puntuacion": 5, "pais": "Q258", "radio_km": 20, "n_mamiferos": 50},
@@ -85,3 +93,14 @@ def test_duplicados_e_indice():
     assert filas[0]["p"] == "Sudáfrica" and filas[0]["c"] == "África"
     assert puntuacion(90, 1000) > puntuacion(50, 1000)
     assert puntuacion(40, 1000, n_estrella=8) > puntuacion(200, 50000, n_estrella=1)  # el safari, no los murciélagos
+
+
+def test_todos_los_parques_tienen_epoca():
+    lluvia_kruger = [108, 80, 69, 39, 8, 5, 6, 6, 13, 36, 71, 103]
+    selva = [300, 280, 310, 290, 250, 200, 180, 190, 220, 260, 280, 300]
+    assert practico.epoca(-24.0, [5, 6], lluvia_kruger, [0] * 12) == {"meses": [5, 6], "motivo": "recomendada"}
+    assert practico.epoca(-20.0, None, lluvia_kruger, [0] * 12)["motivo"] == "estación seca"
+    e = practico.epoca(0.5, None, selva, [0] * 12)
+    assert e == {"meses": [6, 7, 8, 9], "motivo": "menos lluvia"}
+    templado = practico.epoca(44.6, None, [50] * 12, [10, 10, 20, 40, 80, 100, 100, 90, 60, 30, 10, 10])
+    assert templado["motivo"] == "más avistamientos" and templado["meses"] == [5, 6, 7, 8, 9]

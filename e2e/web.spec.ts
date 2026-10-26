@@ -539,6 +539,13 @@ test("safaris del mundo: ficha de un parque fuera del catálogo con cómo llegar
   await expect(page.locator("h1")).toHaveText(otro.n);
   await expect(page.locator("#organiza")).toContainText("Cómo llegar");
   await expect(page.locator("#organiza")).toContainText(/km en línea recta/);
+  await expect(page.locator("#empresas")).toContainText("Antes de pagar");
+  // los enlaces de reseñas abren la búsqueda de Google Maps centrada en el sitio
+  for (const a of await page.locator("#organiza a", { hasText: "Reseñas" }).all())
+    expect(await a.getAttribute("href")).toMatch(/^https:\/\/www\.google\.com\/maps\/search\/.+\/@-?\d/);
+  // y ninguna web de la lista es un enlace relativo
+  for (const a of await page.locator("#organiza a", { hasText: "Web" }).all())
+    expect(await a.getAttribute("href")).toMatch(/^https?:\/\//);
   await expect(page.locator(".ano-safari")).toBeVisible();
   await page.screenshot({ path: `${CAPTURAS}/safari-mundo-${info.project.name}.png`, fullPage: true });
   // y el buscador encuentra parques fuera del catálogo

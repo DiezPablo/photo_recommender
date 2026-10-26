@@ -123,9 +123,20 @@ export function puntuacionAhora(p: Parque, mes: number, recientes?: Recientes | 
   return (enTemporada(p, mes) ? 1000 : 0) + Math.min(999, vistas);
 }
 
-/** Enlace de Google Maps para leer reseñas de un alojamiento (no hay reseñas abiertas y gratuitas). */
+/**
+ * Enlace de Google Maps para leer reseñas (no hay reseñas abiertas y gratuitas): la búsqueda del nombre centrada
+ * en el sitio. Con «nombre lat,lon» en la consulta Google no encontraba nada.
+ */
 export function enlaceResenas(a: Pick<Alojamiento, "nombre" | "lat" | "lon">): string {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${a.nombre} ${a.lat},${a.lon}`)}`;
+  return `https://www.google.com/maps/search/${encodeURIComponent(a.nombre)}/@${a.lat},${a.lon},13z`;
+}
+
+/** Web de OSM con esquema: «www.lodge.com» sin «https://» era un enlace relativo que no llevaba a ningún sitio. */
+export function urlWeb(v: string | null | undefined): string | null {
+  if (!v) return null;
+  const u = v.split(";")[0].trim();
+  if (!u || u.includes(" ") || !u.includes(".")) return null;
+  return /^https?:\/\//i.test(u) ? u : `https://${u}`;
 }
 
 // ---- Todos los parques del mundo (Wikidata + GBIF + OurAirports + NASA + OSM)
@@ -144,7 +155,15 @@ export interface LugarOsm {
 }
 
 export interface Llegar {
-  aeropuertos: { nombre: string; iata: string; ciudad: string | null; km: number; internacional: boolean }[];
+  aeropuertos: {
+    nombre: string;
+    iata: string;
+    ciudad: string | null;
+    km: number;
+    internacional: boolean;
+    lat?: number;
+    lon?: number;
+  }[];
   pistas: { nombre: string; km: number }[];
   n_pistas: number;
 }
@@ -176,12 +195,15 @@ export interface ParqueMundo {
   meses: number[];
   lluvia_mm: number[] | null;
   meses_secos: number[];
+  epoca?: { meses: number[]; motivo: MotivoEpoca | null };
   puntuacion: number;
   /** país y continente del catálogo curado, si Wikidata no los da */
   pais_nombre?: string;
   continente?: string;
   llegar: Llegar;
   osm?: { alojamientos: LugarOsm[]; operadores: LugarOsm[]; puertas: LugarOsm[]; pueblos: LugarOsm[] };
+  /** agencias y operadores de la ciudad del aeropuerto de acceso (OSM) */
+  operadores_ciudad?: { ciudad: string; lista: (LugarOsm & { safari: boolean })[] };
 }
 
 export interface Pais {
@@ -219,7 +241,19 @@ export interface FilaIndice {
   f: string | null;
   /** temporada recomendada (solo los destacados), meses 1-12 */
   t?: number[];
+  /** mejor época de todos los parques (meses 1-12) y de dónde sale */
+  ep?: number[];
+  em?: MotivoEpoca | null;
 }
+
+export type MotivoEpoca = "recomendada" | "estación seca" | "menos lluvia" | "más avistamientos";
+
+export const TEXTO_MOTIVO: Record<MotivoEpoca, string> = {
+  recomendada: "Temporada recomendada",
+  "estación seca": "Estación seca, la mejor para ver fauna en los trópicos",
+  "menos lluvia": "Los meses menos lluviosos (no hay estación seca)",
+  "más avistamientos": "Los meses con más mamíferos observados",
+};
 
 export const CLASE: Record<string, string> = {
   "parque nacional": "Parque nacional",
@@ -233,8 +267,9 @@ export const CLASE: Record<string, string> = {
   "reserva natural": "Reserva natural",
 };
 
-/** Buena época: la temporada escrita a mano si la hay; en los trópicos, los meses secos; si no, sin dato. */
-export function buenaEpoca(f: Pick<FilaIndice, "t" | "sec" | "la">): number[] | null {
+/** Buena época: la calculada para cada parque; en datos antiguos, la temporada escrita a mano o los meses secos. */
+export function buenaEpoca(f: Pick<FilaIndice, "t" | "sec" | "la" | "ep">): number[] | null {
+  if (f.ep?.length) return f.ep;
   if (f.t?.length) return f.t;
   if (Math.abs(f.la) <= 23.5 && f.sec.length > 0 && f.sec.length < 12) return f.sec;
   return null;
@@ -242,5 +277,5 @@ export function buenaEpoca(f: Pick<FilaIndice, "t" | "sec" | "la">): number[] | 
 
 export function nombreEspecieMundo(m: Pick<Mundo, "especies">, clave: number | string): string {
   const e = m.especies[String(clave)];
-  return e?.n ?? e?.c ?? `Especie ${clave}`;
+  return e?.n ?? e?.c ?? "Especie sin nombre común";
 }

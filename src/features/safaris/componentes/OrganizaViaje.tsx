@@ -1,14 +1,17 @@
 // «Organiza tu viaje»: datos reales de cada parque para planificarlo. Cómo llegar (aeropuertos y pistas de
 // OurAirports), puertas de entrada, pueblos, operadores y alojamientos (OpenStreetMap), y enlaces oficiales.
-import { enlaceResenas, type LugarOsm, type Pais, type ParqueMundo } from "@/features/safaris/modelo";
+import Link from "next/link";
+import { asociacionDe } from "@/features/safaris/asociaciones";
+import { enlaceResenas, type LugarOsm, type Pais, type ParqueMundo, urlWeb } from "@/features/safaris/modelo";
 
 const EXTERIORES = "https://www.exteriores.gob.es/";
 
 function Contacto({ l }: { l: LugarOsm }) {
+  const web = urlWeb(l.web);
   return (
     <span className="enlaces">
-      {l.web && (
-        <a href={l.web} target="_blank" rel="noopener">
+      {web && (
+        <a href={web} target="_blank" rel="noopener">
           Web ↗
         </a>
       )}
@@ -142,21 +145,9 @@ export default function OrganizaViaje({
               </li>
             )}
           </ul>
-          {o && o.operadores.length > 0 && (
-            <>
-              <h3>Operadores y agencias de la zona</h3>
-              <ul className="lista-organiza">
-                {o.operadores.map((x) => (
-                  <li key={x.osm}>
-                    <b>{x.nombre}</b> <small>a {x.km} km</small>
-                    <Contacto l={x} />
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
         </div>
       </div>
+      <EmpresasParaOrganizarlo p={p} pais={pais} />
       {conAlojamientos && o && o.alojamientos.length > 0 && (
         <>
           <h3>Dónde dormir</h3>
@@ -179,5 +170,83 @@ export default function OrganizaViaje({
         pueden estar incompletos. Sin comisiones ni anuncios: reserva directamente y lee reseñas recientes.
       </p>
     </section>
+  );
+}
+
+/** Empresas para organizar el safari: operadores de la ciudad de acceso y de la zona (OSM), la asociación
+ * oficial del país y lo que hay que comprobar antes de pagar. */
+function EmpresasParaOrganizarlo({ p, pais }: { p: ParqueMundo; pais?: Pais }) {
+  const asociacion = asociacionDe(pais?.nombre);
+  const ciudad = p.operadores_ciudad;
+  const zona = (p.osm?.operadores ?? []).filter((x) => !ciudad?.lista.some((c) => c.nombre === x.nombre));
+  return (
+    <div className="empresas-safari" id="empresas">
+      <h3>Empresas para organizarlo</h3>
+      <div className="organiza-grid">
+        <div>
+          {ciudad && ciudad.lista.length > 0 && (
+            <>
+              <p>
+                <b>Operadores y agencias en {ciudad.ciudad}</b>, la ciudad del aeropuerto de acceso:
+              </p>
+              <ul className="lista-organiza">
+                {ciudad.lista.map((x) => (
+                  <li key={x.osm}>
+                    <b>{x.nombre}</b>
+                    <Contacto l={x} />
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          {zona.length > 0 && (
+            <>
+              <p>
+                <b>En la zona del parque:</b>
+              </p>
+              <ul className="lista-organiza">
+                {zona.map((x) => (
+                  <li key={x.osm}>
+                    <b>{x.nombre}</b> <small>a {x.km} km</small>
+                    <Contacto l={x} />
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          {!ciudad?.lista.length && !zona.length && (
+            <p>
+              Aún no tenemos operadores de esta zona. Los lodges de la lista suelen organizar los safaris de sus
+              huéspedes (vehículo, guía y traslados desde la pista de aterrizaje).
+            </p>
+          )}
+        </div>
+        <div>
+          {asociacion && (
+            <p>
+              <b>Operadores con licencia:</b> busca en el directorio de{" "}
+              <a href={asociacion.url} target="_blank" rel="noopener">
+                {asociacion.sigla} ({asociacion.nombre}) ↗
+              </a>
+              . Sus miembros tienen licencia del país y un código de conducta.
+            </p>
+          )}
+          <p>
+            <b>Antes de pagar, pide por escrito:</b>
+          </p>
+          <ul className="lista-checks">
+            <li>Licencia de turismo del país (y, mejor, socio de la asociación local).</li>
+            <li>Qué incluye: tasas del parque, alojamiento, comidas, agua, traslados y vuelos internos.</li>
+            <li>Vehículo: cuántas personas, si todas van con ventana y si es exclusivo.</li>
+            <li>Horas de safari al día y si se puede salir al amanecer.</li>
+            <li>Política de cancelación y forma de pago con factura (nunca todo por adelantado sin contrato).</li>
+          </ul>
+          <p className="nota-pie">
+            Lee reseñas recientes en varias webs y desconfía de precios muy por debajo del resto. Más en{" "}
+            <Link href="/safaris/guia#operador">cómo elegir un operador</Link>.
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }

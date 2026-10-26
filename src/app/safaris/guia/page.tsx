@@ -44,6 +44,10 @@ export default function PaginaGuiaSafari() {
             animales más dispersos y algunas pistas cortadas.
           </li>
           <li>
+            <b>No intentes ver demasiados parques</b>: en el mapa parecen cerca, pero por pista se tarda mucho más. En
+            cada ficha, «Combínalo con» da distancias y tiempos aproximados; mejor 3-4 noches por parque.
+          </li>
+          <li>
             En la <b>India</b> muchos parques de tigres cierran con el monzón (julio-septiembre); en marzo-mayo, con el
             calor, los tigres se ven más junto al agua.
           </li>
@@ -99,6 +103,26 @@ export default function PaginaGuiaSafari() {
             <b>Visados, vacunas, seguro y propinas</b> (habituales para guías y personal en África).
           </li>
         </ul>
+        <h3>Cifras orientativas</h3>
+        <ul>
+          <li>
+            Safari de gama media en África oriental o austral, todo incluido: unos 350-750 USD por persona y día; el
+            lujo pasa de 1000 USD por noche.
+          </li>
+          <li>
+            Vuelo en avioneta entre parques (unos 45 min): 400-800 USD ida y vuelta. Equipaje de 15-20 kg en bolsa
+            blanda, sin ruedas.
+          </li>
+          <li>
+            Propinas (se dan en efectivo al final de cada estancia): unos 10-20 USD por persona y día al guía y otro
+            tanto al personal del campamento, en el bote común.
+          </li>
+          <li>Vacunas y profilaxis de la malaria: 50-200 € por persona según el país.</li>
+        </ul>
+        <p className="nota-pie">
+          Fuentes: guías de viaje y operadores (Winetraveler, Discover Africa, Aardvark Safaris, Yellow Zebra Safaris).
+          Cambian con la temporada y el país: úsalas para comparar presupuestos, no como precio.
+        </p>
         <p>
           Para ahorrar: viajar en temporada intermedia, combinar parques cercanos para reducir traslados, ir en coche
           propio donde se pueda y reservar el alojamiento directamente.

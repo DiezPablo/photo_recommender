@@ -162,7 +162,7 @@ export default function ExploradorSafaris({
                       ? `Buena época en ${MESES[mes]}`
                       : buenaEpoca(f)
                         ? "Mejor en otra época"
-                        : "Sin temporada marcada"}
+                        : "Sin datos de temporada"}
                   </p>
                 </div>
               </li>

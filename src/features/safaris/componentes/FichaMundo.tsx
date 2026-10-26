@@ -3,9 +3,18 @@
 import Link from "next/link";
 import MapaEventos from "@/features/eventos/componentes/MapaEventos";
 import { INICIALES, MESES } from "@/features/eventos/modelo";
+import { CincoGrandes, CombinaCon } from "@/features/safaris/componentes/ComplementosSafari";
 import OrganizaViaje from "@/features/safaris/componentes/OrganizaViaje";
 import VistoAhora from "@/features/safaris/componentes/VistoAhora";
-import { buenaEpoca, CLASE, type Mundo, nombreEspecieMundo, type ParqueMundo } from "@/features/safaris/modelo";
+import {
+  buenaEpoca,
+  CLASE,
+  type Mundo,
+  nombreEspecieMundo,
+  type ParqueMundo,
+  TEXTO_MOTIVO,
+  urlWeb,
+} from "@/features/safaris/modelo";
 
 function Barras({ valores, clase, titulo }: { valores: number[]; clase?: string; titulo: (v: number) => string }) {
   const max = Math.max(1, ...valores);
@@ -33,7 +42,8 @@ export default function FichaMundo({
   conFicha: Record<string, string>;
 }) {
   const pais = p.pais ? mundo.paises[p.pais] : undefined;
-  const epoca = buenaEpoca({ la: p.lat, sec: p.meses_secos });
+  const epoca = buenaEpoca({ la: p.lat, sec: p.meses_secos, ep: p.epoca?.meses });
+  const motivo = p.epoca?.motivo ?? (epoca ? "estación seca" : null);
   const estrella = Object.entries(p.estrella)
     .filter(([, n]) => n >= 3)
     .sort((a, b) => b[1] - a[1]);
@@ -46,7 +56,7 @@ export default function FichaMundo({
       lon: a.lon,
       radio_km: 0.3,
       categoria: "otono",
-      href: a.web ?? (a.osm ? `https://www.openstreetmap.org/${a.osm}` : null),
+      href: urlWeb(a.web) ?? (a.osm ? `https://www.openstreetmap.org/${a.osm}` : null),
     })),
   ];
   return (
@@ -90,7 +100,8 @@ export default function FichaMundo({
             {epoca && (
               <>
                 {" "}
-                Estación seca (la mejor para ver fauna en los trópicos): {epoca.map((m) => MESES[m - 1]).join(", ")}
+                Mejor época: {epoca.map((m) => MESES[m - 1]).join(", ")}
+                {motivo && <small> ({TEXTO_MOTIVO[motivo].toLowerCase()})</small>}
                 {epoca.includes(mesHoy + 1) && <b> · ahora es buena época</b>}.
               </>
             )}
@@ -142,7 +153,7 @@ export default function FichaMundo({
             </div>
             {epoca && (
               <div role="row" className="fila-ano">
-                <span role="rowheader">Estación seca</span>
+                <span role="rowheader">Mejor época</span>
                 {MESES.map((m, i) => (
                   <span role="cell" key={m} className={epoca.includes(i + 1) ? "temporada-si" : "temporada-no"} />
                 ))}
@@ -196,7 +207,11 @@ export default function FichaMundo({
         <p className="nota-pie">Especies con más observaciones en GBIF desde 2010 en unos {p.radio_km} km alrededor.</p>
       </section>
 
+      <CincoGrandes p={p} mundo={mundo} />
+
       <OrganizaViaje p={p} pais={pais} nombre={p.nombre} />
+
+      <CombinaCon p={p} mundo={mundo} nombre={p.nombre} />
 
       <section className="seccion">
         <h2 className="rotulo">Mapa</h2>

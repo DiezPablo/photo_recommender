@@ -781,3 +781,21 @@ Diario de decisiones y problemas desde el encargo original ([`encargo.md`](encar
   del paso (694 fallos por saturación). Se reparte: `--minutos` fija hasta cuándo se hacen peticiones nuevas;
   después solo se lee la caché y se publica lo que haya. `safaris_mundo.yml` corre a diario con la caché
   guardada y en pocos días está completo; luego tarda minutos y solo pide a Overpass una tanda nueva.
+
+## 2026-10-26 · Safaris: empresas, épocas para todos, nombres y tamaño en Vercel
+
+- Empresas para organizarlo: los directorios de las asociaciones (KATO, TATO, SATSA…) están tras inicios de
+  sesión o páginas dinámicas, sin datos abiertos. Se combina: operadores y agencias de OSM en la **ciudad del
+  aeropuerto de acceso** (Arusha, Nairobi, Kasane…; una consulta por ciudad, compartida) y de la zona del parque,
+  solo con alguna forma de contacto; enlace a la asociación oficial del país; y qué pedir por escrito antes de pagar.
+- Enlaces rotos: las webs de OSM sin «https://» eran enlaces relativos (se normalizan en el pipeline y en la web);
+  la búsqueda de Google Maps con «nombre lat,lon» no encontraba nada (ahora, el nombre centrado en el sitio).
+- Época para todos los parques (`practico.epoca`): temporada escrita a mano; en los trópicos, estación seca o,
+  en la selva, los 4 meses menos lluviosos; fuera de los trópicos, los meses con más mamíferos observados.
+- «Especie 5219461»: los nombres comunes se pedían al final y se quedaban sin tiempo; ahora van justo después
+  del cribado y sin límite de tiempo (son peticiones rápidas).
+- Del análisis (foros y guías): «Los cinco grandes» por parque, «Combínalo con» (parques cercanos con la época
+  en común y horas aproximadas por pista: las distancias engañan) y cifras orientativas de presupuesto,
+  avioneta, equipaje y propinas en la guía.
+- Vercel avisaba de exceso de almacenamiento: solo se generan al compilar los 65 destacados (los otros 150
+  sumaban ~45 MB) y `/viaje` lleva solo los JSON que usa (con `*.json` arrastraba los de safaris).

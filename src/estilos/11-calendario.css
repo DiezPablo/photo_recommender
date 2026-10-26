@@ -1211,3 +1211,41 @@
   gap: 4px 12px;
   font-size: 0.9rem;
 }
+.empresas-safari {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid var(--borde);
+}
+.lista-checks {
+  margin: 0;
+  padding-left: 1.2em;
+  display: grid;
+  gap: 4px;
+}
+.cinco-grandes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr));
+}
+.cinco-grandes li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 8px;
+  padding: 8px 10px;
+  border-radius: var(--radio-s);
+  background: var(--superficie-2);
+}
+.cinco-grandes li.si span {
+  color: var(--c-fauna);
+  font-weight: 700;
+}
+.cinco-grandes li.no {
+  opacity: 0.6;
+}
+.cinco-grandes small {
+  grid-column: 2;
+  color: var(--texto-3);
+}
