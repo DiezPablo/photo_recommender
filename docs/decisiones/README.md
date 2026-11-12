@@ -29,3 +29,6 @@ Consecuencias: qué implica y qué queda descartado.
 - [0012](0012-paisaje-y-fauna-separados.md) — Dos ámbitos: paisaje y cielo / fauna
 - [0013](0013-no-planificador-de-toma.md) — No competir con PhotoPills; safaris fuera de España fuera
 - [0014](0014-web-sin-js-y-offline.md) — Funciona sin JavaScript y sin cobertura
+- [0015](0015-una-web-dos-catalogos.md) — Una web, dos catálogos que no se fusionan
+- [0016](0016-lo-existente-es-un-mock.md) — La web anterior a 11-2026 es un mock
+- [0017](0017-ebird-y-monetizacion.md) — Se usa la API de eBird; monetización aparcada
