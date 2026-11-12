@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-11-11T20:42:02+00:00",
+ "actualizado": "2026-11-12T03:15:31+00:00",
  "ficheros": {
   "informe.json": "ba2160fd97ca",
   "spots.geojson": "4807e96946b9",
@@ -14,8 +14,8 @@
   "dron.json": "ac4256bf5991",
   "safaris_recientes.json": "f0137ba4600b",
   "safaris.json": "0d814e49ff65",
-  "safaris_mundo.json": "ac692b75afa2",
-  "safaris_indice.json": "cea2577d24fa",
+  "safaris_mundo.json": "ba581c3ec89e",
+  "safaris_indice.json": "3b5fa90225cd",
   "clima.json": "7a90a382ad7e"
  }
 }
