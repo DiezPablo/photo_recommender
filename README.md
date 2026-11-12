@@ -65,7 +65,7 @@ python -m rasante avisos --prueba                          # resumen de Telegram
 - [Operación](docs/operacion.md): workflows, calendario, lanzamientos manuales, secretos y qué hacer si algo falla.
 - [Desarrollo](docs/desarrollo.md): entorno, órdenes, convenciones y pruebas.
 - [Hoja de ruta](docs/hoja-de-ruta.md): hacia un planificador de viajes de fotografía y senderismo.
-- [Registro de decisiones](docs/decisiones.md) y [encargo original](docs/encargo.md).
+- [Decisiones](docs/decisiones/), [visión](docs/producto/vision.md), [backlog](docs/producto/backlog.md) y [encargo original](docs/encargo.md).
 
 ## Fuentes y licencias
 
