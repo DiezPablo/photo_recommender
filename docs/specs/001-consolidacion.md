@@ -50,7 +50,7 @@ puntualmente, `@/features/safaris/{modelo, componentes/FrecuenciaAvistamientos}`
 ## 2. Qué se trae y cómo encaja (sin duplicar)
 
 Principio: **un solo pipeline de fauna (`rasante/fauna`) y un solo área web (`src/features/fauna`)**, con
-URLs bajo `/fauna`. El lugar de fauna usa el esquema único de lugar de la spec 003.
+URLs bajo `/fauna`. El lugar de fauna usa el núcleo común de la spec 003; no se fusiona con los spots (0015).
 
 **Pipeline → `rasante/fauna/`**
 - Se trae: `rejilla`, `zonas`, `gbif_descarga`, `estacionalidad`, `evaluacion` (+ `frecuencia`) como
@@ -82,7 +82,7 @@ URLs bajo `/fauna`. El lugar de fauna usa el esquema único de lugar de la spec 
 - Se reutiliza de Rasante, no se trae: `lib/sol.ts`, `lib/almacen.ts`, `lib/ubicacion.ts`, `ui/mapa/useMapaBase`,
   `sw.js` (añadiendo rutas de fauna a la lista de guardables). `FranjaDia` y `LuzYMar` se comparan con la
   línea temporal de la ficha de spot y se queda una.
-- Se descarta (por ahora): `MisEspecies` y `Diario` (estado de usuario, no "dónde ir"; ver §6), dependencias a
+- Se descarta: `MisEspecies` y `Diario` (decisión 0016), dependencias a
   `features/safaris`.
 - URLs: `/espana/*` no existe en Rasante, así que no hay que redirigir dentro; las rutas nuevas son
   `/fauna`, `/fauna/lugar/[id]`, `/fauna/especies/[id]`, `/fauna/hides`, `/fauna/rarezas`, `/fauna/normas`.
@@ -126,9 +126,7 @@ de safari_recommender (dominio por confirmar; ver Riesgos). Si no hay dominio es
 - **Secretos**. `GBIF_USUARIO`, `GBIF_CLAVE` (descarga SQL) y `EBIRD_CLAVE` (API eBird) hay que darlos de alta
   en este repo (en safari_recommender están en un *environment* de GitHub llamado `EBIRD_CLAVE`); actualizar
   `.env.example`. Sin ellos el pipeline no pide nada y la web sigue (comportamiento ya existente: mantenerlo).
-  **Licencia eBird**: los datos de la API eBird son de uso no comercial; la frecuencia de `espana.json` puede
-  salir del EOD vía GBIF (CC BY 4.0). Anotarlo (visión: puerta abierta a monetizar) y que los recientes/rarezas
-  de eBird sean sustituibles.
+  **Licencia eBird**: la API es de uso no comercial; se usa igualmente (decisión 0017, monetización aparcada).
 - **Ética**: recientes de iNat/eBird sin ubicaciones exactas de lince, oso, lobo, desmán, visón, tortugas (0011);
   test que lo comprueba al migrar.
 - **Datos curados con caducidad**: `hides.ts` y `fenomenos.ts` tienen revisión anual en safari_recommender
