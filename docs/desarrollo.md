@@ -45,7 +45,7 @@ Para construir con datos locales (generados con `python -m rasante …` en `publ
   provincia); los puntos en países vecinos se descartan con `Provincias`.
 - **Commits**: pequeños y explicativos. Haz `git pull` antes de `push`: Actions hace commits de
   `public/datos/version.json`.
-- **Decisiones**: lo que se decide o se descubre, en [`decisiones.md`](decisiones.md).
+- **Decisiones**: lo que se decide o se descubre, en ficheros cortos en [`decisiones/`](decisiones/) (el registro antiguo está en `archivo/`).
 
 ## Pruebas
 

@@ -37,3 +37,6 @@ public/datos/safaris_mundo.json
 public/datos/safaris_indice.json
 /datos/
 public/datos/resumen.json
+
+# Claude Code: ajustes personales
+.claude/settings.local.json

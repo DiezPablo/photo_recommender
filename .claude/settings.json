@@ -1,0 +1,17 @@
+{
+  "model": "sonnet",
+  "permissions": {
+    "deny": [
+      "Read(./datos/**)",
+      "Read(./public/datos/**)",
+      "Read(./cache/**)",
+      "Read(./salida/**)",
+      "Read(./capturas/**)",
+      "Read(./node_modules/**)",
+      "Read(./.next/**)",
+      "Read(./tests/fixtures/**)",
+      "Read(./docs/archivo/**)",
+      "Read(./package-lock.json)"
+    ]
+  }
+}

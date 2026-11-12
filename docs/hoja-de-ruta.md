@@ -3,7 +3,7 @@
 Objetivo del usuario: que Rasante sea el sitio para **planificar un viaje de fotografía, senderismo y
 naturaleza con todo dentro**. Siempre gratuito, con datos abiertos y sin IA. El análisis frente a otras
 webs y apps (Alpenglow, Sunsethue, PhotoPills, The Photographer's Ephemeris, Locationscout, PhotoHound,
-Wikiloc, Komoot, AllTrails, Astrospheric, Clear Outside) está en `decisiones.md` (25-10-2026).
+Wikiloc, Komoot, AllTrails, Astrospheric, Clear Outside) está en `archivo/decisiones-hasta-2026-11.md` (25-10-2026).
 
 ## Hecho
 
