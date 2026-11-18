@@ -5,15 +5,6 @@
   "buildCommand": "npm run build",
   "headers": [
     {
-      "source": "/datos/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=300, stale-while-revalidate=3600"
-        }
-      ]
-    },
-    {
       "source": "/sw.js",
       "headers": [
         {
@@ -25,6 +16,68 @@
           "value": "/"
         }
       ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/spot/:id",
+      "destination": "https://safarirecommender.vercel.app/luz/spot/:id",
+      "permanent": true
+    },
+    {
+      "source": "/dia/:ruta*",
+      "destination": "https://safarirecommender.vercel.app/luz/dia/:ruta*",
+      "permanent": true
+    },
+    {
+      "source": "/calendario",
+      "destination": "https://safarirecommender.vercel.app/luz/calendario",
+      "permanent": true
+    },
+    {
+      "source": "/calendario/:mes",
+      "destination": "https://safarirecommender.vercel.app/luz/calendario/:mes",
+      "permanent": true
+    },
+    {
+      "source": "/evento/:id",
+      "destination": "https://safarirecommender.vercel.app/luz/evento/:id",
+      "permanent": true
+    },
+    {
+      "source": "/alertas",
+      "destination": "https://safarirecommender.vercel.app/luz/alertas",
+      "permanent": true
+    },
+    {
+      "source": "/alertas/:zona",
+      "destination": "https://safarirecommender.vercel.app/luz/alertas/espana.ics",
+      "permanent": true
+    },
+    {
+      "source": "/acerca",
+      "destination": "https://safarirecommender.vercel.app/luz/metodo",
+      "permanent": true
+    },
+    {
+      "source": "/fauna",
+      "destination": "https://safarirecommender.vercel.app/fauna",
+      "permanent": true
+    },
+    {
+      "source": "/fauna/:ruta*",
+      "destination": "https://safarirecommender.vercel.app/fauna",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "destination": "https://safarirecommender.vercel.app/",
+      "permanent": true
+    },
+    {
+      "source": "/:ruta((?!sw\\.js$).*)",
+      "destination": "https://safarirecommender.vercel.app/",
+      "permanent": true
     }
   ]
 }
